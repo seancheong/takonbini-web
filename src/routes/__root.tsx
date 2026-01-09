@@ -1,5 +1,6 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
+import "../i18n";
 import {
 	createRootRouteWithContext,
 	HeadContent,
@@ -7,7 +8,11 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import Header from "../components/Header";
+import { ThemeProvider, themeStorageKey } from "../contexts/ThemeProvider";
+import i18n, { setSSRLanguage } from "../i18n";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
 
@@ -16,6 +21,10 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+	beforeLoad: async () => {
+		// Set the SSR language before loading the route
+		await setSSRLanguage();
+	},
 	head: () => ({
 		meta: [
 			{
@@ -26,7 +35,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "Takonbini",
+				title: i18n.t("appName"),
 			},
 		],
 		links: [
@@ -41,8 +50,24 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 });
 
 function RootDocument() {
+	const { i18n } = useTranslation();
+
+	useEffect(() => {
+		const handler = () => {
+			document.title = i18n.t("appName");
+			document.documentElement.lang = i18n.language;
+		};
+
+		i18n.on("languageChanged", handler);
+		handler();
+
+		return () => {
+			i18n.off("languageChanged", handler);
+		};
+	}, [i18n]);
+
 	return (
-		<html lang="en">
+		<html lang={i18n.language}>
 			<head>
 				<HeadContent />
 			</head>
