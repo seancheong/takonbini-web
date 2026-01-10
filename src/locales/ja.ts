@@ -3,6 +3,12 @@ export default {
 		appName: "タコンビニ",
 		welcome: "タコンビニへようこそ",
 		subtitle: "あなたの日本のコンビニパートナー",
+		theme: {
+			light: "ライト",
+			dark: "ダーク",
+			system: "システム",
+			selectTheme: "テーマを選択",
+		},
 		language: {
 			en: "英語",
 			ja: "日本語",

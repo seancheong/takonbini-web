@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import LanguageSelect from "./LanguageSelect";
+import ThemeSelect from "./ThemeSelect";
 
 export default function Header() {
 	const { t } = useTranslation();
@@ -14,7 +15,10 @@ export default function Header() {
 					</Link>
 				</div>
 
-				<LanguageSelect />
+				<div className="flex items-center gap-2">
+					<ThemeSelect />
+					<LanguageSelect />
+				</div>
 			</div>
 		</header>
 	);

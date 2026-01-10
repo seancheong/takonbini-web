@@ -8,10 +8,16 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { createServerFn } from "@tanstack/react-start";
+import { getCookie } from "@tanstack/react-start/server";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../components/Header";
-import { ThemeProvider, themeStorageKey } from "../contexts/ThemeProvider";
+import {
+	type Theme,
+	ThemeProvider,
+	themeCookieKey,
+} from "../contexts/ThemeProvider";
 import i18n, { setSSRLanguage } from "../i18n";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
@@ -20,11 +26,21 @@ interface MyRouterContext {
 	queryClient: QueryClient;
 }
 
+const isTheme = (value: string | undefined): value is Theme =>
+	value === "light" || value === "dark" || value === "system";
+
+const loaderFn = createServerFn({ method: "GET" }).handler(async () => {
+	const savedTheme = await getCookie(themeCookieKey);
+
+	return { savedTheme };
+});
+
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	beforeLoad: async () => {
 		// Set the SSR language before loading the route
 		await setSSRLanguage();
 	},
+	loader: () => loaderFn(),
 	head: () => ({
 		meta: [
 			{
@@ -51,6 +67,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument() {
 	const { i18n } = useTranslation();
+	const { savedTheme } = Route.useLoaderData();
+	const resolvedTheme = isTheme(savedTheme) ? savedTheme : "system";
 
 	useEffect(() => {
 		const handler = () => {
@@ -67,28 +85,33 @@ function RootDocument() {
 	}, [i18n]);
 
 	return (
-		<html lang={i18n.language}>
+		<html lang={i18n.language} suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>
+
 			<body>
-				<Header />
-				<main>
-					<Outlet />
-				</main>
-				<TanStackDevtools
-					config={{
-						position: "bottom-right",
-					}}
-					plugins={[
-						{
-							name: "Tanstack Router",
-							render: <TanStackRouterDevtoolsPanel />,
-						},
-						TanStackQueryDevtools,
-					]}
-				/>
-				<Scripts />
+				<ThemeProvider defaultTheme={resolvedTheme} cookieKey={themeCookieKey}>
+					<Header />
+
+					<main>
+						<Outlet />
+					</main>
+
+					<TanStackDevtools
+						config={{
+							position: "bottom-right",
+						}}
+						plugins={[
+							{
+								name: "Tanstack Router",
+								render: <TanStackRouterDevtoolsPanel />,
+							},
+							TanStackQueryDevtools,
+						]}
+					/>
+					<Scripts />
+				</ThemeProvider>
 			</body>
 		</html>
 	);
