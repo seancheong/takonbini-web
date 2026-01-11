@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import ProductPanel from "@/features/product/ProductPanel";
+import ProductPanel from "@/features/product/components/ProductPanel";
 import i18n from "@/i18n";
 import { productsQueryOptions } from "@/services/productService";
 
