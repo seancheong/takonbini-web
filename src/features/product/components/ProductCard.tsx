@@ -93,7 +93,9 @@ export default function ProductCard({ product }: ProductCardProps) {
 							<span />
 						)}
 						<span className="text-sm font-semibold text-foreground">
-							{formatPrice(product.price, language)}
+							{product.price === 0
+								? t("product.priceUnknown")
+								: formatPrice(product.price, language)}
 						</span>
 					</div>
 				</div>

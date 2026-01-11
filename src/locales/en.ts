@@ -22,6 +22,7 @@ export default {
 			error: "Unable to load products right now. Please try again later.",
 			empty: "No products available yet.",
 			noImage: "No image",
+			priceUnknown: "Unknown",
 			new: "NEW",
 			loadMore: "Load more",
 			loadingMore: "Loading more...",

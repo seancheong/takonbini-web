@@ -190,7 +190,9 @@ function ProductDetails() {
 										<dt>{t("product.details.price")}</dt>
 									</div>
 									<dd className="text-base font-semibold text-foreground">
-										{formatPrice(product.price, language)}
+										{product.price === 0
+											? t("product.priceUnknown")
+											: formatPrice(product.price, language)}
 									</dd>
 								</div>
 

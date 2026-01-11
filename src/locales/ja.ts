@@ -22,6 +22,7 @@ export default {
 			error: "商品を読み込めませんでした。後でもう一度お試しください。",
 			empty: "表示できる商品がまだありません。",
 			noImage: "画像なし",
+			priceUnknown: "不明",
 			new: "新着",
 			loadMore: "もっと見る",
 			loadingMore: "読み込み中...",
