@@ -8,6 +8,7 @@ import {
 	MapPin,
 	Tag,
 } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	type CategoryLabelKey,
@@ -36,6 +37,7 @@ export const Route = createFileRoute("/products/$id")({
 function ProductDetails() {
 	const { id } = Route.useParams();
 	const router = useRouter();
+	const [imageError, setImageError] = useState(false);
 
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
@@ -120,15 +122,21 @@ function ProductDetails() {
 				<div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
 					<div className="space-y-4">
 						<div className="relative overflow-hidden rounded-2xl border border-border/60 bg-muted">
-							{imageSrc ? (
+							{imageSrc && !imageError ? (
 								<img
 									src={imageSrc}
 									alt={title}
 									className="h-full w-full object-cover"
+									onError={() => setImageError(true)}
 								/>
 							) : (
-								<div className="flex h-64 items-center justify-center text-sm text-muted-foreground">
-									{t("product.noImage")}
+								<div className="flex h-84 flex-col items-center justify-center gap-2 px-4 text-center text-sm text-muted-foreground">
+									<span>{t("product.noImage")}</span>
+									{imageError ? (
+										<span className="text-xs font-medium">
+											{t("product.unavailable")}
+										</span>
+									) : null}
 								</div>
 							)}
 						</div>

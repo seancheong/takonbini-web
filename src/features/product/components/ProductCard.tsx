@@ -31,20 +31,20 @@ export default function ProductCard({ product }: ProductCardProps) {
 		product.category &&
 		categoryLabelKeys[product.category as keyof typeof categoryLabelKeys];
 
-	if (imageSrc && imageError) {
-		return null;
-	}
+	const isUnavailable = Boolean(imageSrc && imageError);
 
 	return (
 		<Link
 			to="/products/$id"
 			params={{ id: product.id }}
 			aria-label={title}
-			className="group block h-full rounded-2xl border border-border/50 bg-background shadow-sm transition-shadow duration-200 hover:border-border hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+			className={`group block h-full rounded-2xl border border-border/50 bg-background shadow-sm transition-shadow duration-200 hover:border-border hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+				isUnavailable ? "opacity-75" : ""
+			}`}
 		>
 			<article className="flex h-full flex-col overflow-hidden rounded-2xl">
 				<div className="relative aspect-4/3 w-full overflow-hidden border-b border-border/60 bg-muted">
-					{imageSrc ? (
+					{imageSrc && !imageError ? (
 						<img
 							src={imageSrc}
 							alt={title}
@@ -53,8 +53,14 @@ export default function ProductCard({ product }: ProductCardProps) {
 							loading="lazy"
 						/>
 					) : (
-						<div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
-							{t("product.noImage")}
+						<div className="flex h-full w-full flex-col items-center justify-center gap-2 px-4 text-center text-xs text-muted-foreground">
+							<span>{t("product.noImage")}</span>
+
+							{imageError ? (
+								<span className="text-[11px] font-medium">
+									{t("product.unavailable")}
+								</span>
+							) : null}
 						</div>
 					)}
 
