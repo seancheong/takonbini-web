@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { PublicProduct } from "@/@types/product";
 import type { Language } from "@/i18n";
@@ -19,6 +20,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
+	const [imageError, setImageError] = useState(false);
 
 	const image = product.images[0];
 	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
@@ -28,6 +30,10 @@ export default function ProductCard({ product }: ProductCardProps) {
 	const categoryLabelKey =
 		product.category &&
 		categoryLabelKeys[product.category as keyof typeof categoryLabelKeys];
+
+	if (imageSrc && imageError) {
+		return null;
+	}
 
 	return (
 		<Link
@@ -42,6 +48,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 						<img
 							src={imageSrc}
 							alt={title}
+							onError={() => setImageError(true)}
 							className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
 							loading="lazy"
 						/>
