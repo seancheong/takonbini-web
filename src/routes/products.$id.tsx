@@ -111,7 +111,7 @@ function ProductDetails() {
 				<button
 					type="button"
 					onClick={() => router.history.go(-1)}
-					className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground"
+					className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground cursor-pointer"
 				>
 					<ArrowLeft className="h-4 w-4" aria-hidden="true" />
 					{t("product.details.back")}

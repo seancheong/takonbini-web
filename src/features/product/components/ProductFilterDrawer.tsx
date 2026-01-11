@@ -30,7 +30,6 @@ interface ProductFilterDrawerProps {
 	setFilters: (next: ProductFilters) => void;
 	isFilterOpen: boolean;
 	setIsFilterOpen: (open: boolean) => void;
-	setIsFilterManual: (manual: boolean) => void;
 	onApply: (filters: ProductFilters) => void;
 	onReset: () => void;
 }
@@ -40,7 +39,6 @@ export default function ProductFilterDrawer({
 	setFilters,
 	isFilterOpen,
 	setIsFilterOpen,
-	setIsFilterManual,
 	onApply,
 	onReset,
 }: ProductFilterDrawerProps) {
@@ -91,10 +89,13 @@ export default function ProductFilterDrawer({
 				<button
 					type="button"
 					onClick={() => {
-						setIsFilterManual(true);
 						setIsFilterOpen(!isFilterOpen);
 					}}
-					className="rounded-full border border-border/60 px-4 py-1 text-sm font-semibold text-foreground hover:border-border hover:bg-muted"
+					className={`rounded-full px-4 py-1 text-sm font-semibold transition ${
+						isFilterOpen
+							? "border border-border/60 bg-muted text-foreground hover:border-border hover:bg-muted/80"
+							: "bg-primary text-primary-foreground hover:bg-primary/90"
+					}`}
 				>
 					{isFilterOpen ? t("product.filters.hide") : t("product.filters.show")}
 				</button>
@@ -109,7 +110,6 @@ export default function ProductFilterDrawer({
 					if (!isPriceValid) return;
 					onApply(filters);
 					setIsFilterOpen(false);
-					setIsFilterManual(false);
 				}}
 			>
 				<div
@@ -314,24 +314,23 @@ export default function ProductFilterDrawer({
 						</div>
 					</div>
 
-					<div className="flex flex-wrap items-center gap-3 pt-2">
+					<div className="flex flex-wrap items-center justify-end gap-3 pt-2">
+						<button
+							type="button"
+							onClick={() => {
+								onReset();
+							}}
+							className="rounded-full border border-border/60 px-5 py-2 text-sm font-semibold text-foreground hover:border-border hover:bg-muted"
+						>
+							{t("product.filters.reset")}
+						</button>
+
 						<button
 							type="submit"
 							disabled={!isPriceValid}
 							className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-60"
 						>
 							{t("product.filters.apply")}
-						</button>
-
-						<button
-							type="button"
-							onClick={() => {
-								onReset();
-								setIsFilterManual(false);
-							}}
-							className="rounded-full border border-border/60 px-5 py-2 text-sm font-semibold text-foreground hover:border-border hover:bg-muted"
-						>
-							{t("product.filters.reset")}
 						</button>
 					</div>
 				</div>

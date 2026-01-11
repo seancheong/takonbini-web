@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouterState } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ProductFilters } from "@/services/productService";
 import { productsInfiniteQueryOptions } from "@/services/productService";
@@ -12,57 +12,15 @@ interface ProductPanelProps {
 	onApply: (filters: ProductFilters) => void;
 }
 
-const hasActiveFilters = (filters: ProductFilters) =>
-	Boolean(
-		filters.search ||
-			filters.isNew ||
-			filters.minPrice !== undefined ||
-			filters.maxPrice !== undefined ||
-			(filters.stores?.length ?? 0) > 0 ||
-			(filters.categories?.length ?? 0) > 0 ||
-			(filters.regions?.length ?? 0) > 0,
-	);
-
 export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	const { t } = useTranslation();
 
 	const [draftFilters, setDraftFilters] = useState<ProductFilters>(filters);
-	const [isFilterOpen, setIsFilterOpen] = useState(!hasActiveFilters(filters));
-	const [isFilterManual, setIsFilterManual] = useState(false);
-	const hasAutoClosed = useRef(false);
+	const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 	useEffect(() => {
 		setDraftFilters(filters);
-
-		if (hasActiveFilters(filters)) {
-			setIsFilterOpen(false);
-			hasAutoClosed.current = true;
-		}
 	}, [filters]);
-
-	useEffect(() => {
-		const handleScroll = () => {
-			if (isFilterManual || hasAutoClosed.current) return;
-
-			const maxScroll =
-				document.documentElement.scrollHeight - window.innerHeight;
-
-			if (maxScroll <= 32 || window.scrollY <= 4) {
-				setIsFilterOpen(true);
-				return;
-			}
-
-			setIsFilterOpen(false);
-			hasAutoClosed.current = true;
-		};
-
-		handleScroll();
-		window.addEventListener("scroll", handleScroll, { passive: true });
-
-		return () => {
-			window.removeEventListener("scroll", handleScroll);
-		};
-	}, [isFilterManual]);
 
 	const {
 		data,
@@ -98,18 +56,7 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 				filters={draftFilters}
 				setFilters={setDraftFilters}
 				isFilterOpen={isFilterOpen}
-				setIsFilterOpen={(open) => {
-					setIsFilterOpen(open);
-					if (!open) {
-						hasAutoClosed.current = true;
-					}
-				}}
-				setIsFilterManual={(manual) => {
-					setIsFilterManual(manual);
-					if (manual && isFilterOpen === false) {
-						hasAutoClosed.current = true;
-					}
-				}}
+				setIsFilterOpen={setIsFilterOpen}
 				onApply={onApply}
 				onReset={() => {
 					const resetFilters: ProductFilters = {
