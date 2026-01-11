@@ -1,10 +1,51 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { ProductFilters } from "@/services/productService";
 import { productsInfiniteQueryOptions } from "@/services/productService";
+import ProductFilterDrawer from "./ProductFilterDrawer";
 import ProductGrid from "./ProductGrid";
 
-export default function ProductPanel() {
+interface ProductPanelProps {
+	filters: ProductFilters;
+	onApply: (filters: ProductFilters) => void;
+}
+
+export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	const { t } = useTranslation();
+
+	const [draftFilters, setDraftFilters] = useState<ProductFilters>(filters);
+	const [isFilterOpen, setIsFilterOpen] = useState(true);
+	const [isFilterManual, setIsFilterManual] = useState(false);
+	const hasAutoClosed = useRef(false);
+
+	useEffect(() => {
+		setDraftFilters(filters);
+	}, [filters]);
+
+	useEffect(() => {
+		const handleScroll = () => {
+			if (isFilterManual || hasAutoClosed.current) return;
+
+			const maxScroll =
+				document.documentElement.scrollHeight - window.innerHeight;
+
+			if (maxScroll <= 32 || window.scrollY <= 4) {
+				setIsFilterOpen(true);
+				return;
+			}
+
+			setIsFilterOpen(false);
+			hasAutoClosed.current = true;
+		};
+
+		handleScroll();
+		window.addEventListener("scroll", handleScroll, { passive: true });
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+		};
+	}, [isFilterManual]);
 
 	const {
 		data,
@@ -13,15 +54,42 @@ export default function ProductPanel() {
 		hasNextPage,
 		fetchNextPage,
 		isFetchingNextPage,
-	} = useInfiniteQuery(productsInfiniteQueryOptions());
+	} = useInfiniteQuery(productsInfiniteQueryOptions(filters));
 	const products = data?.pages.flatMap((page) => page.products) ?? [];
 
 	return (
 		<section className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+			<ProductFilterDrawer
+				filters={draftFilters}
+				setFilters={setDraftFilters}
+				isFilterOpen={isFilterOpen}
+				setIsFilterOpen={(open) => {
+					setIsFilterOpen(open);
+					if (!open) {
+						hasAutoClosed.current = true;
+					}
+				}}
+				setIsFilterManual={(manual) => {
+					setIsFilterManual(manual);
+					if (manual && isFilterOpen === false) {
+						hasAutoClosed.current = true;
+					}
+				}}
+				onApply={onApply}
+				onReset={() => {
+					const resetFilters: ProductFilters = {
+						limit: filters.limit,
+					};
+					setDraftFilters(resetFilters);
+					onApply(resetFilters);
+				}}
+			/>
+
 			<div>
 				<h1 className="text-4xl font-bold text-foreground">
 					{t("product.title")}
 				</h1>
+
 				<p className="mt-3 text-base text-muted-foreground">
 					{t("product.subtitle")}
 				</p>

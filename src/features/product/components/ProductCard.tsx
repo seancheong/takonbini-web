@@ -35,7 +35,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 			className="group block h-full rounded-2xl border border-border/50 bg-background shadow-sm transition-shadow duration-200 hover:border-border hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
 		>
 			<article className="flex h-full flex-col overflow-hidden rounded-2xl">
-				<div className="relative aspect-[4/3] w-full overflow-hidden border-b border-border/60 bg-muted">
+				<div className="relative aspect-4/3 w-full overflow-hidden border-b border-border/60 bg-muted">
 					{image ? (
 						<img
 							src={image}

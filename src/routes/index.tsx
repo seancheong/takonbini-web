@@ -1,13 +1,50 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Category, REGIONS, Store } from "@/@types/product";
 import ProductPanel from "@/features/product/components/ProductPanel";
 import i18n from "@/i18n";
-import { productsInfiniteQueryOptions } from "@/services/productService";
+import {
+	defaultProductFilters,
+	type ProductFilters,
+	productsInfiniteQueryOptions,
+} from "@/services/productService";
+import { parseList, parseNumber } from "@/utils/queryParsers";
+
+const normalizeSearch = (filters?: ProductFilters) => {
+	const safeFilters = filters ?? {};
+	return {
+		...defaultProductFilters,
+		...safeFilters,
+		search: safeFilters.search?.trim() || undefined,
+	};
+};
 
 export const Route = createFileRoute("/")({
 	component: App,
-	loader: async ({ context }) => {
+	validateSearch: (search): ProductFilters => {
+		const raw = (search ?? {}) as Record<string, unknown>;
+
+		return {
+			search: typeof raw.search === "string" ? raw.search : undefined,
+			stores: parseList(raw.stores, Object.values(Store)),
+			categories: parseList(raw.categories, Object.values(Category)),
+			regions: parseList(raw.regions, REGIONS),
+			isNew:
+				typeof raw.isNew === "boolean"
+					? raw.isNew || undefined
+					: raw.isNew === "true"
+						? true
+						: undefined,
+			minPrice: parseNumber(raw.minPrice),
+			maxPrice: parseNumber(raw.maxPrice),
+		};
+	},
+	loaderDeps: ({ search }) => ({
+		search,
+	}),
+	loader: async ({ context, deps }) => {
+		const filters = normalizeSearch(deps.search);
 		await context.queryClient.prefetchInfiniteQuery(
-			productsInfiniteQueryOptions(),
+			productsInfiniteQueryOptions(filters),
 		);
 	},
 	head: () => ({
@@ -16,9 +53,45 @@ export const Route = createFileRoute("/")({
 });
 
 function App() {
+	const search = Route.useSearch();
+	const navigate = Route.useNavigate();
+	const appliedFilters = normalizeSearch(search);
+
 	return (
 		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
-			<ProductPanel />
+			<ProductPanel
+				filters={appliedFilters}
+				onApply={(nextFilters) => {
+					// biome-ignore lint/correctness/noUnusedVariables: Ignore limit for other searchFilters extraction
+					const { limit, ...searchFilters } = nextFilters;
+
+					navigate({
+						search: {
+							...searchFilters,
+							search: nextFilters.search?.trim() || undefined,
+							stores: nextFilters.stores?.length
+								? nextFilters.stores
+								: undefined,
+							categories: nextFilters.categories?.length
+								? nextFilters.categories
+								: undefined,
+							regions: nextFilters.regions?.length
+								? nextFilters.regions
+								: undefined,
+							isNew: nextFilters.isNew || undefined,
+							minPrice:
+								nextFilters.minPrice !== undefined
+									? nextFilters.minPrice
+									: undefined,
+							maxPrice:
+								nextFilters.maxPrice !== undefined
+									? nextFilters.maxPrice
+									: undefined,
+						},
+						replace: true,
+					});
+				}}
+			/>
 		</div>
 	);
 }

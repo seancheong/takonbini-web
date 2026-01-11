@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import {
 	ArrowLeft,
 	Calendar,
@@ -23,13 +23,11 @@ import {
 	resolveLocalizedText,
 } from "@/features/product/utils/productUtils";
 import type { Language } from "@/i18n";
-import { productsInfiniteQueryOptions } from "@/services/productService";
+import { productByIdQueryOptions } from "@/services/productService";
 
 export const Route = createFileRoute("/products/$id")({
-	loader: async ({ context }) => {
-		await context.queryClient.prefetchInfiniteQuery(
-			productsInfiniteQueryOptions(),
-		);
+	loader: async ({ context, params }) => {
+		await context.queryClient.prefetchQuery(productByIdQueryOptions(params.id));
 	},
 	component: ProductDetails,
 });
@@ -41,11 +39,8 @@ function ProductDetails() {
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
 
-	const { data, isLoading, isError } = useInfiniteQuery(
-		productsInfiniteQueryOptions(),
-	);
-	const products = data?.pages.flatMap((page) => page.products) ?? [];
-	const product = products.find((item) => item.id === id);
+	const { data, isLoading, isError } = useQuery(productByIdQueryOptions(id));
+	const product = data;
 
 	if (isLoading) {
 		return (
