@@ -1,4 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRouterState } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ProductFilters } from "@/services/productService";
@@ -11,16 +12,32 @@ interface ProductPanelProps {
 	onApply: (filters: ProductFilters) => void;
 }
 
+const hasActiveFilters = (filters: ProductFilters) =>
+	Boolean(
+		filters.search ||
+			filters.isNew ||
+			filters.minPrice !== undefined ||
+			filters.maxPrice !== undefined ||
+			(filters.stores?.length ?? 0) > 0 ||
+			(filters.categories?.length ?? 0) > 0 ||
+			(filters.regions?.length ?? 0) > 0,
+	);
+
 export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	const { t } = useTranslation();
 
 	const [draftFilters, setDraftFilters] = useState<ProductFilters>(filters);
-	const [isFilterOpen, setIsFilterOpen] = useState(true);
+	const [isFilterOpen, setIsFilterOpen] = useState(!hasActiveFilters(filters));
 	const [isFilterManual, setIsFilterManual] = useState(false);
 	const hasAutoClosed = useRef(false);
 
 	useEffect(() => {
 		setDraftFilters(filters);
+
+		if (hasActiveFilters(filters)) {
+			setIsFilterOpen(false);
+			hasAutoClosed.current = true;
+		}
 	}, [filters]);
 
 	useEffect(() => {
@@ -54,11 +71,29 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 		hasNextPage,
 		fetchNextPage,
 		isFetchingNextPage,
+		isFetching,
 	} = useInfiniteQuery(productsInfiniteQueryOptions(filters));
 	const products = data?.pages.flatMap((page) => page.products) ?? [];
+	const routerIsLoading = useRouterState({
+		select: (state) => state.isLoading,
+	});
+	const showOverlay = routerIsLoading || (isFetching && !isFetchingNextPage);
 
 	return (
-		<section className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+		<section className="relative mx-auto flex w-full max-w-6xl flex-col gap-10">
+			{showOverlay ? (
+				<div
+					className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 backdrop-blur-sm"
+					aria-live="polite"
+				>
+					<div className="flex items-center gap-3 rounded-full border border-border/60 bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-lg">
+						<span className="h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
+
+						{t("product.loading")}
+					</div>
+				</div>
+			) : null}
+
 			<ProductFilterDrawer
 				filters={draftFilters}
 				setFilters={setDraftFilters}
@@ -81,7 +116,6 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 						limit: filters.limit,
 					};
 					setDraftFilters(resetFilters);
-					onApply(resetFilters);
 				}}
 			/>
 

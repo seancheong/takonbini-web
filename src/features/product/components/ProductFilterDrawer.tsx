@@ -327,7 +327,6 @@ export default function ProductFilterDrawer({
 							type="button"
 							onClick={() => {
 								onReset();
-								setIsFilterOpen(false);
 								setIsFilterManual(false);
 							}}
 							className="rounded-full border border-border/60 px-5 py-2 text-sm font-semibold text-foreground hover:border-border hover:bg-muted"
