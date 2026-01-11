@@ -48,3 +48,30 @@ sequenceDiagram
   API-->>Query: { products, nextCursor }
   Query-->>Browser: Append next page
 ```
+
+## Image Proxy & Caching
+
+- Product images are fetched through the app’s image proxy (`/api/image?url=...`) instead of directly from store domains.
+- This avoids CORS errors on third-party image hosts and keeps layout stable even when the browser blocks direct reads.
+- The proxy sets cache headers for browser + edge caching to improve repeat-load performance and reduce origin hits.
+
+```mermaid
+sequenceDiagram
+  autonumber
+  participant Browser
+  participant App as TanStack Start Server
+  participant Edge as Edge Cache
+  participant Store as Store Image Host
+
+  Browser->>App: GET /api/image?url=store-image
+  App->>Edge: Check cached response
+  alt Cache hit
+    Edge-->>App: Cached image
+    App-->>Browser: Image response
+  else Cache miss
+    App->>Store: Fetch image
+    Store-->>App: Image response
+    App->>Edge: Store with cache headers
+    App-->>Browser: Image response
+  end
+```

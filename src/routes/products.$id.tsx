@@ -24,6 +24,7 @@ import {
 } from "@/features/product/utils/productUtils";
 import type { Language } from "@/i18n";
 import { productByIdQueryOptions } from "@/services/productService";
+import { getProxiedImageUrl } from "@/utils/imageProxy";
 
 export const Route = createFileRoute("/products/$id")({
 	loader: async ({ context, params }) => {
@@ -98,7 +99,11 @@ function ProductDetails() {
 	});
 
 	const image = product.images[0];
-	const extraImages = product.images.slice(1);
+	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
+	const extraImages = product.images.slice(1).map((item) => ({
+		original: item,
+		proxy: getProxiedImageUrl(item),
+	}));
 
 	return (
 		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
@@ -115,9 +120,9 @@ function ProductDetails() {
 				<div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
 					<div className="space-y-4">
 						<div className="relative overflow-hidden rounded-2xl border border-border/60 bg-muted">
-							{image ? (
+							{imageSrc ? (
 								<img
-									src={image}
+									src={imageSrc}
 									alt={title}
 									className="h-full w-full object-cover"
 								/>
@@ -132,11 +137,11 @@ function ProductDetails() {
 							<div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
 								{extraImages.map((item) => (
 									<div
-										key={item}
+										key={item.original}
 										className="aspect-square overflow-hidden rounded-xl border border-border/60 bg-muted"
 									>
 										<img
-											src={item}
+											src={item.proxy}
 											alt={title}
 											className="h-full w-full object-cover"
 											loading="lazy"

@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import type { PublicProduct } from "@/@types/product";
 import type { Language } from "@/i18n";
+import { getProxiedImageUrl } from "@/utils/imageProxy";
 import {
 	type CategoryLabelKey,
 	categoryLabelKeys,
@@ -20,6 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 	const language = i18n.language as Language;
 
 	const image = product.images[0];
+	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
 	const title = resolveLocalizedText(product.title, language);
 	const storeLabelKey =
 		storeLabelKeys[product.store as keyof typeof storeLabelKeys];
@@ -36,9 +38,9 @@ export default function ProductCard({ product }: ProductCardProps) {
 		>
 			<article className="flex h-full flex-col overflow-hidden rounded-2xl">
 				<div className="relative aspect-4/3 w-full overflow-hidden border-b border-border/60 bg-muted">
-					{image ? (
+					{imageSrc ? (
 						<img
-							src={image}
+							src={imageSrc}
 							alt={title}
 							className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
 							loading="lazy"
