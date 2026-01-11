@@ -8,7 +8,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { SUPPORTED_LANGUAGES } from "@/i18n";
+import { type Language, SUPPORTED_LANGUAGES } from "@/i18n";
 
 export default function LanguageSelect() {
 	const { t, i18n } = useTranslation();
@@ -18,8 +18,7 @@ export default function LanguageSelect() {
 	};
 
 	const currentLanguage = useMemo(() => {
-		const language = (i18n.resolvedLanguage ??
-			i18n.language) as (typeof SUPPORTED_LANGUAGES)[number];
+		const language = (i18n.resolvedLanguage ?? i18n.language) as Language;
 
 		return SUPPORTED_LANGUAGES.includes(language)
 			? language

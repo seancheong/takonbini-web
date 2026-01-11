@@ -12,6 +12,7 @@ import ja from "./locales/ja";
 import zh from "./locales/zh";
 
 export const SUPPORTED_LANGUAGES = ["en", "zh", "ja"] as const;
+export type Language = (typeof SUPPORTED_LANGUAGES)[number];
 
 export const defaultNS = "translation";
 export const i18nCookieName = "i18nextTakonbiniLng";
