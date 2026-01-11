@@ -23,6 +23,9 @@ export default {
 			empty: "暂时没有可显示的商品。",
 			noImage: "暂无图片",
 			new: "新品",
+			loadMore: "加载更多",
+			loadingMore: "加载中...",
+			end: "已经到底了。",
 			details: {
 				back: "返回商品列表",
 				price: "价格",

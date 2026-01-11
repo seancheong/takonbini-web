@@ -23,6 +23,9 @@ export default {
 			empty: "No products available yet.",
 			noImage: "No image",
 			new: "NEW",
+			loadMore: "Load more",
+			loadingMore: "Loading more...",
+			end: "You're all caught up.",
 			details: {
 				back: "Back to products",
 				price: "Price",

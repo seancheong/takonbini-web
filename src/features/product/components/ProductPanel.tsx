@@ -1,13 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { productsQueryOptions } from "@/services/productService";
+import { productsInfiniteQueryOptions } from "@/services/productService";
 import ProductGrid from "./ProductGrid";
 
 export default function ProductPanel() {
 	const { t } = useTranslation();
 
-	const { data, isLoading, isError } = useQuery(productsQueryOptions());
-	const products = data?.products ?? [];
+	const {
+		data,
+		isLoading,
+		isError,
+		hasNextPage,
+		fetchNextPage,
+		isFetchingNextPage,
+	} = useInfiniteQuery(productsInfiniteQueryOptions());
+	const products = data?.pages.flatMap((page) => page.products) ?? [];
 
 	return (
 		<section className="mx-auto flex w-full max-w-6xl flex-col gap-10">
@@ -39,7 +46,28 @@ export default function ProductPanel() {
 					))}
 				</div>
 			) : products.length ? (
-				<ProductGrid products={products} />
+				<>
+					<ProductGrid products={products} />
+
+					<div className="flex justify-center">
+						{hasNextPage ? (
+							<button
+								type="button"
+								onClick={() => fetchNextPage()}
+								disabled={isFetchingNextPage}
+								className="rounded-full border border-border/60 px-5 py-2 text-sm font-semibold text-foreground transition hover:border-border hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+							>
+								{isFetchingNextPage
+									? t("product.loadingMore")
+									: t("product.loadMore")}
+							</button>
+						) : (
+							<span className="text-sm text-muted-foreground">
+								{t("product.end")}
+							</span>
+						)}
+					</div>
+				</>
 			) : (
 				<div className="rounded-2xl border border-border/60 bg-muted/40 p-6 text-sm text-muted-foreground">
 					{t("product.empty")}

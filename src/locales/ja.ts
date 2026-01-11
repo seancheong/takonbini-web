@@ -23,6 +23,9 @@ export default {
 			empty: "表示できる商品がまだありません。",
 			noImage: "画像なし",
 			new: "新着",
+			loadMore: "もっと見る",
+			loadingMore: "読み込み中...",
+			end: "すべて表示しました。",
 			details: {
 				back: "商品一覧へ戻る",
 				price: "価格",
