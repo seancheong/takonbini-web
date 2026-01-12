@@ -16,8 +16,9 @@ export default {
 			changeLanguage: "Change Language",
 		},
 		product: {
-			title: "Latest Konbini Finds",
-			subtitle: "Fresh arrivals from Japan's top convenience stores.",
+			title: "Convenience Store Products",
+			subtitle:
+				"Browse currently available products across Japan’s convenience stores.",
 			loading: "Loading products...",
 			error: "Unable to load products right now. Please try again later.",
 			empty: "No products available yet.",

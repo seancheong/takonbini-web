@@ -16,8 +16,8 @@ export default {
 			changeLanguage: "言語を変更",
 		},
 		product: {
-			title: "最新のコンビニ新商品",
-			subtitle: "日本の主要コンビニから届いた新着アイテム。",
+			title: "コンビニ商品",
+			subtitle: "日本のコンビニで現在販売中の商品を閲覧できます。",
 			loading: "商品を読み込み中...",
 			error: "商品を読み込めませんでした。後でもう一度お試しください。",
 			empty: "表示できる商品がまだありません。",

@@ -16,8 +16,8 @@ export default {
 			changeLanguage: "更改語言",
 		},
 		product: {
-			title: "便利店新品精選",
-			subtitle: "來自日本主流便利店的最新上架。",
+			title: "便利店商品",
+			subtitle: "瀏覽日本便利店目前販售的商品。",
 			loading: "正在載入商品...",
 			error: "暫時無法載入商品，請稍後再試。",
 			empty: "暫時沒有可顯示的商品。",
