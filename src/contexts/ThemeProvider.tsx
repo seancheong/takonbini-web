@@ -67,6 +67,7 @@ export function ThemeProvider({
 	const value = {
 		theme,
 		setTheme: (theme: Theme) => {
+			// biome-ignore lint/suspicious/noDocumentCookie: Ignore this for theme persistence
 			document.cookie = `${cookieKey}=${encodeURIComponent(theme)}; Path=/; Max-Age=31536000`;
 			setTheme(theme);
 		},
