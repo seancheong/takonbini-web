@@ -191,12 +191,12 @@ function ProductDetails() {
 						</div>
 
 						<div className="rounded-2xl border border-border/60 bg-card p-5">
-							<dl className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-6 gap-y-4 text-sm">
+							<dl className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-6 gap-y-4 text-sm">
 								<dt className="flex items-center gap-3 text-muted-foreground">
 									<JapaneseYen className="h-4 w-4" aria-hidden="true" />
 									{t("product.details.price")}
 								</dt>
-								<dd className="text-right text-base font-semibold text-foreground">
+								<dd className="min-w-0 text-right text-base font-semibold text-foreground">
 									{product.price === 0
 										? t("product.priceUnknown")
 										: formatPrice(product.price, language)}
@@ -208,7 +208,7 @@ function ProductDetails() {
 											<Tag className="h-4 w-4" aria-hidden="true" />
 											{t("product.details.category")}
 										</dt>
-										<dd className="text-right text-foreground">
+										<dd className="min-w-0 text-right text-foreground">
 											{categoryLabelKey
 												? t(categoryLabelKey as CategoryLabelKey)
 												: product.category}
@@ -222,7 +222,7 @@ function ProductDetails() {
 											<Calendar className="h-4 w-4" aria-hidden="true" />
 											{t("product.details.releaseDate")}
 										</dt>
-										<dd className="text-right text-foreground">
+										<dd className="min-w-0 text-right text-foreground">
 											{product.releaseDate}
 										</dd>
 									</>
@@ -236,7 +236,7 @@ function ProductDetails() {
 												{t("product.details.regions")}
 											</span>
 										</dt>
-										<dd className="text-right text-foreground">
+										<dd className="min-w-0 text-right text-foreground wrap-break-word whitespace-normal">
 											{regionLabels.join(", ")}
 										</dd>
 									</>

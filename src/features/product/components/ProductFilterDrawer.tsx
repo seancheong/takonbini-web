@@ -71,7 +71,7 @@ export default function ProductFilterDrawer({
 		(filters.regions?.length ?? 0);
 
 	return (
-		<div className="sticky top-14 z-40 rounded-2xl border border-border/60 bg-card/95 p-4 shadow-sm ring-1 ring-primary/20 transition hover:ring-primary/40 backdrop-blur supports-backdrop-filter:bg-card/90">
+		<div className="sticky top-15 z-40 rounded-2xl border border-border/60 bg-card/95 p-4 shadow-sm ring-1 ring-primary/20 transition hover:ring-primary/40 backdrop-blur supports-backdrop-filter:bg-card/90">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<div className="flex items-center gap-3">
 					<h2 className="text-base font-semibold text-foreground">
@@ -112,8 +112,10 @@ export default function ProductFilterDrawer({
 			</div>
 
 			<form
-				className={`mt-4 overflow-hidden transition-all duration-300 ${
-					isFilterOpen ? "max-h-[70vh] opacity-100" : "max-h-0 opacity-0"
+				className={`overflow-hidden transition-all duration-300 ${
+					isFilterOpen
+						? "mt-4 max-h-[70vh] opacity-100"
+						: "mt-0 max-h-0 opacity-0"
 				}`}
 				onSubmit={(event) => {
 					event.preventDefault();
