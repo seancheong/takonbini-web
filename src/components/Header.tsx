@@ -7,7 +7,7 @@ export default function Header() {
 	const { t } = useTranslation();
 
 	return (
-		<header className="fixed top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+		<header className="fixed top-0 z-50 w-full border-b border-border/50 bg-card/95 shadow-sm backdrop-blur supports-backdrop-filter:bg-card/90">
 			<div className="container mx-auto flex h-14 items-center justify-between px-3 sm:px-4">
 				<div className="flex min-w-0">
 					<Link

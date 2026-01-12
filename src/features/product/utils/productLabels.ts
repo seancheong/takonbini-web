@@ -1,7 +1,7 @@
 export const storeLabelClasses: Record<string, string> = {
-	SevenEleven: "text-orange-700 dark:text-orange-400",
-	Lawson: "text-blue-700 dark:text-blue-400",
-	FamilyMart: "text-emerald-700 dark:text-emerald-400",
+	SevenEleven: "text-[color:var(--store-seven)]",
+	Lawson: "text-[color:var(--store-lawson)]",
+	FamilyMart: "text-[color:var(--store-family)]",
 };
 
 export const storeLabelKeys = {
@@ -10,7 +10,8 @@ export const storeLabelKeys = {
 	FamilyMart: "product.store.familyMart",
 } as const;
 
-export type StoreLabelKey = (typeof storeLabelKeys)[keyof typeof storeLabelKeys];
+export type StoreLabelKey =
+	(typeof storeLabelKeys)[keyof typeof storeLabelKeys];
 
 export const categoryLabelKeys = {
 	Onigiri: "product.category.onigiri",

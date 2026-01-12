@@ -1,3 +1,4 @@
+import { SlidersHorizontal, X } from "lucide-react";
 import { useId, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -70,7 +71,7 @@ export default function ProductFilterDrawer({
 		(filters.regions?.length ?? 0);
 
 	return (
-		<div className="sticky top-14 z-40 rounded-2xl border border-border/60 bg-background/95 p-4 shadow-sm backdrop-blur supports-backdrop-filter:bg-background/70">
+		<div className="sticky top-14 z-40 rounded-2xl border border-border/60 bg-card/95 p-4 shadow-sm ring-1 ring-primary/20 transition hover:ring-primary/40 backdrop-blur supports-backdrop-filter:bg-card/90">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<div className="flex items-center gap-3">
 					<h2 className="text-base font-semibold text-foreground">
@@ -78,7 +79,7 @@ export default function ProductFilterDrawer({
 					</h2>
 
 					{activeFilterCount ? (
-						<span className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
+						<span className="rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary dark:bg-primary/20 dark:text-primary-foreground">
 							{t("product.filters.activeCount", {
 								count: activeFilterCount,
 							})}
@@ -91,13 +92,22 @@ export default function ProductFilterDrawer({
 					onClick={() => {
 						setIsFilterOpen(!isFilterOpen);
 					}}
-					className={`rounded-full px-4 py-1 text-sm font-semibold transition ${
+					className={`flex w-42 items-center justify-center rounded-full px-4 py-1 text-sm font-semibold transition ${
 						isFilterOpen
 							? "border border-border/60 bg-muted text-foreground hover:border-border hover:bg-muted/80"
 							: "bg-primary text-primary-foreground hover:bg-primary/90"
 					}`}
 				>
-					{isFilterOpen ? t("product.filters.hide") : t("product.filters.show")}
+					<span className="inline-flex items-center gap-1.5">
+						{isFilterOpen ? (
+							<X className="h-3.5 w-3.5" aria-hidden="true" />
+						) : (
+							<SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
+						)}
+						{isFilterOpen
+							? t("product.filters.hide")
+							: t("product.filters.show")}
+					</span>
 				</button>
 			</div>
 
@@ -119,7 +129,7 @@ export default function ProductFilterDrawer({
 							: ""
 					}`}
 				>
-					<div className="flex flex-wrap items-center gap-3">
+					<div className="flex flex-wrap pt-0.5 items-center gap-3">
 						<label
 							htmlFor={searchInputId}
 							className="text-sm font-semibold text-foreground"
@@ -151,7 +161,7 @@ export default function ProductFilterDrawer({
 										isNew: event.target.checked,
 									})
 								}
-								className="h-4 w-4 rounded border-border/60 text-primary focus:ring-ring"
+								className="checkbox-green h-4 w-4 focus:ring-(--success-accent)"
 							/>
 							{t("product.filters.isNew")}
 						</label>
@@ -170,7 +180,7 @@ export default function ProductFilterDrawer({
 									return (
 										<label
 											key={store}
-											className="inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-1 text-xs font-medium text-foreground"
+											className="inline-flex items-center gap-2 bg-card/95 rounded-full border border-border/60 px-3 py-1 text-xs font-medium text-foreground"
 										>
 											<input
 												type="checkbox"
@@ -181,7 +191,7 @@ export default function ProductFilterDrawer({
 														stores: toggleValue(filters.stores, store),
 													})
 												}
-												className="h-3.5 w-3.5 rounded border-border/60 text-primary focus:ring-ring"
+												className="checkbox-green h-4 w-4 focus:ring-(--success-accent)"
 											/>
 											{key ? t(key as StoreLabelKey) : store}
 										</label>
@@ -202,7 +212,7 @@ export default function ProductFilterDrawer({
 									return (
 										<label
 											key={category}
-											className="inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-1 text-xs font-medium text-foreground"
+											className="inline-flex items-center gap-2 bg-card/95 rounded-full border border-border/60 px-3 py-1 text-xs font-medium text-foreground"
 										>
 											<input
 												type="checkbox"
@@ -218,7 +228,7 @@ export default function ProductFilterDrawer({
 														),
 													})
 												}
-												className="h-3.5 w-3.5 rounded border-border/60 text-primary focus:ring-ring"
+												className="checkbox-green h-4 w-4 focus:ring-(--success-accent)"
 											/>
 											{key ? t(key as CategoryLabelKey) : category}
 										</label>
@@ -241,7 +251,7 @@ export default function ProductFilterDrawer({
 									return (
 										<label
 											key={region}
-											className="inline-flex items-center gap-2 rounded-full border border-border/60 px-3 py-1 text-xs font-medium text-foreground"
+											className="inline-flex items-center gap-2 bg-card/95 rounded-full border border-border/60 px-3 py-1 text-xs font-medium text-foreground"
 										>
 											<input
 												type="checkbox"
@@ -252,7 +262,7 @@ export default function ProductFilterDrawer({
 														regions: toggleValue(filters.regions, region),
 													})
 												}
-												className="h-3.5 w-3.5 rounded border-border/60 text-primary focus:ring-ring"
+												className="checkbox-green h-4 w-4 focus:ring-(--success-accent)"
 											/>
 											{key ? t(key as RegionLabelKey) : region}
 										</label>
@@ -282,7 +292,7 @@ export default function ProductFilterDrawer({
 										})
 									}
 									placeholder={t("product.filters.minPrice")}
-									className="w-full rounded-full border border-border/60 bg-background px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+									className="w-full rounded-full border border-border/60 bg-card/95 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
 								/>
 
 								<input
@@ -300,7 +310,7 @@ export default function ProductFilterDrawer({
 										})
 									}
 									placeholder={t("product.filters.maxPrice")}
-									className="w-full rounded-full border border-border/60 bg-background px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+									className="w-full rounded-full border border-border/60 bg-card/95 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
 								/>
 							</div>
 
@@ -320,7 +330,7 @@ export default function ProductFilterDrawer({
 							onClick={() => {
 								onReset();
 							}}
-							className="rounded-full border border-border/60 px-5 py-2 text-sm font-semibold text-foreground hover:border-border hover:bg-muted"
+							className="rounded-full border border-primary px-5 py-2 text-sm font-semibold text-primary transition hover:bg-primary/10 dark:border-primary/60 dark:bg-primary/20 dark:text-primary-foreground dark:hover:bg-primary/30"
 						>
 							{t("product.filters.reset")}
 						</button>

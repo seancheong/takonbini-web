@@ -104,7 +104,7 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 								type="button"
 								onClick={() => fetchNextPage()}
 								disabled={isFetchingNextPage}
-								className="rounded-full border border-border/60 px-5 py-2 text-sm font-semibold text-foreground transition hover:border-border hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+								className="rounded-full border border-primary px-5 py-2 text-sm font-semibold text-primary transition hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-60 dark:border-primary/60 dark:bg-primary/20 dark:text-primary-foreground dark:hover:bg-primary/30"
 							>
 								{isFetchingNextPage
 									? t("product.loadingMore")

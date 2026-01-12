@@ -173,7 +173,7 @@ function ProductDetails() {
 										: product.store}
 								</span>
 								{product.isNew ? (
-									<span className="rounded-full bg-primary/10 px-2 py-1 text-xs font-semibold text-primary">
+									<span className="rounded-full bg-(--success) px-2 py-1 text-xs font-semibold text-(--success-foreground)">
 										{t("product.new")}
 									</span>
 								) : null}
@@ -190,56 +190,56 @@ function ProductDetails() {
 							) : null}
 						</div>
 
-						<div className="rounded-2xl border border-border/60 bg-muted/10 p-5">
-							<dl className="space-y-4 text-sm">
-								<div className="flex items-center justify-between gap-6">
-									<div className="flex items-center gap-3 text-muted-foreground">
-										<JapaneseYen className="h-4 w-4" aria-hidden="true" />
-										<dt>{t("product.details.price")}</dt>
-									</div>
-									<dd className="text-base font-semibold text-foreground">
-										{product.price === 0
-											? t("product.priceUnknown")
-											: formatPrice(product.price, language)}
-									</dd>
-								</div>
+						<div className="rounded-2xl border border-border/60 bg-card p-5">
+							<dl className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-6 gap-y-4 text-sm">
+								<dt className="flex items-center gap-3 text-muted-foreground">
+									<JapaneseYen className="h-4 w-4" aria-hidden="true" />
+									{t("product.details.price")}
+								</dt>
+								<dd className="text-right text-base font-semibold text-foreground">
+									{product.price === 0
+										? t("product.priceUnknown")
+										: formatPrice(product.price, language)}
+								</dd>
 
 								{product.category ? (
-									<div className="flex items-center justify-between gap-6">
-										<div className="flex items-center gap-3 text-muted-foreground">
+									<>
+										<dt className="flex items-center gap-3 text-muted-foreground">
 											<Tag className="h-4 w-4" aria-hidden="true" />
-											<dt>{t("product.details.category")}</dt>
-										</div>
-										<dd className="text-foreground">
+											{t("product.details.category")}
+										</dt>
+										<dd className="text-right text-foreground">
 											{categoryLabelKey
 												? t(categoryLabelKey as CategoryLabelKey)
 												: product.category}
 										</dd>
-									</div>
+									</>
 								) : null}
 
 								{product.releaseDate ? (
-									<div className="flex items-center justify-between gap-6">
-										<div className="flex items-center gap-3 text-muted-foreground">
+									<>
+										<dt className="flex items-center gap-3 text-muted-foreground">
 											<Calendar className="h-4 w-4" aria-hidden="true" />
-											<dt>{t("product.details.releaseDate")}</dt>
-										</div>
-										<dd className="text-foreground">{product.releaseDate}</dd>
-									</div>
+											{t("product.details.releaseDate")}
+										</dt>
+										<dd className="text-right text-foreground">
+											{product.releaseDate}
+										</dd>
+									</>
 								) : null}
 
 								{regionLabels.length ? (
-									<div className="flex items-start justify-between gap-6">
-										<div className="flex items-start gap-3 text-muted-foreground">
+									<>
+										<dt className="flex items-start gap-3 text-muted-foreground">
 											<MapPin className="mt-0.5 h-4 w-4" aria-hidden="true" />
-											<dt className="whitespace-nowrap">
+											<span className="whitespace-nowrap">
 												{t("product.details.regions")}
-											</dt>
-										</div>
+											</span>
+										</dt>
 										<dd className="text-right text-foreground">
 											{regionLabels.join(", ")}
 										</dd>
-									</div>
+									</>
 								) : null}
 							</dl>
 						</div>
@@ -248,7 +248,7 @@ function ProductDetails() {
 							href={product.url}
 							target="_blank"
 							rel="noreferrer"
-							className="inline-flex items-center justify-end gap-2 text-sm font-semibold text-primary hover:underline"
+							className="inline-flex items-center justify-end gap-2 text-sm font-semibold text-(--link) hover:underline"
 						>
 							{t("product.details.source")}
 							<ExternalLink className="h-4 w-4" aria-hidden="true" />

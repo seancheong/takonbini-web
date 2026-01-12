@@ -18,25 +18,32 @@ code {
 }
 
 :root {
-  --background: oklch(1 0 0);
+  --background: oklch(0.965 0.004 286);
   --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
+  --card: oklch(0.99 0.002 286);
   --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
+  --popover: oklch(0.99 0.002 286);
   --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.21 0.006 285.885);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --primary: oklch(0.515 0.26 276);
+  --primary-foreground: oklch(1 0 89.9);
+  --secondary: oklch(0.561 0.236 277.7);
+  --secondary-foreground: oklch(1 0 89.9);
+  --success: oklch(0.528 0.098 171.5);
+  --success-foreground: oklch(1 0 89.9);
+  --success-accent: oklch(0.595 0.113 169);
+  --link: oklch(0.515 0.26 276);
+  --store-seven: oklch(0.553 0.174 38.4);
+  --store-lawson: oklch(0.488 0.217 264.4);
+  --store-family: oklch(0.508 0.105 165.6);
   --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
+  --muted-foreground: oklch(0.46 0.02 285.938);
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.92 0.004 286.32);
   --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.871 0.006 286.286);
+  --ring: oklch(0.515 0.26 276);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -54,16 +61,23 @@ code {
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
+  --background: oklch(0.14 0.006 286);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.141 0.005 285.823);
+  --card: oklch(0.2 0.006 286);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.141 0.005 285.823);
+  --popover: oklch(0.2 0.006 286);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.515 0.26 276);
+  --primary-foreground: oklch(1 0 89.9);
+  --secondary: oklch(0.561 0.236 277.7);
+  --secondary-foreground: oklch(1 0 89.9);
+  --success: oklch(0.473 0.086 174.3);
+  --success-foreground: oklch(1 0 89.9);
+  --success-accent: oklch(0.663 0.125 167.3);
+  --link: oklch(0.68 0.168 281);
+  --store-seven: oklch(0.758 0.159 55.9);
+  --store-lawson: oklch(0.714 0.143 254.6);
+  --store-family: oklch(0.773 0.153 163.2);
   --muted: oklch(0.274 0.006 286.033);
   --muted-foreground: oklch(0.705 0.015 286.067);
   --accent: oklch(0.274 0.006 286.033);
@@ -72,7 +86,7 @@ code {
   --destructive-foreground: oklch(0.637 0.237 25.331);
   --border: oklch(0.274 0.006 286.033);
   --input: oklch(0.274 0.006 286.033);
-  --ring: oklch(0.442 0.017 285.786);
+  --ring: oklch(0.606 0.209 280.3);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -140,4 +154,32 @@ code {
   button:disabled {
     cursor: not-allowed;
   }
+}
+
+input[type="checkbox"].checkbox-green {
+  appearance: none;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  display: inline-grid;
+  place-content: center;
+}
+
+input[type="checkbox"].checkbox-green:checked {
+  background-color: var(--success-accent);
+  border-color: var(--success-accent);
+}
+
+.dark input[type="checkbox"].checkbox-green:checked {
+  background-color: var(--success-accent);
+  border-color: var(--success-accent);
+}
+
+input[type="checkbox"].checkbox-green:checked::after {
+  content: "";
+  width: 0.25rem;
+  height: 0.5rem;
+  border-right: 2px solid var(--success-foreground);
+  border-bottom: 2px solid var(--success-foreground);
+  transform: rotate(45deg);
 }
