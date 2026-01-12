@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Category, REGIONS, Store } from "@/@types/product";
+import ScrollTopButton from "@/components/ScrollTopButton";
 import ProductPanel from "@/features/product/components/ProductPanel";
 import i18n from "@/i18n";
 import {
@@ -92,6 +93,7 @@ function App() {
 					});
 				}}
 			/>
+			<ScrollTopButton />
 		</div>
 	);
 }

@@ -29,6 +29,7 @@ export default {
 			loadMore: "Load more",
 			loadingMore: "Loading more...",
 			end: "You're all caught up.",
+			scrollTop: "Scroll to top",
 			filters: {
 				title: "Filters",
 				searchLabel: "Search",

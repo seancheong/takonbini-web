@@ -28,6 +28,7 @@ export default {
 			loadMore: "もっと見る",
 			loadingMore: "読み込み中...",
 			end: "すべて表示しました。",
+			scrollTop: "トップに戻る",
 			filters: {
 				title: "絞り込み",
 				searchLabel: "検索",

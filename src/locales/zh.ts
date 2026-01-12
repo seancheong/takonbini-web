@@ -28,6 +28,7 @@ export default {
 			loadMore: "載入更多",
 			loadingMore: "載入中...",
 			end: "已經到底了。",
+			scrollTop: "回到頂部",
 			filters: {
 				title: "篩選",
 				searchLabel: "搜尋",
