@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { PublicProduct } from "@/@types/product";
 import type { Language } from "@/i18n";
@@ -21,6 +21,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
 	const [imageError, setImageError] = useState(false);
+	const [imageLoaded, setImageLoaded] = useState(false);
+	const imageRef = useRef<HTMLImageElement | null>(null);
 
 	const image = product.images[0];
 	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
@@ -32,6 +34,18 @@ export default function ProductCard({ product }: ProductCardProps) {
 		categoryLabelKeys[product.category as keyof typeof categoryLabelKeys];
 
 	const isUnavailable = Boolean(imageSrc && imageError);
+	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
+
+	useEffect(() => {
+		setImageError(false);
+		setImageLoaded(false);
+	}, []);
+
+	useEffect(() => {
+		if (imageRef.current?.complete && imageRef.current.naturalWidth > 0) {
+			setImageLoaded(true);
+		}
+	}, []);
 
 	return (
 		<Link
@@ -44,12 +58,22 @@ export default function ProductCard({ product }: ProductCardProps) {
 		>
 			<article className="flex h-full flex-col overflow-hidden rounded-2xl">
 				<div className="relative aspect-4/3 w-full overflow-hidden border-b border-border/60 bg-muted">
+					{showLoading ? (
+						<div className="absolute inset-0 flex items-center justify-center bg-muted/40 text-xs font-semibold text-muted-foreground">
+							{t("product.imageLoading")}
+						</div>
+					) : null}
 					{imageSrc && !imageError ? (
 						<img
+							ref={imageRef}
 							src={imageSrc}
 							alt={title}
 							onError={() => setImageError(true)}
-							className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+							onLoad={() => setImageLoaded(true)}
+							className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 ${
+								imageLoaded ? "opacity-100" : "opacity-0"
+							}`}
+							decoding="async"
 							loading="lazy"
 						/>
 					) : (

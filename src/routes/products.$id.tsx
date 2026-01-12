@@ -8,7 +8,7 @@ import {
 	MapPin,
 	Tag,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	type CategoryLabelKey,
@@ -38,12 +38,28 @@ function ProductDetails() {
 	const { id } = Route.useParams();
 	const router = useRouter();
 	const [imageError, setImageError] = useState(false);
+	const [imageLoaded, setImageLoaded] = useState(false);
+	const imageRef = useRef<HTMLImageElement | null>(null);
 
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
 
 	const { data, isLoading, isError } = useQuery(productByIdQueryOptions(id));
 	const product = data;
+	const image = product?.images?.[0];
+	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
+	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
+
+	useEffect(() => {
+		setImageError(false);
+		setImageLoaded(false);
+	}, []);
+
+	useEffect(() => {
+		if (imageRef.current?.complete && imageRef.current.naturalWidth > 0) {
+			setImageLoaded(true);
+		}
+	}, []);
 
 	if (isLoading) {
 		return (
@@ -99,9 +115,6 @@ function ProductDetails() {
 		const regionKey = regionLabelKeys[region as keyof typeof regionLabelKeys];
 		return regionKey ? t(regionKey as RegionLabelKey) : region;
 	});
-
-	const image = product.images[0];
-	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
 	const extraImages = product.images.slice(1).map((item) => ({
 		original: item,
 		proxy: getProxiedImageUrl(item),
@@ -122,12 +135,24 @@ function ProductDetails() {
 				<div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
 					<div className="space-y-4">
 						<div className="relative overflow-hidden rounded-2xl border border-border/60 bg-muted">
+							{showLoading ? (
+								<div className="absolute inset-0 flex items-center justify-center bg-muted/40 text-sm font-semibold text-muted-foreground">
+									{t("product.imageLoading")}
+								</div>
+							) : null}
 							{imageSrc && !imageError ? (
 								<img
+									ref={imageRef}
 									src={imageSrc}
 									alt={title}
-									className="h-full w-full object-cover"
+									className={`h-full w-full object-cover ${
+										imageLoaded ? "opacity-100" : "opacity-0"
+									}`}
+									fetchPriority="high"
+									loading="eager"
+									decoding="async"
 									onError={() => setImageError(true)}
+									onLoad={() => setImageLoaded(true)}
 								/>
 							) : (
 								<div className="flex h-84 flex-col items-center justify-center gap-2 px-4 text-center text-sm text-muted-foreground">
