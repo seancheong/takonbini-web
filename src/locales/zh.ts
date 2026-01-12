@@ -1,6 +1,7 @@
 export default {
 	translation: {
 		appName: "Takonbini",
+		metaDescription: "瀏覽日本便利店目前販售的商品。",
 		welcome: "歡迎來到 Takonbini",
 		subtitle: "您的日本便利店夥伴",
 		theme: {

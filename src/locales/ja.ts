@@ -1,6 +1,7 @@
 export default {
 	translation: {
 		appName: "タコンビニ",
+		metaDescription: "日本のコンビニで現在販売中の商品を閲覧できます。",
 		welcome: "タコンビニへようこそ",
 		subtitle: "あなたの日本のコンビニパートナー",
 		theme: {

@@ -51,6 +51,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
+				name: "description",
+				content: i18n.t("metaDescription"),
+			},
+			{
 				title: i18n.t("appName"),
 			},
 		],
