@@ -14,6 +14,11 @@ export default function Header() {
 						to="/"
 						className="mr-3 flex min-w-0 items-center space-x-2 sm:mr-6"
 					>
+						<img
+							src="/icon.svg"
+							alt="Takonbini Logo"
+							className="hidden h-6 w-6 sm:block"
+						/>
 						<span className="whitespace-nowrap font-bold text-sm sm:inline-block sm:text-base">
 							{t("appName")}
 						</span>
