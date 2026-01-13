@@ -23,6 +23,7 @@ export default {
 			error: "暫時無法載入商品，請稍後再試。",
 			empty: "暫時沒有可顯示的商品。",
 			imageLoading: "圖片載入中...",
+			releaseSoon: "即將上市",
 			noImage: "暫無圖片",
 			unavailable: "商品可能已下架。",
 			priceUnknown: "未知",

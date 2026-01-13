@@ -21,6 +21,7 @@ import {
 } from "@/features/product/utils/productLabels";
 import {
 	formatPrice,
+	isFutureReleaseDate,
 	resolveLocalizedText,
 } from "@/features/product/utils/productUtils";
 import type { Language } from "@/i18n";
@@ -49,6 +50,7 @@ function ProductDetails() {
 	const image = product?.images?.[0];
 	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
+	const isReleaseSoon = isFutureReleaseDate(product?.releaseDate);
 
 	useEffect(() => {
 		setImageError(false);
@@ -197,7 +199,11 @@ function ProductDetails() {
 										? t(storeLabelKey as StoreLabelKey)
 										: product.store}
 								</span>
-								{product.isNew ? (
+								{isReleaseSoon ? (
+									<span className="rounded-full bg-destructive px-2 py-1 text-xs font-semibold text-(--success-foreground)">
+										{t("product.releaseSoon")}
+									</span>
+								) : product.isNew ? (
 									<span className="rounded-full bg-(--success) px-2 py-1 text-xs font-semibold text-(--success-foreground)">
 										{t("product.new")}
 									</span>

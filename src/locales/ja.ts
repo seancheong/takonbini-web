@@ -23,6 +23,7 @@ export default {
 			error: "商品を読み込めませんでした。後でもう一度お試しください。",
 			empty: "表示できる商品がまだありません。",
 			imageLoading: "画像を読み込み中...",
+			releaseSoon: "近日発売",
 			noImage: "画像なし",
 			unavailable: "販売終了の可能性があります。",
 			priceUnknown: "不明",

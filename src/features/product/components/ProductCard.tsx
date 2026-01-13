@@ -11,7 +11,11 @@ import {
 	storeLabelClasses,
 	storeLabelKeys,
 } from "../utils/productLabels";
-import { formatPrice, resolveLocalizedText } from "../utils/productUtils";
+import {
+	formatPrice,
+	isFutureReleaseDate,
+	resolveLocalizedText,
+} from "../utils/productUtils";
 
 interface ProductCardProps {
 	product: PublicProduct;
@@ -35,6 +39,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
 	const isUnavailable = Boolean(imageSrc && imageError);
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
+	const isReleaseSoon = isFutureReleaseDate(product.releaseDate);
 
 	useEffect(() => {
 		setImageError(false);
@@ -88,7 +93,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 						</div>
 					)}
 
-					{product.isNew ? (
+					{isReleaseSoon ? (
+						<span className="absolute left-3 top-3 rounded-full bg-destructive px-2 py-1 text-xs font-semibold text-(--success-foreground)">
+							{t("product.releaseSoon")}
+						</span>
+					) : product.isNew ? (
 						<span className="absolute left-3 top-3 rounded-full bg-(--success) px-2 py-1 text-xs font-semibold text-(--success-foreground)">
 							{t("product.new")}
 						</span>
