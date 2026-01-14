@@ -57,22 +57,23 @@ export const productsInfiniteQueryOptions = (filters: ProductFilters) => ({
 	gcTime: 1000 * 60 * 60, // 1 hour
 });
 
-const buildHeaders = () => {
-	const headers = new Headers();
-	const apiKey = import.meta.env.VITE_PRODUCTS_API_KEY;
-
-	if (import.meta.env.DEV && apiKey) {
-		headers.set("x-api-key", apiKey);
+const getApiBaseUrl = () => {
+	if (typeof window !== "undefined") {
+		return window.location.origin;
 	}
 
-	return headers;
+	const vercelUrl = process.env.VERCEL_URL;
+	if (vercelUrl) {
+		return `https://${vercelUrl}`;
+	}
+
+	const host = process.env.HOST ?? "localhost:3000";
+	const protocol = process.env.PROTOCOL ?? "http";
+	return `${protocol}://${host}`;
 };
 
 const getProducts = async () => {
-	const response = await fetch(
-		`${import.meta.env.VITE_PRODUCTS_API_URL}/products`,
-		{ headers: buildHeaders() },
-	);
+	const response = await fetch(`${getApiBaseUrl()}/api/products`);
 
 	if (!response.ok) {
 		throw new Error("Failed to fetch products.");
@@ -82,10 +83,7 @@ const getProducts = async () => {
 };
 
 const getProductById = async (id: string) => {
-	const response = await fetch(
-		`${import.meta.env.VITE_PRODUCTS_API_URL}/products/${id}`,
-		{ headers: buildHeaders() },
-	);
+	const response = await fetch(`${getApiBaseUrl()}/api/products/${id}`);
 
 	if (!response.ok) {
 		throw new Error("Failed to fetch product.");
@@ -98,47 +96,47 @@ const getProductsPage = async (
 	cursor: string | undefined,
 	filters: ProductFilters,
 ) => {
-	const url = new URL(`${import.meta.env.VITE_PRODUCTS_API_URL}/products`);
+	const searchParams = new URLSearchParams();
 
 	if (cursor) {
-		url.searchParams.set("cursor", cursor);
+		searchParams.set("cursor", cursor);
 	}
 
 	if (filters.limit) {
-		url.searchParams.set("limit", String(filters.limit));
+		searchParams.set("limit", String(filters.limit));
 	}
 
 	if (filters.search) {
-		url.searchParams.set("search", filters.search);
+		searchParams.set("search", filters.search);
 	}
 
 	if (filters.isNew) {
-		url.searchParams.set("isNew", "true");
+		searchParams.set("isNew", "true");
 	}
 
 	if (filters.minPrice !== undefined) {
-		url.searchParams.set("minPrice", String(filters.minPrice));
+		searchParams.set("minPrice", String(filters.minPrice));
 	}
 
 	if (filters.maxPrice !== undefined) {
-		url.searchParams.set("maxPrice", String(filters.maxPrice));
+		searchParams.set("maxPrice", String(filters.maxPrice));
 	}
 
 	if (filters.stores?.length) {
-		url.searchParams.set("stores", filters.stores.join(","));
+		searchParams.set("stores", filters.stores.join(","));
 	}
 
 	if (filters.categories?.length) {
-		url.searchParams.set("categories", filters.categories.join(","));
+		searchParams.set("categories", filters.categories.join(","));
 	}
 
 	if (filters.regions?.length) {
-		url.searchParams.set("regions", filters.regions.join(","));
+		searchParams.set("regions", filters.regions.join(","));
 	}
 
-	const response = await fetch(url.toString(), {
-		headers: buildHeaders(),
-	});
+	const query = searchParams.toString();
+	const baseUrl = `${getApiBaseUrl()}/api/products`;
+	const response = await fetch(query ? `${baseUrl}?${query}` : baseUrl);
 
 	if (!response.ok) {
 		throw new Error("Failed to fetch products.");

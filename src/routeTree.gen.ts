@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductsIdRouteImport } from './routes/products.$id'
+import { Route as ApiProductsRouteImport } from './routes/api.products'
 import { Route as ApiImageRouteImport } from './routes/api.image'
+import { Route as ApiProductsIdRouteImport } from './routes/api.products.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,39 +25,72 @@ const ProductsIdRoute = ProductsIdRouteImport.update({
   path: '/products/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiProductsRoute = ApiProductsRouteImport.update({
+  id: '/api/products',
+  path: '/api/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiImageRoute = ApiImageRouteImport.update({
   id: '/api/image',
   path: '/api/image',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiProductsIdRoute = ApiProductsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ApiProductsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/api/image': typeof ApiImageRoute
+  '/api/products': typeof ApiProductsRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
+  '/api/products/$id': typeof ApiProductsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/api/image': typeof ApiImageRoute
+  '/api/products': typeof ApiProductsRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
+  '/api/products/$id': typeof ApiProductsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/api/image': typeof ApiImageRoute
+  '/api/products': typeof ApiProductsRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
+  '/api/products/$id': typeof ApiProductsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/api/image' | '/products/$id'
+  fullPaths:
+    | '/'
+    | '/api/image'
+    | '/api/products'
+    | '/products/$id'
+    | '/api/products/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/image' | '/products/$id'
-  id: '__root__' | '/' | '/api/image' | '/products/$id'
+  to:
+    | '/'
+    | '/api/image'
+    | '/api/products'
+    | '/products/$id'
+    | '/api/products/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/image'
+    | '/api/products'
+    | '/products/$id'
+    | '/api/products/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApiImageRoute: typeof ApiImageRoute
+  ApiProductsRoute: typeof ApiProductsRouteWithChildren
   ProductsIdRoute: typeof ProductsIdRoute
 }
 
@@ -75,6 +110,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/products': {
+      id: '/api/products'
+      path: '/api/products'
+      fullPath: '/api/products'
+      preLoaderRoute: typeof ApiProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/image': {
       id: '/api/image'
       path: '/api/image'
@@ -82,12 +124,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiImageRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/products/$id': {
+      id: '/api/products/$id'
+      path: '/$id'
+      fullPath: '/api/products/$id'
+      preLoaderRoute: typeof ApiProductsIdRouteImport
+      parentRoute: typeof ApiProductsRoute
+    }
   }
 }
+
+interface ApiProductsRouteChildren {
+  ApiProductsIdRoute: typeof ApiProductsIdRoute
+}
+
+const ApiProductsRouteChildren: ApiProductsRouteChildren = {
+  ApiProductsIdRoute: ApiProductsIdRoute,
+}
+
+const ApiProductsRouteWithChildren = ApiProductsRoute._addFileChildren(
+  ApiProductsRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApiImageRoute: ApiImageRoute,
+  ApiProductsRoute: ApiProductsRouteWithChildren,
   ProductsIdRoute: ProductsIdRoute,
 }
 export const routeTree = rootRouteImport

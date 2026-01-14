@@ -23,8 +23,8 @@ See [architecture.md](architecture.md) for data flow and other architecture deta
 Create a `.env.local` file:
 
 ```
-VITE_PRODUCTS_API_URL="http://localhost:3001"
-VITE_PRODUCTS_API_KEY="your-api-key"
+PRODUCTS_API_URL="http://localhost:3001"
+PRODUCTS_API_KEY="your-api-key"
 ```
 
 ## Development
