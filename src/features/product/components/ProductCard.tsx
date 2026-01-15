@@ -57,6 +57,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 			to="/products/$id"
 			params={{ id: product.id }}
 			aria-label={title}
+			preload="intent"
 			className={`group block h-full rounded-2xl border border-border/50 bg-card shadow-sm transition-shadow duration-200 hover:border-border hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
 				isUnavailable ? "opacity-75" : ""
 			}`}
