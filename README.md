@@ -9,9 +9,11 @@ Takonbini is a TanStack Start app for browsing Japanese convenience store produc
 - Image proxy with browser + edge caching
 - i18n (EN/JA/ZH) and theme switching
 
-## Architecture Notes
+## Architecture
 
 See [architecture.md](architecture.md) for data flow and other architecture details.
+
+![Takonbini Architecture](takonbini_architecture.png)
 
 ## Requirements
 
