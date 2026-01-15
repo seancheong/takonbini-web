@@ -9,15 +9,23 @@ export const productsQueryKey = ["products"] as const;
 export const productsInfiniteQueryKey = ["products", "infinite"] as const;
 export const productByIdQueryKey = ["products", "byId"] as const;
 
+export const productStatuses = [
+	"allWithoutSoon",
+	"new",
+	"soon",
+	"all",
+] as const;
+export type ProductStatus = (typeof productStatuses)[number];
+
 export type ProductFilters = {
 	search?: string;
 	stores?: Store[];
 	categories?: Category[];
 	regions?: Region[];
-	isNew?: boolean;
 	minPrice?: number;
 	maxPrice?: number;
 	limit?: number;
+	includeSoon?: boolean;
 };
 
 export const defaultProductFilters: ProductFilters = {
@@ -31,6 +39,9 @@ const normalizeFilters = (filters: ProductFilters) => ({
 	categories: filters.categories?.slice().sort(),
 	regions: filters.regions?.slice().sort(),
 });
+
+const productStatus = (filters: ProductFilters): ProductStatus =>
+	filters.includeSoon ? "all" : "allWithoutSoon";
 
 export const productsQueryOptions = () => ({
 	queryKey: productsQueryKey,
@@ -73,7 +84,9 @@ const getApiBaseUrl = () => {
 };
 
 const getProducts = async () => {
-	const response = await fetch(`${getApiBaseUrl()}/api/products`);
+	const url = new URL(`${getApiBaseUrl()}/api/products`);
+	url.searchParams.set("status", "allWithoutSoon");
+	const response = await fetch(url.toString());
 
 	if (!response.ok) {
 		throw new Error("Failed to fetch products.");
@@ -110,9 +123,7 @@ const getProductsPage = async (
 		searchParams.set("search", filters.search);
 	}
 
-	if (filters.isNew) {
-		searchParams.set("isNew", "true");
-	}
+	searchParams.set("status", productStatus(filters));
 
 	if (filters.minPrice !== undefined) {
 		searchParams.set("minPrice", String(filters.minPrice));

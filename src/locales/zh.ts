@@ -42,7 +42,7 @@ export default {
 				price: "價格區間 (JPY)",
 				minPrice: "最低價格",
 				maxPrice: "最高價格",
-				isNew: "僅看新品",
+				includeSoon: "包含即將推出的商品",
 				apply: "套用篩選",
 				reset: "重置",
 				show: "顯示篩選",

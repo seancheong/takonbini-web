@@ -29,12 +29,10 @@ export const Route = createFileRoute("/")({
 			stores: parseList(raw.stores, Object.values(Store)),
 			categories: parseList(raw.categories, Object.values(Category)),
 			regions: parseList(raw.regions, REGIONS),
-			isNew:
-				typeof raw.isNew === "boolean"
-					? raw.isNew || undefined
-					: raw.isNew === "true"
-						? true
-						: undefined,
+			includeSoon:
+				raw.includeSoon === true || raw.includeSoon === "true"
+					? true
+					: undefined,
 			minPrice: parseNumber(raw.minPrice),
 			maxPrice: parseNumber(raw.maxPrice),
 		};
@@ -79,7 +77,7 @@ function App() {
 							regions: nextFilters.regions?.length
 								? nextFilters.regions
 								: undefined,
-							isNew: nextFilters.isNew || undefined,
+							includeSoon: nextFilters.includeSoon || undefined,
 							minPrice:
 								nextFilters.minPrice !== undefined
 									? nextFilters.minPrice

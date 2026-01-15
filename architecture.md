@@ -171,8 +171,9 @@ The application uses **MongoDB Atlas** with a single `products` collection to su
 
 **Query Strategy Notes:**
 - Multi-select filters use native MongoDB queries (`$in`, range filters).
-- Sorting defaults to `releaseDate` (desc), then `isNew`, then `_id` for stable pagination.
-- Cursor pagination uses a composite cursor based on `releaseDate`, `isNew`, and `_id`.
+- Sorting defaults to `isNew`, then `releaseDate` (desc), then `_id` for stable pagination, with items missing a release date at the end.
+- Status filtering is handled via a `status` query param (`new`, `soon`, `all`, `allWithoutSoon`) using release dates in JST.
+- Cursor pagination uses a composite cursor based on `releaseDate` presence, `releaseDate`, and `_id`.
 
 #### Translation Service
 - **Provider:** OpenAI API (`gpt-5-nano`).
@@ -237,8 +238,8 @@ for (const page of pages) {
   }
 }
 
-// Sort by releaseDate desc, isNew desc, then id for a stable order
-const sorted = [...deduped.values()].sort(sortByReleaseDateIsNewId);
+// Sort by isNew desc, releaseDate desc, then id for a stable order
+const sorted = [...deduped.values()].sort(sortByIsNewReleaseDateId);
 const pageItems = sorted.slice(0, limit);
 
 // Build a composite cursor per partition to resume pagination
@@ -250,7 +251,7 @@ const nextCursor = buildCompositeCursor(pages, pageItems);
 graph LR
   subgraph MongoDB Cursor
     UI2[Filters] --> MQ[Single Query]
-    MQ --> SC[Sort: releaseDate/isNew/_id]
+    MQ --> SC[Sort: isNew/releaseDate/_id]
     SC --> C[Cursor Payload]
   end
 ```
@@ -260,7 +261,7 @@ graph LR
 const query = { store: { $in: stores }, category: { $in: categories } };
 const results = await collection
   .find(query)
-  .sort({ releaseDate: -1, isNew: -1, _id: 1 })
+  .sort({ isNew: -1, releaseDate: -1, _id: 1 })
   .limit(limit + 1)
   .toArray();
 ```

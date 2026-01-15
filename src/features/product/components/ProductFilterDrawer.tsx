@@ -63,9 +63,12 @@ export default function ProductFilterDrawer({
 		filters.minPrice <= filters.maxPrice;
 	const isPriceValid = minPriceValid && maxPriceValid && priceRangeValid;
 	const activeFilterCount =
-		[filters.search, filters.isNew, filters.minPrice, filters.maxPrice].filter(
-			(value) => value !== undefined && value !== "",
-		).length +
+		[
+			filters.search,
+			filters.includeSoon,
+			filters.minPrice,
+			filters.maxPrice,
+		].filter((value) => value !== undefined && value !== "").length +
 		(filters.stores?.length ?? 0) +
 		(filters.categories?.length ?? 0) +
 		(filters.regions?.length ?? 0);
@@ -156,16 +159,16 @@ export default function ProductFilterDrawer({
 						<label className="flex items-center gap-2 text-sm text-muted-foreground">
 							<input
 								type="checkbox"
-								checked={filters.isNew ?? false}
+								checked={filters.includeSoon ?? false}
 								onChange={(event) =>
 									setFilters({
 										...filters,
-										isNew: event.target.checked,
+										includeSoon: event.target.checked,
 									})
 								}
 								className="checkbox-green h-4 w-4 focus:ring-(--success-accent)"
 							/>
-							{t("product.filters.isNew")}
+							{t("product.filters.includeSoon")}
 						</label>
 					</div>
 

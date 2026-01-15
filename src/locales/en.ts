@@ -44,7 +44,7 @@ export default {
 				price: "Price range (JPY)",
 				minPrice: "Min price",
 				maxPrice: "Max price",
-				isNew: "New items only",
+				includeSoon: "Include upcoming releases",
 				apply: "Apply filters",
 				reset: "Reset",
 				show: "Show filters",

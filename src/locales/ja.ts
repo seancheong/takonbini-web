@@ -42,7 +42,7 @@ export default {
 				price: "価格帯 (JPY)",
 				minPrice: "最小価格",
 				maxPrice: "最大価格",
-				isNew: "新着のみ",
+				includeSoon: "発売予定も含める",
 				apply: "絞り込み",
 				reset: "リセット",
 				show: "絞り込みを表示",
