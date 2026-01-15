@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { PublicProduct } from "@/@types/product";
@@ -24,6 +24,8 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
+	const navigate = useNavigate();
+	const router = useRouter();
 	const [imageError, setImageError] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const imageRef = useRef<HTMLImageElement | null>(null);
@@ -40,6 +42,38 @@ export default function ProductCard({ product }: ProductCardProps) {
 	const isUnavailable = Boolean(imageSrc && imageError);
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
 	const isReleaseSoon = isFutureReleaseDate(product.releaseDate);
+	const viewTransitionName = `product-image-${product.id}`;
+
+	const startViewTransition = (
+		callback: () => void,
+		event: React.MouseEvent,
+	) => {
+		const transition = (
+			document as Document & {
+				startViewTransition?: (callback: () => Promise<void>) => void;
+			}
+		).startViewTransition;
+
+		if (!transition) {
+			callback();
+
+			return;
+		}
+
+		event.preventDefault();
+		transition.call(
+			document,
+			() =>
+				new Promise<void>((resolve) => {
+					const unsub = router.subscribe("onResolved", () => {
+						unsub();
+						resolve();
+					});
+
+					callback();
+				}),
+		);
+	};
 
 	useEffect(() => {
 		setImageError(false);
@@ -58,6 +92,12 @@ export default function ProductCard({ product }: ProductCardProps) {
 			params={{ id: product.id }}
 			aria-label={title}
 			preload="intent"
+			onClick={(event) => {
+				startViewTransition(
+					() => navigate({ to: "/products/$id", params: { id: product.id } }),
+					event,
+				);
+			}}
 			className={`group block h-full rounded-2xl border border-border/50 bg-card shadow-sm transition-shadow duration-200 hover:border-border hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
 				isUnavailable ? "opacity-75" : ""
 			}`}
@@ -74,6 +114,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 							ref={imageRef}
 							src={imageSrc}
 							alt={title}
+							style={{ viewTransitionName }}
 							onError={() => setImageError(true)}
 							onLoad={() => setImageLoaded(true)}
 							className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 ${

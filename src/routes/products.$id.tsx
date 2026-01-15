@@ -51,6 +51,7 @@ function ProductDetails() {
 	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
 	const isReleaseSoon = isFutureReleaseDate(product?.releaseDate);
+	const viewTransitionName = `product-image-${id}`;
 
 	useEffect(() => {
 		setImageError(false);
@@ -122,12 +123,38 @@ function ProductDetails() {
 		proxy: getProxiedImageUrl(item),
 	}));
 
+	const startViewTransition = () => {
+		const transition = (
+			document as Document & {
+				startViewTransition?: (callback: () => Promise<void>) => void;
+			}
+		).startViewTransition;
+
+		if (!transition) {
+			router.history.go(-1);
+
+			return;
+		}
+
+		transition.call(
+			document,
+			() =>
+				new Promise<void>((resolve) => {
+					const unsub = router.subscribe("onResolved", () => {
+						unsub();
+						resolve();
+					});
+					router.history.go(-1);
+				}),
+		);
+	};
+
 	return (
 		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
 			<div className="mx-auto w-full max-w-6xl">
 				<button
 					type="button"
-					onClick={() => router.history.go(-1)}
+					onClick={startViewTransition}
 					className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground cursor-pointer"
 				>
 					<ArrowLeft className="h-4 w-4" aria-hidden="true" />
@@ -147,6 +174,7 @@ function ProductDetails() {
 									ref={imageRef}
 									src={imageSrc}
 									alt={title}
+									style={{ viewTransitionName }}
 									className={`h-full w-full object-cover ${
 										imageLoaded ? "opacity-100" : "opacity-0"
 									}`}
