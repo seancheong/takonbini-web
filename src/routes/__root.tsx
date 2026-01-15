@@ -41,48 +41,112 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		await setSSRLanguage();
 	},
 	loader: () => loaderFn(),
-	head: () => ({
-		meta: [
-			{
-				charSet: "utf-8",
-			},
-			{
-				name: "viewport",
-				content: "width=device-width, initial-scale=1",
-			},
-			{
-				name: "description",
-				content: i18n.t("metaDescription"),
-			},
-			{
-				title: i18n.t("appName"),
-			},
-		],
-		links: [
-			{
-				rel: "stylesheet",
-				href: appCss,
-			},
-			{
-				rel: "icon",
-				type: "image/svg+xml",
-				href: "/icon.svg",
-			},
-			{
-				rel: "alternate icon",
-				href: "/favicon.ico",
-			},
-			{
-				rel: "apple-touch-icon",
-				href: "/icon.png",
-				sizes: "180x180",
-			},
-			{
-				rel: "manifest",
-				href: "/site.webmanifest",
-			},
-		],
-	}),
+	head: () => {
+		const baseUrl = process.env.SITE_URL ?? "http://localhost:3000";
+
+		const title = i18n.t("appName");
+		const description = i18n.t("metaDescription");
+		const ogImage = `${baseUrl}/og.png`;
+
+		return {
+			meta: [
+				{
+					charSet: "utf-8",
+				},
+				{
+					name: "viewport",
+					content: "width=device-width, initial-scale=1",
+				},
+				{
+					name: "description",
+					content: description,
+				},
+				{
+					name: "robots",
+					content: "index, follow",
+				},
+				{
+					property: "og:title",
+					content: title,
+				},
+				{
+					property: "og:description",
+					content: description,
+				},
+				{
+					property: "og:type",
+					content: "website",
+				},
+				{
+					property: "og:site_name",
+					content: title,
+				},
+				{
+					property: "og:url",
+					content: baseUrl,
+				},
+				{
+					property: "og:image",
+					content: ogImage,
+				},
+				{
+					property: "og:image:width",
+					content: "1200",
+				},
+				{
+					property: "og:image:height",
+					content: "630",
+				},
+				{
+					name: "twitter:card",
+					content: "summary_large_image",
+				},
+				{
+					name: "twitter:title",
+					content: title,
+				},
+				{
+					name: "twitter:description",
+					content: description,
+				},
+				{
+					name: "twitter:image",
+					content: ogImage,
+				},
+				{
+					title,
+				},
+			],
+			links: [
+				{
+					rel: "stylesheet",
+					href: appCss,
+				},
+				{
+					rel: "canonical",
+					href: baseUrl,
+				},
+				{
+					rel: "icon",
+					type: "image/svg+xml",
+					href: "/icon.svg",
+				},
+				{
+					rel: "alternate icon",
+					href: "/favicon.ico",
+				},
+				{
+					rel: "apple-touch-icon",
+					href: "/icon.png",
+					sizes: "180x180",
+				},
+				{
+					rel: "manifest",
+					href: "/site.webmanifest",
+				},
+			],
+		};
+	},
 
 	component: RootDocument,
 });

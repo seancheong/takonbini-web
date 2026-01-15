@@ -2,7 +2,7 @@ export default {
 	translation: {
 		appName: "Takonbini",
 		metaDescription:
-			"Browse currently available products across Japan’s convenience stores.",
+			"Browse currently available products across Japan’s convenience stores with filters, pricing, and release info for new and upcoming products.",
 		welcome: "Welcome to Takonbini",
 		subtitle: "Your Japanese convenience store companion.",
 		theme: {

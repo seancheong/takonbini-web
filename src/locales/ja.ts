@@ -1,7 +1,8 @@
 export default {
 	translation: {
 		appName: "タコンビニ",
-		metaDescription: "日本のコンビニで現在販売中の商品を閲覧できます。",
+		metaDescription:
+			"日本のコンビニで現在販売中の商品を、店舗・カテゴリ・価格などで絞り込みながら閲覧できます。新着や発売予定の情報も確認できます。",
 		welcome: "タコンビニへようこそ",
 		subtitle: "あなたの日本のコンビニパートナー",
 		theme: {

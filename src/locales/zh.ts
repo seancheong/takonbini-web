@@ -1,7 +1,8 @@
 export default {
 	translation: {
 		appName: "Takonbini",
-		metaDescription: "瀏覽日本便利店目前販售的商品。",
+		metaDescription:
+			"瀏覽日本便利店目前販售的商品，可依商店、類別、價格等條件篩選，並查看新品與即將販賣的商品。",
 		welcome: "歡迎來到 Takonbini",
 		subtitle: "您的日本便利店夥伴",
 		theme: {
@@ -23,7 +24,7 @@ export default {
 			error: "暫時無法載入商品，請稍後再試。",
 			empty: "暫時沒有可顯示的商品。",
 			imageLoading: "圖片載入中...",
-			releaseSoon: "即將上市",
+			releaseSoon: "即將販賣",
 			noImage: "暫無圖片",
 			unavailable: "商品可能已下架。",
 			priceUnknown: "未知",
