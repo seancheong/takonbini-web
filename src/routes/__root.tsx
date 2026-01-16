@@ -1,5 +1,6 @@
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
 import "../i18n";
 import {
 	createRootRouteWithContext,
@@ -196,6 +197,7 @@ function RootDocument() {
 							TanStackQueryDevtools,
 						]}
 					/>
+					{import.meta.env.PROD ? <Analytics /> : null}
 					<Scripts />
 				</ThemeProvider>
 			</body>
