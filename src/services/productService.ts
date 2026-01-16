@@ -89,6 +89,18 @@ const getProducts = async () => {
 	const response = await fetch(url.toString());
 
 	if (!response.ok) {
+		let body = "";
+		try {
+			body = await response.text();
+		} catch (error) {
+			console.error("Failed reading products response body", { error });
+		}
+
+		console.error("Products request failed", {
+			status: response.status,
+			body: body.slice(0, 2000),
+		});
+
 		throw new Error("Failed to fetch products.");
 	}
 
@@ -99,6 +111,18 @@ const getProductById = async (id: string) => {
 	const response = await fetch(`${getApiBaseUrl()}/api/products/${id}`);
 
 	if (!response.ok) {
+		let body = "";
+		try {
+			body = await response.text();
+		} catch (error) {
+			console.error("Failed reading product response body", { error });
+		}
+
+		console.error("Product request failed", {
+			status: response.status,
+			body: body.slice(0, 2000),
+		});
+
 		throw new Error("Failed to fetch product.");
 	}
 
@@ -150,6 +174,16 @@ const getProductsPage = async (
 	const response = await fetch(query ? `${baseUrl}?${query}` : baseUrl);
 
 	if (!response.ok) {
+		let body = "";
+		try {
+			body = await response.text();
+		} catch (error) {
+			console.error("Failed reading products page response body", { error });
+		}
+		console.error("Products page request failed", {
+			status: response.status,
+			body: body.slice(0, 2000),
+		});
 		throw new Error("Failed to fetch products.");
 	}
 
