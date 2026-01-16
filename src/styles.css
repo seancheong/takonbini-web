@@ -192,10 +192,14 @@ input[type="checkbox"].checkbox-green:checked::after {
 
 .app-header {
   view-transition-name: app-header;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .filters-shell {
   view-transition-name: filters-shell;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 ::view-transition-group(*) {
@@ -205,6 +209,10 @@ input[type="checkbox"].checkbox-green:checked::after {
 ::view-transition-group(app-header),
 ::view-transition-group(filters-shell) {
   z-index: 2;
+}
+
+::view-transition-group(product-image) {
+  z-index: 1;
 }
 
 ::view-transition-old(app-header),

@@ -40,9 +40,9 @@ export const Route = createFileRoute("/")({
 	loaderDeps: ({ search }) => ({
 		search,
 	}),
-	loader: async ({ context, deps }) => {
+	loader: ({ context, deps }) => {
 		const filters = normalizeSearch(deps.search);
-		await context.queryClient.prefetchInfiniteQuery(
+		context.queryClient.prefetchInfiniteQuery(
 			productsInfiniteQueryOptions(filters),
 		);
 	},
