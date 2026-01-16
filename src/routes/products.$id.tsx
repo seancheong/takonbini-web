@@ -26,6 +26,7 @@ import {
 } from "@/features/product/utils/productUtils";
 import type { Language } from "@/i18n";
 import { productByIdQueryOptions } from "@/services/productService";
+import { isSafari } from "@/utils/browser";
 import { getProxiedImageUrl } from "@/utils/imageProxy";
 
 export const Route = createFileRoute("/products/$id")({
@@ -136,7 +137,7 @@ function ProductDetails() {
 			}
 		).startViewTransition;
 
-		if (!transition) {
+		if (!transition || isSafari()) {
 			router.history.go(-1);
 
 			return;
@@ -180,7 +181,7 @@ function ProductDetails() {
 									ref={imageRef}
 									src={imageSrc}
 									alt={title}
-									style={{ viewTransitionName }}
+									style={isSafari() ? undefined : { viewTransitionName }}
 									className={`h-full w-full object-cover ${
 										imageLoaded ? "opacity-100" : "opacity-0"
 									}`}

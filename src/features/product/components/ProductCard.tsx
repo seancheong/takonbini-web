@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { PublicProduct } from "@/@types/product";
 import type { Language } from "@/i18n";
+import { isSafari } from "@/utils/browser";
 import { getProxiedImageUrl } from "@/utils/imageProxy";
 import {
 	type CategoryLabelKey,
@@ -28,6 +29,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 	const router = useRouter();
 	const [imageError, setImageError] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
+	const [isSafariNavigating, setIsSafariNavigating] = useState(false);
 	const imageRef = useRef<HTMLImageElement | null>(null);
 
 	const image = product.images[0];
@@ -54,7 +56,15 @@ export default function ProductCard({ product }: ProductCardProps) {
 			}
 		).startViewTransition;
 
-		if (!transition) {
+		if (!transition || isSafari()) {
+			if (isSafari()) {
+				setIsSafariNavigating(true);
+
+				const unsub = router.subscribe("onResolved", () => {
+					unsub();
+					setIsSafariNavigating(false);
+				});
+			}
 			callback();
 
 			return;
@@ -104,6 +114,12 @@ export default function ProductCard({ product }: ProductCardProps) {
 		>
 			<article className="flex h-full flex-col overflow-hidden rounded-2xl">
 				<div className="relative aspect-4/3 w-full overflow-hidden border-b border-border/60 bg-muted">
+					{isSafari() && isSafariNavigating ? (
+						<div className="absolute inset-0 z-10 flex items-center justify-center bg-background/70 text-xs font-semibold text-foreground backdrop-blur-sm">
+							<span className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-foreground/60 border-t-transparent" />
+							{t("product.loading")}
+						</div>
+					) : null}
 					{showLoading ? (
 						<div className="absolute inset-0 flex items-center justify-center bg-muted/40 text-xs font-semibold text-muted-foreground">
 							{t("product.imageLoading")}
@@ -114,7 +130,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 							ref={imageRef}
 							src={imageSrc}
 							alt={title}
-							style={{ viewTransitionName }}
+							style={isSafari() ? undefined : { viewTransitionName }}
 							onError={() => setImageError(true)}
 							onLoad={() => setImageLoaded(true)}
 							className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 ${
