@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 import { useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -22,15 +22,9 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 		setDraftFilters(filters);
 	}, [filters]);
 
-	const {
-		data,
-		isLoading,
-		isError,
-		hasNextPage,
-		fetchNextPage,
-		isFetchingNextPage,
-		isFetching,
-	} = useInfiniteQuery(productsInfiniteQueryOptions(filters));
+	const { data, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching } =
+		useSuspenseInfiniteQuery(productsInfiniteQueryOptions(filters));
+
 	const products = data?.pages.flatMap((page) => page.products) ?? [];
 	const routerIsLoading = useRouterState({
 		select: (state) => state.isLoading,
@@ -76,25 +70,7 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 				</p>
 			</div>
 
-			{isError ? (
-				<div className="rounded-2xl border border-border/60 bg-muted/40 p-6 text-sm text-muted-foreground">
-					{t("product.error")}
-				</div>
-			) : null}
-
-			{isLoading ? (
-				<div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
-					{Array.from({ length: 6 }).map((_, index) => (
-						<div
-							key={`product-skeleton-${
-								// biome-ignore lint/suspicious/noArrayIndexKey: ignore for skeleton keys
-								index
-							}`}
-							className="h-90 animate-pulse rounded-2xl border border-border/50 bg-muted/40"
-						/>
-					))}
-				</div>
-			) : products.length ? (
+			{products.length ? (
 				<>
 					<ProductGrid products={products} />
 

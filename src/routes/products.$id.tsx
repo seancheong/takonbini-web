@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import {
 	ArrowLeft,
@@ -30,10 +30,60 @@ import { getProxiedImageUrl } from "@/utils/imageProxy";
 
 export const Route = createFileRoute("/products/$id")({
 	loader: async ({ context, params }) => {
-		await context.queryClient.prefetchQuery(productByIdQueryOptions(params.id));
+		await context.queryClient.ensureQueryData(
+			productByIdQueryOptions(params.id),
+		);
 	},
+	pendingComponent: ProductDetailsPending,
+	errorComponent: ProductDetailsError,
 	component: ProductDetails,
 });
+
+function ProductDetailsPending() {
+	return (
+		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
+			<div className="mx-auto w-full max-w-6xl">
+				<div className="h-5 w-32 animate-pulse rounded-full bg-muted" />
+				<div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+					<div className="aspect-4/3 w-full animate-pulse rounded-2xl border border-border/60 bg-muted/40" />
+					<div className="space-y-4">
+						<div className="h-6 w-2/3 animate-pulse rounded bg-muted" />
+						<div className="h-20 w-full animate-pulse rounded bg-muted" />
+						<div className="h-10 w-1/3 animate-pulse rounded bg-muted" />
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+function ProductDetailsError() {
+	const router = useRouter();
+	const { t } = useTranslation();
+
+	return (
+		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
+			<div className="mx-auto w-full max-w-3xl">
+				<h1 className="text-2xl font-semibold text-foreground">
+					{t("product.details.notFoundTitle")}
+				</h1>
+
+				<p className="mt-2 text-sm text-muted-foreground">
+					{t("product.details.notFoundBody")}
+				</p>
+
+				<button
+					type="button"
+					onClick={() => router.history.go(-1)}
+					className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+				>
+					<ArrowLeft className="h-4 w-4" aria-hidden="true" />
+					{t("product.details.back")}
+				</button>
+			</div>
+		</div>
+	);
+}
 
 function ProductDetails() {
 	const { id } = Route.useParams();
@@ -45,12 +95,11 @@ function ProductDetails() {
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
 
-	const { data, isLoading, isError } = useQuery(productByIdQueryOptions(id));
-	const product = data;
-	const image = product?.images?.[0];
+	const { data: product } = useSuspenseQuery(productByIdQueryOptions(id));
+	const image = product.images?.[0];
 	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
-	const isReleaseSoon = isFutureReleaseDate(product?.releaseDate);
+	const isReleaseSoon = isFutureReleaseDate(product.releaseDate);
 	const viewTransitionName = `product-image-${id}`;
 
 	useEffect(() => {
@@ -63,49 +112,6 @@ function ProductDetails() {
 			setImageLoaded(true);
 		}
 	}, []);
-
-	if (isLoading) {
-		return (
-			<div className="min-h-screen bg-background px-4 pb-16 pt-24">
-				<div className="mx-auto w-full max-w-6xl">
-					<div className="h-5 w-32 animate-pulse rounded-full bg-muted" />
-					<div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-						<div className="aspect-4/3 w-full animate-pulse rounded-2xl border border-border/60 bg-muted/40" />
-						<div className="space-y-4">
-							<div className="h-6 w-2/3 animate-pulse rounded bg-muted" />
-							<div className="h-20 w-full animate-pulse rounded bg-muted" />
-							<div className="h-10 w-1/3 animate-pulse rounded bg-muted" />
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	}
-
-	if (isError || !product) {
-		return (
-			<div className="min-h-screen bg-background px-4 pb-16 pt-24">
-				<div className="mx-auto w-full max-w-3xl">
-					<h1 className="text-2xl font-semibold text-foreground">
-						{t("product.details.notFoundTitle")}
-					</h1>
-
-					<p className="mt-2 text-sm text-muted-foreground">
-						{t("product.details.notFoundBody")}
-					</p>
-
-					<button
-						type="button"
-						onClick={() => router.history.go(-1)}
-						className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-					>
-						<ArrowLeft className="h-4 w-4" aria-hidden="true" />
-						{t("product.details.back")}
-					</button>
-				</div>
-			</div>
-		);
-	}
 
 	const title = resolveLocalizedText(product.title, language);
 	const description = resolveLocalizedText(product.description, language);

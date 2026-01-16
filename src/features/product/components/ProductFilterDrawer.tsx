@@ -74,7 +74,7 @@ export default function ProductFilterDrawer({
 		(filters.regions?.length ?? 0);
 
 	return (
-		<div className="sticky top-15 z-40 rounded-2xl border border-border/60 bg-card/95 p-4 shadow-sm ring-1 ring-primary/20 transition hover:ring-primary/40 backdrop-blur supports-backdrop-filter:bg-card/90">
+		<div className="filters-shell sticky top-15 z-40 rounded-2xl border border-border/60 bg-card/95 p-4 shadow-sm ring-1 ring-primary/20 transition hover:ring-primary/40 backdrop-blur supports-backdrop-filter:bg-card/90">
 			<div className="flex flex-wrap items-center justify-between gap-3">
 				<div className="flex items-center gap-3">
 					<h2 className="text-base font-semibold text-foreground">

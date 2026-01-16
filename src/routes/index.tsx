@@ -21,6 +21,8 @@ const normalizeSearch = (filters?: ProductFilters) => {
 
 export const Route = createFileRoute("/")({
 	component: App,
+	pendingComponent: ProductListPending,
+	errorComponent: ProductListError,
 	validateSearch: (search): ProductFilters => {
 		const raw = (search ?? {}) as Record<string, unknown>;
 
@@ -42,7 +44,7 @@ export const Route = createFileRoute("/")({
 	}),
 	loader: async ({ context, deps }) => {
 		const filters = normalizeSearch(deps.search);
-		await context.queryClient.prefetchInfiniteQuery(
+		await context.queryClient.ensureInfiniteQueryData(
 			productsInfiniteQueryOptions(filters),
 		);
 	},
@@ -50,6 +52,39 @@ export const Route = createFileRoute("/")({
 		meta: [{ title: i18n.t("appName") }],
 	}),
 });
+
+function ProductListPending() {
+	return (
+		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
+			<div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+				<div className="h-10 w-52 animate-pulse rounded-xl bg-muted" />
+				<div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					{Array.from({ length: 6 }).map((_, index) => (
+						<div
+							key={`product-skeleton-${
+								// biome-ignore lint/suspicious/noArrayIndexKey: ignore for skeleton keys
+								index
+							}`}
+							className="h-90 animate-pulse rounded-2xl border border-border/50 bg-muted/40"
+						/>
+					))}
+				</div>
+			</div>
+		</div>
+	);
+}
+
+function ProductListError() {
+	return (
+		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
+			<div className="mx-auto w-full max-w-3xl">
+				<p className="text-sm text-muted-foreground">
+					{i18n.t("product.error")}
+				</p>
+			</div>
+		</div>
+	);
+}
 
 function App() {
 	const search = Route.useSearch();

@@ -189,3 +189,36 @@ input[type="checkbox"].checkbox-green:checked::after {
   border-bottom: 2px solid var(--success-foreground);
   transform: rotate(45deg);
 }
+
+.app-header {
+  view-transition-name: app-header;
+}
+
+.filters-shell {
+  view-transition-name: filters-shell;
+}
+
+::view-transition-group(*) {
+  z-index: 1;
+}
+
+::view-transition-group(app-header),
+::view-transition-group(filters-shell) {
+  z-index: 2;
+}
+
+::view-transition-old(app-header),
+::view-transition-new(app-header),
+::view-transition-old(filters-shell),
+::view-transition-new(filters-shell) {
+  animation: none;
+}
+
+::view-transition-old(filters-shell) {
+  opacity: 0;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
