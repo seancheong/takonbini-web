@@ -2,6 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Category, REGIONS, Store } from "@/@types/product";
 import ScrollTopButton from "@/components/ScrollTopButton";
 import ProductPanel from "@/features/product/components/ProductPanel";
+import CatalogDirectionsPrototype, {
+	type CatalogPrototypeVariant,
+	catalogPrototypeVariants,
+} from "@/features/product/prototype/CatalogDirectionsPrototype";
 import i18n from "@/i18n";
 import {
 	defaultProductFilters,
@@ -9,6 +13,10 @@ import {
 	productsInfiniteQueryOptions,
 } from "@/services/productService";
 import { parseList, parseNumber } from "@/utils/queryParsers";
+
+type CatalogSearch = ProductFilters & {
+	variant?: CatalogPrototypeVariant;
+};
 
 const normalizeSearch = (filters?: ProductFilters) => {
 	const safeFilters = filters ?? {};
@@ -21,10 +29,15 @@ const normalizeSearch = (filters?: ProductFilters) => {
 
 export const Route = createFileRoute("/")({
 	component: App,
-	validateSearch: (search): ProductFilters => {
+	validateSearch: (search): CatalogSearch => {
 		const raw = (search ?? {}) as Record<string, unknown>;
 
 		return {
+			variant: catalogPrototypeVariants.includes(
+				raw.variant as CatalogPrototypeVariant,
+			)
+				? (raw.variant as CatalogPrototypeVariant)
+				: undefined,
 			search: typeof raw.search === "string" ? raw.search : undefined,
 			stores: parseList(raw.stores, Object.values(Store)),
 			categories: parseList(raw.categories, Object.values(Category)),
@@ -41,6 +54,8 @@ export const Route = createFileRoute("/")({
 		search,
 	}),
 	loader: ({ context, deps }) => {
+		if (deps.search.variant) return;
+
 		const filters = normalizeSearch(deps.search);
 		context.queryClient.prefetchInfiniteQuery(
 			productsInfiniteQueryOptions(filters),
@@ -54,6 +69,16 @@ export const Route = createFileRoute("/")({
 function App() {
 	const search = Route.useSearch();
 	const navigate = Route.useNavigate();
+
+	if (search.variant) {
+		return (
+			<CatalogDirectionsPrototype
+				key={search.variant}
+				variant={search.variant}
+			/>
+		);
+	}
+
 	const appliedFilters = normalizeSearch(search);
 
 	return (
