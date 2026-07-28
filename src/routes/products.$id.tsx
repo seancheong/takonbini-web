@@ -10,6 +10,9 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { makeCatalogPrototypeFixtures } from "@/features/product/fixtures/catalogPrototypeFixtures";
+import type { CatalogPrototypeVariant } from "@/features/product/prototype/CatalogDirectionsPrototype";
+import { ProductDetail as CatalogPrototypeProductDetail } from "@/features/product/prototype/CatalogDirectionsPrototype";
 import {
 	type CategoryLabelKey,
 	categoryLabelKeys,
@@ -29,16 +32,96 @@ import { productByIdQueryOptions } from "@/services/productService";
 import { isSafari } from "@/utils/browser";
 import { getProxiedImageUrl } from "@/utils/imageProxy";
 
+type ProductPrototypeSearch = {
+	prototype?: "interaction";
+	variant?: CatalogPrototypeVariant;
+	returnLoaded?: number;
+	returnScroll?: number;
+};
+
+const prototypeProducts = makeCatalogPrototypeFixtures(
+	new Date("2026-08-01T00:00:00Z"),
+).map(({ product }) => product);
+
+const parsePrototypeNumber = (value: unknown) => {
+	const number = Number(value);
+	return Number.isFinite(number) && number >= 0 ? number : undefined;
+};
+
 export const Route = createFileRoute("/products/$id")({
-	loader: async ({ context, params }) => {
+	validateSearch: (search): ProductPrototypeSearch => {
+		const raw = (search ?? {}) as Record<string, unknown>;
+		return {
+			prototype: raw.prototype === "interaction" ? "interaction" : undefined,
+			variant:
+				raw.variant === "editorial" || raw.variant === "energy"
+					? raw.variant
+					: undefined,
+			returnLoaded: parsePrototypeNumber(raw.returnLoaded),
+			returnScroll: parsePrototypeNumber(raw.returnScroll),
+		};
+	},
+	loaderDeps: ({ search }) => ({ search }),
+	loader: async ({ context, params, deps }) => {
+		if (deps.search.prototype === "interaction") return;
 		await context.queryClient.ensureQueryData(
 			productByIdQueryOptions(params.id),
 		);
 	},
 	pendingComponent: ProductDetailsPending,
 	errorComponent: ProductDetailsError,
-	component: ProductDetails,
+	component: ProductDetailsRoute,
 });
+
+function ProductDetailsRoute() {
+	const { id } = Route.useParams();
+	const search = Route.useSearch();
+	const router = useRouter();
+
+	if (search.prototype === "interaction") {
+		const product = prototypeProducts.find((candidate) => candidate.id === id);
+		if (!product) return <ProductDetailsError />;
+		const returnToCatalog = () => {
+			const prefersReducedMotion = window.matchMedia(
+				"(prefers-reduced-motion: reduce)",
+			).matches;
+			const startViewTransition = (
+				document as Document & {
+					startViewTransition?: (
+						callback: () => Promise<void>,
+					) => ViewTransition;
+				}
+			).startViewTransition;
+
+			if (prefersReducedMotion || !startViewTransition || isSafari()) {
+				router.history.go(-1);
+				return;
+			}
+
+			startViewTransition.call(
+				document,
+				() =>
+					new Promise<void>((resolve) => {
+						const unsubscribe = router.subscribe("onResolved", () => {
+							unsubscribe();
+							resolve();
+						});
+						router.history.go(-1);
+					}),
+			);
+		};
+
+		return (
+			<CatalogPrototypeProductDetail
+				product={product}
+				variant={search.variant ?? "editorial"}
+				onBack={returnToCatalog}
+			/>
+		);
+	}
+
+	return <ProductDetails />;
+}
 
 function ProductDetailsPending() {
 	return (

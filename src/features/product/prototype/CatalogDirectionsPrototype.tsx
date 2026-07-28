@@ -1,8 +1,6 @@
-import { Link } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import {
 	ArrowLeft,
-	ChevronLeft,
-	ChevronRight,
 	Search,
 	SlidersHorizontal,
 	Sparkles,
@@ -12,18 +10,40 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { PublicProduct } from "@/@types/product";
 import { makeCatalogPrototypeFixtures } from "../fixtures/catalogPrototypeFixtures";
 
-export const catalogPrototypeVariants = ["editorial", "energy"] as const;
-export type CatalogPrototypeVariant = (typeof catalogPrototypeVariants)[number];
+export type CatalogPrototypeVariant = "editorial" | "energy";
+export const catalogPrototypeVariants: readonly CatalogPrototypeVariant[] = [
+	"editorial",
+];
 
 type ListingState = "results" | "empty" | "no-match" | "error";
 
-type CatalogDirectionsPrototypeProps = {
-	variant: CatalogPrototypeVariant;
+export type CatalogFilterState = {
+	stores: string[];
+	categories: string[];
+	maxPrice: number;
 };
 
-const variantNames: Record<CatalogPrototypeVariant, string> = {
-	editorial: "Editorial restraint",
-	energy: "Konbini energy",
+const clearedCatalogFilters: CatalogFilterState = {
+	stores: [],
+	categories: [],
+	maxPrice: 1000,
+};
+
+const categoryOptions = [
+	["Onigiri", "Rice balls"],
+	["Sweets", "Sweets"],
+	["Sandwich", "Sandwiches"],
+	["Drink", "Drinks"],
+] as const;
+
+type CatalogDirectionsPrototypeProps = {
+	variant: CatalogPrototypeVariant;
+	initialFilters: CatalogFilterState;
+	initialSearch: string;
+	initialVisibleProductCount: number;
+	onFilterQueryChange: (filters: CatalogFilterState) => void;
+	onSearchQueryChange: (query: string) => void;
+	onVisibleProductCountChange: (count: number) => void;
 };
 
 const storeNames: Record<PublicProduct["store"], string> = {
@@ -39,9 +59,9 @@ const storeStyles: Record<PublicProduct["store"], string> = {
 };
 
 const restrainedStoreStyles: Record<PublicProduct["store"], string> = {
-	SevenEleven: "text-orange-700",
-	Lawson: "text-blue-700",
-	FamilyMart: "text-emerald-700",
+	SevenEleven: "text-orange-700 dark:text-orange-300",
+	Lawson: "text-blue-700 dark:text-blue-300",
+	FamilyMart: "text-emerald-700 dark:text-emerald-300",
 };
 
 const fixtures = makeCatalogPrototypeFixtures(new Date("2026-08-01T00:00:00Z"));
@@ -55,16 +75,45 @@ const formatPrice = (price: number) =>
 function FilterDialog({
 	open,
 	onClose,
+	value,
+	onApply,
 	energy = false,
 }: {
 	open: boolean;
 	onClose: () => void;
+	value: CatalogFilterState;
+	onApply: (value: CatalogFilterState) => void;
 	energy?: boolean;
 }) {
+	const [draft, setDraft] = useState(value);
+
+	useEffect(() => {
+		if (open) setDraft(value);
+	}, [open, value]);
+
 	if (!open) return null;
 
+	const toggleDraftValue = (key: "stores" | "categories", value: string) => {
+		setDraft((current) => ({
+			...current,
+			[key]: current[key].includes(value)
+				? current[key].filter((item) => item !== value)
+				: [...current[key], value],
+		}));
+	};
+
+	const matchingProducts = activeProducts.filter(
+		(product) =>
+			(draft.stores.length === 0 ||
+				draft.stores.includes(storeNames[product.store])) &&
+			(draft.categories.length === 0 ||
+				(product.category !== undefined &&
+					draft.categories.includes(product.category))) &&
+			(product.price === 0 || product.price <= draft.maxPrice),
+	).length;
+
 	return (
-		<div className="fixed inset-0 z-70 flex items-end bg-black/45 sm:items-center sm:justify-center">
+		<div className="fixed inset-0 z-90 flex items-end bg-black/45 sm:items-center sm:justify-center">
 			<button
 				type="button"
 				aria-label="Close filters"
@@ -78,7 +127,7 @@ function FilterDialog({
 				className={`relative z-10 max-h-[88vh] w-full overflow-auto p-6 sm:max-w-md ${
 					energy
 						? "rounded-t-[2rem] border-4 border-zinc-950 bg-yellow-50 sm:rounded-[2rem]"
-						: "rounded-t-3xl bg-white sm:rounded-3xl"
+						: "rounded-t-3xl bg-white text-zinc-900 dark:bg-[#1f1e1b] dark:text-zinc-100 sm:rounded-3xl"
 				}`}
 			>
 				<div className="flex items-center justify-between">
@@ -90,7 +139,7 @@ function FilterDialog({
 					<button
 						type="button"
 						onClick={onClose}
-						className="rounded-full p-2 hover:bg-black/5"
+						className="rounded-full p-2 hover:bg-black/5 dark:hover:bg-white/10"
 					>
 						<X aria-hidden="true" className="size-5" />
 						<span className="sr-only">Close</span>
@@ -100,18 +149,19 @@ function FilterDialog({
 					<fieldset>
 						<legend className="text-sm font-semibold">Store</legend>
 						<div className="mt-3 flex flex-wrap gap-2">
-							{["7-Eleven", "Lawson", "FamilyMart"].map((store, index) => (
+							{["7-Eleven", "Lawson", "FamilyMart"].map((store) => (
 								<label
 									key={store}
 									className={`cursor-pointer border px-3 py-2 text-sm ${
 										energy
 											? "rounded-lg border-zinc-950 font-bold"
-											: "rounded-full border-zinc-300"
+											: "rounded-full border-zinc-300 dark:border-zinc-600"
 									}`}
 								>
 									<input
 										type="checkbox"
-										defaultChecked={index === 1}
+										checked={draft.stores.includes(store)}
+										onChange={() => toggleDraftValue("stores", store)}
 										className="mr-2 accent-zinc-950"
 									/>
 									{store}
@@ -124,40 +174,47 @@ function FilterDialog({
 							What are you craving?
 						</legend>
 						<div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-							{["Rice balls", "Sweets", "Sandwiches", "Drinks"].map(
-								(category) => (
-									<label
-										key={category}
-										className="flex items-center gap-2 py-1.5"
-									>
-										<input type="checkbox" className="size-4 accent-zinc-950" />
-										{category}
-									</label>
-								),
-							)}
+							{categoryOptions.map(([value, label]) => (
+								<label key={value} className="flex items-center gap-2 py-1.5">
+									<input
+										type="checkbox"
+										checked={draft.categories.includes(value)}
+										onChange={() => toggleDraftValue("categories", value)}
+										className="size-4 accent-zinc-950"
+									/>
+									{label}
+								</label>
+							))}
 						</div>
 					</fieldset>
 					<label className="block text-sm font-semibold">
-						Maximum price · ¥650
+						Maximum price · ¥{draft.maxPrice}
 						<input
 							type="range"
 							min="100"
 							max="1000"
-							defaultValue="650"
+							value={draft.maxPrice}
+							onChange={(event) =>
+								setDraft((current) => ({
+									...current,
+									maxPrice: Number(event.currentTarget.value),
+								}))
+							}
 							className="mt-3 w-full accent-zinc-950"
 						/>
 					</label>
 				</div>
 				<button
 					type="button"
-					onClick={onClose}
+					onClick={() => onApply(draft)}
 					className={`mt-8 w-full px-5 py-3 font-semibold ${
 						energy
 							? "rounded-xl bg-zinc-950 text-yellow-50 shadow-[4px_4px_0_#f97316]"
 							: "rounded-full bg-zinc-950 text-white"
 					}`}
 				>
-					Show 5 products
+					Show {matchingProducts}{" "}
+					{matchingProducts === 1 ? "product" : "products"}
 				</button>
 			</section>
 		</div>
@@ -166,9 +223,11 @@ function FilterDialog({
 
 function StateMessage({
 	state,
+	onRecover,
 	energy = false,
 }: {
 	state: Exclude<ListingState, "results">;
+	onRecover?: () => void;
 	energy?: boolean;
 }) {
 	const copy = {
@@ -178,7 +237,7 @@ function StateMessage({
 		],
 		"no-match": [
 			"Nothing matched",
-			"Try removing Lawson or widening the price range.",
+			"Your search and filters are still applied. Edit the search above or clear the filters to try again.",
 		],
 		error: [
 			"We dropped the basket",
@@ -188,18 +247,19 @@ function StateMessage({
 
 	return (
 		<div
-			className={`mx-auto my-16 max-w-lg p-8 text-center ${energy ? "rotate-[-1deg] border-4 border-zinc-950 bg-yellow-200 shadow-[8px_8px_0_#18181b]" : "border-y border-zinc-200"}`}
+			className={`mx-auto my-16 max-w-lg p-8 text-center ${energy ? "rotate-[-1deg] border-4 border-zinc-950 bg-yellow-200 shadow-[8px_8px_0_#18181b]" : "border-y border-zinc-200 dark:border-zinc-700"}`}
 		>
 			<p
 				className={`text-2xl ${energy ? "font-black uppercase" : "font-medium"}`}
 			>
 				{copy[0]}
 			</p>
-			<p className="mt-3 text-sm text-zinc-600">{copy[1]}</p>
+			<p className="mt-3 text-sm text-zinc-600 dark:text-zinc-400">{copy[1]}</p>
 			{state !== "empty" ? (
 				<button
 					type="button"
-					className={`mt-6 px-5 py-2 text-sm font-semibold ${energy ? "rounded-lg bg-zinc-950 text-white" : "rounded-full border border-zinc-950"}`}
+					onClick={onRecover}
+					className={`mt-6 px-5 py-2 text-sm font-semibold ${energy ? "rounded-lg bg-zinc-950 text-white" : "rounded-full border border-zinc-950 dark:border-zinc-300"}`}
 				>
 					{state === "error" ? "Try again" : "Clear filters"}
 				</button>
@@ -210,19 +270,72 @@ function StateMessage({
 
 function EditorialDirection({
 	products,
+	visibleProductCount,
 	state,
+	filters,
+	search,
+	onLoadMore,
+	onSearchChange,
+	onClearFilters,
+	onRemoveFilter,
+	onRetry,
 	onFilter,
 	onSelect,
 }: {
 	products: PublicProduct[];
+	visibleProductCount: number;
 	state: ListingState;
+	filters: CatalogFilterState;
+	search: string;
+	onLoadMore: () => void;
+	onSearchChange: (value: string) => void;
+	onClearFilters: () => void;
+	onRemoveFilter: (key: string) => void;
+	onRetry: () => void;
 	onFilter: () => void;
 	onSelect: (product: PublicProduct) => void;
 }) {
+	const loadMoreRef = useRef<HTMLDivElement>(null);
+	const appliedFilters = [
+		...filters.stores.map((store) => ({
+			key: `store:${store}`,
+			label: store,
+		})),
+		...filters.categories.map((category) => ({
+			key: `category:${category}`,
+			label:
+				categoryOptions.find(([value]) => value === category)?.[1] ?? category,
+		})),
+		...(filters.maxPrice < 1000
+			? [{ key: "maxPrice", label: `Under ¥${filters.maxPrice}` }]
+			: []),
+	];
+
+	useEffect(() => {
+		const sentinel = loadMoreRef.current;
+		if (
+			state !== "results" ||
+			!sentinel ||
+			visibleProductCount >= products.length
+		) {
+			return;
+		}
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry?.isIntersecting) onLoadMore();
+			},
+			{ rootMargin: "240px 0px" },
+		);
+		observer.observe(sentinel);
+
+		return () => observer.disconnect();
+	}, [onLoadMore, products.length, state, visibleProductCount]);
+
 	return (
-		<main className="min-h-screen bg-[#f7f6f2] pb-32 text-zinc-900">
-			<section className="mx-auto max-w-6xl px-5 pb-10 pt-28 sm:px-8 sm:pt-32">
-				<p className="text-[11px] font-medium uppercase tracking-[0.24em] text-zinc-500">
+		<main className="min-h-screen bg-[#f7f6f2] pb-32 text-zinc-900 dark:bg-[#151513] dark:text-zinc-100">
+			<section className="mx-auto max-w-6xl px-5 pb-0 pt-28 sm:px-8 sm:pt-32">
+				<p className="text-[11px] font-medium uppercase tracking-[0.24em] text-zinc-500 dark:text-zinc-400">
 					Observed this week · Japan
 				</p>
 				<div className="mt-6 grid gap-8 md:grid-cols-[1fr_1.4fr] md:items-end">
@@ -231,57 +344,94 @@ function EditorialDirection({
 						<br />
 						worth trying.
 					</h1>
-					<p className="max-w-md text-sm leading-6 text-zinc-600 md:justify-self-end">
+					<p className="max-w-md text-sm leading-6 text-zinc-600 dark:text-zinc-400 md:justify-self-end">
 						A calm weekly edit from Japan’s convenience-store shelves. Observed
 						listings, never a promise of local stock.
 					</p>
 				</div>
-				<div className="mt-12 flex flex-col gap-3 border-y border-zinc-300 py-4 sm:flex-row sm:items-center">
+			</section>
+			<div className="sticky top-14 z-40 mt-12 border-y border-zinc-300 bg-[#f7f6f2]/95 backdrop-blur-md dark:border-zinc-700 dark:bg-[#151513]/95">
+				<div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-3 sm:flex-row sm:items-center sm:px-8">
 					<label className="flex flex-1 items-center gap-3">
-						<Search aria-hidden="true" className="size-4 text-zinc-500" />
+						<Search
+							aria-hidden="true"
+							className="size-4 text-zinc-500 dark:text-zinc-400"
+						/>
 						<span className="sr-only">Search products</span>
 						<input
+							value={search}
+							onChange={(event) => onSearchChange(event.currentTarget.value)}
 							placeholder="Search rice balls, sweets, tea…"
-							className="w-full bg-transparent py-2 text-sm outline-none placeholder:text-zinc-500"
+							className="w-full bg-transparent py-2 text-sm outline-none placeholder:text-zinc-500 dark:placeholder:text-zinc-500"
 						/>
 					</label>
 					<button
 						type="button"
 						onClick={onFilter}
-						className="flex items-center justify-between gap-4 rounded-full border border-zinc-900 px-4 py-2 text-sm"
+						className="flex items-center justify-between gap-4 rounded-full border border-zinc-900 px-4 py-2 text-sm dark:border-zinc-300"
 					>
 						<span>Filters</span>
-						<span className="rounded-full bg-zinc-900 px-2 py-0.5 text-xs text-white">
-							2
+						<span className="rounded-full bg-zinc-900 px-2 py-0.5 text-xs text-white dark:bg-zinc-100 dark:text-zinc-900">
+							{appliedFilters.length}
 						</span>
 					</button>
 				</div>
-				<div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
-					<span className="text-zinc-500">Applied</span>
-					{["Lawson", "Under ¥650"].map((filter) => (
+			</div>
+			{appliedFilters.length > 0 ? (
+				<div className="mx-auto mt-4 flex max-w-6xl flex-wrap items-center gap-2 px-5 text-xs sm:px-8">
+					<span className="text-zinc-500 dark:text-zinc-400">Applied</span>
+					{appliedFilters.map((filter) => (
 						<button
 							type="button"
-							key={filter}
-							className="rounded-full bg-white px-3 py-1.5 shadow-sm"
+							key={filter.key}
+							onClick={() => onRemoveFilter(filter.key)}
+							className="rounded-full bg-white px-3 py-1.5 shadow-sm dark:bg-[#292824] dark:text-zinc-100"
 						>
-							{filter} ×
+							{filter.label} ×
 						</button>
 					))}
 				</div>
-			</section>
-			{state === "results" ? (
+			) : null}
+			{state === "results" || (state === "error" && products.length > 0) ? (
 				<section className="mx-auto max-w-6xl px-5 sm:px-8">
+					{state === "error" ? (
+						<div
+							role="alert"
+							className="mb-8 flex flex-col gap-4 border-y border-amber-700/35 bg-amber-50/70 px-4 py-4 text-sm text-amber-950 dark:border-amber-300/25 dark:bg-amber-200/8 dark:text-amber-100 sm:flex-row sm:items-center sm:justify-between"
+						>
+							<div>
+								<p className="font-semibold">The latest refresh failed</p>
+								<p className="mt-1 text-amber-900/75 dark:text-amber-100/70">
+									Showing the last successful observations. Search and filters
+									are unchanged.
+								</p>
+							</div>
+							<button
+								type="button"
+								onClick={onRetry}
+								className="shrink-0 rounded-full border border-current px-4 py-2 font-semibold"
+							>
+								Try again
+							</button>
+						</div>
+					) : null}
 					<div className="mb-6 flex items-end justify-between">
 						<div>
-							<p className="text-xs uppercase tracking-[0.18em] text-zinc-500">
+							<p className="text-xs uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">
 								Weekly new
 							</p>
 							<h2 className="mt-2 text-2xl font-medium">Fresh observations</h2>
 						</div>
-						<p className="text-xs text-zinc-500">5 products</p>
+						<output
+							aria-live="polite"
+							className="text-xs text-zinc-500 dark:text-zinc-400"
+						>
+							{Math.min(visibleProductCount, products.length)} of{" "}
+							{products.length}
+						</output>
 					</div>
 					<div className="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-						{products.map((product, index) => (
+						{products.slice(0, visibleProductCount).map((product, index) => (
 							<button
 								type="button"
 								key={product.id}
@@ -289,7 +439,10 @@ function EditorialDirection({
 								className={`group text-left ${index === 0 ? "sm:col-span-2 lg:col-span-2" : ""}`}
 							>
 								<div
-									className={`overflow-hidden bg-[#e8e5dd] ${index === 0 ? "aspect-[16/9]" : "aspect-[4/3]"}`}
+									style={{
+										viewTransitionName: `prototype-product-image-${product.id}`,
+									}}
+									className={`overflow-hidden bg-[#e8e5dd] dark:bg-[#24231f] ${index === 0 ? "aspect-[16/9]" : "aspect-[4/3]"}`}
 								>
 									{product.images[0] ? (
 										<img
@@ -298,14 +451,14 @@ function EditorialDirection({
 											className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
 										/>
 									) : (
-										<div className="flex h-full items-center justify-center text-xs text-zinc-500">
+										<div className="flex h-full items-center justify-center text-xs text-zinc-500 dark:text-zinc-400">
 											Image intentionally unavailable
 										</div>
 									)}
 								</div>
-								<div className="mt-4 flex items-start justify-between gap-4 border-t border-zinc-300 pt-3">
+								<div className="mt-4 flex items-start justify-between gap-4 border-t border-zinc-300 pt-3 dark:border-zinc-700">
 									<div>
-										<p className="text-[10px] uppercase tracking-[0.16em] text-zinc-500">
+										<p className="text-[10px] uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400">
 											<span
 												className={`font-semibold ${restrainedStoreStyles[product.store]}`}
 											>
@@ -324,9 +477,21 @@ function EditorialDirection({
 							</button>
 						))}
 					</div>
+					<div
+						ref={loadMoreRef}
+						className="mt-12 border-t border-zinc-300 py-8 text-center text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400"
+						aria-live="polite"
+					>
+						{visibleProductCount < products.length
+							? `${Math.min(visibleProductCount, products.length)} of ${products.length} shown · More observations load as you browse`
+							: `All ${products.length} observations shown · You’re all caught up`}
+					</div>
 				</section>
 			) : (
-				<StateMessage state={state} />
+				<StateMessage
+					state={state}
+					onRecover={state === "error" ? onRetry : onClearFilters}
+				/>
 			)}
 		</main>
 	);
@@ -469,7 +634,7 @@ function EnergyDirection({
 	);
 }
 
-function ProductDetail({
+export function ProductDetail({
 	product,
 	variant,
 	onBack,
@@ -481,13 +646,13 @@ function ProductDetail({
 	const energy = variant === "energy";
 	return (
 		<main
-			className={`min-h-screen px-5 pb-32 pt-24 text-zinc-950 sm:px-8 sm:pt-28 ${energy ? "bg-[#fff8dc]" : "bg-[#f7f6f2]"}`}
+			className={`min-h-screen px-5 pb-32 pt-24 text-zinc-950 sm:px-8 sm:pt-28 ${energy ? "bg-[#fff8dc]" : "bg-[#f7f6f2] dark:bg-[#151513] dark:text-zinc-100"}`}
 		>
 			<section className="mx-auto max-w-5xl">
 				<button
 					type="button"
 					onClick={onBack}
-					className={`mb-6 flex items-center gap-2 text-sm font-semibold ${energy ? "rounded-lg border-2 border-zinc-950 bg-white px-3 py-2 shadow-[2px_2px_0_#18181b]" : "border-b border-zinc-400 pb-1"}`}
+					className={`mb-6 flex items-center gap-2 text-sm font-semibold ${energy ? "rounded-lg border-2 border-zinc-950 bg-white px-3 py-2 shadow-[2px_2px_0_#18181b]" : "border-b border-zinc-400 pb-1 dark:border-zinc-600"}`}
 				>
 					<ArrowLeft className="size-4" />
 					Back to results
@@ -496,7 +661,10 @@ function ProductDetail({
 					className={`grid overflow-hidden md:grid-cols-2 ${energy ? "rounded-[2rem] border-4 border-zinc-950 bg-white shadow-[8px_8px_0_#18181b]" : "gap-10"}`}
 				>
 					<div
-						className={`aspect-square ${energy ? "border-b-4 border-zinc-950 bg-orange-100 md:border-b-0 md:border-r-4" : "bg-[#e8e5dd]"}`}
+						style={{
+							viewTransitionName: `prototype-product-image-${product.id}`,
+						}}
+						className={`aspect-square ${energy ? "border-b-4 border-zinc-950 bg-orange-100 md:border-b-0 md:border-r-4" : "bg-[#e8e5dd] dark:bg-[#24231f]"}`}
 					>
 						{product.images[0] ? (
 							<img
@@ -505,7 +673,7 @@ function ProductDetail({
 								className="h-full w-full object-cover"
 							/>
 						) : (
-							<div className="flex h-full items-center justify-center text-sm text-zinc-500">
+							<div className="flex h-full items-center justify-center text-sm text-zinc-500 dark:text-zinc-400">
 								Image intentionally unavailable
 							</div>
 						)}
@@ -515,7 +683,9 @@ function ProductDetail({
 							className={`inline-block text-xs font-bold uppercase tracking-wider ${energy ? `${storeStyles[product.store]} rounded-md px-2 py-1` : restrainedStoreStyles[product.store]}`}
 						>
 							{storeNames[product.store]}
-							<span className={energy ? "" : "text-zinc-500"}>
+							<span
+								className={energy ? "" : "text-zinc-500 dark:text-zinc-400"}
+							>
 								{" "}
 								· {product.category}
 							</span>
@@ -525,27 +695,29 @@ function ProductDetail({
 						>
 							{product.title.en}
 						</h1>
-						<p className="mt-3 text-lg text-zinc-500">{product.title.ja}</p>
+						<p className="mt-3 text-lg text-zinc-500 dark:text-zinc-400">
+							{product.title.ja}
+						</p>
 						<p
 							className={`mt-8 ${energy ? "font-mono text-3xl font-black" : "text-2xl"}`}
 						>
 							{formatPrice(product.price)}
 						</p>
-						<p className="mt-6 text-sm leading-6 text-zinc-600">
+						<p className="mt-6 text-sm leading-6 text-zinc-600 dark:text-zinc-300">
 							{product.description.en}
 						</p>
 						<div
-							className={`mt-8 p-4 text-sm ${energy ? "rounded-xl border-2 border-zinc-950 bg-yellow-100" : "border-y border-zinc-300"}`}
+							className={`mt-8 p-4 text-sm ${energy ? "rounded-xl border-2 border-zinc-950 bg-yellow-100" : "border-y border-zinc-300 dark:border-zinc-700"}`}
 						>
 							<strong>Weekly observation</strong>
-							<p className="mt-1 text-zinc-600">
+							<p className="mt-1 text-zinc-600 dark:text-zinc-400">
 								Seen in {product.regions?.join(", ")}. Availability can vary by
 								location.
 							</p>
 						</div>
 						<a
 							href={product.url}
-							className={`mt-8 inline-flex px-5 py-3 text-sm font-semibold ${energy ? "rounded-xl bg-zinc-950 text-white shadow-[4px_4px_0_#f97316]" : "rounded-full border border-zinc-950"}`}
+							className={`mt-8 inline-flex px-5 py-3 text-sm font-semibold ${energy ? "rounded-xl bg-zinc-950 text-white shadow-[4px_4px_0_#f97316]" : "rounded-full border border-zinc-950 dark:border-zinc-300"}`}
 						>
 							View source store ↗
 						</a>
@@ -557,56 +729,18 @@ function ProductDetail({
 }
 
 function PrototypeSwitcher({
-	variant,
 	state,
 	onStateChange,
 }: {
-	variant: CatalogPrototypeVariant;
 	state: ListingState;
 	onStateChange: (state: ListingState) => void;
 }) {
-	const targetFor = (offset: number) => {
-		const current = catalogPrototypeVariants.indexOf(variant);
-		return catalogPrototypeVariants[
-			(current + offset + catalogPrototypeVariants.length) %
-				catalogPrototypeVariants.length
-		];
-	};
-	const previousRef = useRef<HTMLAnchorElement>(null);
-	const nextRef = useRef<HTMLAnchorElement>(null);
-
-	useEffect(() => {
-		const onKeyDown = (event: KeyboardEvent) => {
-			const target = event.target as HTMLElement;
-			if (
-				["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName) ||
-				target.isContentEditable
-			)
-				return;
-			if (event.key === "ArrowLeft") previousRef.current?.click();
-			if (event.key === "ArrowRight") nextRef.current?.click();
-		};
-		window.addEventListener("keydown", onKeyDown);
-		return () => window.removeEventListener("keydown", onKeyDown);
-	});
-
 	if (import.meta.env.PROD) return null;
 
 	return (
-		<div className="fixed bottom-4 left-1/2 z-80 flex w-[calc(100%-2rem)] max-w-2xl -translate-x-1/2 items-center gap-2 rounded-2xl border border-white/20 bg-zinc-950 p-2 text-white shadow-2xl">
-			<Link
-				ref={previousRef}
-				to="/"
-				search={(previous) => ({ ...previous, variant: targetFor(-1) })}
-				replace
-				reloadDocument
-				className="rounded-xl p-2 hover:bg-white/10"
-			>
-				<ChevronLeft className="size-5" />
-				<span className="sr-only">Previous direction</span>
-			</Link>
+		<div className="fixed bottom-4 left-1/2 z-80 flex w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 items-center gap-3 rounded-2xl border border-white/20 bg-zinc-950 p-2 pl-4 text-white shadow-2xl">
 			<p className="min-w-0 flex-1 truncate text-center text-xs font-semibold sm:text-sm">
-				{variant === "editorial" ? "A" : "B"} — {variantNames[variant]}
+				Final system — Editorial restraint
 			</p>
 			<select
 				aria-label="Preview state"
@@ -627,51 +761,173 @@ function PrototypeSwitcher({
 					Error
 				</option>
 			</select>
-			<Link
-				ref={nextRef}
-				to="/"
-				search={(previous) => ({ ...previous, variant: targetFor(1) })}
-				replace
-				reloadDocument
-				className="rounded-xl p-2 hover:bg-white/10"
-			>
-				<ChevronRight className="size-5" />
-				<span className="sr-only">Next direction</span>
-			</Link>
 		</div>
 	);
 }
 
-/** Two catalog directions, switchable via `?variant=`, on the existing `/` route. */
+/** Final consolidated catalog interaction system on the existing `/` route. */
 export default function CatalogDirectionsPrototype({
 	variant,
+	initialFilters,
+	initialSearch,
+	initialVisibleProductCount,
+	onFilterQueryChange,
+	onSearchQueryChange,
+	onVisibleProductCountChange,
 }: CatalogDirectionsPrototypeProps) {
+	const navigate = useNavigate();
+	const searchWasEdited = useRef(false);
+	const onSearchQueryChangeRef = useRef(onSearchQueryChange);
 	const [listingState, setListingState] = useState<ListingState>("results");
 	const [filterOpen, setFilterOpen] = useState(false);
-	const [selectedProduct, setSelectedProduct] = useState<PublicProduct>();
+	const [filters, setFilters] = useState(initialFilters);
+	const [search, setSearch] = useState(initialSearch);
+	const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
+	const [visibleProductCount, setVisibleProductCount] = useState(
+		initialVisibleProductCount,
+	);
 	const products = useMemo(() => activeProducts, []);
 
-	const content = selectedProduct ? (
-		<ProductDetail
-			product={selectedProduct}
-			variant={variant}
-			onBack={() => setSelectedProduct(undefined)}
-		/>
-	) : variant === "editorial" ? (
-		<EditorialDirection
-			products={products}
-			state={listingState}
-			onFilter={() => setFilterOpen(true)}
-			onSelect={setSelectedProduct}
-		/>
-	) : (
-		<EnergyDirection
-			products={products}
-			state={listingState}
-			onFilter={() => setFilterOpen(true)}
-			onSelect={setSelectedProduct}
-		/>
-	);
+	useEffect(() => {
+		onSearchQueryChangeRef.current = onSearchQueryChange;
+	}, [onSearchQueryChange]);
+
+	useEffect(() => {
+		if (!searchWasEdited.current) return;
+
+		const timeout = window.setTimeout(() => {
+			const settledSearch = search.trim();
+			setDebouncedSearch(settledSearch);
+			onSearchQueryChangeRef.current(settledSearch);
+		}, 200);
+
+		return () => window.clearTimeout(timeout);
+	}, [search]);
+
+	const filteredProducts = useMemo(() => {
+		const normalizedSearch = debouncedSearch.toLocaleLowerCase();
+		return products.filter((product) => {
+			const matchesStore =
+				filters.stores.length === 0 ||
+				filters.stores.includes(storeNames[product.store]);
+			const matchesCategory =
+				filters.categories.length === 0 ||
+				(product.category !== undefined &&
+					filters.categories.includes(product.category));
+			const matchesPrice =
+				product.price === 0 || product.price <= filters.maxPrice;
+			const searchableText = [
+				product.title.en,
+				product.title.ja,
+				product.title.zh,
+				product.description.en,
+				product.description.ja,
+				product.description.zh,
+				product.category,
+				storeNames[product.store],
+			]
+				.filter(Boolean)
+				.join(" ")
+				.toLocaleLowerCase();
+			const matchesSearch =
+				normalizedSearch === "" || searchableText.includes(normalizedSearch);
+
+			return matchesStore && matchesCategory && matchesPrice && matchesSearch;
+		});
+	}, [debouncedSearch, filters, products]);
+	const effectiveListingState: ListingState =
+		listingState === "results" && filteredProducts.length === 0
+			? "no-match"
+			: listingState;
+	const resetVisibleProducts = () => {
+		setVisibleProductCount(3);
+		onVisibleProductCountChange(3);
+	};
+	const removeAppliedFilter = (key: string) => {
+		const nextFilters = key.startsWith("store:")
+			? {
+					...filters,
+					stores: filters.stores.filter(
+						(store) => store !== key.slice("store:".length),
+					),
+				}
+			: key.startsWith("category:")
+				? {
+						...filters,
+						categories: filters.categories.filter(
+							(category) => category !== key.slice("category:".length),
+						),
+					}
+				: { ...filters, maxPrice: 1000 };
+
+		setFilters(nextFilters);
+		onFilterQueryChange(nextFilters);
+		resetVisibleProducts();
+		setListingState("results");
+	};
+	const openProduct = (product: PublicProduct) => {
+		const prefersReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+		navigate({
+			to: "/products/$id",
+			params: { id: product.id },
+			search: {
+				prototype: "interaction",
+				variant,
+				returnLoaded: visibleProductCount,
+				returnScroll: Math.round(window.scrollY),
+			},
+			viewTransition: !prefersReducedMotion,
+		});
+	};
+
+	const content =
+		variant === "editorial" ? (
+			<EditorialDirection
+				products={filteredProducts}
+				visibleProductCount={visibleProductCount}
+				state={effectiveListingState}
+				filters={filters}
+				search={search}
+				onLoadMore={() => {
+					const nextCount = Math.min(
+						visibleProductCount + 2,
+						filteredProducts.length,
+					);
+					setVisibleProductCount(nextCount);
+					onVisibleProductCountChange(nextCount);
+				}}
+				onSearchChange={(nextSearch) => {
+					searchWasEdited.current = true;
+					setSearch(nextSearch);
+					resetVisibleProducts();
+					if (
+						effectiveListingState === "no-match" &&
+						nextSearch.trim() === ""
+					) {
+						setListingState("results");
+					}
+				}}
+				onClearFilters={() => {
+					setFilters(clearedCatalogFilters);
+					onFilterQueryChange(clearedCatalogFilters);
+					resetVisibleProducts();
+					setListingState("results");
+				}}
+				onRemoveFilter={removeAppliedFilter}
+				onRetry={() => setListingState("results")}
+				onFilter={() => setFilterOpen(true)}
+				onSelect={openProduct}
+			/>
+		) : (
+			<EnergyDirection
+				products={filteredProducts}
+				state={listingState}
+				onFilter={() => setFilterOpen(true)}
+				onSelect={openProduct}
+			/>
+		);
 
 	return (
 		<>
@@ -679,13 +935,23 @@ export default function CatalogDirectionsPrototype({
 			<FilterDialog
 				open={filterOpen}
 				onClose={() => setFilterOpen(false)}
+				value={filters}
+				onApply={(nextFilters) => {
+					setFilters(nextFilters);
+					onFilterQueryChange(nextFilters);
+					resetVisibleProducts();
+					setFilterOpen(false);
+				}}
 				energy={variant === "energy"}
 			/>
 			<PrototypeSwitcher
-				variant={variant}
 				state={listingState}
 				onStateChange={(next) => {
-					setSelectedProduct(undefined);
+					if (next !== "error") {
+						resetVisibleProducts();
+						searchWasEdited.current = true;
+						setSearch(next === "no-match" ? "melon soda" : "");
+					}
 					setListingState(next);
 				}}
 			/>
