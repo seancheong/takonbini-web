@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PrototypesCatalogLocalizationRouteImport } from './routes/prototypes.catalog-localization'
 import { Route as PrototypesCatalogDesignRouteImport } from './routes/prototypes.catalog-design'
+import { Route as PrototypesCatalogCopyRouteImport } from './routes/prototypes.catalog-copy'
 import { Route as ProductsIdRouteImport } from './routes/products.$id'
 import { Route as ApiProductsRouteImport } from './routes/api.products'
 import { Route as ApiImageRouteImport } from './routes/api.image'
@@ -27,9 +29,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrototypesCatalogLocalizationRoute =
+  PrototypesCatalogLocalizationRouteImport.update({
+    id: '/prototypes/catalog-localization',
+    path: '/prototypes/catalog-localization',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PrototypesCatalogDesignRoute = PrototypesCatalogDesignRouteImport.update({
   id: '/prototypes/catalog-design',
   path: '/prototypes/catalog-design',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrototypesCatalogCopyRoute = PrototypesCatalogCopyRouteImport.update({
+  id: '/prototypes/catalog-copy',
+  path: '/prototypes/catalog-copy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsIdRoute = ProductsIdRouteImport.update({
@@ -59,7 +72,9 @@ export interface FileRoutesByFullPath {
   '/api/image': typeof ApiImageRoute
   '/api/products': typeof ApiProductsRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
+  '/prototypes/catalog-copy': typeof PrototypesCatalogCopyRoute
   '/prototypes/catalog-design': typeof PrototypesCatalogDesignRoute
+  '/prototypes/catalog-localization': typeof PrototypesCatalogLocalizationRoute
   '/api/products/$id': typeof ApiProductsIdRoute
 }
 export interface FileRoutesByTo {
@@ -68,7 +83,9 @@ export interface FileRoutesByTo {
   '/api/image': typeof ApiImageRoute
   '/api/products': typeof ApiProductsRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
+  '/prototypes/catalog-copy': typeof PrototypesCatalogCopyRoute
   '/prototypes/catalog-design': typeof PrototypesCatalogDesignRoute
+  '/prototypes/catalog-localization': typeof PrototypesCatalogLocalizationRoute
   '/api/products/$id': typeof ApiProductsIdRoute
 }
 export interface FileRoutesById {
@@ -78,7 +95,9 @@ export interface FileRoutesById {
   '/api/image': typeof ApiImageRoute
   '/api/products': typeof ApiProductsRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
+  '/prototypes/catalog-copy': typeof PrototypesCatalogCopyRoute
   '/prototypes/catalog-design': typeof PrototypesCatalogDesignRoute
+  '/prototypes/catalog-localization': typeof PrototypesCatalogLocalizationRoute
   '/api/products/$id': typeof ApiProductsIdRoute
 }
 export interface FileRouteTypes {
@@ -89,7 +108,9 @@ export interface FileRouteTypes {
     | '/api/image'
     | '/api/products'
     | '/products/$id'
+    | '/prototypes/catalog-copy'
     | '/prototypes/catalog-design'
+    | '/prototypes/catalog-localization'
     | '/api/products/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -98,7 +119,9 @@ export interface FileRouteTypes {
     | '/api/image'
     | '/api/products'
     | '/products/$id'
+    | '/prototypes/catalog-copy'
     | '/prototypes/catalog-design'
+    | '/prototypes/catalog-localization'
     | '/api/products/$id'
   id:
     | '__root__'
@@ -107,7 +130,9 @@ export interface FileRouteTypes {
     | '/api/image'
     | '/api/products'
     | '/products/$id'
+    | '/prototypes/catalog-copy'
     | '/prototypes/catalog-design'
+    | '/prototypes/catalog-localization'
     | '/api/products/$id'
   fileRoutesById: FileRoutesById
 }
@@ -117,7 +142,9 @@ export interface RootRouteChildren {
   ApiImageRoute: typeof ApiImageRoute
   ApiProductsRoute: typeof ApiProductsRouteWithChildren
   ProductsIdRoute: typeof ProductsIdRoute
+  PrototypesCatalogCopyRoute: typeof PrototypesCatalogCopyRoute
   PrototypesCatalogDesignRoute: typeof PrototypesCatalogDesignRoute
+  PrototypesCatalogLocalizationRoute: typeof PrototypesCatalogLocalizationRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -136,11 +163,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/prototypes/catalog-localization': {
+      id: '/prototypes/catalog-localization'
+      path: '/prototypes/catalog-localization'
+      fullPath: '/prototypes/catalog-localization'
+      preLoaderRoute: typeof PrototypesCatalogLocalizationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prototypes/catalog-design': {
       id: '/prototypes/catalog-design'
       path: '/prototypes/catalog-design'
       fullPath: '/prototypes/catalog-design'
       preLoaderRoute: typeof PrototypesCatalogDesignRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prototypes/catalog-copy': {
+      id: '/prototypes/catalog-copy'
+      path: '/prototypes/catalog-copy'
+      fullPath: '/prototypes/catalog-copy'
+      preLoaderRoute: typeof PrototypesCatalogCopyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products/$id': {
@@ -192,7 +233,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiImageRoute: ApiImageRoute,
   ApiProductsRoute: ApiProductsRouteWithChildren,
   ProductsIdRoute: ProductsIdRoute,
+  PrototypesCatalogCopyRoute: PrototypesCatalogCopyRoute,
   PrototypesCatalogDesignRoute: PrototypesCatalogDesignRoute,
+  PrototypesCatalogLocalizationRoute: PrototypesCatalogLocalizationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
