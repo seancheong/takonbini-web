@@ -20,23 +20,22 @@ The credential-remediation work succeeded: credential-bearing Actions
 artifacts are absent, the database application credential was rotated, API
 deployment uses GitHub OIDC instead of stored AWS access keys, the human AWS
 administrator has MFA and no access keys, and a deployment using temporary
-credentials completed successfully.
+credentials completed successfully. The unused legacy scraper access key was
+deleted on 2026-09-15 after AWS continued to report no recorded use; its
+Terraform resource, secret-bearing outputs, and remote state record were also
+removed in the reviewed private API change.
 
-Phase 0 must not close yet. The audit found four unresolved exit-gate items:
+Phase 0 must not close yet. The audit found three unresolved exit-gate items:
 
-1. An unused legacy scraper IAM access key remains active. AWS reports no
-   recorded use since its creation on 2026-01-01, and the current scraper has no
-   AWS SDK dependency or AWS service call. It should be deactivated first,
-   observed, and then removed with its unused IAM user and policy.
-2. Vercel plan and 30-day usage could not be read because no authenticated
+1. Vercel plan and 30-day usage could not be read because no authenticated
    Vercel session or CLI was available. The production deployment and public
    behavior were verified, but plan eligibility, transfer, Edge Requests,
    function usage, analytics events, and compute remain unmeasured.
-3. The configured Atlas tier is Free, but live Atlas storage, transfer,
+2. The configured Atlas tier is Free, but live Atlas storage, transfer,
    connection, and operations headroom were unavailable. The configuration
    also permits database network access from `0.0.0.0/0`; authentication and a
    database-scoped `readWrite` role remain the effective controls.
-4. The API and database-pointer rollback procedures are documented below, but
+3. The API and database-pointer rollback procedures are documented below, but
    a live cutover-and-restore drill has not been run. Web rollback is also
    documented rather than exercised during this baseline window.
 
@@ -112,15 +111,20 @@ on it.
 
 ### Legacy scraper identity
 
-- One static AWS access key created on 2026-01-01 remains active.
-- AWS last-used metadata is `N/A`; no use is recorded.
+- The static AWS access key created on 2026-01-01 was deleted on 2026-09-15.
+- Immediately before deletion, AWS last-used metadata was still `N/A`; no use
+  was recorded. The IAM user had zero access keys immediately afterward.
+- The Terraform access-key resource and both credential outputs were removed
+  in private API PR #19. Its stale resource was also removed from remote
+  Terraform state so the secret is no longer retained there.
 - Its policy is restricted to read/write operations on the Takonbini DynamoDB
   table and its indexes.
 - Current scraper source uses MongoDB directly. It imports no AWS SDK and makes
   no AWS service call; it only logs whether AWS credential variables exist.
 
-Conclusion: the identity is narrowly scoped but unnecessary. Deactivate it
-before closing Phase 0.
+Conclusion: the unnecessary long-lived credential is retired. The dormant IAM
+user and policy have no access key and can be removed with the retained
+DynamoDB surface after its rollback value is resolved.
 
 ## Production behavior baseline
 
@@ -362,21 +366,21 @@ MFA-protected human administrator is the break-glass/bootstrap path.
 | --- | --- | --- |
 | Credential artifacts absent and affected database credential rotated | Pass | Zero retained Actions artifacts; production uses the rotated application credential through Parameter Store. |
 | Deployment succeeds with temporary credentials | Pass | OIDC deployment completed successfully, including authenticated smoke verification. |
-| Long-lived deployment keys removed or accepted exception recorded | Pass for deployment; follow-up required | GitHub has no AWS deployment secrets. A separate unused legacy scraper key remains active and should be retired. |
+| Long-lived deployment keys removed or accepted exception recorded | Pass | GitHub has no AWS deployment secrets, and the unused legacy scraper key was deleted with its Terraform resource, outputs, and state record. |
 | Dated baseline records commits and conditions | Pass | This report records production references, dates, tools, windows, and measurement conditions. Vercel and Atlas account usage gaps are explicit. |
 | Rollback owners and commands documented | Pass for documentation; drills pending | API, database pointer, scraper, web, and infrastructure procedures are recorded above. API version `2` was invoked directly; database-pointer and web rollback were not exercised. |
 
-## Required closeout actions
+## Remaining closeout actions
 
-1. Deactivate the unused legacy scraper AWS access key, observe that no
-   workflow or local process fails, then remove the key/user/policy through a
-   reviewed Terraform change.
-2. Capture Vercel plan, eligibility, and 30-day usage from the authenticated
+1. Capture Vercel plan, eligibility, and 30-day usage from the authenticated
    dashboard.
-3. Capture live Atlas tier and 30-day storage, connections, operations, and
+2. Capture live Atlas tier and 30-day storage, connections, operations, and
    transfer; record the accepted network-access posture.
-4. Run the database credential-pointer rollback drill and return to the chosen
+3. Run the database credential-pointer rollback drill and return to the chosen
    active slot. Exercise or explicitly defer the web rollback drill.
-5. Add a bounded CloudWatch log-retention policy in a separate reviewed change.
-6. Update issue #20 with this redacted evidence and close it only after the
-   remaining closeout actions or explicit exceptions are recorded.
+4. Add a bounded CloudWatch log-retention policy in a separate reviewed change.
+
+The first three are unresolved exit-gate groups. Log retention is a bounded
+hardening follow-up identified by the baseline. Update issue #20 as each item
+is completed or explicitly accepted, and close it only when the exit gate is
+satisfied.
