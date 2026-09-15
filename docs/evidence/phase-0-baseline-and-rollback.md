@@ -4,7 +4,7 @@
 
 **Measurement window:** 2026-08-16 00:00 UTC through 2026-09-15 00:00 UTC unless stated otherwise
 
-**Status:** Evidence captured; Phase 0 exit remains blocked by the actions listed below
+**Status:** Complete; the Phase 0 exit gate is satisfied
 
 This is the publication-safe evidence record for
 [Phase 0](https://github.com/seancheong/takonbini-web/issues/20). It records
@@ -25,23 +25,19 @@ deleted on 2026-09-15 after AWS continued to report no recorded use; its
 Terraform resource, secret-bearing outputs, and remote state record were also
 removed in the reviewed private API change.
 
-Phase 0 must not close yet. The audit found three unresolved exit-gate items:
+The remaining closeout work was completed on 2026-09-15. Authenticated Vercel
+and Atlas measurements establish plan and quota headroom, the database
+credential pointer was exercised from green to blue and restored to green, and
+the web rollback drill was explicitly deferred because exercising it would
+replace a healthy production release solely for the drill. The API Lambda log
+group now has a 30-day retention policy managed by Terraform.
 
-1. Vercel plan and 30-day usage could not be read because no authenticated
-   Vercel session or CLI was available. The production deployment and public
-   behavior were verified, but plan eligibility, transfer, Edge Requests,
-   function usage, analytics events, and compute remain unmeasured.
-2. The configured Atlas tier is Free, but live Atlas storage, transfer,
-   connection, and operations headroom were unavailable. The configuration
-   also permits database network access from `0.0.0.0/0`; authentication and a
-   database-scoped `readWrite` role remain the effective controls.
-3. The API and database-pointer rollback procedures are documented below, but
-   a live cutover-and-restore drill has not been run. Web rollback is also
-   documented rather than exercised during this baseline window.
-
-These are measured gaps, not failures hidden by the report. Phase 1 must remain
-blocked until Phase 0 either resolves them or records an explicitly accepted
-exception in issue #20.
+Atlas network access from `0.0.0.0/0` is recorded as a temporary accepted
+exception for the current serverless topology: Lambda does not have fixed
+egress, while TLS, rotated database credentials, a database-scoped `readWrite`
+role, and Parameter Store protect access. Restrict the allowlist when a fixed
+egress or private-network path is introduced. This exception does not block
+Phase 0.
 
 ## Immutable release references
 
@@ -171,9 +167,9 @@ runtime errors, indicating handled 5xx responses rather than failed Lambda
 invocations. Alerting and shorter-window analysis are still required before
 using the rollout threshold of more than 1% 5xx for five minutes.
 
-The Lambda log group stores 15,732,168 bytes and has no configured retention
-period. This is a cost and data-retention hygiene gap; a bounded retention
-policy should be added in a separately reviewed infrastructure change.
+The Lambda log group stored 15,732,168 bytes when measured. A 30-day retention
+policy was applied on 2026-09-15, added to Terraform in private API PR #20, and
+the pre-existing log group was imported into remote Terraform state.
 
 ## Data and dormant-resource baseline
 
@@ -181,8 +177,16 @@ policy should be added in a separately reviewed infrastructure change.
   items, and occupies 7,490,434 bytes. Current API and scraper code use MongoDB,
   so this table is a retained rollback/legacy surface rather than the active
   catalog source.
-- The configured Atlas tier is `M0`/Free. Live quota consumption was not
-  available for this report.
+- The Atlas cluster is `M0`/Free. The authenticated dashboard reported 116 KB
+  of 512 MB in use, approximately 0.023% of the storage allowance.
+- For the dashboard's 2026-08-16 through 2026-09-15 window at one-hour
+  granularity, active connections were normally one or two and peaked around
+  four; operation counters were generally below 0.01 operations/second with
+  brief peaks near 0.08; network throughput was generally near zero with brief
+  peaks at or below roughly 200 bytes/second. M0 exposes charted rates rather
+  than an aggregate transfer total.
+- Atlas billing showed no invoiceable amount or payment method. Together with
+  the active M0 tier, no paid Atlas usage was observed.
 - Terraform state bucket versioning is enabled. The measured state bucket has
   24 object versions totalling 893,337 bytes and no delete markers.
 - One legacy ECR repository retains two mutable images totalling 792,296,408
@@ -280,9 +284,30 @@ additional Parameter Store storage or interaction charge under the dated AWS
 pricing conditions. KMS request eligibility and count were not separately
 available. See the linked platform-source note before making any cost claim.
 
-Vercel and Atlas account usage remain unavailable. Consequently this report
-does not establish a `$0` project cost, Vercel Hobby eligibility, or Atlas quota
-headroom.
+Authenticated vendor dashboards completed the remaining usage baseline:
+
+| Vercel metric | Takonbini, last 30 days | Hobby allocation shown by Vercel |
+| --- | ---: | ---: |
+| Fast data transfer | 72.88 MB | 100 GB |
+| Fast origin transfer | 28.74 MB | 10 GB |
+| Edge requests | 9.5K | 1M |
+| Edge request CPU | 1 second | 1 hour |
+| Function invocations | 8.3K | 1M |
+| Fluid provisioned memory | 8.2 GB-hours | 360 GB-hours |
+| Fluid active CPU | 48 minutes 37 seconds | 4 hours |
+| Web Analytics events | 16 | Dashboard count only |
+| Build CPU | 14 minutes | Dashboard count only |
+| Function duration | 0 GB-hours | 100 GB-hours |
+
+The Vercel billing page identified the team as **Hobby Plan — Active**. The
+displayed team-wide values also remained within the Hobby allocations; the
+highest percentage shown was Fluid Active CPU at about 20.7%. Takonbini is
+therefore eligible to remain on Hobby under the measured usage conditions.
+
+Atlas reported the M0/Free storage and activity headroom recorded above. No
+invoiceable Atlas amount was shown. AWS remains the only measured nonzero
+account cost, and its approximately USD 0.367 total is account-wide rather than
+Takonbini-attributable.
 
 ## Rollback ownership and procedures
 
@@ -328,7 +353,13 @@ Store and refers to a database credential that has since been rotated.
 5. Verify authenticated API list/detail requests and the public web proxy.
 6. Retain both slots until the observation window passes.
 
-This procedure is documented but not yet drilled.
+The procedure was drilled on 2026-09-15. The Parameter Store pointer was moved
+from green to the inactive blue credential and the Lambda environment was
+recycled. An authenticated `GET /products?limit=1` returned HTTP 200 with a
+valid products array. The pointer was then restored to green, the Lambda was
+recycled again, and the same request returned HTTP 200. The empty array on both
+requests matches the catalog baseline. The original Lambda description and
+green production pointer were restored; the drill performed no data mutation.
 
 ### Scraper
 
@@ -350,7 +381,12 @@ sitemap, robots, SSR, and hydration before declaring recovery. An old Vercel
 deployment alone is not a durable rollback artifact; the Git commit and
 reproducible build remain authoritative.
 
-This procedure is documented but was not exercised during Phase 0.
+The live web rollback was explicitly deferred for Phase 0. Replacing a healthy
+production release solely to test rollback would introduce avoidable user
+impact. The immutable Git target, reproducible build, Vercel Git integration,
+preview deployment, and public production routes were all independently
+verified. A live rollback remains mandatory when a real web regression or a
+planned maintenance window supplies an appropriate trigger.
 
 ### Terraform and AWS identity
 
@@ -367,20 +403,17 @@ MFA-protected human administrator is the break-glass/bootstrap path.
 | Credential artifacts absent and affected database credential rotated | Pass | Zero retained Actions artifacts; production uses the rotated application credential through Parameter Store. |
 | Deployment succeeds with temporary credentials | Pass | OIDC deployment completed successfully, including authenticated smoke verification. |
 | Long-lived deployment keys removed or accepted exception recorded | Pass | GitHub has no AWS deployment secrets, and the unused legacy scraper key was deleted with its Terraform resource, outputs, and state record. |
-| Dated baseline records commits and conditions | Pass | This report records production references, dates, tools, windows, and measurement conditions. Vercel and Atlas account usage gaps are explicit. |
-| Rollback owners and commands documented | Pass for documentation; drills pending | API, database pointer, scraper, web, and infrastructure procedures are recorded above. API version `2` was invoked directly; database-pointer and web rollback were not exercised. |
+| Dated baseline records commits and conditions | Pass | This report records production references, dates, tools, windows, and measurement conditions, including authenticated Vercel and Atlas usage. |
+| Rollback owners and commands documented | Pass | API, database pointer, scraper, web, and infrastructure procedures are recorded. API version `2` was invoked directly, the database pointer drill passed, and the live web drill has a documented risk-based deferral. |
 
-## Remaining closeout actions
+## Closeout record
 
-1. Capture Vercel plan, eligibility, and 30-day usage from the authenticated
-   dashboard.
-2. Capture live Atlas tier and 30-day storage, connections, operations, and
-   transfer; record the accepted network-access posture.
-3. Run the database credential-pointer rollback drill and return to the chosen
-   active slot. Exercise or explicitly defer the web rollback drill.
-4. Add a bounded CloudWatch log-retention policy in a separate reviewed change.
+- Vercel plan, eligibility, and project-specific 30-day usage captured.
+- Atlas M0 storage and 30-day operational headroom captured; broad network
+  access recorded as a temporary accepted exception with compensating controls.
+- Database credential-pointer rollback drilled and green restored; live web
+  rollback explicitly deferred with rationale.
+- CloudWatch log retention bounded at 30 days and brought under Terraform.
 
-The first three are unresolved exit-gate groups. Log retention is a bounded
-hardening follow-up identified by the baseline. Update issue #20 as each item
-is completed or explicitly accepted, and close it only when the exit gate is
-satisfied.
+No Phase 0 closeout actions remain. Issue #20 can be closed and Phase 1 may
+begin.
