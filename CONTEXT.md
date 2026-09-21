@@ -28,6 +28,14 @@ _Avoid_: Active version, current database state
 Evidence that a supported store listed a product at a particular time; it does not guarantee real-time inventory or availability at a specific location.
 _Avoid_: Stock status, inventory status
 
+**Lifecycle Episode**:
+One continuous active-to-inactive lifetime of a store product, beginning on observation and ending at its logical expiry. A returning product begins a new episode only after the previous episode has logically expired.
+_Avoid_: Product lifetime, availability session
+
+**Product Lifecycle**:
+The canonical active or inactive status of a store product within its current Lifecycle Episode, including the number of consecutive successful absences.
+_Avoid_: Inventory state, TTL status
+
 **Product Translation**:
 A reusable English and Chinese rendering of a product's Japanese source title and description, independent of whether the product is currently active in the catalog.
 _Avoid_: Translated product, localized record
