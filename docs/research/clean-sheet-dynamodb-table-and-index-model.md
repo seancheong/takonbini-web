@@ -18,6 +18,7 @@ This replaces the historical one-table/four-GSI Terraform shape as a design cons
 
 - [Wayfind the clean-sheet DynamoDB catalog migration](https://github.com/seancheong/takonbini-web/issues/36)
 - [Choose the DynamoDB product lifecycle model](https://github.com/seancheong/takonbini-web/issues/38)
+- [Choose the catalog and search publication protocol](https://github.com/seancheong/takonbini-web/issues/44)
 - [Clean-sheet DynamoDB access patterns and invariants](https://github.com/seancheong/takonbini-web/blob/42f3dbf4cd87819a416ab352d00c463bd8b0053b/docs/research/dynamodb-access-patterns-and-invariants.md)
 - [Multilingual product search below RM1 per month](https://github.com/seancheong/takonbini-web/blob/8e03581/docs/research/dynamodb-search-below-rm1.md)
 - [Merged multilingual search prototype](https://github.com/seancheong/takonbini-api/pull/37) and [Tokyo DynamoDB measurement](https://github.com/seancheong/takonbini-api/pull/38)
@@ -112,9 +113,9 @@ Strongly query each active generation partition with `begins_with(SK, "PRODUCT#"
 
 ### Free-text search
 
-Derive `snapshotId` from the three ordered `(store, pointer version, generation ID)` tuples. Strongly read that Publication Snapshot's Search Projection manifest and ordered chunks on a cold load, verify pointer coverage, byte count, document count, and SHA-256 checksum, then deserialize and cache by snapshot identity. One snapshot-level projection gives global relevance, price, and recency ordering across stores and uses the already-prototyped single-index cursor behavior. If loading or querying the Search Projection fails, direct structured browse remains available.
+Derive `snapshotId` from the three ordered `(store, pointer version, generation ID)` tuples plus the projection-format and search-library versions. Strongly read that Publication Snapshot's Search Projection manifest and ordered chunks on a cold load, verify pointer coverage, byte count, document count, and SHA-256 checksum, then deserialize and cache by snapshot identity. One snapshot-level projection gives global relevance, price, and recency ordering across stores and uses the already-prototyped single-index cursor behavior. If loading or querying the Search Projection fails, direct structured browse remains available; the API never substitutes a stale projection.
 
-#44 owns the exact coordination protocol that builds this immutable snapshot projection before a store pointer advances and makes the candidate generation's target search-snapshot identity agree with the resulting three-store Publication Snapshot.
+The exact build, publication, rollback, repair, version-upgrade, and cleanup rules are specified in [Catalog and search publication protocol](./catalog-search-publication-protocol.md).
 
 The search prototype measured a 5,000-product conservative projection at 532,773 compressed bytes in two chunks; its Tokyo read-back consumed 132 strongly consistent read capacity units and passed checksum verification. Evidence is in [takonbini-api PR #38](https://github.com/seancheong/takonbini-api/pull/38).
 
@@ -130,6 +131,7 @@ The search prototype measured a 5,000-product conservative projection at 532,773
 | Work chunk | same run PK | `ATTEMPT#<n>#CHUNK#<manifest-digest>#<ordinal>` | ordered chunk-prefix query; conditional lease/state update |
 | Terminal summary | same run PK | `SUMMARY#<attempt>` | create-if-absent; optional `expiresAt` |
 | Store lease | `LEASE#STORE#<store>` | `HEAD` | exact conditional get/update |
+| Global publication lease | `LEASE#PUBLICATION` | `HEAD` | exact conditional get/update; fences snapshot completion and every pointer-changing transaction |
 | Translation miss | `GEN#<store>#<generation>` | `TRANSLATION_MISS#<productId>` | bounded generation prefix query and conditional state update |
 | Alert | `ALERT#<deterministic-id>` | `HEAD` | create-if-absent deduplication |
 | Cleanup progress | `CLEANUP#GEN#<store>#<generation>` or `CLEANUP#SNAPSHOT#<snapshotId>` | `HEAD` | conditional state/cursor update |
@@ -198,14 +200,15 @@ Unbounded work happens before the publication transaction:
 
 Lifecycle evaluation includes observed products and products carried forward after their first successful absence. It writes immutable `LIFECYCLE_DELTA` items but does not advance canonical lifecycle counters before publication. After the pointer transaction succeeds, recovery applies those deltas with episode, revision, and observation-identity conditions; replaying the same store/week publication cannot increment absence twice. The store lease and run state prevent a later refresh from proceeding until count-and-digest-verified lifecycle reconciliation completes.
 
-Publication is one `TransactWriteItems` request containing five actions for the three-store system:
+Normal Store Publication is one `TransactWriteItems` request containing six actions for the three-store system:
 
-- update the candidate store's `STORE#<store> / PUBLICATION` only when its version and previous generation equal the values observed by the publisher;
+- condition-check the global publication lease's owner, fencing revision, and unexpired deadline;
+- update the candidate store's `STORE#<store> / PUBLICATION` only when its version and current generation equal the values observed by the publisher;
 - condition-check each of the other two store pointers at the exact version and generation used to build the target Publication Snapshot;
 - condition-check `SNAPSHOT#<snapshotId> / META` is complete, covers the exact resulting three pointer tuples, has the expected checksum/document count, and is not cleanup-eligible; and
 - update `GEN#<store>#<generation> / META` only when its state is `complete`, its expected revision matches, and all product/browse/search validation digests are present.
 
-The transaction advances the pointer/version, durably records `previousGenerationId`, pins the other two store versions, proves the exact snapshot search projection is ready, and changes the generation state to `published`. The generation metadata already binds the expected target search-snapshot identity and digest. DynamoDB does not allow a separate condition check and update against the same item in one transaction, so each updated item carries its own condition expression.
+The transaction advances the pointer/version, durably records `previousGenerationId`, pins the other two store versions, proves the exact snapshot search projection is ready, verifies the publication fence, and changes the generation state to `published`. The generation metadata already binds the expected target search-snapshot identity and digest. DynamoDB does not allow a separate condition check and update against the same item in one transaction, so each updated item carries its own condition expression. A deterministic `ClientRequestToken` supplements state-based recovery during DynamoDB's ten-minute idempotency window. [AWS TransactWriteItems](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_TransactWriteItems.html)
 
 The pointer update is the public visibility linearization point. Refresh-run and predecessor-retention bookkeeping follows idempotently. If execution stops after the transaction, recovery sees that the pointer already selects the generation, verifies its version/digest, and finishes bookkeeping without republishing.
 
@@ -213,7 +216,7 @@ The pointer update is the public visibility linearization point. Refresh-run and
 
 The API reads the three store publication pointers with one `TransactGetItems` call, giving the Publication Snapshot one atomic view across stores. Product-detail, browse, sitemap, and Search Projection cold-load reads set `ConsistentRead: true`. All data is queried from base tables, where DynamoDB supports strong consistency.
 
-A Publication Snapshot contains the three `(store, pointer version, generation ID)` tuples. Every browse or search request loads one snapshot. A cursor created under another snapshot is stale and is rejected rather than mixing generations.
+A Publication Snapshot contains the three `(store, pointer version, generation ID)` tuples plus the projection/search contract versions. Every browse or search request loads one snapshot. A cursor created under another snapshot is stale and is rejected rather than mixing generations. Search caches are keyed by the complete snapshot identity; an in-flight request may finish on the snapshot it loaded, but a later request cannot select that cache entry after the pointers change.
 
 ## Browse cursor
 
@@ -236,7 +239,7 @@ TTL uses an optional numeric `expiresAt` attribute containing Unix epoch seconds
 
 TTL never determines public visibility or Lifecycle Episode identity. Reads interpret explicit state and Publication Snapshot membership; expired records can remain stored and readable until DynamoDB's asynchronous deletion occurs.
 
-Superseded generation deletion is not delegated to TTL because TTL does not cascade and stamping thousands of existing items would require thousands of update writes. After #44's retention deadline, a cleanup worker:
+Superseded generation deletion is not delegated to TTL because TTL does not cascade and stamping thousands of existing items would require thousands of update writes. Each store's current generation and immediate predecessor remain protected. After every reference is removed and a 24-hour grace elapses, a cleanup worker:
 
 1. uses a transaction to verify no pointer selects the generation and irreversibly transition its metadata from retained to `cleanup-eligible`;
 2. reads the Browse Projection manifest to enumerate every derived partition;
@@ -246,7 +249,7 @@ Superseded generation deletion is not delegated to TTL because TTL does not casc
 
 Every pointer-changing transaction rejects a target generation in `cleanup-eligible` or `cleanup-complete` state, making cleanup eligibility irrevocable and removing the read/delete race. Cleanup is resumable from an exact collection/continuation cursor.
 
-Search snapshots have independent cleanup state because one snapshot projection covers three generations. A snapshot becomes cleanup-eligible only after #44 proves that no current Publication Snapshot, rollback-eligible predecessor, or candidate/complete generation references its identity. Its worker then deletes the snapshot metadata, manifest, and chunks in bounded resumable batches. A concurrent publisher condition-checks snapshot state and either commits before cleanup eligibility or fails cleanly and rebuilds against the new state.
+Search snapshots have independent cleanup state because one snapshot projection covers three generations. A snapshot becomes cleanup-eligible only after its 24-hour unreferenced grace and proof that no current Publication Snapshot, unpublished generation binding, Publication Repair, or rollback references its identity. Its worker then deletes the snapshot metadata, manifest, and chunks in bounded resumable batches. A concurrent publisher condition-checks snapshot state and either commits before cleanup eligibility or fails cleanly and rebuilds against the new state.
 
 ## Access-pattern proof
 
@@ -257,6 +260,7 @@ Search snapshots have independent cleanup state because one snapshot projection 
 | Save/read manifest | conditional `PutItem`; prefix `Query` | 350 KiB segments; digest reconciliation |
 | List/acquire chunks | run-prefix `Query`; conditional `UpdateItem` | deterministic bounded chunk count |
 | Store lease | conditional `UpdateItem` | exact item; owner + fence + expiry |
+| Global publication lease | conditional `UpdateItem` | serializes snapshot binding/build/publish; owner + fence + expiry |
 | Save generation product | conditional `PutItem` | exact immutable key and digest |
 | Verify generation | strong generation `Query` plus manifests | complete ID/count/digest coverage |
 | Reconcile lifecycle | generation-prefix `Query`; conditional `UpdateItem` / `PutItem` | immutable delta count and digest; episode/revision/observation fencing |
@@ -267,7 +271,7 @@ Search snapshots have independent cleanup state because one snapshot projection 
 | Browse | strong `Query` on 1–24 browse partitions | 400 candidates; 20 results; merge cursor |
 | Free-text search | strong manifest/chunk reads on cold load | checksum verified; warm reads in memory |
 | Sitemap | strong product-prefix `Query` per active generation | three generation partitions |
-| Publish generation | five actions in one transaction | target update + two peer-pointer checks + snapshot check + generation update |
+| Publish generation | six actions in one transaction | publication-lease check + target update + two peer-pointer checks + snapshot check + generation update |
 | Delete old generation | bounded `Query` + batch deletes | irrevocably ineligible first; resumable |
 | Delete old search snapshot | bounded `Query` + batch deletes | no current/rollback reference; resumable |
 
@@ -280,6 +284,7 @@ There is no production request-path `Scan`. Offline diagnostics may scan only wi
 - A conditional immutable-write conflict with unequal content blocks the run.
 - Exhausted candidate budget returns the matches found, a cursor when work remains, and `exhausted: false`; the client continues an empty non-exhausted page and never reports a final zero-match state early.
 - A pointer race rejects the losing publisher. It must reload the pointer and cannot overwrite a newer/same-week generation.
+- An unknown publication result is resolved by strong state reads: exact target resumes post-commit work, exact base may retry under the same fence, and any third state is a conflict.
 - A lifecycle reconciliation mismatch is an integrity failure: it freezes the next refresh and records an alert rather than force-writing canonical state.
 - A stale cursor is rejected explicitly; it never resumes against a new Publication Snapshot.
 - A cleanup interruption resumes from recorded progress. Irrevocable `cleanup-eligible` state prevents any pointer from reselecting the generation or search snapshot while batches run.
@@ -312,7 +317,6 @@ Rejected because first-absence carry-forward, reactivation, replay-safe counters
 
 ## Decisions deliberately deferred
 
-- #44 owns cross-store search/browse publication coordination, predecessor retention duration, and rollback protocol.
 - #39 owns Terraform module boundaries, provisioned versus on-demand capacity, budgets, alarms, backups, deletion protection, and the final RM1 cost worksheet.
 - Production implementation must benchmark Browse Projection item count/bytes, candidate-read amplification, cursor size, strong-read capacity, cleanup duration, and the complete API's 205 MiB peak-RSS gate before public cutover.
 
@@ -324,5 +328,7 @@ Rejected because first-absence carry-forward, reactivation, replay-safe counters
 4. Prove no duplicates or omissions across cursors, including products present in multiple selected region partitions, and reject changed-snapshot cursors.
 5. Demonstrate conditional conflict detection for every immutable entity.
 6. Interrupt publication immediately before and after the transaction and prove idempotent recovery.
-7. Race rollback/publication against generation and search-snapshot cleanup eligibility, then interrupt cleanup after each batch and prove it resumes without any artifact becoming both selectable and deletable.
-8. Record consumed capacity for generation build, publication, cold search load, browse, detail, sitemap, and cleanup.
+7. Interrupt a Search Projection build at every chunk, expire its lease, and prove a new fenced owner resumes identical content.
+8. Exercise initial three-store bootstrap, one-store publication, rollback with inverse lifecycle reconciliation, same-week repair, and projection-maintenance publication.
+9. Race rollback/publication against generation and search-snapshot cleanup eligibility, then interrupt cleanup after each batch and prove it resumes without any artifact becoming both selectable and deletable.
+10. Record consumed capacity for generation build, publication, cold search load, browse, detail, sitemap, and cleanup.
