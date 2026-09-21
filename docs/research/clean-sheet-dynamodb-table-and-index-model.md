@@ -17,6 +17,7 @@ This replaces the historical one-table/four-GSI Terraform shape as a design cons
 ## Inputs
 
 - [Wayfind the clean-sheet DynamoDB catalog migration](https://github.com/seancheong/takonbini-web/issues/36)
+- [Choose the DynamoDB product lifecycle model](https://github.com/seancheong/takonbini-web/issues/38)
 - [Clean-sheet DynamoDB access patterns and invariants](https://github.com/seancheong/takonbini-web/blob/42f3dbf4cd87819a416ab352d00c463bd8b0053b/docs/research/dynamodb-access-patterns-and-invariants.md)
 - [Multilingual product search below RM1 per month](https://github.com/seancheong/takonbini-web/blob/8e03581/docs/research/dynamodb-search-below-rm1.md)
 - [Merged multilingual search prototype](https://github.com/seancheong/takonbini-api/pull/37) and [Tokyo DynamoDB measurement](https://github.com/seancheong/takonbini-api/pull/38)
@@ -72,7 +73,7 @@ Mutable control items carry a monotonic `revision`. Every competing update suppl
 | Search manifest | `SNAPSHOT#<snapshotId>` | `SEARCH#MANIFEST` | format/library version, chunk/byte/document counts, checksum |
 | Search chunk | `SNAPSHOT#<snapshotId>` | `SEARCH#CHUNK#<ordinal>` | DynamoDB Binary projection bytes, at most 350 KiB decoded |
 | Browse entry | `BROWSE#<store>#<generation>#C#<category-or-ALL>#R#<region-or-ALL>#O#<order>` | `<normalized-order-tuple>#PRODUCT#<productId>` | product card projection and filter fields |
-| Product lifecycle | `PRODUCT#<store>#<productId>` | `LIFECYCLE` | reserved for #38: observation/absence state, `lastAppliedPublicationIdentity`, optional `expiresAt` |
+| Product lifecycle | `PRODUCT#<store>#<productId>` | `LIFECYCLE` | compact canonical Lifecycle Episode: state, consecutive-successful-absence count, episode identity, revision, last-applied observation identity, inactivity time, optional logical-expiry time |
 
 `<order>` is one of `RECENCY_DESC`, `PRICE_ASC`, or `PRICE_DESC`. Separate normalized encodings preserve product-ID ascending as the deterministic tie-breaker for every direction. `RECENCY_DESC` encodes `isNew` descending, known release dates before missing dates, release date descending, then product ID ascending. Status filtering still evaluates the JST request date because `soon` and other time-relative states cannot be frozen into an immutable ordering key.
 
@@ -139,6 +140,27 @@ Listing runnable chunks queries one run/attempt/manifest prefix and evaluates th
 
 Candidate Generation products live in the Catalog table from their first write but remain invisible because no store publication pointer selects them. Refresh records retain only their generation reference and validation evidence.
 
+## Product lifecycle
+
+The stable product identity is `(store, product ID)`. Its canonical lifecycle item is compact: it contains identity, the opaque Lifecycle Episode identity, `active` or `inactive` state, a consecutive-successful-absence count of `0`, `1`, or `2`, `revision`, `lastAppliedPublicationIdentity`, last-observed source identity, and optional `inactiveAt` / numeric `expiresAt`. It does not duplicate the complete product payload; authoritative payloads remain immutable generation products.
+
+A new product starts an active Lifecycle Episode at absence `0`. For every accepted store observation period, candidate construction strongly reads the reconciled prior publication and relevant lifecycle items, then writes immutable `LIFECYCLE_DELTA` items bound to the candidate generation, prior episode/revision/state, and next state. The only ordinary transitions are:
+
+| Prior condition | Resulting lifecycle | Candidate Generation membership |
+| --- | --- | --- |
+| first observation | active, absence `0`, new episode | include observed product |
+| observed active product | active, absence `0` | include observed product |
+| first successful absence | active, absence `1` | carry forward the prior authoritative product |
+| second consecutive successful absence | inactive, absence `2`, set `inactiveAt` | omit product |
+| observed inactive product before logical expiry | active, absence `0`, clear inactivity and expiry | include observed product |
+| absent inactive product | unchanged | omit product |
+
+Only a successfully published frozen generation is an observation. A failed, blocked, stale, duplicate, or safety-gated refresh never advances absence. Translation failure with approved Japanese fallback still counts as an observation because the source product is verified and published. The deterministic observation identity is `(store, JST week start)`; it may be applied once, and a later observation period must be strictly newer. Exact retries converge, while a materially different second publication for the same period is rejected from normal refresh and belongs to #44's repair or rollback protocol.
+
+Logical expiry occurs at `inactiveAt + 30 days`, using the pointer transaction's committed publication time. TTL performs only physical cleanup. An item may remain physically stored after its deadline, but a reappearance at or after logical expiry conditionally replaces it with a new Lifecycle Episode; it never resumes the expired episode. Reappearance before that deadline reactivates the existing episode and removes its TTL attribute. A source-content change with the same store product ID remains in the same episode, while its Product Translation identity changes. Product Translations remain independently non-TTL.
+
+Lifecycle state is not updated before public publication. The pointer transaction makes the already lifecycle-filtered candidate generation visible. Recovery then applies each staged delta conditionally: an exact already-applied result succeeds, an exact expected prior state advances, and a new/logically expired episode may be conditionally created or replaced. Any other mismatch is an integrity failure: reconciliation stops, the next store refresh remains blocked, and an alert is recorded. A generation records the lifecycle-delta count and digest; reconciliation completes only after deterministic batched application proves the same count and digest. Crash recovery always resumes forward from the selected published generation rather than automatically rolling it back.
+
 ## Translations table
 
 The Translations table has a single string partition key named `PK` and no sort key:
@@ -168,13 +190,13 @@ Each immutable item is written using `PutItem` with `attribute_not_exists(PK)` a
 Unbounded work happens before the publication transaction:
 
 1. write authoritative generation products;
-2. compute the lifecycle-approved active set and immutable staged lifecycle transitions owned by #38;
+2. compute the lifecycle-approved active set and immutable staged lifecycle transitions defined below;
 3. build every Browse Projection entry and its manifest;
 4. build the target Publication Snapshot's Search Projection chunks and manifest;
 5. strongly read back and reconcile frozen product IDs, counts, identities, and aggregate digests; and
 6. conditionally transition generation metadata from `candidate` to `complete`.
 
-Lifecycle evaluation includes observed products and products carried forward after their first successful absence. It writes immutable `LIFECYCLE_DELTA` items but does not advance canonical lifecycle counters before publication. After the pointer transaction succeeds, recovery applies those deltas to canonical lifecycle items with a condition on `lastAppliedPublicationIdentity`; replaying the same store/week publication cannot increment absence twice. The store lease and run state prevent a later refresh from proceeding until this replay-safe bookkeeping completes. #38 owns the exact states and transitions.
+Lifecycle evaluation includes observed products and products carried forward after their first successful absence. It writes immutable `LIFECYCLE_DELTA` items but does not advance canonical lifecycle counters before publication. After the pointer transaction succeeds, recovery applies those deltas with episode, revision, and observation-identity conditions; replaying the same store/week publication cannot increment absence twice. The store lease and run state prevent a later refresh from proceeding until count-and-digest-verified lifecycle reconciliation completes.
 
 Publication is one `TransactWriteItems` request containing five actions for the three-store system:
 
@@ -208,11 +230,11 @@ Plan partition keys are derived from the signed query fingerprint and need not b
 
 TTL uses an optional numeric `expiresAt` attribute containing Unix epoch seconds on Catalog and Refresh, but only for independently expirable records:
 
-- an inactive lifecycle item becomes TTL-eligible 30 days after inactivation, subject to #38;
+- an inactive lifecycle item becomes TTL-eligible 30 days after inactivation;
 - terminal workflow artifacts may receive `expiresAt` only after the run is terminal; and
 - active publication pointers, active Catalog Generations, and Product Translations never receive TTL.
 
-TTL never determines public visibility. Reads interpret explicit state and Publication Snapshot membership; expired records can remain stored and readable until DynamoDB's asynchronous deletion occurs.
+TTL never determines public visibility or Lifecycle Episode identity. Reads interpret explicit state and Publication Snapshot membership; expired records can remain stored and readable until DynamoDB's asynchronous deletion occurs.
 
 Superseded generation deletion is not delegated to TTL because TTL does not cascade and stamping thousands of existing items would require thousands of update writes. After #44's retention deadline, a cleanup worker:
 
@@ -237,6 +259,7 @@ Search snapshots have independent cleanup state because one snapshot projection 
 | Store lease | conditional `UpdateItem` | exact item; owner + fence + expiry |
 | Save generation product | conditional `PutItem` | exact immutable key and digest |
 | Verify generation | strong generation `Query` plus manifests | complete ID/count/digest coverage |
+| Reconcile lifecycle | generation-prefix `Query`; conditional `UpdateItem` / `PutItem` | immutable delta count and digest; episode/revision/observation fencing |
 | Reuse translation | exact `GetItem`; conditional `PutItem` | one source-identity item |
 | Recover translation misses | generation-prefix `Query` | one bounded recovery pass |
 | Read publication snapshot | `TransactGetItems` | exactly three pointer keys in one atomic view |
@@ -257,6 +280,7 @@ There is no production request-path `Scan`. Offline diagnostics may scan only wi
 - A conditional immutable-write conflict with unequal content blocks the run.
 - Exhausted candidate budget returns the matches found, a cursor when work remains, and `exhausted: false`; the client continues an empty non-exhausted page and never reports a final zero-match state early.
 - A pointer race rejects the losing publisher. It must reload the pointer and cannot overwrite a newer/same-week generation.
+- A lifecycle reconciliation mismatch is an integrity failure: it freezes the next refresh and records an alert rather than force-writing canonical state.
 - A stale cursor is rejected explicitly; it never resumes against a new Publication Snapshot.
 - A cleanup interruption resumes from recorded progress. Irrevocable `cleanup-eligible` state prevents any pointer from reselecting the generation or search snapshot while batches run.
 
@@ -282,9 +306,12 @@ Rejected by the approved search research and prototype. No token-per-product ite
 
 Rejected because TTL is per item and asynchronous. It would require rewriting every immutable generation item to add expiry and still could not define visibility.
 
+### Lifecycle state derived only from generations
+
+Rejected because first-absence carry-forward, reactivation, replay-safe counters, and the 30-day inactive retention window require a compact canonical lifecycle owner. Deriving state by scanning or folding generations would make publication recovery unbounded and leave no stable fence for delayed writes.
+
 ## Decisions deliberately deferred
 
-- #38 owns exact two-successful-absence transitions, lifecycle state fields, replay protection, and the 30-day inactive timestamp.
 - #44 owns cross-store search/browse publication coordination, predecessor retention duration, and rollback protocol.
 - #39 owns Terraform module boundaries, provisioned versus on-demand capacity, budgets, alarms, backups, deletion protection, and the final RM1 cost worksheet.
 - Production implementation must benchmark Browse Projection item count/bytes, candidate-read amplification, cursor size, strong-read capacity, cleanup duration, and the complete API's 205 MiB peak-RSS gate before public cutover.
