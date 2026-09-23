@@ -1,5 +1,9 @@
 # Phase 2 amendment: local Store Refresh execution
 
+> The local Mac execution choice and workstation-impact gate remain in force.
+> The MongoDB-backed shadow, publication, API cutover, and schedule timing below
+> are superseded by the [fresh-start DynamoDB cutover plan](./fresh-start-dynamodb-cutover-and-mongodb-retirement.md).
+
 **Status:** Accepted
 
 **Decided:** 2026-09-19
