@@ -111,7 +111,7 @@ read path, not a guaranteed populated catalog.
 | API code regression | Return the production alias to a recorded, verified DynamoDB-reading Lambda version. |
 | Search Projection missing, corrupt, or incompatible | Keep direct browse available and perform the approved projection-maintenance publication; never serve an older snapshot's search data. |
 | Defective later Store Publication | If the immediate predecessor is still eligible, the maintainer authorizes fenced pointer rollback and inverse lifecycle reconciliation. |
-| Defective initial bootstrap generation | No predecessor exists. Correct through a validated repair or a fresh generation; do not promise pointer rollback. |
+| Defective initial bootstrap generation | No predecessor exists, so same-period Publication Repair and pointer rollback are unavailable. Rebuild a fresh validated three-store catalog; projection-only defects use projection maintenance. |
 | Whole-table or account loss | Rebuild a fresh validated three-store catalog from empty tables. No RTO or RPO is promised. |
 
 The former Mongo-reading Lambda version, Mongo credential-pointer drill, and
