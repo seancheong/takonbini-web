@@ -105,46 +105,29 @@ graph TD
         Lambda_API --> Mongo[(MongoDB Atlas: Products)]
     end
 
-    subgraph "Scraping Pipeline (Future)"
-        direction TB
-        subgraph "Lawson Pipeline"
-            Sch_Lawson[Scheduler: Lawson] -->|Trigger| L_Lawson[Fargate: Lawson Scraper]
-            L_Lawson -->|Scrape| Site_Lawson[Lawson Website]
-        end
-
-        subgraph "FamilyMart Pipeline"
-            Sch_FM[Scheduler: FamilyMart] -->|Trigger| L_FM[Fargate: FamilyMart Scraper]
-            L_FM -->|Scrape| Site_FM[FamilyMart Website]
-        end
-
-        subgraph "7-Eleven Pipeline"
-            Sch_711[Scheduler: 7-Eleven] -->|Trigger| L_711[Fargate: 7-Eleven Scraper]
-            L_711 -->|Scrape| Site_711[7-Eleven Website]
-        end
-
-        L_Lawson & L_FM & L_711 -->|Translating...| OpenAI[OpenAI API]
-        L_Lawson & L_FM & L_711 -->|Save Metadata| Mongo
-    end
-```
-
-```mermaid
-graph LR
-    subgraph "MVP: Local Scraper"
-        Dev[Local Runner] -->|Scrape + Translate| OpenAI
-        Dev -->|Upsert| Mongo[(MongoDB Atlas: Products)]
+    subgraph "Local Store Refresh"
+        Manual[Manual command] --> Runner[Sequential local runner]
+        Schedule[Optional macOS launchd schedule] --> Runner
+        Runner --> Lawson[Lawson website]
+        Runner --> FamilyMart[FamilyMart website]
+        Runner --> SevenEleven[Seven-Eleven website]
+        Runner -->|Translate changed products| OpenAI[OpenAI API]
+        Runner -->|Persist workflow state and candidates| Mongo
     end
 ```
 
 ### Core Components
 
 #### Scraping Service (MVP: Local Execution)
-- **Technology:** Local Docker containers (orchestrated via Docker Compose).
-- **Runtime:** Node.js + Playwright (official image).
+- **Technology:** A local TypeScript runner using Node.js 22 and Playwright Chromium.
+- **Runtime:** The owner's Mac; hosted Chromium compute is not part of the accepted hobby-project path.
 - **Workflow:**
-  - **Trigger:** User manually runs `./run-scraper.sh`.
-  - **Execution:** Docker Compose spins up 3 isolated containers (`scraper-lawson`, `scraper-familymart`, `scraper-seven`).
-  - **Processing:** Each container scrapes, translates (OpenAI), and upserts data to MongoDB.
-- **Future Phase (Cloud):** Designed to migrate to Fargate, triggered by EventBridge.
+  - **Trigger:** The owner manually runs `./scripts/run-local-store-refresh.sh` from the private API repository.
+  - **Execution:** Lawson, FamilyMart, and Seven-Eleven run sequentially so one personal machine has predictable resource use. A local lock prevents overlapping manual and scheduled runs.
+  - **Processing:** The runner reuses frozen manifests, deterministic chunks, candidate generations, translation caching, and resumable workflow state. It forces shadow mode and keeps publication disabled until the manual acceptance gate passes.
+  - **Credentials:** MongoDB and OpenAI credentials live in a user-only file outside the repository.
+  - **Scheduling:** An optional macOS `launchd` job may be installed only after one complete manual three-store shadow refresh succeeds.
+- **Hosted execution:** Cloud Run Jobs and Apify were tested and rejected for the current unfunded personal-project constraints. Reconsider hosted execution only if funding, operational needs, or platform economics materially change.
 
 #### Database: MongoDB Atlas
 The application uses **MongoDB Atlas** with a single `products` collection to support flexible, multi-select filtering and sorting.
@@ -325,8 +308,8 @@ const results = await collection
 ```
 
 #### Deployment Strategy
-- `services/scraper` (MVP): Run locally via `./run-scraper.sh` and `.env.local`.
-- `services/scraper` (Future): Deployed to Fargate as a container image, triggered by EventBridge.
+- `services/scraper`: Run locally via `./scripts/run-local-store-refresh.sh`; optionally install the guarded macOS `launchd` schedule after the manual shadow gate passes.
+- Hosted scraper deployment is deferred. Cloud Run and Apify remain historical feasibility experiments rather than active deployment targets.
 - `services/api`: Deployed to AWS Lambda behind API Gateway.
 - `apps/web`: Deployed to Vercel, reading from MongoDB populated by the scraper.
 - Future scalability: Add `apps/api-server` to reuse `packages/types` and DB logic.
@@ -336,7 +319,7 @@ const results = await collection
 | Component | Choice | Reason |
 | :--- | :--- | :--- |
 | **IaC** | **Terraform** | Industry standard, robust state management. |
-| **Compute** | **AWS Fargate** | Low cost for periodic workloads. |
+| **Scraper compute** | **Owner's Mac** | Avoids hosted Chromium cost for a weekly personal-project workload and preserves the resumable workflow. |
 | **Engine** | **Node.js** + **Playwright** | Best-in-class support for headless browsing and dynamic content. |
 | **Language** | **TypeScript** | End-to-end type safety and code sharing. |
 | **Frontend** | **TanStack Start** | Modern, full-stack React framework. |
