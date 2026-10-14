@@ -1,9 +1,9 @@
-import type { PublicProduct } from "@/features/products/products.contracts";
+import type { ActiveCatalogProduct } from "@/features/products/products.contracts";
 import type { Language } from "@/i18n";
 
 export type LocalizedText =
-	| PublicProduct["title"]
-	| PublicProduct["description"];
+	| ActiveCatalogProduct["title"]
+	| ActiveCatalogProduct["description"];
 
 export const resolveLocalizedText = (
 	localizedText: LocalizedText,

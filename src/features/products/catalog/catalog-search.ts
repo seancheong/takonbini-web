@@ -2,7 +2,7 @@ import {
 	parseList,
 	parseNumber,
 } from "@/features/products/catalog/query-parsers";
-import type { ProductFilters } from "@/features/products/data/product-queries";
+import type { ProductFilters } from "@/features/products/products.contracts";
 import {
 	Category,
 	REGIONS,

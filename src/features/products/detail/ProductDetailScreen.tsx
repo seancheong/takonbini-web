@@ -29,7 +29,7 @@ import {
 import { isSafari } from "@/features/products/model/product-navigation";
 import type { Language } from "@/i18n";
 
-import type { ProductFilters } from "../data/product-queries";
+import type { ProductFilters } from "../products.contracts";
 export default function ProductDetailScreen({
 	id,
 	filters,

@@ -4,7 +4,7 @@ import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import ProductCard from "@/features/products/catalog/ProductCard";
-import type { PublicProduct } from "@/features/products/products.contracts";
+import type { ActiveCatalogProduct } from "@/features/products/products.contracts";
 
 const routerMocks = vi.hoisted(() => ({
 	navigate: vi.fn(),
@@ -54,14 +54,14 @@ vi.mock("react-i18next", () => ({
 	}),
 }));
 
-const product: PublicProduct = {
+const product: ActiveCatalogProduct = {
 	id: "product-1",
 	title: { ja: "抹茶", en: "Matcha" },
 	price: 180,
 	description: { ja: "説明" },
 	images: [],
 	url: "https://store.example.test/product-1",
-	store: "Lawson" as PublicProduct["store"],
+	store: "Lawson" as ActiveCatalogProduct["store"],
 };
 
 afterEach(() => {

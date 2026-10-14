@@ -3,11 +3,10 @@ import {
 	parseList,
 	parseNumber,
 } from "@/features/products/catalog/query-parsers";
-import {
-	type ProductFilters,
-	productsInfiniteQueryOptions,
-} from "@/features/products/data/product-queries";
+import { productsInfiniteQueryOptions } from "@/features/products/data/product-queries";
+import type { ProductFilters } from "@/features/products/products.contracts";
 import { Category, Store } from "@/features/products/products.contracts";
+import { catalogProduct } from "@/features/products/testing/catalog-fixtures";
 import { Route as imageRoute } from "@/routes/api.image";
 import { Route as productsRoute } from "@/routes/api.products";
 import { Route as productRoute } from "@/routes/api.products.$id";
@@ -245,9 +244,12 @@ describe("same-origin product API routes", () => {
 	it("forwards a product id and query to the upstream detail route", async () => {
 		vi.stubEnv("PRODUCTS_API_URL", "https://api.example.test/");
 		vi.stubEnv("PRODUCTS_API_KEY", "test-secret");
+		const product = catalogProduct({ id: "p/1" });
 		const fetchMock = vi
 			.fn()
-			.mockResolvedValue(new Response('{"id":"p/1"}', { status: 200 }));
+			.mockResolvedValue(
+				new Response(JSON.stringify(product), { status: 200 }),
+			);
 		vi.stubGlobal("fetch", fetchMock);
 
 		const response = await getHandler(productRoute)({
@@ -262,7 +264,7 @@ describe("same-origin product API routes", () => {
 			{ headers: { "x-api-key": "test-secret" } },
 		);
 		expect(response.status).toBe(200);
-		expect(await response.text()).toBe('{"id":"p/1"}');
+		expect(await response.json()).toEqual(product);
 	});
 
 	it("fails closed when upstream credentials are missing", async () => {

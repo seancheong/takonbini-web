@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import type { ProductFilters } from "../data/product-queries";
+import type { ProductFilters } from "../products.contracts";
 export default function ProductDetailError({
 	filters,
 }: {

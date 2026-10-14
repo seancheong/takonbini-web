@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export enum Store {
 	SEVEN_ELEVEN = "SevenEleven",
 	LAWSON = "Lawson",
@@ -56,32 +58,51 @@ export enum Category {
 	OTHER = "Other",
 }
 
-export interface Product {
-	id: string;
-	title: {
-		ja: string;
-		en?: string;
-		zh?: string;
-	};
-	price: number;
-	description: {
-		ja: string;
-		en?: string;
-		zh?: string;
-	};
-	isTranslated?: boolean;
-	images: string[];
-	url: string;
-	store: Store;
-	releaseDate?: string;
-	category?: Category;
-	regions?: Region[];
-	isNew?: boolean;
-	searchKeywords?: string;
-	ttl?: number;
-}
+export const localizedProductTextSchema = z.object({
+	ja: z.string(),
+	en: z.string().optional(),
+	zh: z.string().optional(),
+});
 
-export type PublicProduct = Omit<
-	Product,
-	"isTranslated" | "searchKeywords" | "ttl"
->;
+export const activeCatalogProductSchema = z.object({
+	id: z.string(),
+	title: localizedProductTextSchema,
+	price: z.number(),
+	description: localizedProductTextSchema,
+	images: z.array(z.string()),
+	url: z.string(),
+	store: z.enum(Store),
+	releaseDate: z.string().optional(),
+	category: z.enum(Category).optional(),
+	regions: z.array(z.enum(REGIONS)).optional(),
+	isNew: z.boolean().optional(),
+});
+
+export type ActiveCatalogProduct = z.infer<typeof activeCatalogProductSchema>;
+export const catalogPageSchema = z.object({
+	products: z.array(activeCatalogProductSchema),
+	nextCursor: z.string().optional(),
+});
+export type CatalogPage = z.infer<typeof catalogPageSchema>;
+export const catalogIndexPageSchema = z.object({
+	products: z.array(z.object({ id: z.string() })),
+	nextCursor: z.string().optional(),
+});
+
+export const productStatuses = [
+	"allWithoutSoon",
+	"new",
+	"soon",
+	"all",
+] as const;
+export type ProductStatus = (typeof productStatuses)[number];
+export type ProductFilters = {
+	search?: string;
+	stores?: Store[];
+	categories?: Category[];
+	regions?: Region[];
+	minPrice?: number;
+	maxPrice?: number;
+	limit?: number;
+	includeSoon?: boolean;
+};

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import CatalogControls from "@/features/products/catalog/CatalogControls";
 import ProductFilterDrawer from "@/features/products/catalog/CatalogFilters";
-import type { ProductFilters } from "@/features/products/data/product-queries";
+import type { ProductFilters } from "@/features/products/products.contracts";
 import { Category, Store } from "@/features/products/products.contracts";
 
 vi.mock("react-i18next", () => ({

@@ -4,9 +4,9 @@ import ProductPanel from "@/features/products/catalog/CatalogPanel";
 import { parseCatalogSearch } from "@/features/products/catalog/catalog-search";
 import {
 	defaultProductFilters,
-	type ProductFilters,
 	productsInfiniteQueryOptions,
 } from "@/features/products/data/product-queries";
+import type { ProductFilters } from "@/features/products/products.contracts";
 import i18n from "@/i18n";
 
 const normalizeSearch = (filters?: ProductFilters) => {

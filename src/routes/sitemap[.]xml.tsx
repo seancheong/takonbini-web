@@ -1,9 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-
-type ProductsResponse = {
-	products: Array<{ id: string }>;
-	nextCursor?: string;
-};
+import { getProductCatalogSource } from "@/features/products/products.server";
 
 const getSiteUrl = (request: Request) => {
 	const siteUrl = process.env.SITE_URL;
@@ -17,47 +13,6 @@ const getSiteUrl = (request: Request) => {
 
 const escapeXml = (value: string) =>
 	value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-const fetchAllProductIds = async () => {
-	const baseUrl = process.env.PRODUCTS_API_URL;
-	const apiKey = process.env.PRODUCTS_API_KEY;
-
-	if (!baseUrl || !apiKey) {
-		return [];
-	}
-
-	const ids: string[] = [];
-	let cursor: string | undefined;
-
-	for (let page = 0; page < 50; page += 1) {
-		const url = new URL(`${baseUrl}/products`);
-		url.searchParams.set("status", "all");
-		url.searchParams.set("limit", "100");
-
-		if (cursor) {
-			url.searchParams.set("cursor", cursor);
-		}
-
-		const response = await fetch(url.toString(), {
-			headers: { "x-api-key": apiKey },
-		});
-
-		if (!response.ok) {
-			break;
-		}
-
-		const payload = (await response.json()) as ProductsResponse;
-		ids.push(...payload.products.map((product) => product.id));
-
-		if (!payload.nextCursor) {
-			break;
-		}
-
-		cursor = payload.nextCursor;
-	}
-
-	return ids;
-};
 
 const buildSitemapXml = (siteUrl: string, ids: string[]) => {
 	const urls = [
@@ -86,7 +41,15 @@ export const Route = createFileRoute("/sitemap.xml")({
 			createHandlers({
 				GET: async ({ request }) => {
 					const siteUrl = getSiteUrl(request);
-					const ids = await fetchAllProductIds();
+					const result = await getProductCatalogSource().listIndexableIds();
+					// Preserve legacy partial sitemaps for HTTP failures and missing configuration.
+					if (
+						!result.ok &&
+						result.origin !== "http" &&
+						result.kind !== "misconfigured"
+					)
+						throw new Error("Unable to enumerate sitemap products");
+					const ids = result.ok ? result.value.ids : (result.partialIds ?? []);
 					const xml = buildSitemapXml(siteUrl, ids);
 
 					return new Response(xml, {

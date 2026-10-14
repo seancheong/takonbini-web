@@ -1,41 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-
-const buildUpstreamRequest = (request: Request, id: string) => {
-	const baseUrl = process.env.PRODUCTS_API_URL;
-	const apiKey = process.env.PRODUCTS_API_KEY;
-
-	if (!baseUrl || !apiKey) {
-		return {
-			error: new Response("Unknown Error", { status: 500 }),
-		};
-	}
-
-	const requestUrl = new URL(request.url);
-	const upstreamUrl = new URL(`${baseUrl}/products/${id}`);
-	upstreamUrl.search = requestUrl.search;
-
-	return {
-		url: upstreamUrl.toString(),
-		headers: { "x-api-key": apiKey },
-	};
-};
+import { getProductCatalogSource } from "@/features/products/products.server";
 
 export const Route = createFileRoute("/api/products/$id")({
 	server: {
 		handlers: ({ createHandlers }) =>
 			createHandlers({
-				GET: async ({ params, request }) => {
-					const upstream = buildUpstreamRequest(request, params.id);
-					if ("error" in upstream) return upstream.error;
-
-					const response = await fetch(upstream.url, {
-						headers: upstream.headers,
-					});
-
-					return new Response(response.body, {
-						status: response.status,
-						headers: response.headers,
-					});
+				GET: async ({ request, params }) => {
+					const source = getProductCatalogSource();
+					const parameters = new URL(request.url).searchParams;
+					const result = await source.find(params.id, parameters);
+					return new Response(
+						result.ok ? JSON.stringify(result.value) : result.body,
+						{ status: result.status, headers: result.headers },
+					);
 				},
 			}),
 	},

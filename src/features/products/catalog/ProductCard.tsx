@@ -1,10 +1,12 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { ProductFilters } from "@/features/products/data/product-queries";
 import { getProxiedImageUrl } from "@/features/products/model/product-images";
 import { isSafari } from "@/features/products/model/product-navigation";
-import type { PublicProduct } from "@/features/products/products.contracts";
+import type {
+	ActiveCatalogProduct,
+	ProductFilters,
+} from "@/features/products/products.contracts";
 import type { Language } from "@/i18n";
 import {
 	formatPrice,
@@ -20,7 +22,7 @@ import {
 } from "../model/product-labels";
 
 interface ProductCardProps {
-	product: PublicProduct;
+	product: ActiveCatalogProduct;
 	filters?: ProductFilters;
 }
 

@@ -1,7 +1,7 @@
 import { Search, X } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { ProductFilters } from "@/features/products/data/product-queries";
+import type { ProductFilters } from "@/features/products/products.contracts";
 import { Store } from "@/features/products/products.contracts";
 import {
 	categoryLabelKeys,
