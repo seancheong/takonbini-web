@@ -18,11 +18,23 @@ export default {
 			changeLanguage: "Change Language",
 		},
 		product: {
-			title: "Convenience Store Products",
+			title: "Find your next konbini favorite.",
 			subtitle:
-				"Browse currently available products across Japan’s convenience stores.",
+				"Explore products from Seven-Eleven, Lawson, and FamilyMart across Japan.",
+			catalogLabel: "Japan / Convenience store catalog",
+			allStores: "All stores",
+			results: "The catalog",
+			loadedCount: "{{count}} products loaded",
+			removeFilter: "Remove {{label}} filter",
+			availabilityNote:
+				"Products listed by the stores. Availability and prices may vary by location.",
+
 			loading: "Loading products...",
 			error: "Unable to load products right now. Please try again later.",
+			retry: "Try again",
+			noMatches:
+				"No products match your filters. Try another search or clear the filters.",
+			clearFilters: "Clear filters",
 			empty: "No products available yet.",
 			imageLoading: "Image is loading...",
 			releaseSoon: "Releasing soon",

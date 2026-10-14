@@ -82,6 +82,17 @@ describe("product card rendering and navigation", () => {
 		});
 	});
 
+	it("carries catalog filters into product detail navigation", () => {
+		const filters = { search: "matcha", minPrice: 100 };
+		render(<ProductCard product={product} filters={filters} />);
+		fireEvent.click(screen.getByRole("link", { name: "Matcha" }));
+		expect(routerMocks.navigate).toHaveBeenCalledWith({
+			to: "/products/$id",
+			params: { id: "product-1" },
+			search: filters,
+		});
+	});
+
 	it("hydrates server-rendered card markup without a recoverable mismatch", async () => {
 		const html = renderToString(<ProductCard product={product} />);
 		const container = document.createElement("div");

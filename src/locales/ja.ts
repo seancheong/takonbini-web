@@ -18,10 +18,23 @@ export default {
 			changeLanguage: "言語を変更",
 		},
 		product: {
-			title: "コンビニ商品",
-			subtitle: "日本のコンビニで現在販売中の商品を閲覧できます。",
+			title: "次のコンビニのお気に入りを。",
+			subtitle:
+				"セブン-イレブン、ローソン、ファミリーマートの商品を探しましょう。",
+			catalogLabel: "日本 / コンビニ商品カタログ",
+			allStores: "すべての店舗",
+			results: "商品一覧",
+			loadedCount: "{{count}}件を表示中",
+			removeFilter: "「{{label}}」の絞り込みを解除",
+			availabilityNote:
+				"店舗の公式サイトに掲載された商品です。取扱商品や価格は店舗によって異なる場合があります。",
+
 			loading: "商品を読み込み中...",
 			error: "商品を読み込めませんでした。後でもう一度お試しください。",
+			retry: "再試行",
+			noMatches:
+				"条件に一致する商品がありません。検索条件を変更するか、絞り込みを解除してください。",
+			clearFilters: "絞り込みを解除",
 			empty: "表示できる商品がまだありません。",
 			imageLoading: "画像を読み込み中...",
 			releaseSoon: "近日発売",

@@ -29,12 +29,14 @@ export default function ThemeSelect() {
 			onValueChange={(value) => setTheme(value as Theme)}
 		>
 			<SelectTrigger
-				className="w-35 border-none bg-transparent focus:ring-0 focus:ring-offset-0 px-2"
+				className="w-auto min-w-11 min-h-11 border-none bg-transparent px-2"
 				aria-label={t("theme.selectTheme")}
 			>
 				<div className="flex items-center gap-2">
 					{currentIcon}
-					<SelectValue>{t(`theme.${currentTheme}`)}</SelectValue>
+					<span className="hidden sm:inline">
+						<SelectValue>{t(`theme.${currentTheme}`)}</SelectValue>
+					</span>
 				</div>
 			</SelectTrigger>
 
