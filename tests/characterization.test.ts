@@ -404,4 +404,45 @@ describe("sitemap", () => {
 		expect(await response.text()).toContain("https://preview.example.test/");
 		expect(fetchMock).not.toHaveBeenCalled();
 	});
+	it("preserves the existing partial sitemap after a later upstream HTTP failure", async () => {
+		vi.stubEnv("PRODUCTS_API_URL", "https://api.example.test");
+		vi.stubEnv("PRODUCTS_API_KEY", "test-secret");
+		const fetchMock = vi
+			.fn()
+			.mockResolvedValueOnce(
+				new Response(
+					JSON.stringify({
+						products: [{ id: "first-page" }],
+						nextCursor: "next",
+					}),
+				),
+			)
+			.mockResolvedValueOnce(new Response("unavailable", { status: 503 }));
+		vi.stubGlobal("fetch", fetchMock);
+		const response = await getHandler(sitemapRoute)({
+			request: request("https://web.example.test/sitemap.xml"),
+			params: {},
+		});
+		expect(response.status).toBe(200);
+		expect(await response.text()).toContain("/products/first-page");
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+	});
+
+	it("preserves the existing sitemap page limit even when more pages exist", async () => {
+		vi.stubEnv("PRODUCTS_API_URL", "https://api.example.test");
+		vi.stubEnv("PRODUCTS_API_KEY", "test-secret");
+		const fetchMock = vi
+			.fn()
+			.mockImplementation(
+				async () =>
+					new Response(JSON.stringify({ products: [], nextCursor: "next" })),
+			);
+		vi.stubGlobal("fetch", fetchMock);
+		const response = await getHandler(sitemapRoute)({
+			request: request("https://web.example.test/sitemap.xml"),
+			params: {},
+		});
+		expect(response.status).toBe(200);
+		expect(fetchMock).toHaveBeenCalledTimes(50);
+	});
 });

@@ -93,6 +93,23 @@ describe("product card rendering and navigation", () => {
 		});
 	});
 
+	it("keeps ordinary browser modifier clicks out of programmatic navigation", () => {
+		render(<ProductCard product={product} />);
+		fireEvent.click(screen.getByRole("link", { name: "Matcha" }), {
+			ctrlKey: true,
+		});
+		expect(routerMocks.navigate).not.toHaveBeenCalled();
+	});
+
+	it("uses the existing field fallback and unknown price presentation", () => {
+		render(
+			<ProductCard product={{ ...product, title: { ja: "抹茶" }, price: 0 }} />,
+		);
+		expect(screen.getByRole("link", { name: "抹茶" })).toBeTruthy();
+		expect(screen.getByText("product.priceUnknown")).toBeTruthy();
+		expect(screen.getByText("product.noImage")).toBeTruthy();
+	});
+
 	it("hydrates server-rendered card markup without a recoverable mismatch", async () => {
 		const html = renderToString(<ProductCard product={product} />);
 		const container = document.createElement("div");
