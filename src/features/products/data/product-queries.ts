@@ -1,4 +1,9 @@
-import type { Category, PublicProduct, Region, Store } from "@/@types/product";
+import type {
+	Category,
+	PublicProduct,
+	Region,
+	Store,
+} from "@/features/products/products.contracts";
 
 type ProductsResponse = {
 	products: PublicProduct[];

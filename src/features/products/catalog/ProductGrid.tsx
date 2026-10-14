@@ -1,5 +1,5 @@
-import type { PublicProduct } from "@/@types/product";
-import type { ProductFilters } from "@/services/productService";
+import type { ProductFilters } from "@/features/products/data/product-queries";
+import type { PublicProduct } from "@/features/products/products.contracts";
 import ProductCard from "./ProductCard";
 
 interface ProductGridProps {

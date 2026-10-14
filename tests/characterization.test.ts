@@ -1,16 +1,19 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { Category, Store } from "@/@types/product";
+import {
+	parseList,
+	parseNumber,
+} from "@/features/products/catalog/query-parsers";
+import {
+	type ProductFilters,
+	productsInfiniteQueryOptions,
+} from "@/features/products/data/product-queries";
+import { Category, Store } from "@/features/products/products.contracts";
 import { Route as imageRoute } from "@/routes/api.image";
 import { Route as productsRoute } from "@/routes/api.products";
 import { Route as productRoute } from "@/routes/api.products.$id";
 import { Route as catalogRoute } from "@/routes/index";
 import { Route as detailRoute } from "@/routes/products.$id";
 import { Route as sitemapRoute } from "@/routes/sitemap[.]xml";
-import {
-	type ProductFilters,
-	productsInfiniteQueryOptions,
-} from "@/services/productService";
-import { parseList, parseNumber } from "@/utils/queryParsers";
 
 type HandlerInput = { request: Request; params: Record<string, string> };
 type GetHandler = (input: HandlerInput) => Promise<Response>;

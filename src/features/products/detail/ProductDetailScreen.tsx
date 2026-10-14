@@ -1,0 +1,253 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
+import {
+	ArrowLeft,
+	Calendar,
+	ExternalLink,
+	JapaneseYen,
+	MapPin,
+	Tag,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { productByIdQueryOptions } from "@/features/products/data/product-queries";
+import {
+	formatPrice,
+	isFutureReleaseDate,
+	resolveLocalizedText,
+} from "@/features/products/model/product-display";
+import { getProxiedImageUrl } from "@/features/products/model/product-images";
+import {
+	type CategoryLabelKey,
+	categoryLabelKeys,
+	type RegionLabelKey,
+	regionLabelKeys,
+	type StoreLabelKey,
+	storeLabelClasses,
+	storeLabelKeys,
+} from "@/features/products/model/product-labels";
+import { isSafari } from "@/features/products/model/product-navigation";
+import type { Language } from "@/i18n";
+
+import type { ProductFilters } from "../data/product-queries";
+export default function ProductDetailScreen({
+	id,
+	filters,
+}: {
+	id: string;
+	filters: ProductFilters;
+}) {
+	const [imageError, setImageError] = useState(false);
+	const [imageLoaded, setImageLoaded] = useState(false);
+	const imageRef = useRef<HTMLImageElement | null>(null);
+
+	const { t, i18n } = useTranslation();
+	const language = i18n.language as Language;
+
+	const { data: product } = useSuspenseQuery(productByIdQueryOptions(id));
+	const image = product.images?.[0];
+	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
+	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
+	const isReleaseSoon = isFutureReleaseDate(product.releaseDate);
+	const viewTransitionName = `product-image-${id}`;
+
+	useEffect(() => {
+		setImageError(false);
+		setImageLoaded(false);
+	}, []);
+
+	useEffect(() => {
+		if (imageRef.current?.complete && imageRef.current.naturalWidth > 0) {
+			setImageLoaded(true);
+		}
+	}, []);
+
+	const title = resolveLocalizedText(product.title, language);
+	const description = resolveLocalizedText(product.description, language);
+	const storeLabelKey =
+		storeLabelKeys[product.store as keyof typeof storeLabelKeys];
+	const categoryLabelKey =
+		product.category &&
+		categoryLabelKeys[product.category as keyof typeof categoryLabelKeys];
+	const regionLabels = (product.regions ?? []).map((region) => {
+		const regionKey = regionLabelKeys[region as keyof typeof regionLabelKeys];
+		return regionKey ? t(regionKey as RegionLabelKey) : region;
+	});
+	const extraImages = product.images.slice(1).map((item) => ({
+		original: item,
+		proxy: getProxiedImageUrl(item),
+	}));
+
+	return (
+		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
+			<div className="mx-auto w-full max-w-6xl">
+				<Link
+					to="/"
+					search={filters}
+					className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground cursor-pointer"
+				>
+					<ArrowLeft className="h-4 w-4" aria-hidden="true" />
+					{t("product.details.back")}
+				</Link>
+
+				<div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+					<div className="space-y-4">
+						<div className="relative aspect-square overflow-hidden rounded-md border border-border/60 bg-white">
+							{showLoading ? (
+								<div className="absolute inset-0 flex items-center justify-center bg-muted/40 text-sm font-semibold text-muted-foreground">
+									{t("product.imageLoading")}
+								</div>
+							) : null}
+							{imageSrc && !imageError ? (
+								<img
+									ref={imageRef}
+									src={imageSrc}
+									alt={title}
+									style={isSafari() ? undefined : { viewTransitionName }}
+									className={`h-full w-full object-contain p-6 ${
+										imageLoaded ? "opacity-100" : "opacity-0"
+									}`}
+									fetchPriority="high"
+									loading="eager"
+									decoding="async"
+									onError={() => setImageError(true)}
+									onLoad={() => setImageLoaded(true)}
+								/>
+							) : (
+								<div className="flex h-84 flex-col items-center justify-center gap-2 px-4 text-center text-sm text-muted-foreground">
+									<span>{t("product.noImage")}</span>
+									{imageError ? (
+										<span className="text-xs font-medium">
+											{t("product.unavailable")}
+										</span>
+									) : null}
+								</div>
+							)}
+						</div>
+
+						{extraImages.length ? (
+							<div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+								{extraImages.map((item) => (
+									<div
+										key={item.original}
+										className="aspect-square overflow-hidden rounded-xl border border-border/60 bg-muted"
+									>
+										<img
+											src={item.proxy}
+											alt={title}
+											className="h-full w-full object-contain p-6"
+											loading="lazy"
+										/>
+									</div>
+								))}
+							</div>
+						) : null}
+					</div>
+
+					<div className="flex flex-col gap-6">
+						<div>
+							<div className="flex items-center gap-3">
+								<span
+									className={`text-sm font-semibold ${
+										storeLabelClasses[product.store] ?? "text-foreground"
+									}`}
+								>
+									{storeLabelKey
+										? t(storeLabelKey as StoreLabelKey)
+										: product.store}
+								</span>
+								{isReleaseSoon ? (
+									<span className="rounded-full bg-destructive px-2 py-1 text-xs font-semibold text-(--success-foreground)">
+										{t("product.releaseSoon")}
+									</span>
+								) : product.isNew ? (
+									<span className="rounded-full bg-(--success) px-2 py-1 text-xs font-semibold text-(--success-foreground)">
+										{t("product.new")}
+									</span>
+								) : null}
+							</div>
+
+							<h1 className="mt-3 text-3xl font-semibold leading-tight text-foreground">
+								{title}
+							</h1>
+
+							{description ? (
+								<p className="mt-4 max-w-prose text-base leading-relaxed text-muted-foreground">
+									{description}
+								</p>
+							) : null}
+						</div>
+
+						<div className="rounded-md border border-border/60 bg-card p-5">
+							<dl className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-6 gap-y-4 text-sm">
+								<dt className="flex items-center gap-3 text-muted-foreground">
+									<JapaneseYen className="h-4 w-4" aria-hidden="true" />
+									{t("product.details.price")}
+								</dt>
+								<dd className="min-w-0 text-right text-base font-semibold text-foreground">
+									{product.price === 0
+										? t("product.priceUnknown")
+										: formatPrice(product.price, language)}
+								</dd>
+
+								{product.category ? (
+									<>
+										<dt className="flex items-center gap-3 text-muted-foreground">
+											<Tag className="h-4 w-4" aria-hidden="true" />
+											{t("product.details.category")}
+										</dt>
+										<dd className="min-w-0 text-right text-foreground">
+											{categoryLabelKey
+												? t(categoryLabelKey as CategoryLabelKey)
+												: product.category}
+										</dd>
+									</>
+								) : null}
+
+								{product.releaseDate ? (
+									<>
+										<dt className="flex items-center gap-3 text-muted-foreground">
+											<Calendar className="h-4 w-4" aria-hidden="true" />
+											{t("product.details.releaseDate")}
+										</dt>
+										<dd className="min-w-0 text-right text-foreground">
+											{product.releaseDate}
+										</dd>
+									</>
+								) : null}
+
+								{regionLabels.length ? (
+									<>
+										<dt className="flex items-start gap-3 text-muted-foreground">
+											<MapPin className="mt-0.5 h-4 w-4" aria-hidden="true" />
+											<span className="whitespace-nowrap">
+												{t("product.details.regions")}
+											</span>
+										</dt>
+										<dd className="min-w-0 text-right text-foreground wrap-break-word whitespace-normal">
+											{regionLabels.join(", ")}
+										</dd>
+									</>
+								) : null}
+							</dl>
+						</div>
+
+						<p className="text-sm leading-relaxed text-muted-foreground">
+							{t("product.availabilityNote")}
+						</p>
+
+						<a
+							href={product.url}
+							target="_blank"
+							rel="noreferrer"
+							className="inline-flex items-center justify-end gap-2 text-sm font-semibold text-(--link) hover:underline"
+						>
+							{t("product.details.source")}
+							<ExternalLink className="h-4 w-4" aria-hidden="true" />
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}

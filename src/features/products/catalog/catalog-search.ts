@@ -1,6 +1,13 @@
-import { Category, REGIONS, Store } from "@/@types/product";
-import type { ProductFilters } from "@/services/productService";
-import { parseList, parseNumber } from "@/utils/queryParsers";
+import {
+	parseList,
+	parseNumber,
+} from "@/features/products/catalog/query-parsers";
+import type { ProductFilters } from "@/features/products/data/product-queries";
+import {
+	Category,
+	REGIONS,
+	Store,
+} from "@/features/products/products.contracts";
 
 export function parseCatalogSearch(
 	search: Record<string, unknown>,

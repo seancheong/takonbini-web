@@ -1,4 +1,4 @@
-import type { PublicProduct } from "@/@types/product";
+import type { PublicProduct } from "@/features/products/products.contracts";
 import type { Language } from "@/i18n";
 
 export type LocalizedText =

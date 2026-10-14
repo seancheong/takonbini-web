@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import ScrollTopButton from "@/components/ScrollTopButton";
-import ProductPanel from "@/features/product/components/ProductPanel";
-import { parseCatalogSearch } from "@/features/product/utils/catalogSearch";
-import i18n from "@/i18n";
+import ProductPanel from "@/features/products/catalog/CatalogPanel";
+import { parseCatalogSearch } from "@/features/products/catalog/catalog-search";
 import {
 	defaultProductFilters,
 	type ProductFilters,
 	productsInfiniteQueryOptions,
-} from "@/services/productService";
+} from "@/features/products/data/product-queries";
+import i18n from "@/i18n";
 
 const normalizeSearch = (filters?: ProductFilters) => {
 	const safeFilters = filters ?? {};

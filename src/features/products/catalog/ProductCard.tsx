@@ -1,23 +1,23 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { PublicProduct } from "@/@types/product";
+import type { ProductFilters } from "@/features/products/data/product-queries";
+import { getProxiedImageUrl } from "@/features/products/model/product-images";
+import { isSafari } from "@/features/products/model/product-navigation";
+import type { PublicProduct } from "@/features/products/products.contracts";
 import type { Language } from "@/i18n";
-import type { ProductFilters } from "@/services/productService";
-import { isSafari } from "@/utils/browser";
-import { getProxiedImageUrl } from "@/utils/imageProxy";
+import {
+	formatPrice,
+	isFutureReleaseDate,
+	resolveLocalizedText,
+} from "../model/product-display";
 import {
 	type CategoryLabelKey,
 	categoryLabelKeys,
 	type StoreLabelKey,
 	storeLabelClasses,
 	storeLabelKeys,
-} from "../utils/productLabels";
-import {
-	formatPrice,
-	isFutureReleaseDate,
-	resolveLocalizedText,
-} from "../utils/productUtils";
+} from "../model/product-labels";
 
 interface ProductCardProps {
 	product: PublicProduct;

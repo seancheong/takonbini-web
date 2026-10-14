@@ -3,8 +3,8 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { PublicProduct } from "@/@types/product";
-import ProductCard from "@/features/product/components/ProductCard";
+import ProductCard from "@/features/products/catalog/ProductCard";
+import type { PublicProduct } from "@/features/products/products.contracts";
 
 const routerMocks = vi.hoisted(() => ({
 	navigate: vi.fn(),

@@ -2,10 +2,10 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { ProductFilters } from "@/services/productService";
-import { productsInfiniteQueryOptions } from "@/services/productService";
+import type { ProductFilters } from "@/features/products/data/product-queries";
+import { productsInfiniteQueryOptions } from "@/features/products/data/product-queries";
 import CatalogControls from "./CatalogControls";
-import ProductFilterDrawer from "./ProductFilterDrawer";
+import ProductFilterDrawer from "./CatalogFilters";
 import ProductGrid from "./ProductGrid";
 
 interface ProductPanelProps {

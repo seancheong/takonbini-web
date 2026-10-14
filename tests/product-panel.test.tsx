@@ -9,7 +9,7 @@ import {
 	it,
 	vi,
 } from "vitest";
-import ProductPanel from "@/features/product/components/ProductPanel";
+import ProductPanel from "@/features/products/catalog/CatalogPanel";
 
 const query = vi.hoisted(() => ({
 	data: undefined as undefined | { pages: { products: { id: string }[] }[] },
@@ -27,7 +27,7 @@ vi.mock("@tanstack/react-router", () => ({ useRouterState: () => false }));
 vi.mock("react-i18next", () => ({
 	useTranslation: () => ({ t: (key: string) => key }),
 }));
-vi.mock("@/features/product/components/ProductGrid", () => ({
+vi.mock("@/features/products/catalog/ProductGrid", () => ({
 	default: ({ products }: { products: { id: string }[] }) => (
 		<div>
 			{products.map((product) => (
