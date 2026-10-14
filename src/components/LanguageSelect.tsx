@@ -30,7 +30,7 @@ export default function LanguageSelect() {
 	return (
 		<Select value={currentLanguage} onValueChange={changeLanguage}>
 			<SelectTrigger
-				className="w-35 border-none bg-transparent focus:ring-0 focus:ring-offset-0 px-2"
+				className="w-auto min-h-11 border-none bg-transparent px-2"
 				aria-label={t("language.changeLanguage")}
 			>
 				<div className="flex items-center gap-2">

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ProductFilters } from "@/services/productService";
 import { productsInfiniteQueryOptions } from "@/services/productService";
+import CatalogControls from "./CatalogControls";
 import ProductFilterDrawer from "./ProductFilterDrawer";
 import ProductGrid from "./ProductGrid";
 
@@ -29,76 +30,109 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 		fetchNextPage,
 		isFetchingNextPage,
 		isFetching,
+		isError,
+		isFetchNextPageError,
+		refetch,
 	} = useInfiniteQuery(productsInfiniteQueryOptions(filters));
 
 	const products = data?.pages.flatMap((page) => page.products) ?? [];
 	const routerIsLoading = useRouterState({
 		select: (state) => state.isLoading,
 	});
-	const showOverlay = routerIsLoading || (isFetching && !isFetchingNextPage);
+	const isRefreshing = routerIsLoading || (isFetching && !isFetchingNextPage);
+
+	const hasFilters = Boolean(
+		filters.search ||
+			filters.stores?.length ||
+			filters.categories?.length ||
+			filters.regions?.length ||
+			filters.includeSoon ||
+			filters.minPrice !== undefined ||
+			filters.maxPrice !== undefined,
+	);
 
 	return (
-		<section className="relative mx-auto flex w-full max-w-6xl flex-col gap-10">
-			{showOverlay ? (
-				<div
-					className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 backdrop-blur-sm"
-					aria-live="polite"
-				>
-					<div className="flex items-center gap-3 rounded-full border border-border/60 bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-lg">
-						<span className="h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground border-t-transparent" />
+		<section className="catalog-panel mx-auto w-full max-w-6xl">
+			<header className="catalog-heading">
+				<div>
+					<p className="catalog-eyebrow">{t("product.catalogLabel")}</p>
+					<h1>{t("product.title")}</h1>
+				</div>
+				<p className="catalog-intro">{t("product.subtitle")}</p>
+			</header>
+			<CatalogControls filters={filters} onApply={onApply}>
+				<ProductFilterDrawer
+					filters={draftFilters}
+					setFilters={setDraftFilters}
+					isFilterOpen={isFilterOpen}
+					setIsFilterOpen={(open) => {
+						if (open) setDraftFilters(filters);
+						setIsFilterOpen(open);
+					}}
+					onApply={onApply}
+					onReset={() =>
+						setDraftFilters({ limit: filters.limit, search: filters.search })
+					}
+				/>
+			</CatalogControls>
+			<div className="catalog-results-heading">
+				<h2>{t("product.results")}</h2>
+				<output aria-live="polite">
+					{isLoading
+						? t("product.loading")
+						: data
+							? t("product.loadedCount", { count: products.length })
+							: null}
+				</output>
+			</div>
 
-						{t("product.loading")}
-					</div>
+			{isRefreshing && !isLoading ? (
+				<output className="text-sm text-muted-foreground">
+					{t("product.loading")}
+				</output>
+			) : null}
+
+			{isError ? (
+				<div
+					role="alert"
+					className="rounded-xl border border-destructive/30 bg-card p-6"
+				>
+					<p className="text-sm text-foreground">{t("product.error")}</p>
+					<button
+						type="button"
+						onClick={() => (isFetchNextPageError ? fetchNextPage() : refetch())}
+						disabled={isFetching}
+						className="mt-4 min-h-11 rounded-lg border border-border px-4 text-sm font-semibold hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60"
+					>
+						{t("product.retry")}
+					</button>
 				</div>
 			) : null}
 
-			<ProductFilterDrawer
-				filters={draftFilters}
-				setFilters={setDraftFilters}
-				isFilterOpen={isFilterOpen}
-				setIsFilterOpen={setIsFilterOpen}
-				onApply={onApply}
-				onReset={() => {
-					const resetFilters: ProductFilters = {
-						limit: filters.limit,
-					};
-					setDraftFilters(resetFilters);
-				}}
-			/>
-
-			<div>
-				<h1 className="text-4xl font-bold text-foreground">
-					{t("product.title")}
-				</h1>
-
-				<p className="mt-3 text-base text-muted-foreground">
-					{t("product.subtitle")}
-				</p>
-			</div>
-
 			{isLoading ? (
-				<div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
-					{Array.from({ length: 6 }).map((_, index) => (
-						<div
-							key={`product-skeleton-${
-								// biome-ignore lint/suspicious/noArrayIndexKey: ignore for skeleton keys
-								index
-							}`}
-							className="h-90 animate-pulse rounded-2xl border border-border/50 bg-muted/40"
-						/>
+				<div className="catalog-grid" aria-busy="true">
+					{["a", "b", "c", "d", "e", "f", "g", "h"].map((key) => (
+						<div key={key} className="catalog-skeleton" aria-hidden="true">
+							<div className="catalog-skeleton-image" />
+							<div className="catalog-skeleton-copy">
+								<span />
+								<span />
+								<span />
+							</div>
+						</div>
 					))}
 				</div>
 			) : products.length ? (
 				<>
-					<ProductGrid products={products} />
+					<ProductGrid products={products} filters={filters} />
 
-					<div className="flex justify-center">
+					<div className="catalog-pagination">
 						{hasNextPage ? (
 							<button
 								type="button"
 								onClick={() => fetchNextPage()}
 								disabled={isFetchingNextPage}
-								className="rounded-full border border-primary px-5 py-2 text-sm font-semibold text-primary transition hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-60 dark:border-primary/60 dark:bg-primary/20 dark:text-primary-foreground dark:hover:bg-primary/30"
+								className="catalog-button"
 							>
 								{isFetchingNextPage
 									? t("product.loadingMore")
@@ -111,11 +145,23 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 						)}
 					</div>
 				</>
-			) : (
-				<div className="rounded-2xl border border-border/60 bg-muted/40 p-6 text-sm text-muted-foreground">
-					{t("product.empty")}
+			) : !isError ? (
+				<div className="rounded-xl border border-border/60 bg-card p-8 text-center">
+					<p className="text-sm text-muted-foreground">
+						{t(hasFilters ? "product.noMatches" : "product.empty")}
+					</p>
+					{hasFilters ? (
+						<button
+							type="button"
+							onClick={() => onApply({ limit: filters.limit })}
+							className="mt-4 min-h-11 rounded-lg border border-border px-4 text-sm font-semibold hover:bg-muted focus-visible:outline-2 focus-visible:outline-ring"
+						>
+							{t("product.clearFilters")}
+						</button>
+					) : null}
 				</div>
-			)}
+			) : null}
+			<p className="catalog-availability">{t("product.availabilityNote")}</p>
 		</section>
 	);
 }

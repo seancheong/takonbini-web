@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { PublicProduct } from "@/@types/product";
 import type { Language } from "@/i18n";
+import type { ProductFilters } from "@/services/productService";
 import { isSafari } from "@/utils/browser";
 import { getProxiedImageUrl } from "@/utils/imageProxy";
 import {
@@ -20,9 +21,10 @@ import {
 
 interface ProductCardProps {
 	product: PublicProduct;
+	filters?: ProductFilters;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, filters }: ProductCardProps) {
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
 	const navigate = useNavigate();
@@ -41,7 +43,6 @@ export default function ProductCard({ product }: ProductCardProps) {
 		product.category &&
 		categoryLabelKeys[product.category as keyof typeof categoryLabelKeys];
 
-	const isUnavailable = Boolean(imageSrc && imageError);
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
 	const isReleaseSoon = isFutureReleaseDate(product.releaseDate);
 	const viewTransitionName = `product-image-${product.id}`;
@@ -56,7 +57,11 @@ export default function ProductCard({ product }: ProductCardProps) {
 			}
 		).startViewTransition;
 
-		if (!transition || isSafari()) {
+		if (
+			!transition ||
+			isSafari() ||
+			window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+		) {
 			if (isSafari()) {
 				setIsSafariNavigating(true);
 
@@ -100,20 +105,34 @@ export default function ProductCard({ product }: ProductCardProps) {
 		<Link
 			to="/products/$id"
 			params={{ id: product.id }}
+			search={filters}
 			aria-label={title}
 			preload="intent"
 			onClick={(event) => {
+				if (
+					event.button !== 0 ||
+					event.metaKey ||
+					event.ctrlKey ||
+					event.shiftKey ||
+					event.altKey
+				)
+					return;
+				event.preventDefault();
 				startViewTransition(
-					() => navigate({ to: "/products/$id", params: { id: product.id } }),
+					() =>
+						navigate({
+							to: "/products/$id",
+							params: { id: product.id },
+							...(filters ? { search: filters } : {}),
+						}),
 					event,
 				);
 			}}
-			className={`group block h-full rounded-2xl border border-border/50 bg-card shadow-sm transition-shadow duration-200 hover:border-border hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-				isUnavailable ? "opacity-75" : ""
-			}`}
+			data-store={product.store}
+			className="catalog-product group"
 		>
-			<article className="flex h-full flex-col overflow-hidden rounded-2xl">
-				<div className="relative aspect-4/3 w-full overflow-hidden border-b border-border/60 bg-muted">
+			<article className="flex h-full flex-col overflow-hidden">
+				<div className="catalog-product-image relative">
 					{isSafari() && isSafariNavigating ? (
 						<div className="absolute inset-0 z-10 flex items-center justify-center bg-background/70 text-xs font-semibold text-foreground backdrop-blur-sm">
 							<span className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-foreground/60 border-t-transparent" />
@@ -133,7 +152,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 							style={isSafari() ? undefined : { viewTransitionName }}
 							onError={() => setImageError(true)}
 							onLoad={() => setImageLoaded(true)}
-							className={`h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 ${
+							className={`h-full w-full object-contain p-4 ${
 								imageLoaded ? "opacity-100" : "opacity-0"
 							}`}
 							decoding="async"
@@ -142,12 +161,6 @@ export default function ProductCard({ product }: ProductCardProps) {
 					) : (
 						<div className="flex h-full w-full flex-col items-center justify-center gap-2 px-4 text-center text-xs text-muted-foreground">
 							<span>{t("product.noImage")}</span>
-
-							{imageError ? (
-								<span className="text-[11px] font-medium">
-									{t("product.unavailable")}
-								</span>
-							) : null}
 						</div>
 					)}
 
@@ -162,7 +175,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 					) : null}
 				</div>
 
-				<div className="flex flex-1 flex-col gap-3 p-4">
+				<div className="catalog-product-copy">
 					<div className="flex flex-wrap items-center gap-2 text-xs">
 						<span
 							className={`text-sm font-semibold ${
@@ -176,12 +189,14 @@ export default function ProductCard({ product }: ProductCardProps) {
 					</div>
 
 					<div className="flex-1">
-						<h2 className="text-base font-semibold text-foreground">{title}</h2>
+						<h2 className="text-base font-semibold leading-snug text-foreground">
+							{title}
+						</h2>
 					</div>
 
 					<div className="flex items-center justify-between gap-3">
 						{product.category ? (
-							<span className="rounded-full border border-foreground/15 bg-foreground/5 px-2.5 py-1 text-xs font-medium text-foreground">
+							<span className="text-xs text-muted-foreground">
 								{categoryLabelKey
 									? t(categoryLabelKey as CategoryLabelKey)
 									: product.category}
@@ -189,7 +204,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 						) : (
 							<span />
 						)}
-						<span className="text-sm font-semibold text-foreground">
+						<span className="text-base font-semibold tabular-nums text-foreground">
 							{product.price === 0
 								? t("product.priceUnknown")
 								: formatPrice(product.price, language)}

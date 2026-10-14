@@ -230,3 +230,469 @@ input[type="checkbox"].checkbox-green:checked::after {
 ::view-transition-new(root) {
   animation: none;
 }
+
+/* Catalog surfaces share the application theme and store colors. */
+.catalog-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 1.75rem;
+}
+.catalog-heading {
+	display: flex;
+	align-items: end;
+	justify-content: space-between;
+	gap: 2rem;
+	padding: 1rem 0 2rem;
+	border-bottom: 2px solid var(--foreground);
+}
+.catalog-eyebrow {
+	font-size: 0.7rem;
+	font-weight: 650;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	margin-bottom: 1rem;
+	color: var(--muted-foreground);
+}
+.catalog-heading h1 {
+	max-width: 14ch;
+	font-size: clamp(2.2rem, 5vw, 4.5rem);
+	font-weight: 750;
+	line-height: 1.05;
+	letter-spacing: -0.045em;
+	text-wrap: balance;
+}
+.catalog-intro {
+	max-width: 30ch;
+	color: var(--muted-foreground);
+	font-size: 0.95rem;
+	line-height: 1.65;
+}
+.catalog-toolbar {
+	display: flex;
+	align-items: end;
+	gap: 1rem;
+}
+.catalog-toolbar > search {
+	flex: 1;
+	min-width: 0;
+}
+.catalog-search {
+	flex: 1;
+	min-width: 0;
+}
+.catalog-search label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-size: 0.75rem;
+	font-weight: 650;
+}
+.catalog-search > div {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 0.4rem;
+	padding: 0.3rem 0.3rem 0.3rem 0.9rem;
+}
+.catalog-search > div:focus-within {
+	outline: 2px solid var(--ring);
+	outline-offset: 2px;
+}
+.catalog-search svg {
+	flex-shrink: 0;
+	color: var(--muted-foreground);
+}
+.catalog-search input {
+	width: 100%;
+	min-width: 0;
+	min-height: 44px;
+	font-size: 1rem;
+	background: transparent;
+	outline: none;
+}
+.catalog-button,
+.catalog-icon-button {
+	min-height: 44px;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5rem;
+	border: 1px solid var(--border);
+	border-radius: 0.35rem;
+	background: var(--card);
+	padding: 0.65rem 1rem;
+	font-size: 0.85rem;
+	font-weight: 600;
+	white-space: nowrap;
+	transition:
+		background-color 150ms,
+		border-color 150ms;
+}
+.catalog-button:hover,
+.catalog-icon-button:hover {
+	background: var(--muted);
+	border-color: var(--muted-foreground);
+}
+.catalog-button:active,
+.catalog-icon-button:active {
+	background: var(--accent);
+}
+.catalog-button:disabled {
+	opacity: 0.5;
+}
+.catalog-button-primary {
+	background: var(--foreground);
+	color: var(--background);
+	border-color: var(--foreground);
+}
+.catalog-button-primary:hover {
+	background: color-mix(in oklch, var(--foreground) 85%, var(--background));
+}
+.catalog-icon-button {
+	width: 44px;
+	padding: 0.5rem;
+}
+.catalog-panel button:focus-visible,
+.catalog-filter-dialog button:focus-visible,
+.catalog-filter-dialog input:focus-visible {
+	outline: 2px solid var(--ring);
+	outline-offset: 3px;
+}
+.catalog-store-picker {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+.catalog-store-picker button {
+	min-height: 44px;
+	padding: 0.6rem 1rem;
+	border: 1px solid var(--border);
+	border-radius: 0.35rem;
+	font-size: 0.85rem;
+	background: var(--card);
+}
+.catalog-store-picker button:hover {
+	border-color: var(--muted-foreground);
+}
+.catalog-store-picker button[aria-pressed="true"] {
+	background: var(--foreground);
+	border-color: var(--foreground);
+	color: var(--background);
+}
+.catalog-store-picker button[data-store="SevenEleven"] {
+	border-bottom: 3px solid var(--store-seven);
+}
+.catalog-store-picker button[data-store="Lawson"] {
+	border-bottom: 3px solid var(--store-lawson);
+}
+.catalog-store-picker button[data-store="FamilyMart"] {
+	border-bottom: 3px solid var(--store-family);
+}
+.catalog-applied {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: 1rem;
+}
+.catalog-applied button {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	min-height: 44px;
+	padding: 0.5rem 0.75rem;
+	font-size: 0.75rem;
+	background: var(--muted);
+	border-radius: 0.3rem;
+	overflow-wrap: anywhere;
+}
+.catalog-applied svg {
+	flex-shrink: 0;
+}
+.catalog-applied .catalog-clear {
+	background: transparent;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+.catalog-results-heading {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--border);
+}
+.catalog-results-heading h2 {
+	font-size: 1.2rem;
+	font-weight: 650;
+}
+.catalog-results-heading output {
+	color: var(--muted-foreground);
+	font-size: 0.8rem;
+	font-variant-numeric: tabular-nums;
+}
+.catalog-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1.5rem 1rem;
+}
+.catalog-product {
+	display: block;
+	height: 100%;
+	background: var(--card);
+	border: 1px solid var(--border);
+	border-radius: 0.4rem;
+	overflow: hidden;
+	transition: border-color 150ms;
+}
+.catalog-product:hover {
+	border-color: var(--muted-foreground);
+}
+.catalog-product:focus-visible {
+	outline: 2px solid var(--ring);
+	outline-offset: 3px;
+}
+.catalog-product-image {
+	aspect-ratio: 1;
+	overflow: hidden;
+	background: white;
+	border-bottom: 1px solid var(--border);
+}
+.catalog-product-image > div {
+	color: oklch(0.42 0 0);
+	background: white;
+}
+.catalog-product-copy {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: 0.8rem;
+	padding: 1rem;
+	border-top: 3px solid transparent;
+}
+.catalog-product[data-store="SevenEleven"] .catalog-product-copy {
+	border-top-color: var(--store-seven);
+}
+.catalog-product[data-store="Lawson"] .catalog-product-copy {
+	border-top-color: var(--store-lawson);
+}
+.catalog-product[data-store="FamilyMart"] .catalog-product-copy {
+	border-top-color: var(--store-family);
+}
+.catalog-product h2 {
+	overflow-wrap: anywhere;
+}
+.catalog-product-copy > div:last-child {
+	flex-wrap: wrap;
+}
+.catalog-pagination {
+	display: flex;
+	justify-content: center;
+	padding: 1rem 0;
+}
+.catalog-availability {
+	border-top: 1px solid var(--border);
+	padding: 1.25rem 0;
+	font-size: 0.8rem;
+	line-height: 1.6;
+	color: var(--muted-foreground);
+}
+.catalog-skeleton {
+	overflow: hidden;
+	border: 1px solid var(--border);
+	border-radius: 0.4rem;
+	background: var(--card);
+}
+.catalog-skeleton-image {
+	aspect-ratio: 1;
+	background: var(--muted);
+}
+.catalog-skeleton-copy {
+	padding: 1rem;
+	display: grid;
+	gap: 1rem;
+}
+.catalog-skeleton-copy span {
+	display: block;
+	height: 0.8rem;
+	background: var(--muted);
+	border-radius: 0.2rem;
+}
+.catalog-skeleton-copy span:first-child {
+	width: 45%;
+}
+.catalog-skeleton-copy span:last-child {
+	width: 65%;
+}
+.catalog-filter-dialog {
+	overflow: hidden;
+	margin: auto;
+	width: min(640px, calc(100% - 2rem));
+	max-height: min(85dvh, 850px);
+	padding: 0;
+	border: 1px solid var(--border);
+	border-radius: 0.6rem;
+	background: var(--card);
+	color: var(--foreground);
+}
+.catalog-filter-dialog::backdrop {
+	background: rgb(0 0 0 / 0.45);
+}
+.catalog-filter-dialog form {
+	display: flex;
+	flex-direction: column;
+	max-height: min(85dvh, 850px);
+}
+.catalog-dialog-heading,
+.catalog-dialog-footer {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 1rem 1.5rem;
+}
+.catalog-dialog-heading {
+	border-bottom: 1px solid var(--border);
+}
+.catalog-dialog-heading h2 {
+	font-size: 1.25rem;
+	font-weight: 650;
+}
+.catalog-dialog-content {
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1.75rem;
+}
+.catalog-dialog-content legend {
+	font-weight: 650;
+	margin-bottom: 0.75rem;
+	font-size: 0.9rem;
+}
+.catalog-filter-options {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
+.catalog-filter-options label {
+	display: inline-flex;
+	gap: 0.5rem;
+	align-items: center;
+	min-height: 44px;
+	padding: 0.5rem 0.75rem;
+	border: 1px solid var(--border);
+	border-radius: 0.3rem;
+	font-size: 0.8rem;
+	cursor: pointer;
+}
+.catalog-filter-options label[data-selected="true"] {
+	border-color: var(--foreground);
+	background: var(--muted);
+}
+.catalog-filter-dialog input[type="checkbox"] {
+	width: 16px;
+	height: 16px;
+	accent-color: var(--success);
+}
+.catalog-price-inputs {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1rem;
+}
+.catalog-price-inputs label {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	font-size: 0.8rem;
+}
+.catalog-price-inputs input {
+	min-width: 0;
+	width: 100%;
+	min-height: 44px;
+	border: 1px solid var(--border);
+	border-radius: 0.3rem;
+	padding: 0.6rem;
+	background: var(--background);
+	font-size: 1rem;
+}
+.catalog-price-inputs input[aria-invalid="true"] {
+	border-color: var(--destructive);
+}
+.catalog-upcoming {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	min-height: 44px;
+	font-size: 0.9rem;
+}
+.catalog-dialog-footer {
+	border-top: 1px solid var(--border);
+}
+@media (min-width: 800px) {
+	.catalog-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+@media (min-width: 1100px) {
+	.catalog-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+@media (max-width: 600px) {
+	.catalog-heading {
+		align-items: start;
+		flex-direction: column;
+		gap: 1rem;
+		padding-top: 0;
+	}
+	.catalog-intro {
+		max-width: 45ch;
+	}
+	.catalog-toolbar {
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+	.catalog-toolbar > search {
+		flex-basis: 100%;
+	}
+	.catalog-toolbar > .catalog-button {
+		width: 100%;
+	}
+	.catalog-grid {
+		gap: 1rem 0.65rem;
+	}
+	.catalog-product-copy {
+		padding: 0.75rem;
+	}
+	.catalog-product h2 {
+		font-size: 0.9rem;
+	}
+	.catalog-filter-dialog {
+		margin: auto 0 0;
+		width: 100%;
+		max-width: none;
+		border-radius: 0.75rem 0.75rem 0 0;
+	}
+	.catalog-dialog-content {
+		padding: 1rem;
+	}
+	.catalog-dialog-footer {
+		padding-bottom: max(1rem, env(safe-area-inset-bottom));
+	}
+}
+@media (prefers-reduced-motion: reduce) {
+	.catalog-panel *,
+	.catalog-filter-dialog * {
+		animation: none !important;
+		transition: none !important;
+	}
+	::view-transition-group(*) {
+		animation-duration: 0s !important;
+	}
+}

@@ -1,15 +1,17 @@
 import type { PublicProduct } from "@/@types/product";
+import type { ProductFilters } from "@/services/productService";
 import ProductCard from "./ProductCard";
 
 interface ProductGridProps {
 	products: PublicProduct[];
+	filters?: ProductFilters;
 }
 
-export default function ProductGrid({ products }: ProductGridProps) {
+export default function ProductGrid({ products, filters }: ProductGridProps) {
 	return (
-		<div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3">
+		<div className="catalog-grid">
 			{products.map((product) => (
-				<ProductCard key={product.id} product={product} />
+				<ProductCard key={product.id} product={product} filters={filters} />
 			))}
 		</div>
 	);

@@ -7,8 +7,8 @@ export default function Header() {
 	const { t } = useTranslation();
 
 	return (
-		<header className="app-header fixed top-0 z-50 w-full border-b border-border/50 bg-card/95 shadow-sm backdrop-blur px-4 supports-backdrop-filter:bg-card/90">
-			<div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between">
+		<header className="app-header fixed top-0 z-50 w-full border-b border-border bg-background px-4">
+			<div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between">
 				<div className="flex min-w-0">
 					<Link
 						to="/"

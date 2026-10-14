@@ -1,14 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Category, REGIONS, Store } from "@/@types/product";
 import ScrollTopButton from "@/components/ScrollTopButton";
 import ProductPanel from "@/features/product/components/ProductPanel";
+import { parseCatalogSearch } from "@/features/product/utils/catalogSearch";
 import i18n from "@/i18n";
 import {
 	defaultProductFilters,
 	type ProductFilters,
 	productsInfiniteQueryOptions,
 } from "@/services/productService";
-import { parseList, parseNumber } from "@/utils/queryParsers";
 
 const normalizeSearch = (filters?: ProductFilters) => {
 	const safeFilters = filters ?? {};
@@ -21,22 +20,7 @@ const normalizeSearch = (filters?: ProductFilters) => {
 
 export const Route = createFileRoute("/")({
 	component: App,
-	validateSearch: (search): ProductFilters => {
-		const raw = (search ?? {}) as Record<string, unknown>;
-
-		return {
-			search: typeof raw.search === "string" ? raw.search : undefined,
-			stores: parseList(raw.stores, Object.values(Store)),
-			categories: parseList(raw.categories, Object.values(Category)),
-			regions: parseList(raw.regions, REGIONS),
-			includeSoon:
-				raw.includeSoon === true || raw.includeSoon === "true"
-					? true
-					: undefined,
-			minPrice: parseNumber(raw.minPrice),
-			maxPrice: parseNumber(raw.maxPrice),
-		};
-	},
+	validateSearch: parseCatalogSearch,
 	loaderDeps: ({ search }) => ({
 		search,
 	}),
@@ -57,7 +41,7 @@ function App() {
 	const appliedFilters = normalizeSearch(search);
 
 	return (
-		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
+		<div className="min-h-screen bg-background px-4 pb-16 pt-28">
 			<ProductPanel
 				filters={appliedFilters}
 				onApply={(nextFilters) => {

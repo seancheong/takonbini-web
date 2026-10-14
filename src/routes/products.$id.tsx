@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
 	ArrowLeft,
 	Calendar,
@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { parseCatalogSearch } from "@/features/product/utils/catalogSearch";
 import {
 	type CategoryLabelKey,
 	categoryLabelKeys,
@@ -30,6 +31,7 @@ import { isSafari } from "@/utils/browser";
 import { getProxiedImageUrl } from "@/utils/imageProxy";
 
 export const Route = createFileRoute("/products/$id")({
+	validateSearch: parseCatalogSearch,
 	loader: async ({ context, params }) => {
 		await context.queryClient.ensureQueryData(
 			productByIdQueryOptions(params.id),
@@ -59,7 +61,7 @@ function ProductDetailsPending() {
 }
 
 function ProductDetailsError() {
-	const router = useRouter();
+	const filters = Route.useSearch();
 	const { t } = useTranslation();
 
 	return (
@@ -73,22 +75,22 @@ function ProductDetailsError() {
 					{t("product.details.notFoundBody")}
 				</p>
 
-				<button
-					type="button"
-					onClick={() => router.history.go(-1)}
+				<Link
+					to="/"
+					search={filters}
 					className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
 				>
 					<ArrowLeft className="h-4 w-4" aria-hidden="true" />
 					{t("product.details.back")}
-				</button>
+				</Link>
 			</div>
 		</div>
 	);
 }
 
 function ProductDetails() {
+	const filters = Route.useSearch();
 	const { id } = Route.useParams();
-	const router = useRouter();
 	const [imageError, setImageError] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const imageRef = useRef<HTMLImageElement | null>(null);
@@ -130,47 +132,21 @@ function ProductDetails() {
 		proxy: getProxiedImageUrl(item),
 	}));
 
-	const startViewTransition = () => {
-		const transition = (
-			document as Document & {
-				startViewTransition?: (callback: () => Promise<void>) => void;
-			}
-		).startViewTransition;
-
-		if (!transition || isSafari()) {
-			router.history.go(-1);
-
-			return;
-		}
-
-		transition.call(
-			document,
-			() =>
-				new Promise<void>((resolve) => {
-					const unsub = router.subscribe("onResolved", () => {
-						unsub();
-						resolve();
-					});
-					router.history.go(-1);
-				}),
-		);
-	};
-
 	return (
 		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
 			<div className="mx-auto w-full max-w-6xl">
-				<button
-					type="button"
-					onClick={startViewTransition}
+				<Link
+					to="/"
+					search={filters}
 					className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground cursor-pointer"
 				>
 					<ArrowLeft className="h-4 w-4" aria-hidden="true" />
 					{t("product.details.back")}
-				</button>
+				</Link>
 
 				<div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
 					<div className="space-y-4">
-						<div className="relative overflow-hidden rounded-2xl border border-border/60 bg-muted">
+						<div className="relative aspect-square overflow-hidden rounded-md border border-border/60 bg-white">
 							{showLoading ? (
 								<div className="absolute inset-0 flex items-center justify-center bg-muted/40 text-sm font-semibold text-muted-foreground">
 									{t("product.imageLoading")}
@@ -182,7 +158,7 @@ function ProductDetails() {
 									src={imageSrc}
 									alt={title}
 									style={isSafari() ? undefined : { viewTransitionName }}
-									className={`h-full w-full object-cover ${
+									className={`h-full w-full object-contain p-6 ${
 										imageLoaded ? "opacity-100" : "opacity-0"
 									}`}
 									fetchPriority="high"
@@ -213,7 +189,7 @@ function ProductDetails() {
 										<img
 											src={item.proxy}
 											alt={title}
-											className="h-full w-full object-cover"
+											className="h-full w-full object-contain p-6"
 											loading="lazy"
 										/>
 									</div>
@@ -245,18 +221,18 @@ function ProductDetails() {
 								) : null}
 							</div>
 
-							<h1 className="mt-3 text-3xl font-semibold text-foreground">
+							<h1 className="mt-3 text-3xl font-semibold leading-tight text-foreground">
 								{title}
 							</h1>
 
 							{description ? (
-								<p className="mt-4 text-base text-muted-foreground">
+								<p className="mt-4 max-w-prose text-base leading-relaxed text-muted-foreground">
 									{description}
 								</p>
 							) : null}
 						</div>
 
-						<div className="rounded-2xl border border-border/60 bg-card p-5">
+						<div className="rounded-md border border-border/60 bg-card p-5">
 							<dl className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-6 gap-y-4 text-sm">
 								<dt className="flex items-center gap-3 text-muted-foreground">
 									<JapaneseYen className="h-4 w-4" aria-hidden="true" />
@@ -309,6 +285,10 @@ function ProductDetails() {
 								) : null}
 							</dl>
 						</div>
+
+						<p className="text-sm leading-relaxed text-muted-foreground">
+							{t("product.availabilityNote")}
+						</p>
 
 						<a
 							href={product.url}
