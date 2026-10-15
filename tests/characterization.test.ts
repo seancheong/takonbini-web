@@ -3,7 +3,7 @@ import {
 	parseList,
 	parseNumber,
 } from "@/features/products/catalog/query-parsers";
-import { productsInfiniteQueryOptions } from "@/features/products/data/product-queries";
+import { catalogSearch, productQueries } from "@/features/products/products";
 import type { ProductFilters } from "@/features/products/products.contracts";
 import { Category, Store } from "@/features/products/products.contracts";
 import { catalogProduct } from "@/features/products/testing/catalog-fixtures";
@@ -79,6 +79,33 @@ describe("catalog query parsing and requests", () => {
 				maxPrice: undefined,
 			},
 		);
+	});
+
+	it("encodes applied URL filters without a page-size override or empty selections", () => {
+		const search = catalogSearch.encode({
+			limit: 100,
+			search: "  tea  ",
+			stores: [],
+			categories: [],
+			regions: [],
+			includeSoon: false,
+			minPrice: 0,
+		});
+		expect(search).toEqual({
+			search: "tea",
+			stores: undefined,
+			categories: undefined,
+			regions: undefined,
+			includeSoon: undefined,
+			minPrice: 0,
+			maxPrice: undefined,
+		});
+		expect(search).not.toHaveProperty("limit");
+		expect(catalogSearch.normalize(search)).toMatchObject({
+			limit: 20,
+			search: "tea",
+			minPrice: 0,
+		});
 	});
 
 	it("uses the current filters as catalog loader dependencies", () => {
@@ -160,7 +187,7 @@ describe("catalog query parsing and requests", () => {
 			limit: 10,
 			includeSoon: true,
 		};
-		const query = productsInfiniteQueryOptions(filters);
+		const query = productQueries.catalog(filters);
 		await query.queryFn({ pageParam: "page-1" });
 
 		const calledUrl = new URL(fetchMock.mock.calls[0][0] as string);
@@ -194,7 +221,7 @@ describe("catalog query parsing and requests", () => {
 			}),
 		);
 		vi.stubGlobal("fetch", fetchMock);
-		const query = productsInfiniteQueryOptions({ limit: 20 });
+		const query = productQueries.catalog({ limit: 20 });
 		await query.queryFn({ pageParam: undefined });
 
 		expect(fetchMock).toHaveBeenCalledWith(
@@ -204,10 +231,10 @@ describe("catalog query parsing and requests", () => {
 	});
 
 	it("uses a stable query key when equivalent filters list values in a different order", () => {
-		const left = productsInfiniteQueryOptions({
+		const left = productQueries.catalog({
 			stores: [Store.LAWSON, Store.SEVEN_ELEVEN],
 		});
-		const right = productsInfiniteQueryOptions({
+		const right = productQueries.catalog({
 			stores: [Store.SEVEN_ELEVEN, Store.LAWSON],
 		});
 		expect(left.queryKey).toEqual(right.queryKey);

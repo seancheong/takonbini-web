@@ -71,6 +71,12 @@ describe("remote product validation", () => {
 			}),
 		).toEqual(product);
 	});
+	it("accepts the API's null release date without inventing a date", () => {
+		const product = { ...catalogProduct(), releaseDate: null };
+		const parsed = activeCatalogProductSchema.safeParse(product);
+		expect(parsed.success && parsed.data.releaseDate).toBeNull();
+	});
+
 	it.each([
 		{ products: [{ id: "partial" }] },
 		{ products: [catalogProduct({ price: Number.NaN })] },
@@ -115,21 +121,36 @@ describe("remote product validation", () => {
 		});
 		await expect(broken.find("id")).rejects.toThrow("programming fault");
 	});
+	it("represents a failed response stream as a transport failure", async () => {
+		const stream = new ReadableStream({
+			start(controller) {
+				controller.error(new TypeError("response stream failed"));
+			},
+		});
+		const source = createHttpProductCatalogSource({
+			...configuration,
+			fetch: vi.fn().mockResolvedValue(new Response(stream)),
+		});
+		expect(await source.list(new URLSearchParams())).toMatchObject({
+			ok: false,
+			origin: "transport",
+			kind: "unavailable",
+		});
+	});
+
 	it("strips internal fields and obsolete body headers from validated products", async () => {
 		const product = catalogProduct();
 		const source = createHttpProductCatalogSource({
 			...configuration,
-			fetch: vi
-				.fn()
-				.mockResolvedValue(
-					new Response(JSON.stringify({ ...product, ttl: 1 }), {
-						headers: {
-							"x-upstream": "kept",
-							"content-length": "999",
-							"content-encoding": "gzip",
-						},
-					}),
-				),
+			fetch: vi.fn().mockResolvedValue(
+				new Response(JSON.stringify({ ...product, ttl: 1 }), {
+					headers: {
+						"x-upstream": "kept",
+						"content-length": "999",
+						"content-encoding": "gzip",
+					},
+				}),
+			),
 		});
 		const result = await source.find(product.id);
 		expect(result.ok && result.value).toEqual(product);

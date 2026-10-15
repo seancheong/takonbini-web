@@ -1,12 +1,12 @@
 import { SlidersHorizontal, X } from "lucide-react";
 import { useEffect, useId, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import type { ProductFilters } from "@/features/products/products.contracts";
 import {
 	Category,
 	REGIONS,
 	Store,
-} from "@/features/products/products.contracts";
+} from "@/features/products/model/product-values";
+import type { ProductFilters } from "@/features/products/products.contracts";
 import {
 	categoryLabelKeys,
 	regionLabelKeys,

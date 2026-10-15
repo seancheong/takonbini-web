@@ -8,10 +8,6 @@ export const productsQueryKey = ["products"] as const;
 export const productsInfiniteQueryKey = ["products", "infinite"] as const;
 export const productByIdQueryKey = ["products", "byId"] as const;
 
-export const defaultProductFilters: ProductFilters = {
-	limit: 20,
-};
-
 const normalizeFilters = (filters: ProductFilters) => ({
 	...filters,
 	search: filters.search?.trim() || undefined,
@@ -43,3 +39,9 @@ export const productsInfiniteQueryOptions = (filters: ProductFilters) => ({
 	staleTime: 1000 * 60 * 30, // 30 minutes
 	gcTime: 1000 * 60 * 60, // 1 hour
 });
+
+export const productQueries = {
+	catalog: productsInfiniteQueryOptions,
+	detail: productByIdQueryOptions,
+	all: productsQueryOptions,
+};

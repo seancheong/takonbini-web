@@ -9,7 +9,7 @@ import {
 	it,
 	vi,
 } from "vitest";
-import ProductPanel from "@/features/products/catalog/CatalogPanel";
+import { CatalogScreen } from "@/features/products/products";
 
 const query = vi.hoisted(() => ({
 	data: undefined as undefined | { pages: { products: { id: string }[] }[] },
@@ -62,7 +62,7 @@ afterEach(cleanup);
 describe("catalog states", () => {
 	it("shows a retryable service failure instead of an empty catalog", () => {
 		query.isError = true;
-		render(<ProductPanel filters={{}} onApply={vi.fn()} />);
+		render(<CatalogScreen filters={{}} onApply={vi.fn()} />);
 		expect(screen.getByRole("alert").textContent).toContain("product.error");
 		expect(screen.queryByText("product.empty")).toBeNull();
 		fireEvent.click(screen.getByRole("button", { name: "product.retry" }));
@@ -72,7 +72,7 @@ describe("catalog states", () => {
 	it("distinguishes no matches from an empty catalog and clears filters", () => {
 		const apply = vi.fn();
 		render(
-			<ProductPanel filters={{ search: "tea", limit: 20 }} onApply={apply} />,
+			<CatalogScreen filters={{ search: "tea", limit: 20 }} onApply={apply} />,
 		);
 		expect(screen.getByText("product.noMatches")).toBeTruthy();
 		fireEvent.click(
@@ -86,7 +86,7 @@ describe("catalog states", () => {
 		query.isError = true;
 		query.isFetchNextPageError = true;
 		query.hasNextPage = true;
-		render(<ProductPanel filters={{}} onApply={vi.fn()} />);
+		render(<CatalogScreen filters={{}} onApply={vi.fn()} />);
 		expect(screen.getByText("loaded-product")).toBeTruthy();
 		fireEvent.click(screen.getByRole("button", { name: "product.retry" }));
 		expect(query.fetchNextPage).toHaveBeenCalledOnce();
@@ -95,7 +95,7 @@ describe("catalog states", () => {
 
 	it("discards canceled draft filters when the dialog is reopened", () => {
 		const apply = vi.fn();
-		render(<ProductPanel filters={{}} onApply={apply} />);
+		render(<CatalogScreen filters={{}} onApply={apply} />);
 		fireEvent.click(
 			screen.getByRole("button", { name: "product.filters.title" }),
 		);

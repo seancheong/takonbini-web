@@ -1,16 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { parseCatalogSearch } from "@/features/products/catalog/catalog-search";
-import { productByIdQueryOptions } from "@/features/products/data/product-queries";
-import ProductDetailError from "@/features/products/detail/ProductDetailError";
-import ProductDetailPending from "@/features/products/detail/ProductDetailPending";
-import ProductDetailScreen from "@/features/products/detail/ProductDetailScreen";
+import {
+	catalogSearch,
+	ProductDetailError,
+	ProductDetailPending,
+	ProductDetailScreen,
+	productQueries,
+} from "@/features/products/products";
 
 export const Route = createFileRoute("/products/$id")({
-	validateSearch: parseCatalogSearch,
+	validateSearch: catalogSearch.parse,
 	loader: async ({ context, params }) => {
-		await context.queryClient.ensureQueryData(
-			productByIdQueryOptions(params.id),
-		);
+		await context.queryClient.ensureQueryData(productQueries.detail(params.id));
 	},
 	pendingComponent: ProductDetailPending,
 	errorComponent: () => <ProductDetailError filters={Route.useSearch()} />,

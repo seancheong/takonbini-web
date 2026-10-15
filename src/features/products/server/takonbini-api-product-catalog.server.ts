@@ -36,10 +36,12 @@ export function createHttpProductCatalogSource(
 		const url = new URL(`${configuration.baseUrl}${path}`);
 		url.search = parameters.toString();
 		let response: Response;
+		let body: string;
 		try {
 			response = await fetchProducts(url.toString(), {
 				headers: { "x-api-key": configuration.apiKey },
 			});
+			body = await response.text();
 		} catch (error) {
 			if (!(error instanceof TypeError)) throw error;
 			return {
@@ -52,7 +54,6 @@ export function createHttpProductCatalogSource(
 			};
 		}
 		const headers = new Headers(response.headers);
-		const body = await response.text();
 		if (!response.ok)
 			return {
 				ok: false,
