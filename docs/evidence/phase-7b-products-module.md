@@ -25,3 +25,7 @@ The legacy sitemap still returns partial results after a later upstream HTTP fai
 One recoverable React 418 text hydration warning appeared on the first local candidate load. Reloads and a fresh tab did not reproduce it; isolated card/detail hydration tests pass. Its cause has not been established. Hosted preview hydration remains a follow-up check and this document does not classify the warning as pre-existing or resolved.
 
 The build reports the existing large-client-chunk warning and a Vite 7 / builder ^8 compatibility warning. Neither blocks the build; dependency migration is outside this refactor.
+
+## Hosted preview follow-up
+
+Draft PR #71 passed GitHub Web CI, Socket checks, and Vercel deployment on 15 October 2026. Hosted catalog loading, product detail navigation, direct detail reload, and return-link filter preservation were verified. No React hydration warning appeared in those checks. One client navigation logged `Transition was aborted because of timeout in DOM update`; detail content subsequently rendered successfully. The transition timeout remains an open observation before draft promotion, alongside the unreproduced local warning.
