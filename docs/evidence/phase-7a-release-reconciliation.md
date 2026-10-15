@@ -114,3 +114,12 @@ acceptance is recorded above.
 The [products-module migration plan](../plans/phase-7b-products-module.md)
 records the approved migration sequence. StyleX and Shiori retain their later,
 separate releases (#29 and #27).
+
+
+## Additional pre-window checkpoint
+
+On 15 October 2026 at approximately 20:26 MYT, read-only production and retained
+rollback-deployment checks passed for catalog SSR, each supported store API,
+filtered product detail return, and sitemap XML. This checkpoint does not close
+the window ending 16 October at 06:35:45 MYT or substitute for incident review.
+The CLI reports logged out; hosted rollback promotion remains unexecuted.
