@@ -4,7 +4,9 @@ Status: amended baseline accepted; recovery source verified; observation gate re
 
 This record reconciles [#18](https://github.com/seancheong/takonbini-web/issues/18)
 with the release shipped in [PR #63](https://github.com/seancheong/takonbini-web/pull/63).
-It does not close #18 or authorize the blocked implementation phase #26.
+It does not close #18 or release Phase 7B to production. On 15 October 2026,
+the maintainer subsequently authorized starting unpublished #26 implementation
+while retaining its merge and production-release gates.
 
 ## Release and verification
 
@@ -105,9 +107,10 @@ excluded from this recovery procedure.
 
 ## Next gate
 
-#26 implementation remains gated until the observation evidence is complete
-and the remaining hosted rollback gate is resolved. The amended baseline
+#26 merging and production release remain gated until the observation evidence
+is complete and the remaining hosted rollback gate is resolved. The maintainer
+has authorized implementation and testing on an isolated, unpublished branch. The amended baseline
 acceptance is recorded above.
 The [products-module migration plan](../plans/phase-7b-products-module.md)
-is preparatory documentation only. StyleX and Shiori retain their later,
+records the approved migration sequence. StyleX and Shiori retain their later,
 separate releases (#29 and #27).

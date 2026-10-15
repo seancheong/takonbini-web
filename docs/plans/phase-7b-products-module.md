@@ -1,7 +1,8 @@
 # Phase 7B products-module migration
 
-Status: preparation complete; implementation waits for the
-[Phase 7A reconciliation](../evidence/phase-7a-release-reconciliation.md).
+Status: unpublished implementation authorized by the maintainer on 15 October
+2026. Merge and production release retain the
+[Phase 7A gates](../evidence/phase-7a-release-reconciliation.md).
 
 Implement [#26](https://github.com/seancheong/takonbini-web/issues/26) from the
 patched merged baseline `cb39d06`. Preserve the catalog shipped in PR #63:
