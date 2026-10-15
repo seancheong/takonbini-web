@@ -49,49 +49,6 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 	const isReleaseSoon = isFutureReleaseDate(product.releaseDate);
 	const viewTransitionName = `product-image-${product.id}`;
 
-	const startViewTransition = (
-		callback: () => void,
-		event: React.MouseEvent,
-	) => {
-		const transition = (
-			document as Document & {
-				startViewTransition?: (callback: () => Promise<void>) => void;
-			}
-		).startViewTransition;
-
-		if (
-			!transition ||
-			isSafari() ||
-			window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-		) {
-			if (isSafari()) {
-				setIsSafariNavigating(true);
-
-				const unsub = router.subscribe("onResolved", () => {
-					unsub();
-					setIsSafariNavigating(false);
-				});
-			}
-			callback();
-
-			return;
-		}
-
-		event.preventDefault();
-		transition.call(
-			document,
-			() =>
-				new Promise<void>((resolve) => {
-					const unsub = router.subscribe("onResolved", () => {
-						unsub();
-						resolve();
-					});
-
-					callback();
-				}),
-		);
-	};
-
 	useEffect(() => {
 		setImageError(false);
 		setImageLoaded(false);
@@ -120,15 +77,23 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 				)
 					return;
 				event.preventDefault();
-				startViewTransition(
-					() =>
-						navigate({
-							to: "/products/$id",
-							params: { id: product.id },
-							...(filters ? { search: filters } : {}),
-						}),
-					event,
-				);
+				if (isSafari()) {
+					setIsSafariNavigating(true);
+					const unsubscribe = router.subscribe("onResolved", () => {
+						unsubscribe();
+						setIsSafariNavigating(false);
+					});
+				}
+				const viewTransition =
+					typeof document.startViewTransition === "function" &&
+					!isSafari() &&
+					!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+				navigate({
+					to: "/products/$id",
+					params: { id: product.id },
+					...(filters ? { search: filters } : {}),
+					...(viewTransition ? { viewTransition: true } : {}),
+				});
 			}}
 			data-store={product.store}
 			className="catalog-product group"

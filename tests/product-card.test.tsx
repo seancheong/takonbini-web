@@ -66,6 +66,8 @@ const product: ActiveCatalogProduct = {
 
 afterEach(() => {
 	vi.clearAllMocks();
+	vi.unstubAllGlobals();
+	Reflect.deleteProperty(document, "startViewTransition");
 	document.body.innerHTML = "";
 });
 
@@ -99,6 +101,40 @@ describe("product card rendering and navigation", () => {
 			ctrlKey: true,
 		});
 		expect(routerMocks.navigate).not.toHaveBeenCalled();
+	});
+
+	it("lets the router start the transition after loading instead of holding a browser snapshot across the request", () => {
+		const startViewTransition = vi.fn();
+		Object.defineProperty(document, "startViewTransition", {
+			value: startViewTransition,
+			configurable: true,
+		});
+		vi.stubGlobal("matchMedia", () => ({ matches: false }));
+		render(<ProductCard product={product} />);
+		fireEvent.click(screen.getByRole("link", { name: "Matcha" }));
+		expect(startViewTransition).not.toHaveBeenCalled();
+		expect(routerMocks.navigate).toHaveBeenCalledWith({
+			to: "/products/$id",
+			params: { id: "product-1" },
+			viewTransition: true,
+		});
+		expect(routerMocks.subscribe).not.toHaveBeenCalled();
+	});
+
+	it("keeps reduced-motion navigation outside view transitions", () => {
+		const startViewTransition = vi.fn();
+		Object.defineProperty(document, "startViewTransition", {
+			value: startViewTransition,
+			configurable: true,
+		});
+		vi.stubGlobal("matchMedia", () => ({ matches: true }));
+		render(<ProductCard product={product} />);
+		fireEvent.click(screen.getByRole("link", { name: "Matcha" }));
+		expect(startViewTransition).not.toHaveBeenCalled();
+		expect(routerMocks.navigate).toHaveBeenCalledWith({
+			to: "/products/$id",
+			params: { id: "product-1" },
+		});
 	});
 
 	it("uses the existing field fallback and unknown price presentation", () => {

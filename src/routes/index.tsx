@@ -11,7 +11,7 @@ export const Route = createFileRoute("/")({
 	validateSearch: catalogSearch.parse,
 	loaderDeps: ({ search }) => ({ search }),
 	loader: ({ context, deps }) => {
-		context.queryClient.prefetchInfiniteQuery(
+		return context.queryClient.prefetchInfiniteQuery(
 			productQueries.catalog(catalogSearch.normalize(deps.search)),
 		);
 	},
