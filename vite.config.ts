@@ -3,9 +3,9 @@ import { devtools } from '@tanstack/devtools-vite'
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
-import tailwindcss from '@tailwindcss/vite'
 import { nitro } from 'nitro/vite'
 import stylex from '@stylexjs/unplugin'
+import { Features } from 'lightningcss'
 
 const config = defineConfig({
   plugins: [
@@ -15,11 +15,11 @@ const config = defineConfig({
     viteTsConfigPaths({
       projects: ['./tsconfig.json'],
     }),
-    tailwindcss(),
     stylex.vite({
       runtimeInjection: false,
       useCSSLayers: true,
       devMode: 'css-only',
+      lightningcssOptions: { exclude: Features.Colors },
     }),
     tanstackStart(),
     viteReact(),

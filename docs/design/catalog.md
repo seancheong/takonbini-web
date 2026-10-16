@@ -72,3 +72,18 @@ Detail loader pending → ProductDetailPending
 Detail loader fails → ProductDetailError + current filters
 Detail loaded → ProductDetailScreen
 ```
+
+
+## Implemented styling
+
+All catalog/detail elements now use their owner's private `layoutStyles` entries
+via `stylex.props`. The old catalog selectors and Tailwind utilities are retired.
+Do not import a private style table from another module or recreate a utility
+layer. Keep state, markup, route/search contracts and view-transition identities
+unchanged when editing these styles. Store text uses the typed `storeTextStyles`
+group; the card sets its own `--store-accent` for the owned copy edge.
+
+The search/dialog/grid breakpoints remain 600/800/1100px, and detail columns switch
+at 1024px. Native modal semantics, controlled draft filters, pagination, data
+states and image failure handling remain in their existing owners. See the
+[full migration evidence](../evidence/stylex-migration.md) for parity coverage.

@@ -1,5 +1,7 @@
 # StyleX integration spike — PR #73
 
+Historical checkpoint: superseded by the [full migration evidence](stylex-migration.md).
+
 Scope: official tooling, the native scroll action, and the shared portalled
 Select path. This is not completion of #29 or permission to release mixed styling.
 Baseline: `055e4f2` (merged main). Its lockfile was installed without changes,

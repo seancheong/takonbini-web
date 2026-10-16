@@ -1,6 +1,8 @@
+import * as stylex from "@stylexjs/stylex";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
+import { darkTheme, themeStyles } from "../styles/themes.stylex";
 import "../i18n";
 import {
 	createRootRouteWithContext,
@@ -173,7 +175,14 @@ function RootDocument() {
 	}, [i18n]);
 
 	return (
-		<html lang={i18n.language} suppressHydrationWarning>
+		<html
+			lang={i18n.language}
+			{...stylex.props(
+				themeStyles.bridge,
+				resolvedTheme === "dark" && darkTheme,
+			)}
+			suppressHydrationWarning
+		>
 			<head>
 				<HeadContent />
 				<StyleXDevStyles />

@@ -17,6 +17,7 @@ vi.mock("react-i18next", () => ({
 afterEach(() => {
 	cleanup();
 	vi.restoreAllMocks();
+	vi.unstubAllGlobals();
 });
 
 it("renders safely on the server before the scroll position is known", () => {
@@ -39,4 +40,13 @@ it("reveals the compiled button on scroll and scrolls back to the top", () => {
 	vi.spyOn(window, "scrollY", "get").mockReturnValue(0);
 	act(() => window.dispatchEvent(new Event("scroll")));
 	expect(screen.queryByRole("button")).toBeNull();
+});
+
+it("uses immediate scrolling when reduced motion is requested", () => {
+	vi.spyOn(window, "scrollY", "get").mockReturnValue(200);
+	vi.stubGlobal("matchMedia", () => ({ matches: true }));
+	const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+	render(<ScrollTopButton />);
+	fireEvent.click(screen.getByRole("button", { name: "product.scrollTop" }));
+	expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "auto" });
 });

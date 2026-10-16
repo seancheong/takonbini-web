@@ -15,8 +15,8 @@ Correct, extracted from [LanguageSelect](../../src/components/LanguageSelect.tsx
   xstyle={styles.trigger}
   aria-label={t("language.changeLanguage")}
 >
-  <div className="flex items-center gap-2">
-    <Globe size={20} className="text-muted-foreground" />
+  <div {...stylex.props(layoutStyles.row)}>
+    <Globe size={16} {...stylex.props(layoutStyles.icon)} />
     <SelectValue>{t(`language.${currentLanguage}`)}</SelectValue>
   </div>
 </SelectTrigger>
@@ -44,13 +44,12 @@ an optional `stylex.StyleXStyles` input; compose it after base/size styles for a
 caller override. The two shell callers use it for 44px touch targets, horizontal
 padding, and border suppression. Dynamic StyleX variables and native `style`
 are preserved; native inline properties take precedence. Existing Radix props
-and refs pass through. `className` remains supported, including Tailwind utility
-overrides during coexistence; the explicit CSS layer order puts utilities after
-StyleX priorities. Do not add an appearance variant for these overrides.
+and refs pass through. `className` remains supported, for caller-owned CSS; Tailwind utility merging has been removed. Use `xstyle`
+for typed overrides and native `style` for runtime inline values. Do not add an appearance variant for these overrides.
 
-The global CSS bridge preserves arbitrary slotted SVG/value markup's existing
-size/color/alignment rules. It is deliberately scoped by Select's `data-slot`
-attributes and must move with Select when Tailwind is retired. Enter/exit and
+SVG/value/item-text geometry is applied to owned elements and both shell callers.
+Arbitrary new children must carry their own explicit styles; no global descendant
+selector will size them. Preserve the documented 16px shell icons. Enter/exit and
 side/popup offsets retain the existing values. Select transitions and animations
 now use zero duration with reduced motion.
 
@@ -58,7 +57,7 @@ now use zero duration with reduced motion.
 
 Use [CatalogControls](../../src/features/products/catalog/CatalogControls.tsx) inside the existing catalog; use a normal navigation link to open a different page. No shared `Input` component or input size/variant API exists.
 
-The only current search style is `.catalog-search`. It has a visible associated label, a `type="search"` input at 16px, a 44px minimum input height, and form submission. Search text is draft until submit; do not silently add debounce or live filtering in #29.
+Search uses CatalogControls' private `searchForm`, `searchField`, `searchLabel`, and `searchInput` styles. It has a visible associated label, a `type="search"` input at 16px, a 44px minimum input height, and form submission. Search text is draft until submit; do not silently add debounce or live filtering in #29.
 
 Correct, from CatalogControls:
 

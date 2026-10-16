@@ -2,6 +2,8 @@ import * as stylex from "@stylexjs/stylex";
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { colors } from "../styles/colors.stylex";
+import { conditions } from "../styles/conditions.stylex";
 
 export default function ScrollTopButton() {
 	const { t } = useTranslation();
@@ -27,7 +29,13 @@ export default function ScrollTopButton() {
 			type="button"
 			aria-label={t("product.scrollTop")}
 			onClick={() => {
-				window.scrollTo({ top: 0, behavior: "smooth" });
+				window.scrollTo({
+					top: 0,
+					behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)")
+						.matches
+						? "auto"
+						: "smooth",
+				});
 			}}
 			{...stylex.props(styles.button)}
 		>
@@ -47,18 +55,18 @@ const styles = stylex.create({
 		borderRadius: "9999px",
 		borderWidth: 1,
 		borderStyle: "solid",
-		borderColor: "var(--scroll-top-border)",
+		borderColor: colors.scrollTopBorder,
 		backgroundColor: {
-			default: "var(--primary)",
+			default: colors.primary,
 			":hover": "color-mix(in oklab, var(--primary) 90%, transparent)",
 		},
 		padding: "0.75rem",
-		color: "var(--primary-foreground)",
+		color: colors.primaryForeground,
 		boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
 		transitionProperty: "background-color, border-color, box-shadow",
 		transitionDuration: {
 			default: "150ms",
-			"@media (prefers-reduced-motion: reduce)": "0ms",
+			[conditions.reducedMotion]: "0ms",
 		},
 		transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
 	},

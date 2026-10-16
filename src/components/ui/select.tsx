@@ -3,6 +3,9 @@ import * as stylex from "@stylexjs/stylex";
 import { clsx } from "clsx";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import type * as React from "react";
+import { colors } from "../../styles/colors.stylex";
+import { conditions } from "../../styles/conditions.stylex";
+import { metrics } from "../../styles/metrics.stylex";
 
 function Select({
 	...props
@@ -19,7 +22,13 @@ function SelectGroup({
 function SelectValue({
 	...props
 }: React.ComponentProps<typeof SelectPrimitive.Value>) {
-	return <SelectPrimitive.Value data-slot="select-value" {...props} />;
+	return (
+		<SelectPrimitive.Value
+			data-slot="select-value"
+			{...stylex.props(styles.value)}
+			{...props}
+		/>
+	);
 }
 
 function SelectTrigger({
@@ -122,7 +131,9 @@ function SelectItem({
 					<CheckIcon {...stylex.props(styles.icon)} />
 				</SelectPrimitive.ItemIndicator>
 			</span>
-			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+			<SelectPrimitive.ItemText {...stylex.props(styles.itemText)}>
+				{children}
+			</SelectPrimitive.ItemText>
 		</SelectPrimitive.Item>
 	);
 }
@@ -195,6 +206,15 @@ const exit = stylex.keyframes({
 });
 
 const styles = stylex.create({
+	value: {
+		overflow: "hidden",
+		display: "flex",
+		WebkitBoxOrient: "vertical",
+		WebkitLineClamp: 1,
+		alignItems: "center",
+		gap: "0.5rem",
+	},
+	itemText: { display: "flex", alignItems: "center", gap: "0.5rem" },
 	trigger: {
 		display: "flex",
 		width: "fit-content",
@@ -205,10 +225,10 @@ const styles = stylex.create({
 		borderWidth: 1,
 		borderStyle: "solid",
 		borderColor: {
-			default: "var(--input)",
-			":focus-visible": "var(--ring)",
-			":is([aria-invalid=true])": "var(--destructive)",
-			":is([aria-invalid=true]):focus-visible": "var(--destructive)",
+			default: colors.input,
+			":focus-visible": colors.ring,
+			":is([aria-invalid=true])": colors.destructive,
+			":is([aria-invalid=true]):focus-visible": colors.destructive,
 		},
 		backgroundColor: {
 			default: "transparent",
@@ -218,12 +238,12 @@ const styles = stylex.create({
 		},
 		color: {
 			default: null,
-			":is([data-placeholder])": "var(--muted-foreground)",
+			":is([data-placeholder])": colors.mutedForeground,
 		},
 		paddingInline: "0.75rem",
 		paddingBlock: "0.5rem",
-		fontSize: "0.875rem",
-		lineHeight: "1.25rem",
+		fontSize: metrics.controlText,
+		lineHeight: metrics.controlLine,
 		whiteSpace: "nowrap",
 		boxShadow: {
 			default: "0 1px 2px 0 rgb(0 0 0 / .05)",
@@ -238,7 +258,7 @@ const styles = stylex.create({
 		transitionProperty: "color, box-shadow",
 		transitionDuration: {
 			default: "150ms",
-			"@media (prefers-reduced-motion: reduce)": "0ms",
+			[conditions.reducedMotion]: "0ms",
 		},
 		transitionTimingFunction: "cubic-bezier(.4, 0, .2, 1)",
 		cursor: { default: null, ":disabled": "not-allowed" },
@@ -257,9 +277,9 @@ const styles = stylex.create({
 		borderRadius: "calc(var(--radius) - 2px)",
 		borderWidth: 1,
 		borderStyle: "solid",
-		borderColor: "var(--border)",
-		backgroundColor: "var(--popover)",
-		color: "var(--popover-foreground)",
+		borderColor: colors.border,
+		backgroundColor: colors.popover,
+		color: colors.popoverForeground,
 		boxShadow: "0 4px 6px -1px rgb(0 0 0 / .1), 0 2px 4px -2px rgb(0 0 0 / .1)",
 		animationName: {
 			default: null,
@@ -268,7 +288,7 @@ const styles = stylex.create({
 		},
 		animationDuration: {
 			default: "150ms",
-			"@media (prefers-reduced-motion: reduce)": "0ms",
+			[conditions.reducedMotion]: "0ms",
 		},
 		animationTimingFunction: "ease",
 		"--select-enter-x": {
@@ -299,7 +319,7 @@ const styles = stylex.create({
 		scrollMarginBlock: "0.25rem",
 	},
 	label: {
-		color: "var(--muted-foreground)",
+		color: colors.mutedForeground,
 		paddingInline: "0.5rem",
 		paddingBlock: "0.375rem",
 		fontSize: "0.75rem",
@@ -316,8 +336,8 @@ const styles = stylex.create({
 		paddingBlock: "0.375rem",
 		paddingRight: "2rem",
 		paddingLeft: "0.5rem",
-		fontSize: "0.875rem",
-		lineHeight: "1.25rem",
+		fontSize: metrics.controlText,
+		lineHeight: metrics.controlLine,
 		outlineStyle: {
 			default: "none",
 			"@media (forced-colors: active)": "solid",
@@ -329,8 +349,8 @@ const styles = stylex.create({
 		outlineWidth: { default: null, "@media (forced-colors: active)": 2 },
 		outlineOffset: { default: null, "@media (forced-colors: active)": 2 },
 		userSelect: "none",
-		backgroundColor: { default: null, ":focus": "var(--accent)" },
-		color: { default: null, ":focus": "var(--accent-foreground)" },
+		backgroundColor: { default: null, ":focus": colors.accent },
+		color: { default: null, ":focus": colors.accentForeground },
 		pointerEvents: { default: null, ":is([data-disabled])": "none" },
 		opacity: { default: 1, ":is([data-disabled])": 0.5 },
 	},
@@ -343,10 +363,16 @@ const styles = stylex.create({
 		alignItems: "center",
 		justifyContent: "center",
 	},
-	icon: { width: "1rem", height: "1rem", flexShrink: 0, pointerEvents: "none" },
+	icon: {
+		color: colors.mutedForeground,
+		width: "1rem",
+		height: "1rem",
+		flexShrink: 0,
+		pointerEvents: "none",
+	},
 	chevron: { opacity: 0.5 },
 	separator: {
-		backgroundColor: "var(--border)",
+		backgroundColor: colors.border,
 		pointerEvents: "none",
 		marginInline: "-0.25rem",
 		marginBlock: "0.25rem",

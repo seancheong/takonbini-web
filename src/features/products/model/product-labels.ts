@@ -1,8 +1,3 @@
-export const storeLabelClasses: Record<string, string> = {
-	SevenEleven: "text-[color:var(--store-seven)]",
-	Lawson: "text-[color:var(--store-lawson)]",
-	FamilyMart: "text-[color:var(--store-family)]",
-};
 
 export const storeLabelKeys = {
 	SevenEleven: "product.store.sevenEleven",
