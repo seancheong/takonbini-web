@@ -1,5 +1,11 @@
 // @vitest-environment jsdom
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import {
+	act,
+	cleanup,
+	fireEvent,
+	render,
+	screen,
+} from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
 import ScrollTopButton from "@/components/ScrollTopButton";
