@@ -3,8 +3,8 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { PublicProduct } from "@/@types/product";
-import ProductCard from "@/features/product/components/ProductCard";
+import ProductCard from "@/features/products/catalog/ProductCard";
+import type { ActiveCatalogProduct } from "@/features/products/products.contracts";
 
 const routerMocks = vi.hoisted(() => ({
 	navigate: vi.fn(),
@@ -54,18 +54,20 @@ vi.mock("react-i18next", () => ({
 	}),
 }));
 
-const product: PublicProduct = {
+const product: ActiveCatalogProduct = {
 	id: "product-1",
 	title: { ja: "抹茶", en: "Matcha" },
 	price: 180,
 	description: { ja: "説明" },
 	images: [],
 	url: "https://store.example.test/product-1",
-	store: "Lawson" as PublicProduct["store"],
+	store: "Lawson" as ActiveCatalogProduct["store"],
 };
 
 afterEach(() => {
 	vi.clearAllMocks();
+	vi.unstubAllGlobals();
+	Reflect.deleteProperty(document, "startViewTransition");
 	document.body.innerHTML = "";
 });
 
@@ -91,6 +93,57 @@ describe("product card rendering and navigation", () => {
 			params: { id: "product-1" },
 			search: filters,
 		});
+	});
+
+	it("keeps ordinary browser modifier clicks out of programmatic navigation", () => {
+		render(<ProductCard product={product} />);
+		fireEvent.click(screen.getByRole("link", { name: "Matcha" }), {
+			ctrlKey: true,
+		});
+		expect(routerMocks.navigate).not.toHaveBeenCalled();
+	});
+
+	it("lets the router start the transition after loading instead of holding a browser snapshot across the request", () => {
+		const startViewTransition = vi.fn();
+		Object.defineProperty(document, "startViewTransition", {
+			value: startViewTransition,
+			configurable: true,
+		});
+		vi.stubGlobal("matchMedia", () => ({ matches: false }));
+		render(<ProductCard product={product} />);
+		fireEvent.click(screen.getByRole("link", { name: "Matcha" }));
+		expect(startViewTransition).not.toHaveBeenCalled();
+		expect(routerMocks.navigate).toHaveBeenCalledWith({
+			to: "/products/$id",
+			params: { id: "product-1" },
+			viewTransition: true,
+		});
+		expect(routerMocks.subscribe).not.toHaveBeenCalled();
+	});
+
+	it("keeps reduced-motion navigation outside view transitions", () => {
+		const startViewTransition = vi.fn();
+		Object.defineProperty(document, "startViewTransition", {
+			value: startViewTransition,
+			configurable: true,
+		});
+		vi.stubGlobal("matchMedia", () => ({ matches: true }));
+		render(<ProductCard product={product} />);
+		fireEvent.click(screen.getByRole("link", { name: "Matcha" }));
+		expect(startViewTransition).not.toHaveBeenCalled();
+		expect(routerMocks.navigate).toHaveBeenCalledWith({
+			to: "/products/$id",
+			params: { id: "product-1" },
+		});
+	});
+
+	it("uses the existing field fallback and unknown price presentation", () => {
+		render(
+			<ProductCard product={{ ...product, title: { ja: "抹茶" }, price: 0 }} />,
+		);
+		expect(screen.getByRole("link", { name: "抹茶" })).toBeTruthy();
+		expect(screen.getByText("product.priceUnknown")).toBeTruthy();
+		expect(screen.getByText("product.noImage")).toBeTruthy();
 	});
 
 	it("hydrates server-rendered card markup without a recoverable mismatch", async () => {

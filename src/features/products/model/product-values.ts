@@ -55,33 +55,3 @@ export enum Category {
 	FROZEN = "Frozen",
 	OTHER = "Other",
 }
-
-export interface Product {
-	id: string;
-	title: {
-		ja: string;
-		en?: string;
-		zh?: string;
-	};
-	price: number;
-	description: {
-		ja: string;
-		en?: string;
-		zh?: string;
-	};
-	isTranslated?: boolean;
-	images: string[];
-	url: string;
-	store: Store;
-	releaseDate?: string;
-	category?: Category;
-	regions?: Region[];
-	isNew?: boolean;
-	searchKeywords?: string;
-	ttl?: number;
-}
-
-export type PublicProduct = Omit<
-	Product,
-	"isTranslated" | "searchKeywords" | "ttl"
->;

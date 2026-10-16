@@ -1,16 +1,18 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { Category, Store } from "@/@types/product";
+import {
+	parseList,
+	parseNumber,
+} from "@/features/products/catalog/query-parsers";
+import { catalogSearch, productQueries } from "@/features/products/products";
+import type { ProductFilters } from "@/features/products/products.contracts";
+import { Category, Store } from "@/features/products/products.contracts";
+import { catalogProduct } from "@/features/products/testing/catalog-fixtures";
 import { Route as imageRoute } from "@/routes/api.image";
 import { Route as productsRoute } from "@/routes/api.products";
 import { Route as productRoute } from "@/routes/api.products.$id";
 import { Route as catalogRoute } from "@/routes/index";
 import { Route as detailRoute } from "@/routes/products.$id";
 import { Route as sitemapRoute } from "@/routes/sitemap[.]xml";
-import {
-	type ProductFilters,
-	productsInfiniteQueryOptions,
-} from "@/services/productService";
-import { parseList, parseNumber } from "@/utils/queryParsers";
 
 type HandlerInput = { request: Request; params: Record<string, string> };
 type GetHandler = (input: HandlerInput) => Promise<Response>;
@@ -77,6 +79,33 @@ describe("catalog query parsing and requests", () => {
 				maxPrice: undefined,
 			},
 		);
+	});
+
+	it("encodes applied URL filters without a page-size override or empty selections", () => {
+		const search = catalogSearch.encode({
+			limit: 100,
+			search: "  tea  ",
+			stores: [],
+			categories: [],
+			regions: [],
+			includeSoon: false,
+			minPrice: 0,
+		});
+		expect(search).toEqual({
+			search: "tea",
+			stores: undefined,
+			categories: undefined,
+			regions: undefined,
+			includeSoon: undefined,
+			minPrice: 0,
+			maxPrice: undefined,
+		});
+		expect(search).not.toHaveProperty("limit");
+		expect(catalogSearch.normalize(search)).toMatchObject({
+			limit: 20,
+			search: "tea",
+			minPrice: 0,
+		});
 	});
 
 	it("uses the current filters as catalog loader dependencies", () => {
@@ -158,7 +187,7 @@ describe("catalog query parsing and requests", () => {
 			limit: 10,
 			includeSoon: true,
 		};
-		const query = productsInfiniteQueryOptions(filters);
+		const query = productQueries.catalog(filters);
 		await query.queryFn({ pageParam: "page-1" });
 
 		const calledUrl = new URL(fetchMock.mock.calls[0][0] as string);
@@ -192,7 +221,7 @@ describe("catalog query parsing and requests", () => {
 			}),
 		);
 		vi.stubGlobal("fetch", fetchMock);
-		const query = productsInfiniteQueryOptions({ limit: 20 });
+		const query = productQueries.catalog({ limit: 20 });
 		await query.queryFn({ pageParam: undefined });
 
 		expect(fetchMock).toHaveBeenCalledWith(
@@ -202,10 +231,10 @@ describe("catalog query parsing and requests", () => {
 	});
 
 	it("uses a stable query key when equivalent filters list values in a different order", () => {
-		const left = productsInfiniteQueryOptions({
+		const left = productQueries.catalog({
 			stores: [Store.LAWSON, Store.SEVEN_ELEVEN],
 		});
-		const right = productsInfiniteQueryOptions({
+		const right = productQueries.catalog({
 			stores: [Store.SEVEN_ELEVEN, Store.LAWSON],
 		});
 		expect(left.queryKey).toEqual(right.queryKey);
@@ -242,9 +271,12 @@ describe("same-origin product API routes", () => {
 	it("forwards a product id and query to the upstream detail route", async () => {
 		vi.stubEnv("PRODUCTS_API_URL", "https://api.example.test/");
 		vi.stubEnv("PRODUCTS_API_KEY", "test-secret");
+		const product = catalogProduct({ id: "p/1" });
 		const fetchMock = vi
 			.fn()
-			.mockResolvedValue(new Response('{"id":"p/1"}', { status: 200 }));
+			.mockResolvedValue(
+				new Response(JSON.stringify(product), { status: 200 }),
+			);
 		vi.stubGlobal("fetch", fetchMock);
 
 		const response = await getHandler(productRoute)({
@@ -259,7 +291,7 @@ describe("same-origin product API routes", () => {
 			{ headers: { "x-api-key": "test-secret" } },
 		);
 		expect(response.status).toBe(200);
-		expect(await response.text()).toBe('{"id":"p/1"}');
+		expect(await response.json()).toEqual(product);
 	});
 
 	it("fails closed when upstream credentials are missing", async () => {
@@ -403,5 +435,46 @@ describe("sitemap", () => {
 		expect(response.status).toBe(200);
 		expect(await response.text()).toContain("https://preview.example.test/");
 		expect(fetchMock).not.toHaveBeenCalled();
+	});
+	it("preserves the existing partial sitemap after a later upstream HTTP failure", async () => {
+		vi.stubEnv("PRODUCTS_API_URL", "https://api.example.test");
+		vi.stubEnv("PRODUCTS_API_KEY", "test-secret");
+		const fetchMock = vi
+			.fn()
+			.mockResolvedValueOnce(
+				new Response(
+					JSON.stringify({
+						products: [{ id: "first-page" }],
+						nextCursor: "next",
+					}),
+				),
+			)
+			.mockResolvedValueOnce(new Response("unavailable", { status: 503 }));
+		vi.stubGlobal("fetch", fetchMock);
+		const response = await getHandler(sitemapRoute)({
+			request: request("https://web.example.test/sitemap.xml"),
+			params: {},
+		});
+		expect(response.status).toBe(200);
+		expect(await response.text()).toContain("/products/first-page");
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+	});
+
+	it("preserves the existing sitemap page limit even when more pages exist", async () => {
+		vi.stubEnv("PRODUCTS_API_URL", "https://api.example.test");
+		vi.stubEnv("PRODUCTS_API_KEY", "test-secret");
+		const fetchMock = vi
+			.fn()
+			.mockImplementation(
+				async () =>
+					new Response(JSON.stringify({ products: [], nextCursor: "next" })),
+			);
+		vi.stubGlobal("fetch", fetchMock);
+		const response = await getHandler(sitemapRoute)({
+			request: request("https://web.example.test/sitemap.xml"),
+			params: {},
+		});
+		expect(response.status).toBe(200);
+		expect(fetchMock).toHaveBeenCalledTimes(50);
 	});
 });

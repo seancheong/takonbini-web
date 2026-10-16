@@ -1,13 +1,13 @@
 import { Search, X } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Store } from "@/@types/product";
-import type { ProductFilters } from "@/services/productService";
+import { Store } from "@/features/products/model/product-values";
+import type { ProductFilters } from "@/features/products/products.contracts";
 import {
 	categoryLabelKeys,
 	regionLabelKeys,
 	storeLabelKeys,
-} from "../utils/productLabels";
+} from "../model/product-labels";
 
 interface CatalogControlsProps {
 	filters: ProductFilters;

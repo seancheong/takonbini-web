@@ -1,26 +1,28 @@
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { PublicProduct } from "@/@types/product";
+import { getProxiedImageUrl } from "@/features/products/model/product-images";
+import { isSafari } from "@/features/products/model/product-navigation";
+import type {
+	ActiveCatalogProduct,
+	ProductFilters,
+} from "@/features/products/products.contracts";
 import type { Language } from "@/i18n";
-import type { ProductFilters } from "@/services/productService";
-import { isSafari } from "@/utils/browser";
-import { getProxiedImageUrl } from "@/utils/imageProxy";
+import {
+	formatPrice,
+	isFutureReleaseDate,
+	resolveLocalizedText,
+} from "../model/product-display";
 import {
 	type CategoryLabelKey,
 	categoryLabelKeys,
 	type StoreLabelKey,
 	storeLabelClasses,
 	storeLabelKeys,
-} from "../utils/productLabels";
-import {
-	formatPrice,
-	isFutureReleaseDate,
-	resolveLocalizedText,
-} from "../utils/productUtils";
+} from "../model/product-labels";
 
 interface ProductCardProps {
-	product: PublicProduct;
+	product: ActiveCatalogProduct;
 	filters?: ProductFilters;
 }
 
@@ -46,49 +48,6 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
 	const isReleaseSoon = isFutureReleaseDate(product.releaseDate);
 	const viewTransitionName = `product-image-${product.id}`;
-
-	const startViewTransition = (
-		callback: () => void,
-		event: React.MouseEvent,
-	) => {
-		const transition = (
-			document as Document & {
-				startViewTransition?: (callback: () => Promise<void>) => void;
-			}
-		).startViewTransition;
-
-		if (
-			!transition ||
-			isSafari() ||
-			window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-		) {
-			if (isSafari()) {
-				setIsSafariNavigating(true);
-
-				const unsub = router.subscribe("onResolved", () => {
-					unsub();
-					setIsSafariNavigating(false);
-				});
-			}
-			callback();
-
-			return;
-		}
-
-		event.preventDefault();
-		transition.call(
-			document,
-			() =>
-				new Promise<void>((resolve) => {
-					const unsub = router.subscribe("onResolved", () => {
-						unsub();
-						resolve();
-					});
-
-					callback();
-				}),
-		);
-	};
 
 	useEffect(() => {
 		setImageError(false);
@@ -118,15 +77,23 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 				)
 					return;
 				event.preventDefault();
-				startViewTransition(
-					() =>
-						navigate({
-							to: "/products/$id",
-							params: { id: product.id },
-							...(filters ? { search: filters } : {}),
-						}),
-					event,
-				);
+				if (isSafari()) {
+					setIsSafariNavigating(true);
+					const unsubscribe = router.subscribe("onResolved", () => {
+						unsubscribe();
+						setIsSafariNavigating(false);
+					});
+				}
+				const viewTransition =
+					typeof document.startViewTransition === "function" &&
+					!isSafari() &&
+					!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+				navigate({
+					to: "/products/$id",
+					params: { id: product.id },
+					...(filters ? { search: filters } : {}),
+					...(viewTransition ? { viewTransition: true } : {}),
+				});
 			}}
 			data-store={product.store}
 			className="catalog-product group"

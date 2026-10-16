@@ -1,72 +1,11 @@
-import type { Category, PublicProduct, Region, Store } from "@/@types/product";
+import type {
+	ActiveCatalogProduct,
+	CatalogPage,
+	ProductFilters,
+} from "../products.contracts";
 
-type ProductsResponse = {
-	products: PublicProduct[];
-	nextCursor?: string;
-};
-
-export const productsQueryKey = ["products"] as const;
-export const productsInfiniteQueryKey = ["products", "infinite"] as const;
-export const productByIdQueryKey = ["products", "byId"] as const;
-
-export const productStatuses = [
-	"allWithoutSoon",
-	"new",
-	"soon",
-	"all",
-] as const;
-export type ProductStatus = (typeof productStatuses)[number];
-
-export type ProductFilters = {
-	search?: string;
-	stores?: Store[];
-	categories?: Category[];
-	regions?: Region[];
-	minPrice?: number;
-	maxPrice?: number;
-	limit?: number;
-	includeSoon?: boolean;
-};
-
-export const defaultProductFilters: ProductFilters = {
-	limit: 20,
-};
-
-const normalizeFilters = (filters: ProductFilters) => ({
-	...filters,
-	search: filters.search?.trim() || undefined,
-	stores: filters.stores?.slice().sort(),
-	categories: filters.categories?.slice().sort(),
-	regions: filters.regions?.slice().sort(),
-});
-
-const productStatus = (filters: ProductFilters): ProductStatus =>
+const productStatus = (filters: ProductFilters) =>
 	filters.includeSoon ? "all" : "allWithoutSoon";
-
-export const productsQueryOptions = () => ({
-	queryKey: productsQueryKey,
-	queryFn: getProducts,
-	staleTime: 1000 * 60 * 30, // 30 minutes
-	gcTime: 1000 * 60 * 60, // 1 hour
-});
-
-export const productByIdQueryOptions = (id: string) => ({
-	queryKey: [...productByIdQueryKey, id] as const,
-	queryFn: () => getProductById(id),
-	staleTime: 1000 * 60 * 30, // 30 minutes
-	gcTime: 1000 * 60 * 60, // 1 hour
-});
-
-export const productsInfiniteQueryOptions = (filters: ProductFilters) => ({
-	queryKey: [...productsInfiniteQueryKey, normalizeFilters(filters)] as const,
-	queryFn: ({ pageParam }: { pageParam?: string }) =>
-		getProductsPage(pageParam, filters),
-	initialPageParam: undefined as string | undefined,
-	getNextPageParam: (lastPage: ProductsResponse) =>
-		lastPage.nextCursor ?? undefined,
-	staleTime: 1000 * 60 * 30, // 30 minutes
-	gcTime: 1000 * 60 * 60, // 1 hour
-});
 
 const getApiBaseUrl = () => {
 	if (typeof window !== "undefined") {
@@ -83,7 +22,7 @@ const getApiBaseUrl = () => {
 	return `${protocol}://${host}`;
 };
 
-const getProducts = async () => {
+export const getProducts = async () => {
 	const url = new URL(`${getApiBaseUrl()}/api/products`);
 	url.searchParams.set("status", "allWithoutSoon");
 	const response = await fetch(url.toString());
@@ -104,10 +43,10 @@ const getProducts = async () => {
 		throw new Error("Failed to fetch products.");
 	}
 
-	return response.json() as Promise<ProductsResponse>;
+	return response.json() as Promise<CatalogPage>;
 };
 
-const getProductById = async (id: string) => {
+export const getProductById = async (id: string) => {
 	const response = await fetch(`${getApiBaseUrl()}/api/products/${id}`);
 
 	if (!response.ok) {
@@ -126,10 +65,10 @@ const getProductById = async (id: string) => {
 		throw new Error("Failed to fetch product.");
 	}
 
-	return response.json() as Promise<PublicProduct>;
+	return response.json() as Promise<ActiveCatalogProduct>;
 };
 
-const getProductsPage = async (
+export const getProductsPage = async (
 	cursor: string | undefined,
 	filters: ProductFilters,
 ) => {
@@ -187,5 +126,5 @@ const getProductsPage = async (
 		throw new Error("Failed to fetch products.");
 	}
 
-	return response.json() as Promise<ProductsResponse>;
+	return response.json() as Promise<CatalogPage>;
 };

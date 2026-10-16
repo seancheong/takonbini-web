@@ -2,10 +2,10 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import { Category, Store } from "@/@types/product";
-import CatalogControls from "@/features/product/components/CatalogControls";
-import ProductFilterDrawer from "@/features/product/components/ProductFilterDrawer";
-import type { ProductFilters } from "@/services/productService";
+import CatalogControls from "@/features/products/catalog/CatalogControls";
+import ProductFilterDrawer from "@/features/products/catalog/CatalogFilters";
+import type { ProductFilters } from "@/features/products/products.contracts";
+import { Category, Store } from "@/features/products/products.contracts";
 
 vi.mock("react-i18next", () => ({
 	useTranslation: () => ({

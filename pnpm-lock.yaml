@@ -80,6 +80,9 @@ importers:
       vite-tsconfig-paths:
         specifier: ^6.0.2
         version: 6.0.3(typescript@5.9.3)(vite@7.3.6(@types/node@22.19.3)(jiti@2.7.0)(lightningcss@1.33.0)(tsx@4.21.0))
+      zod:
+        specifier: 4.5.4
+        version: 4.5.4
     devDependencies:
       '@biomejs/biome':
         specifier: 2.2.4
@@ -2527,8 +2530,8 @@ packages:
   yallist@3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
 
-  zod@4.6.7:
-    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
+  zod@4.5.4:
+    resolution: {integrity: sha512-sC95tT5iHHH9gtpj6A81kh+NEaRAUFN+qlUPDUbRfOMvNf5QCBqsb3WgvnpVtK5Y+4UfA6KqufotuTvMGiTlsA==}
 
 snapshots:
 
@@ -3630,7 +3633,7 @@ snapshots:
       jiti: 2.7.0
       magic-string: 0.30.21
       prettier: 3.9.10
-      zod: 4.6.7
+      zod: 4.5.4
     transitivePeerDependencies:
       - supports-color
 
@@ -3644,7 +3647,7 @@ snapshots:
       '@tanstack/router-utils': 1.162.3
       chokidar: 5.0.0
       unplugin: 3.4.0(esbuild@0.27.2)(rolldown@1.2.11)(rollup@4.55.1)(vite@7.3.6(@types/node@22.19.3)(jiti@2.7.0)(lightningcss@1.33.0)(tsx@4.21.0))
-      zod: 4.6.7
+      zod: 4.5.4
     optionalDependencies:
       '@tanstack/react-router': 1.170.41(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       vite: 7.3.6(@types/node@22.19.3)(jiti@2.7.0)(lightningcss@1.33.0)(tsx@4.21.0)
@@ -3707,7 +3710,7 @@ snapshots:
       ufo: 1.6.4
       vitefu: 1.1.3(vite@7.3.6(@types/node@22.19.3)(jiti@2.7.0)(lightningcss@1.33.0)(tsx@4.21.0))
       xmlbuilder2: 4.0.3
-      zod: 4.6.7
+      zod: 4.5.4
     optionalDependencies:
       vite: 7.3.6(@types/node@22.19.3)(jiti@2.7.0)(lightningcss@1.33.0)(tsx@4.21.0)
     transitivePeerDependencies:
@@ -4681,4 +4684,4 @@ snapshots:
 
   yallist@3.1.1: {}
 
-  zod@4.6.7: {}
+  zod@4.5.4: {}

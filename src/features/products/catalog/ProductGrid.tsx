@@ -1,9 +1,11 @@
-import type { PublicProduct } from "@/@types/product";
-import type { ProductFilters } from "@/services/productService";
+import type {
+	ActiveCatalogProduct,
+	ProductFilters,
+} from "@/features/products/products.contracts";
 import ProductCard from "./ProductCard";
 
 interface ProductGridProps {
-	products: PublicProduct[];
+	products: ActiveCatalogProduct[];
 	filters?: ProductFilters;
 }
 
