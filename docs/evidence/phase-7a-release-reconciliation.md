@@ -1,6 +1,6 @@
 # Phase 7A release reconciliation
 
-Status: amended baseline accepted; recovery source verified; observation gate remains open.
+Status: amended baseline accepted; rollback readiness accepted by maintainer; observation checkpoint completed on 16 October 2026.
 
 This record reconciles [#18](https://github.com/seancheong/takonbini-web/issues/18)
 with the release shipped in [PR #63](https://github.com/seancheong/takonbini-web/pull/63).
@@ -123,3 +123,29 @@ rollback-deployment checks passed for catalog SSR, each supported store API,
 filtered product detail return, and sitemap XML. This checkpoint does not close
 the window ending 16 October at 06:35:45 MYT or substitute for incident review.
 The CLI reports logged out; hosted rollback promotion remains unexecuted.
+
+
+## Observation completion and maintainer decisions
+
+The maintainer approved merging PR #71 and then explicitly accepted verified
+rollback source/build/authenticated deployment checks for this release, with
+the live drill deferred under the existing recovery policy. Vercel login was
+verified; the retained rollback deployment was Ready and already carried the
+production aliases, so restoring it would not constitute a meaningful drill.
+No live rollback was performed.
+
+At **16 October 2026, 08:22 MYT**, after the conservative observation window
+ended, ten read-only production checks passed: catalog SSR, three store APIs,
+three filtered catalog routes, filtered detail return, image proxy, and sitemap.
+Repository activity since the window started contained no newly reported
+incident issue. Available recent production runtime logs contained one product
+not-found 404 logged at error level, correlated with one detail-page HTTP 500 for the same missing product.
+The pre-refactor API returns 404 and the detail route treats fetch failures as
+route errors; this known mapping is preserved by this refactor. No additional
+5xx request appeared in the retained recent request query. Vercel Hobby retention rejected a full-window log query. These checkpoints
+and available-log review do not prove continuous error-free operation across
+24 hours; this retention limitation remains part of the evidence.
+
+The observation timing/checkpoint gate and the maintainer-accepted recovery
+gate are satisfied for PR #71. Its separate post-release verification and
+observation obligations still precede StyleX (#29).

@@ -42,8 +42,24 @@ Both regression tests failed before their corresponding fixes. The final suite h
 
 These fixes intentionally change navigation timing and initial SSR data readiness. They do not change product presentation, translations, filters, query keys, or upstream contracts. An initial catalog response now waits for its first prefetch to settle; upstream latency therefore contributes to initial response time.
 
-## Release readiness still pending
+## Release readiness at implementation checkpoint
 
 At approximately 15 October 2026, 20:26 MYT, production and the retained `cb39d06` immutable deployment passed read-only catalog, all three store APIs, filtered detail return, and sitemap checks. This is an additional checkpoint, not a continuous-availability or incident-log claim.
 
 The conservative Phase 7A window still ends no earlier than **16 October 2026, 06:35:45 MYT**, followed by route rechecks and incident review. Vercel CLI 64.1.0 reports logged out. No production rollback or alias change was performed. The concrete retained target remains deployment `7078753180`, source `cb39d06d5f26499c38320af5a612b08e79a1ffc2`, independently rebuildable and publicly reachable. Hosted rollback execution needs authenticated access and explicit approval for that target under the existing recovery procedure.
+
+
+## Pre-merge readiness — 16 October 2026
+
+The maintainer explicitly approved merging PR #71 and accepted the verified
+rollback source/build/authenticated deployment checks, keeping the live drill
+deferred. The Phase 7A window ended at 06:35:45 MYT. At 08:22 MYT all ten final
+production route/content checks passed. Repository incident activity and
+available recent runtime logs were reviewed; the sole retained error-level
+entry was a product-not-found API 404 correlated with a detail-page 500 for
+the same product, matching the pre-refactor missing-product route behavior.
+No additional 5xx request appeared in the retained recent request query. Full-window runtime logs were
+unavailable under Hobby retention; no continuous-monitoring claim is made.
+See the reconciled record for the decision and evidence limits. Merge remains
+subject to green checks on the final evidence commit. The Phase 7B production
+verification and observation window starts only after this PR is deployed.
