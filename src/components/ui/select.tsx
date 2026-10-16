@@ -1,8 +1,8 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
+import * as stylex from "@stylexjs/stylex";
+import { clsx } from "clsx";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import type * as React from "react";
-
-import { cn } from "@/lib/utils";
 
 function Select({
 	...props
@@ -24,25 +24,32 @@ function SelectValue({
 
 function SelectTrigger({
 	className,
+	xstyle,
+	style,
 	size = "default",
 	children,
 	...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
 	size?: "sm" | "default";
+	xstyle?: stylex.StyleXStyles;
 }) {
+	const triggerStyle = stylex.props(
+		styles.trigger,
+		size === "sm" ? styles.small : styles.defaultSize,
+		xstyle,
+	);
 	return (
 		<SelectPrimitive.Trigger
 			data-slot="select-trigger"
 			data-size={size}
-			className={cn(
-				"border-input data-placeholder:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-fit items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-				className,
-			)}
+			{...triggerStyle}
+			className={clsx(triggerStyle.className, className)}
+			style={{ ...triggerStyle.style, ...style }}
 			{...props}
 		>
 			{children}
 			<SelectPrimitive.Icon asChild>
-				<ChevronDownIcon className="size-4 opacity-50" />
+				<ChevronDownIcon {...stylex.props(styles.icon, styles.chevron)} />
 			</SelectPrimitive.Icon>
 		</SelectPrimitive.Trigger>
 	);
@@ -59,10 +66,9 @@ function SelectContent({
 		<SelectPrimitive.Portal>
 			<SelectPrimitive.Content
 				data-slot="select-content"
-				className={cn(
-					"bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-(--radix-select-content-available-height) min-w-32 origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-md border shadow-md",
-					position === "popper" &&
-						"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+				className={clsx(
+					stylex.props(styles.content, position === "popper" && styles.popper)
+						.className,
 					className,
 				)}
 				position={position}
@@ -71,10 +77,9 @@ function SelectContent({
 			>
 				<SelectScrollUpButton />
 				<SelectPrimitive.Viewport
-					className={cn(
-						"p-1",
-						position === "popper" &&
-							"h-(--radix-select-trigger-height) w-full min-w-(--radix-select-trigger-width) scroll-my-1",
+					{...stylex.props(
+						styles.viewport,
+						position === "popper" && styles.popperViewport,
 					)}
 				>
 					{children}
@@ -92,7 +97,7 @@ function SelectLabel({
 	return (
 		<SelectPrimitive.Label
 			data-slot="select-label"
-			className={cn("text-muted-foreground px-2 py-1.5 text-xs", className)}
+			className={clsx(stylex.props(styles.label).className, className)}
 			{...props}
 		/>
 	);
@@ -106,18 +111,15 @@ function SelectItem({
 	return (
 		<SelectPrimitive.Item
 			data-slot="select-item"
-			className={cn(
-				"focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
-				className,
-			)}
+			className={clsx(stylex.props(styles.item).className, className)}
 			{...props}
 		>
 			<span
 				data-slot="select-item-indicator"
-				className="absolute right-2 flex size-3.5 items-center justify-center"
+				{...stylex.props(styles.indicator)}
 			>
 				<SelectPrimitive.ItemIndicator>
-					<CheckIcon className="size-4" />
+					<CheckIcon {...stylex.props(styles.icon)} />
 				</SelectPrimitive.ItemIndicator>
 			</span>
 			<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -132,7 +134,7 @@ function SelectSeparator({
 	return (
 		<SelectPrimitive.Separator
 			data-slot="select-separator"
-			className={cn("bg-border pointer-events-none -mx-1 my-1 h-px", className)}
+			className={clsx(stylex.props(styles.separator).className, className)}
 			{...props}
 		/>
 	);
@@ -145,13 +147,10 @@ function SelectScrollUpButton({
 	return (
 		<SelectPrimitive.ScrollUpButton
 			data-slot="select-scroll-up-button"
-			className={cn(
-				"flex cursor-default items-center justify-center py-1",
-				className,
-			)}
+			className={clsx(stylex.props(styles.scrollButton).className, className)}
 			{...props}
 		>
-			<ChevronUpIcon className="size-4" />
+			<ChevronUpIcon {...stylex.props(styles.icon)} />
 		</SelectPrimitive.ScrollUpButton>
 	);
 }
@@ -163,13 +162,10 @@ function SelectScrollDownButton({
 	return (
 		<SelectPrimitive.ScrollDownButton
 			data-slot="select-scroll-down-button"
-			className={cn(
-				"flex cursor-default items-center justify-center py-1",
-				className,
-			)}
+			className={clsx(stylex.props(styles.scrollButton).className, className)}
 			{...props}
 		>
-			<ChevronDownIcon className="size-4" />
+			<ChevronDownIcon {...stylex.props(styles.icon)} />
 		</SelectPrimitive.ScrollDownButton>
 	);
 }
@@ -186,3 +182,181 @@ export {
 	SelectTrigger,
 	SelectValue,
 };
+
+const enter = stylex.keyframes({
+	from: {
+		opacity: 0,
+		transform:
+			"translate3d(var(--select-enter-x, 0px), var(--select-enter-y, 0px), 0) scale3d(.95, .95, .95)",
+	},
+});
+const exit = stylex.keyframes({
+	to: { opacity: 0, transform: "scale3d(.95, .95, .95)" },
+});
+
+const styles = stylex.create({
+	trigger: {
+		display: "flex",
+		width: "fit-content",
+		alignItems: "center",
+		justifyContent: "space-between",
+		gap: "0.5rem",
+		borderRadius: "calc(var(--radius) - 2px)",
+		borderWidth: 1,
+		borderStyle: "solid",
+		borderColor: {
+			default: "var(--input)",
+			":focus-visible": "var(--ring)",
+			":is([aria-invalid=true])": "var(--destructive)",
+			":is([aria-invalid=true]):focus-visible": "var(--destructive)",
+		},
+		backgroundColor: {
+			default: "transparent",
+			":is(.dark *)": "color-mix(in oklab, var(--input) 30%, transparent)",
+			":is(.dark *):hover":
+				"color-mix(in oklab, var(--input) 50%, transparent)",
+		},
+		color: {
+			default: null,
+			":is([data-placeholder])": "var(--muted-foreground)",
+		},
+		paddingInline: "0.75rem",
+		paddingBlock: "0.5rem",
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+		whiteSpace: "nowrap",
+		boxShadow: {
+			default: "0 1px 2px 0 rgb(0 0 0 / .05)",
+			":focus-visible":
+				"0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent), 0 1px 2px 0 rgb(0 0 0 / .05)",
+			":is([aria-invalid=true]):focus-visible":
+				"0 0 0 3px color-mix(in oklab, var(--destructive) 20%, transparent), 0 1px 2px 0 rgb(0 0 0 / .05)",
+			":is(.dark *)[aria-invalid=true]:focus-visible":
+				"0 0 0 3px color-mix(in oklab, var(--destructive) 40%, transparent), 0 1px 2px 0 rgb(0 0 0 / .05)",
+		},
+		outlineStyle: "none",
+		transitionProperty: "color, box-shadow",
+		transitionDuration: {
+			default: "150ms",
+			"@media (prefers-reduced-motion: reduce)": "0ms",
+		},
+		transitionTimingFunction: "cubic-bezier(.4, 0, .2, 1)",
+		cursor: { default: null, ":disabled": "not-allowed" },
+		opacity: { default: 1, ":disabled": 0.5 },
+	},
+	defaultSize: { height: "2.25rem" },
+	small: { height: "2rem" },
+	content: {
+		position: "relative",
+		zIndex: 50,
+		maxHeight: "var(--radix-select-content-available-height)",
+		minWidth: "8rem",
+		transformOrigin: "var(--radix-select-content-transform-origin)",
+		overflowX: "hidden",
+		overflowY: "auto",
+		borderRadius: "calc(var(--radius) - 2px)",
+		borderWidth: 1,
+		borderStyle: "solid",
+		borderColor: "var(--border)",
+		backgroundColor: "var(--popover)",
+		color: "var(--popover-foreground)",
+		boxShadow: "0 4px 6px -1px rgb(0 0 0 / .1), 0 2px 4px -2px rgb(0 0 0 / .1)",
+		animationName: {
+			default: null,
+			":is([data-state=open])": enter,
+			":is([data-state=closed])": exit,
+		},
+		animationDuration: {
+			default: "150ms",
+			"@media (prefers-reduced-motion: reduce)": "0ms",
+		},
+		animationTimingFunction: "ease",
+		"--select-enter-x": {
+			default: "0px",
+			":is([data-side=left])": "0.5rem",
+			":is([data-side=right])": "-0.5rem",
+		},
+		"--select-enter-y": {
+			default: "0px",
+			":is([data-side=top])": "0.5rem",
+			":is([data-side=bottom])": "-0.5rem",
+		},
+	},
+	popper: {
+		translate: {
+			default: null,
+			":is([data-side=bottom])": "0 0.25rem",
+			":is([data-side=top])": "0 -0.25rem",
+			":is([data-side=left])": "-0.25rem 0",
+			":is([data-side=right])": "0.25rem 0",
+		},
+	},
+	viewport: { padding: "0.25rem" },
+	popperViewport: {
+		height: "var(--radix-select-trigger-height)",
+		width: "100%",
+		minWidth: "var(--radix-select-trigger-width)",
+		scrollMarginBlock: "0.25rem",
+	},
+	label: {
+		color: "var(--muted-foreground)",
+		paddingInline: "0.5rem",
+		paddingBlock: "0.375rem",
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+	},
+	item: {
+		position: "relative",
+		display: "flex",
+		width: "100%",
+		cursor: "default",
+		alignItems: "center",
+		gap: "0.5rem",
+		borderRadius: "calc(var(--radius) - 4px)",
+		paddingBlock: "0.375rem",
+		paddingRight: "2rem",
+		paddingLeft: "0.5rem",
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+		outlineStyle: {
+			default: "none",
+			"@media (forced-colors: active)": "solid",
+		},
+		outlineColor: {
+			default: null,
+			"@media (forced-colors: active)": "transparent",
+		},
+		outlineWidth: { default: null, "@media (forced-colors: active)": 2 },
+		outlineOffset: { default: null, "@media (forced-colors: active)": 2 },
+		userSelect: "none",
+		backgroundColor: { default: null, ":focus": "var(--accent)" },
+		color: { default: null, ":focus": "var(--accent-foreground)" },
+		pointerEvents: { default: null, ":is([data-disabled])": "none" },
+		opacity: { default: 1, ":is([data-disabled])": 0.5 },
+	},
+	indicator: {
+		position: "absolute",
+		right: "0.5rem",
+		display: "flex",
+		width: "0.875rem",
+		height: "0.875rem",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	icon: { width: "1rem", height: "1rem", flexShrink: 0, pointerEvents: "none" },
+	chevron: { opacity: 0.5 },
+	separator: {
+		backgroundColor: "var(--border)",
+		pointerEvents: "none",
+		marginInline: "-0.25rem",
+		marginBlock: "0.25rem",
+		height: 1,
+	},
+	scrollButton: {
+		display: "flex",
+		cursor: "default",
+		alignItems: "center",
+		justifyContent: "center",
+		paddingBlock: "0.25rem",
+	},
+});

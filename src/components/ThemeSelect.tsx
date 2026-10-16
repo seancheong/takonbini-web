@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { Laptop, Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
@@ -29,7 +30,7 @@ export default function ThemeSelect() {
 			onValueChange={(value) => setTheme(value as Theme)}
 		>
 			<SelectTrigger
-				className="w-auto min-w-11 min-h-11 border-none bg-transparent px-2"
+				xstyle={styles.trigger}
 				aria-label={t("theme.selectTheme")}
 			>
 				<div className="flex items-center gap-2">
@@ -65,3 +66,13 @@ export default function ThemeSelect() {
 		</Select>
 	);
 }
+
+const styles = stylex.create({
+	trigger: {
+		width: "auto",
+		minHeight: "2.75rem",
+		borderStyle: "none",
+		paddingInline: "0.5rem",
+		minWidth: "2.75rem",
+	},
+});

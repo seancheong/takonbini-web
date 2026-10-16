@@ -1,6 +1,6 @@
 # Documentation verification
 
-Reference baseline: merged PR #71 (`dc0f14b`), inspected 16 October 2026. These docs add guidance; they do not install StyleX or introduce component props.
+Reference baseline: merged PR #71 (`dc0f14b`), inspected 16 October 2026. The integration spike adds compiled Select/scroll styling and `SelectTrigger.xstyle`; planned token modules remain unavailable.
 
 ## Inventory coverage
 
@@ -41,3 +41,11 @@ The probe found a missing verification-page link while this page was being draft
 3. Compare output with source: component imports, props/classes, token layer, semantics and hierarchy. Patch the docs for every drift, then rerun a fresh prompt. Keep probes outside production routes.
 4. Check local Markdown links, the root/topic line budgets (under 100/150), and token-row equality against `:root`/`.dark` after any value change.
 5. A docs-only change needs reference/example checks and `git diff --check`. Runtime tests, screenshots and build checks belong to implementation changes; do not claim a documentation probe validates visual parity or StyleX integration.
+
+
+A fresh reader reran the prompt probe against the StyleX spike and returned
+the existing native Reset/Apply/close actions, Header language chooser, and
+implemented `SelectTrigger.xstyle` override without API drift. The language chooser still uses `LanguageSelect` without caller
+props; its internal trigger now uses the documented typed `xstyle` override.
+No Button/IconButton or new Select size/variant was introduced. Runtime parity
+and regression evidence lives in [the spike report](../evidence/stylex-integration-spike.md).

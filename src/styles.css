@@ -1,3 +1,5 @@
+@layer theme, base, components, priority1, priority2, priority3, priority4, utilities;
+
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -698,3 +700,10 @@ input[type="checkbox"].checkbox-green:checked::after {
 		animation-duration: 0s !important;
 	}
 }
+
+/* Select accepts arbitrary slotted markup; retain its descendant contract. */
+[data-slot="select-trigger"] svg, [data-slot="select-item"] svg { pointer-events: none; flex-shrink: 0; }
+[data-slot="select-trigger"] svg:not([class*="text-"]), [data-slot="select-item"] svg:not([class*="text-"]) { color: var(--muted-foreground); }
+[data-slot="select-trigger"] svg:not([class*="size-"]), [data-slot="select-item"] svg:not([class*="size-"]) { width: 1rem; height: 1rem; }
+[data-slot="select-trigger"] > [data-slot="select-value"] { overflow: hidden; display: flex; -webkit-box-orient: vertical; -webkit-line-clamp: 1; align-items: center; gap: .5rem; }
+[data-slot="select-item"] > span:last-child { display: flex; align-items: center; gap: .5rem; }

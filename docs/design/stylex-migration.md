@@ -48,14 +48,23 @@ Update these docs in the same commits as implemented StyleX tokens and component
 
 ## Integration spike progress
 
-The official Vite plugin extracts CSS into the stylesheet already linked by the
-root document. Development uses the virtual CSS endpoint and CSS-only HMR shim.
-Vitest uses the Rollup adapter to avoid starting Vite dev-server polling timers.
-`ScrollTopButton` is the first native control compiled by StyleX. It consumes the
-existing CSS variables; `--scroll-top-border` preserves the prior light/dark edge
-opacity without introducing a second palette. Tailwind and its reset remain.
+The official Vite plugin extracts CSS into the stylesheet already linked in the
+root head. Development links globals before the virtual CSS endpoint and loads
+the CSS-only HMR shim. Vitest uses the Rollup adapter to avoid dev-server timers.
+The explicit layer declaration keeps the reset below StyleX and caller utilities
+above it; loading the virtual sheet before globals violates that order.
 
-This is a foundation PR, not completion of #29. Full baseline captures, portalled
-Select compilation, token/theme exports, remaining components, reset replacement,
-and the complete parity/release matrix remain required. Do not remove Tailwind or
-start the Editorial redesign based on this spike.
+`ScrollTopButton` and Select's owned elements are compiled. Select's two shell
+callers use typed `xstyle` overrides; dynamic variables and native inline styles
+compose correctly. A scoped global bridge preserves arbitrary slotted markup's
+SVG/value descendants. Existing semantic CSS variables still own the palette;
+`--scroll-top-border` preserves the prior theme-specific edge opacity. Select
+animations/transitions honor reduced motion; this is a documented accessibility
+improvement over the baseline. Tailwind and its reset remain.
+
+See [spike evidence](../evidence/stylex-integration-spike.md) for production
+comparisons, runtime checks, bundle sizes, preview, and remaining release gates.
+Token/theme exports, remaining components, reset replacement, and whole-app
+release checks remain part of #29. This PR does not close #29 or authorize the
+Editorial redesign. The issue's unpublished-coexistence requirement and the
+preceding production observation gate still govern merge/release approval.

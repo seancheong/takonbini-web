@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { Globe } from "lucide-react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,7 +31,7 @@ export default function LanguageSelect() {
 	return (
 		<Select value={currentLanguage} onValueChange={changeLanguage}>
 			<SelectTrigger
-				className="w-auto min-h-11 border-none bg-transparent px-2"
+				xstyle={styles.trigger}
 				aria-label={t("language.changeLanguage")}
 			>
 				<div className="flex items-center gap-2">
@@ -49,3 +50,12 @@ export default function LanguageSelect() {
 		</Select>
 	);
 }
+
+const styles = stylex.create({
+	trigger: {
+		width: "auto",
+		minHeight: "2.75rem",
+		borderStyle: "none",
+		paddingInline: "0.5rem",
+	},
+});

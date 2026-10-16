@@ -12,7 +12,7 @@ Correct, extracted from [LanguageSelect](../../src/components/LanguageSelect.tsx
 
 ```tsx
 <SelectTrigger
-  className="w-auto min-h-11 border-none bg-transparent px-2"
+  xstyle={styles.trigger}
   aria-label={t("language.changeLanguage")}
 >
   <div className="flex items-center gap-2">
@@ -29,7 +29,7 @@ Compose the exported parts instead of duplicating Radix markup:
 | Export | Use/default or appearance input |
 | --- | --- |
 | `Select` | Root value/onValueChange or Radix defaultValue; no custom appearance props |
-| `SelectTrigger` | Trigger size and className, disabled/invalid/placeholder states |
+| `SelectTrigger` | Trigger size, className and xstyle, disabled/invalid/placeholder states |
 | `SelectValue` | Current value/placeholder; no custom variant |
 | `SelectContent` | Portalled popup; position, align, className |
 | `SelectItem` | Required value; disabled and className; checked indicator is built in |
@@ -38,6 +38,21 @@ Compose the exported parts instead of duplicating Radix markup:
 | `SelectScrollUpButton`, `SelectScrollDownButton` | Internal overflow affordances, already included by Content |
 
 Theme and language controls are the only external Select call sites. Group/label/separator exports have no current external call sites; do not invent usage evidence. Preserve Radix `data-state`, `data-side`, placeholder, disabled, invalid, focus and portal behavior in #29. Theme variables must inherit into the portal, which lives outside the trigger subtree.
+
+Select's owned elements now use compiled StyleX styles. `SelectTrigger.xstyle` is
+an optional `stylex.StyleXStyles` input; compose it after base/size styles for a
+caller override. The two shell callers use it for 44px touch targets, horizontal
+padding, and border suppression. Dynamic StyleX variables and native `style`
+are preserved; native inline properties take precedence. Existing Radix props
+and refs pass through. `className` remains supported, including Tailwind utility
+overrides during coexistence; the explicit CSS layer order puts utilities after
+StyleX priorities. Do not add an appearance variant for these overrides.
+
+The global CSS bridge preserves arbitrary slotted SVG/value markup's existing
+size/color/alignment rules. It is deliberately scoped by Select's `data-slot`
+attributes and must move with Select when Tailwind is retired. Enter/exit and
+side/popup offsets retain the existing values. Select transitions and animations
+now use zero duration with reduced motion.
 
 ## Catalog search
 
