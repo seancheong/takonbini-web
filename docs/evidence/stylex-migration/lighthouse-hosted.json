@@ -1,0 +1,19 @@
+{
+  "url": "https://takonbini-web-git-codex-927713-sean-cheong-zhen-xiongs-projects.vercel.app/",
+  "fetchTime": "2026-10-16T12:33:13.734Z",
+  "categories": {
+    "performance": 0.91,
+    "accessibility": 1,
+    "best-practices": 0.96,
+    "seo": 0.61
+  },
+  "metrics": {
+    "largest-contentful-paint": 2589.344,
+    "total-blocking-time": 8,
+    "cumulative-layout-shift": 0
+  },
+  "seoLimitations": [
+    "Preview x-robots-tag: noindex",
+    "Canonical uses production domain, not preview origin"
+  ]
+}

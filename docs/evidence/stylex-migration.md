@@ -73,9 +73,12 @@ single fixture-backed run shows no observed regression, not a general speedup.
 Summaries: [baseline](stylex-migration/lighthouse-baseline.json),
 [candidate](stylex-migration/lighthouse-candidate.json).
 
-The rollout plan's absolute Lighthouse ≥90 gate is **not satisfied** by this
-performance result. A representative hosted audit and follow-up are required;
-baseline parity alone does not waive the gate.
+A [hosted preview audit](stylex-migration/lighthouse-hosted.json) on code head
+`72aa444` scores performance **91**, accessibility **100**, Best Practices **96**.
+LCP is 2.59s, TBT 8ms and CLS zero. This clears the performance target. Preview
+SEO is 61 because Vercel sends `x-robots-tag: noindex` and canonical points to
+production; indexing must remain disabled on previews. Local SEO is 100. Confirm
+production SEO after release; do not remove preview protection to raise a score.
 
 ## Remaining merge and release gates
 
@@ -92,5 +95,9 @@ with a deferred live drill is recorded in the Phase 7A reconciliation. The Style
 release still needs production verification and its own observation window after
 an explicitly approved merge. Issue #29 remains open until release gates pass.
 
-CI and the new hosted preview must be checked on the final PR head. Merge remains
+Code head `72aa444` passes GitHub Web CI, both Socket checks and Vercel. The
+[hosted preview](https://takonbini-web-git-codex-927713-sean-cheong-zhen-xiongs-projects.vercel.app)
+loads populated catalog/detail, dark theme, portalled selectors, direct detail
+reload and Japanese locale with no captured console warning/error.
+[Hosted detail capture](stylex-migration/hosted-detail-ja-dark.jpg). Merge remains
 subject to explicit user approval for PR #73; no automatic merge is configured.
