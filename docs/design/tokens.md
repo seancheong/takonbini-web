@@ -71,6 +71,8 @@ Every row below is a declared variable, not a recommendation to use every token.
 
 ## Aliases and exceptions
 
+- `--scroll-top-border` bridges the migrated scroll action: `var(--primary)` in light mode and `color-mix(in oklab, var(--primary) 60%, transparent)` in dark mode. It adds no new palette value.
+
 - Tailwind `--color-*` aliases in `@theme inline` map the same suffix to `var(--suffix)` for background, foreground, card, popover, primary, secondary, muted, accent, destructive and their foreground partners, border/input/ring, chart-1…5 and sidebar roles. These aliases add no new palette. `success`, `link`, and store colors have no `--color-*` alias there; current callers use explicit variable references.
 - Radius aliases: `--radius-sm = calc(var(--radius) - 4px)`, `--radius-md = calc(var(--radius) - 2px)`, `--radius-lg = var(--radius)`, `--radius-xl = calc(var(--radius) + 4px)`. Catalog CSS also has fixed radii; preserve those separately.
 - `--chart-1`…`--chart-5` and `--sidebar*` are declared scaffolding, with no chart/sidebar component or active production consumer. Do not build a new interface around them merely because they exist.

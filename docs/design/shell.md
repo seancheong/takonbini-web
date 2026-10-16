@@ -34,7 +34,7 @@ Correct from Header: `<LanguageSelect />`. Incorrect mutation: `<LanguageSelect 
 
 Use [ScrollTopButton](../../src/components/ScrollTopButton.tsx) for the catalog's scroll action; use a Link for navigation. This dedicated control is not a general icon-button primitive.
 
-No props, variants or sizes exist. It appears when `scrollY > 120`, stays bottom/right at 1.5rem, has a translated label and ArrowUp, and currently calls smooth scrolling. [CatalogScreen](../../src/features/products/catalog/CatalogScreen.tsx) is its only caller; reduced-motion limitations are in [layout](layout.md).
+Styling is compiled by StyleX via `stylex.create` and `stylex.props`; it uses the existing semantic CSS variables. No props, variants or sizes exist. It appears when `scrollY > 120`, stays bottom/right at 1.5rem, has a translated label and ArrowUp, and currently calls smooth scrolling. [CatalogScreen](../../src/features/products/catalog/CatalogScreen.tsx) is its only caller; reduced-motion limitations are in [layout](layout.md).
 
 Correct from CatalogScreen: `<ScrollTopButton />`. Incorrect mutation: `<ScrollTopButton variant="primary" />`; its primary-token surface is implemented internally, not a selectable variant.
 

@@ -14,6 +14,7 @@ import { getCookie } from "@tanstack/react-start/server";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../components/Header";
+import { StyleXDevStyles } from "../components/StyleXDevStyles";
 import {
 	type Theme,
 	ThemeProvider,
@@ -175,6 +176,7 @@ function RootDocument() {
 		<html lang={i18n.language} suppressHydrationWarning>
 			<head>
 				<HeadContent />
+				<StyleXDevStyles />
 			</head>
 
 			<body>

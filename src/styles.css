@@ -24,6 +24,7 @@ code {
 }
 
 :root {
+  --scroll-top-border: var(--primary);
   --background: oklch(0.965 0.004 286);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(0.99 0.002 286);
@@ -67,6 +68,7 @@ code {
 }
 
 .dark {
+  --scroll-top-border: color-mix(in oklab, var(--primary) 60%, transparent);
   --background: oklch(0.14 0.006 286);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.2 0.006 286);

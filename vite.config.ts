@@ -5,6 +5,7 @@ import viteReact from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
 import { nitro } from 'nitro/vite'
+import stylex from '@stylexjs/unplugin'
 
 const config = defineConfig({
   plugins: [
@@ -15,6 +16,11 @@ const config = defineConfig({
       projects: ['./tsconfig.json'],
     }),
     tailwindcss(),
+    stylex.vite({
+      runtimeInjection: false,
+      useCSSLayers: true,
+      devMode: 'css-only',
+    }),
     tanstackStart(),
     viteReact(),
   ],

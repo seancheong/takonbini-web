@@ -1,6 +1,6 @@
 # StyleX compatibility migration plan (#29)
 
-Status: proposed implementation plan. **StyleX is not installed and no `.stylex.ts` token exports exist.** Current component/color rules remain in [DESIGN.md](../../DESIGN.md). This plan extends [issue #29](https://github.com/seancheong/takonbini-web/issues/29); it does not publish new component APIs.
+Status: integration spike in progress. **StyleX 0.19.1 is installed; no `.stylex.ts` token exports exist yet.** Current component/color rules remain in [DESIGN.md](../../DESIGN.md). This plan extends [issue #29](https://github.com/seancheong/takonbini-web/issues/29); it does not publish new component APIs.
 
 ## Token map to implement
 
@@ -45,3 +45,17 @@ Before declaring Tailwind removed, search source/config/package files for utilit
 ## Documentation completion
 
 Update these docs in the same commits as implemented StyleX tokens and component APIs. Move planned names into the current-reference topics only after the files compile and real callers use them. Keep the closed action choices/defaults and rerun the prompt checks in [verification](verification.md). Shiori palette, typography, layout and interactions remain a later #27 decision.
+
+## Integration spike progress
+
+The official Vite plugin extracts CSS into the stylesheet already linked by the
+root document. Development uses the virtual CSS endpoint and CSS-only HMR shim.
+Vitest uses the Rollup adapter to avoid starting Vite dev-server polling timers.
+`ScrollTopButton` is the first native control compiled by StyleX. It consumes the
+existing CSS variables; `--scroll-top-border` preserves the prior light/dark edge
+opacity without introducing a second palette. Tailwind and its reset remain.
+
+This is a foundation PR, not completion of #29. Full baseline captures, portalled
+Select compilation, token/theme exports, remaining components, reset replacement,
+and the complete parity/release matrix remain required. Do not remove Tailwind or
+start the Editorial redesign based on this spike.
