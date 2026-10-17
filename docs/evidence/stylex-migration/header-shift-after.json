@@ -1,0 +1,53 @@
+{
+  "before": {
+    "controls": [
+      [
+        "Takonbini",
+        56.5
+      ],
+      [
+        "System",
+        978.1015625
+      ],
+      [
+        "English",
+        1097.9453125
+      ]
+    ],
+    "y": 0
+  },
+  "detail": {
+    "controls": [
+      [
+        "Takonbini",
+        56.5
+      ],
+      [
+        "System",
+        978.1015625
+      ],
+      [
+        "English",
+        1097.9453125
+      ]
+    ],
+    "y": 0
+  },
+  "returned": {
+    "controls": [
+      [
+        "Takonbini",
+        56.5
+      ],
+      [
+        "System",
+        978.1015625
+      ],
+      [
+        "English",
+        1097.9453125
+      ]
+    ],
+    "y": 0
+  }
+}

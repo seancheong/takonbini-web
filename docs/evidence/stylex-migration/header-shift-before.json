@@ -1,0 +1,80 @@
+[
+  {
+    "name": "baseline",
+    "before": {
+      "controls": [
+        [
+          "Takonbini",
+          56.5
+        ],
+        [
+          "System",
+          978.1015625
+        ],
+        [
+          "English",
+          1097.9453125
+        ]
+      ],
+      "width": 1265,
+      "y": 0
+    },
+    "after": {
+      "controls": [
+        [
+          "Takonbini",
+          64
+        ],
+        [
+          "System",
+          985.6015625
+        ],
+        [
+          "English",
+          1105.4453125
+        ]
+      ],
+      "width": 1280,
+      "y": 0
+    }
+  },
+  {
+    "name": "candidate",
+    "before": {
+      "controls": [
+        [
+          "Takonbini",
+          56.5
+        ],
+        [
+          "System",
+          978.1015625
+        ],
+        [
+          "English",
+          1097.9453125
+        ]
+      ],
+      "width": 1265,
+      "y": 0
+    },
+    "after": {
+      "controls": [
+        [
+          "Takonbini",
+          64
+        ],
+        [
+          "System",
+          985.6015625
+        ],
+        [
+          "English",
+          1105.4453125
+        ]
+      ],
+      "width": 1280,
+      "y": 0
+    }
+  }
+]

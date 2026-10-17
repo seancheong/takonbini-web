@@ -4,7 +4,7 @@
 
 Use [Header](../../src/components/Header.tsx) once in [the root shell](../../src/routes/__root.tsx), not separately in catalog/detail screens. It owns the home Link and theme/language controls; screens own page headings.
 
-No props, variants or size union exist. Preserve the fixed 64px header, document-level theme, responsive logo/text, and control minimums. The root shell is its only production caller.
+No props, variants or size union exist. Preserve the fixed 64px header, document-level theme, responsive logo/text, and control minimums. Document defaults reserve the scrollbar gutter so switching to a short detail page does not shift the menu sideways. The root shell is its only production caller.
 
 Correct from the root: `<Header />`. Incorrect mutation: rendering a second `<Header />` inside CatalogScreen to obtain a different page title; use the screen heading instead.
 

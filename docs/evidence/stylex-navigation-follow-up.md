@@ -45,13 +45,23 @@ A test verifies that clicking an already-loaded card in Safari does not reset it
 image-loading state or remove its image while the navigation indicator appears.
 No loading feedback was removed.
 
-## Chrome header: not yet reproduced
+## Chrome header: reproduced and fixed
 
-Chrome production-build live header/control rectangles remain unchanged through
-navigation. Temporary local five-second transition captures showed identical menu
-pixels, apart from a one-pixel bottom-border difference in a scrolled capture;
-that does not reproduce the reported menu movement. The diagnostic duration was
-removed, and no speculative header CSS change is included. The old header and
-view-transition rules are materially the same as the migration source, but that
-alone does not prove the report predates StyleX. Direction/scroll context and a
-fresh-preview retest are still needed before closing this report.
+The user's clarification identified a sideways shift from the top of the catalog.
+At 1280×1000, catalog content needs a vertical scrollbar while detail fits without
+one. Document width changes from 1265px to 1280px, shifting every centered header
+control by 7.5px. Baseline `055e4f2` reproduces the same change: it predates StyleX.
+The shorter viewport used earlier keeps both pages scrollable and hides the cause.
+
+Document defaults now reserve a stable scrollbar gutter. All three header control
+x positions remain exactly 56.5 / 978.1015625 / 1097.9453125 through catalog → detail
+→ catalog at the tall viewport. Direct pointer clicks also preserve top position
+0 → 0. This fixes the width change without changing header dimensions or disabling
+product-image transitions. The temporary five-second diagnostic animation was
+removed. Records: [before](stylex-migration/header-shift-before.json),
+[after](stylex-migration/header-shift-after.json).
+
+[Catalog capture](stylex-migration/header-fixed-catalog.jpg) and
+[detail capture](stylex-migration/header-fixed-detail.jpg) retain the same menu
+alignment. The saved scroll-position comparison above is from the same code with
+unchanged card geometry; reserving the gutter only affects short-page width.
