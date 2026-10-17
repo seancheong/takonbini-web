@@ -25,10 +25,11 @@ const query = vi.hoisted(() => ({
 vi.mock("@tanstack/react-query", () => ({ useInfiniteQuery: () => query }));
 const routerState = vi.hoisted(() => ({
 	isLoading: false,
-	location: { pathname: "/" },
+	location: { pathname: "/", state: {} },
 	resolvedLocation: { pathname: "/" },
 }));
 vi.mock("@tanstack/react-router", () => ({
+	useRouter: () => ({ navigate: vi.fn(), history: { back: vi.fn() } }),
 	useRouterState: ({
 		select,
 	}: {
