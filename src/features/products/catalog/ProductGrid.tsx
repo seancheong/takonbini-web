@@ -34,6 +34,7 @@ const layoutStyles = stylex.create({
 		display: "grid",
 		gridTemplateColumns: {
 			default: "repeat(2,minmax(0,1fr))",
+			[conditions.compactCatalog]: "minmax(0,1fr)",
 			[conditions.tabletGrid]: "repeat(3,minmax(0,1fr))",
 		},
 		gap: { default: "40px 28px", [conditions.compactCatalog]: "30px 18px" },
