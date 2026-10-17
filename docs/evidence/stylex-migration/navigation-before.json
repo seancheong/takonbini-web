@@ -1,0 +1,196 @@
+[
+  {
+    "port": 3101,
+    "before": {
+      "clientWidth": 1265,
+      "gutter": "auto",
+      "header": [
+        [
+          "TakonbiniLightEnglish",
+          0,
+          1265
+        ],
+        [
+          "Takonbini",
+          56.5,
+          106.421875
+        ],
+        [
+          "Light",
+          993.4296875,
+          96.515625
+        ],
+        [
+          "English",
+          1097.9453125,
+          110.5546875
+        ],
+        [
+          "Japan / Convenience store catalogFind your next konbini favorite.Explore products from Seven-Eleven, Lawson, and FamilyMart across Japan.",
+          56.5,
+          1152
+        ]
+      ],
+      "scrollHeight": 3119,
+      "y": 720
+    },
+    "detail": {
+      "clientWidth": 1265,
+      "gutter": "auto",
+      "header": [
+        [
+          "TakonbiniLightEnglish",
+          0,
+          1265
+        ],
+        [
+          "Takonbini",
+          56.5,
+          106.421875
+        ],
+        [
+          "Light",
+          993.4296875,
+          96.515625
+        ],
+        [
+          "English",
+          1097.9453125,
+          110.5546875
+        ]
+      ],
+      "scrollHeight": 880,
+      "y": 0
+    },
+    "returned": {
+      "clientWidth": 1265,
+      "gutter": "auto",
+      "header": [
+        [
+          "TakonbiniLightEnglish",
+          0,
+          1265
+        ],
+        [
+          "Takonbini",
+          56.5,
+          106.421875
+        ],
+        [
+          "Light",
+          993.4296875,
+          96.515625
+        ],
+        [
+          "English",
+          1097.9453125,
+          110.5546875
+        ],
+        [
+          "Japan / Convenience store catalogFind your next konbini favorite.Explore products from Seven-Eleven, Lawson, and FamilyMart across Japan.",
+          56.5,
+          1152
+        ]
+      ],
+      "scrollHeight": 3119,
+      "y": 0
+    }
+  },
+  {
+    "port": 3102,
+    "before": {
+      "clientWidth": 1265,
+      "gutter": "auto",
+      "header": [
+        [
+          "TakonbiniLightEnglish",
+          0,
+          1265
+        ],
+        [
+          "Takonbini",
+          56.5,
+          106.421875
+        ],
+        [
+          "Light",
+          993.4296875,
+          96.515625
+        ],
+        [
+          "English",
+          1097.9453125,
+          110.5546875
+        ],
+        [
+          "Japan / Convenience store catalogFind your next konbini favorite.Explore products from Seven-Eleven, Lawson, and FamilyMart across Japan.",
+          56.5,
+          1152
+        ]
+      ],
+      "scrollHeight": 3119,
+      "y": 720
+    },
+    "detail": {
+      "clientWidth": 1265,
+      "gutter": "auto",
+      "header": [
+        [
+          "TakonbiniLightEnglish",
+          0,
+          1265
+        ],
+        [
+          "Takonbini",
+          56.5,
+          106.421875
+        ],
+        [
+          "Light",
+          993.4296875,
+          96.515625
+        ],
+        [
+          "English",
+          1097.9453125,
+          110.5546875
+        ]
+      ],
+      "scrollHeight": 880,
+      "y": 0
+    },
+    "returned": {
+      "clientWidth": 1265,
+      "gutter": "auto",
+      "header": [
+        [
+          "TakonbiniLightEnglish",
+          0,
+          1265
+        ],
+        [
+          "Takonbini",
+          56.5,
+          106.421875
+        ],
+        [
+          "Light",
+          993.4296875,
+          96.515625
+        ],
+        [
+          "English",
+          1097.9453125,
+          110.5546875
+        ],
+        [
+          "Japan / Convenience store catalogFind your next konbini favorite.Explore products from Seven-Eleven, Lawson, and FamilyMart across Japan.",
+          56.5,
+          1152
+        ]
+      ],
+      "scrollHeight": 3119,
+      "y": 0
+    }
+  }
+]

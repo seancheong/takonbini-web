@@ -23,7 +23,18 @@ const query = vi.hoisted(() => ({
 	refetch: vi.fn(),
 }));
 vi.mock("@tanstack/react-query", () => ({ useInfiniteQuery: () => query }));
-vi.mock("@tanstack/react-router", () => ({ useRouterState: () => false }));
+const routerState = vi.hoisted(() => ({
+	isLoading: false,
+	location: { pathname: "/" },
+	resolvedLocation: { pathname: "/" },
+}));
+vi.mock("@tanstack/react-router", () => ({
+	useRouterState: ({
+		select,
+	}: {
+		select: (state: typeof routerState) => boolean;
+	}) => select(routerState),
+}));
 vi.mock("react-i18next", () => ({
 	useTranslation: () => ({ t: (key: string) => key }),
 }));
@@ -55,11 +66,36 @@ beforeEach(() => {
 		isError: false,
 		isFetchNextPageError: false,
 	});
+	routerState.isLoading = false;
+	routerState.location.pathname = "/";
+	routerState.resolvedLocation.pathname = "/";
 	vi.clearAllMocks();
 });
 afterEach(cleanup);
 
 describe("catalog states", () => {
+	it.each([
+		["leaving", "/products/product-1", "/"],
+		["returning", "/", "/products/product-1"],
+	])(
+		"does not insert a catalog refresh row when %s between catalog and detail",
+		(_direction, next, previous) => {
+			query.data = { pages: [{ products: [{ id: "loaded-product" }] }] };
+			routerState.isLoading = true;
+			routerState.location.pathname = next;
+			routerState.resolvedLocation.pathname = previous;
+			render(<CatalogScreen filters={{}} onApply={vi.fn()} />);
+			expect(screen.queryByText("product.loading")).toBeNull();
+		},
+	);
+
+	it("announces a pending filter change within the catalog", () => {
+		query.data = { pages: [{ products: [{ id: "loaded-product" }] }] };
+		routerState.isLoading = true;
+		render(<CatalogScreen filters={{}} onApply={vi.fn()} />);
+		expect(screen.getByText("product.loading")).toBeTruthy();
+	});
+
 	it("shows a retryable service failure instead of an empty catalog", () => {
 		query.isError = true;
 		render(<CatalogScreen filters={{}} onApply={vi.fn()} />);

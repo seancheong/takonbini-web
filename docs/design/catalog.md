@@ -57,6 +57,12 @@ Props: required `id: string`, `filters: ProductFilters`. Content comes from the 
 
 Correct from [the route](../../src/routes/products.$id.tsx): `<ProductDetailScreen id={Route.useParams().id} filters={Route.useSearch()} />`. Incorrect mutation: omitting filters from its return Link; the visitor loses catalog context.
 
+The router caches catalog scroll by normalized filter values, so the return Link
+and browser Back restore the catalog position. Different filters use a separate
+position; detail routes retain history-entry scroll keys. Navigation to/from
+detail must not insert the catalog refresh row: it changes grid geometry during
+restoration. Keep that row for catalog-to-catalog filtering and catalog fetching.
+
 ## ProductDetailPending and ProductDetailError
 
 Use the exported pending/error components in the detail route's existing pending/error slots; catalog loading/error UI belongs to CatalogPanel.

@@ -1,6 +1,7 @@
 # StyleX compatibility migration evidence
 
-Implementation for #29 and PR #73. This supersedes the integration checkpoint;
+Implementation for #29 and PR #73. [Navigation QA follow-up](stylex-navigation-follow-up.md)
+records the user-reported issues and targeted fixes. This supersedes the integration checkpoint;
 Tailwind is fully removed. No production promotion or merge is authorized here.
 
 ## Baseline and method

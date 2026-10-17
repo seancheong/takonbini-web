@@ -36,7 +36,10 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	} = useInfiniteQuery(productsInfiniteQueryOptions(filters));
 	const products = data?.pages.flatMap((page) => page.products) ?? [];
 	const routerIsLoading = useRouterState({
-		select: (state) => state.isLoading,
+		select: (state) =>
+			state.isLoading &&
+			state.location.pathname === "/" &&
+			state.resolvedLocation?.pathname === "/",
 	});
 	const isRefreshing = routerIsLoading || (isFetching && !isFetchingNextPage);
 	const hasFilters = Boolean(
