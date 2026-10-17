@@ -1,5 +1,11 @@
 # Actions and navigation
 
+## Approved catalog revamp — 17 October 2026
+
+Search and Apply now use `colors.primary` / `colors.primaryForeground`. Store choices use secondary/secondaryForeground when selected, neutral hover borders, and small store-color dots. There are no store-colored bottom borders. Filter panel/trigger use the secondary surface in both themes.
+
+The compatibility-migration baseline below is retained as historical context; the approved changes above supersede its geometry and interaction restrictions.
+
 Use the existing native action in its owning component. Use a Link for internal
 navigation and an anchor for the retailer URL. There is no public Button,
 IconButton, action variant prop, or importable utility-class vocabulary.

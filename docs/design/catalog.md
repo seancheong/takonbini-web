@@ -1,5 +1,11 @@
 # Catalog components and states
 
+## Approved catalog revamp — 17 October 2026
+
+ProductCard now accepts optional `onPreview(product)`. Ordinary clicks open ProductPreview; modified clicks retain native detail links. The preview uses a native modal dialog, full-width contained photography, an overlaid close button, localized tax labels, and a link to the full detail screen. Pagination and source validation remain in the existing products module.
+
+The compatibility-migration baseline below is retained as historical context; the approved changes above supersede its geometry and interaction restrictions.
+
 Public screen/query/search exports: [products.ts](../../src/features/products/products.ts). Routes consume that entrypoint; feature-internal components keep direct imports. None of the components below has a `variant`, `size`, or `theme` prop. Their data/state props are not visual variants.
 
 ## CatalogScreen and CatalogPanel

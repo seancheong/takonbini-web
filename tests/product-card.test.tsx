@@ -72,6 +72,23 @@ afterEach(() => {
 });
 
 describe("product card rendering and navigation", () => {
+	it("opens the preview without navigating but retains the native product URL", () => {
+		const preview = vi.fn();
+		render(<ProductCard product={product} onPreview={preview} />);
+		const link = screen.getByRole("link", { name: "Matcha" });
+		expect(link.getAttribute("href")).toContain(product.id);
+		fireEvent.click(link);
+		expect(preview).toHaveBeenCalledWith(product);
+		expect(routerMocks.navigate).not.toHaveBeenCalled();
+	});
+	it("keeps modified clicks available for the product URL", () => {
+		const preview = vi.fn();
+		render(<ProductCard product={product} onPreview={preview} />);
+		fireEvent.click(screen.getByRole("link", { name: "Matcha" }), {
+			metaKey: true,
+		});
+		expect(preview).not.toHaveBeenCalled();
+	});
 	it("renders a detail link and navigates to the selected product", () => {
 		render(<ProductCard product={product} />);
 		const link = screen.getByRole("link", { name: "Matcha" });

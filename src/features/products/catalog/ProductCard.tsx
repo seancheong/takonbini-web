@@ -12,7 +12,6 @@ import type { Language } from "@/i18n";
 import { storeTextStyles } from "@/styles/stores.stylex";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
-import { metrics } from "../../../styles/metrics.stylex";
 import {
 	formatPrice,
 	isFutureReleaseDate,
@@ -28,8 +27,13 @@ import {
 interface ProductCardProps {
 	product: ActiveCatalogProduct;
 	filters?: ProductFilters;
+	onPreview?: (product: ActiveCatalogProduct) => void;
 }
-export default function ProductCard({ product, filters }: ProductCardProps) {
+export default function ProductCard({
+	product,
+	filters,
+	onPreview,
+}: ProductCardProps) {
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
 	const navigate = useNavigate();
@@ -77,6 +81,10 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 				)
 					return;
 				event.preventDefault();
+				if (onPreview) {
+					onPreview(product);
+					return;
+				}
 				if (isSafari()) {
 					setIsSafariNavigating(true);
 					const unsubscribe = router.subscribe("onResolved", () => {
@@ -175,6 +183,11 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 
 					<div {...stylex.props(layoutStyles.titleRow)}>
 						<h2 {...stylex.props(layoutStyles.title)}>{title}</h2>
+						{language !== "ja" && title !== product.title.ja && (
+							<p lang="ja" {...stylex.props(layoutStyles.japanese)}>
+								{product.title.ja}
+							</p>
+						)}
 					</div>
 
 					<div {...stylex.props(layoutStyles.metadata)}>
@@ -191,6 +204,11 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 							{product.price === 0
 								? t("product.priceUnknown")
 								: formatPrice(product.price, language)}
+							{product.price > 0 && (
+								<small {...stylex.props(layoutStyles.tax)}>
+									{t("product.taxIncluded")}
+								</small>
+							)}
 						</span>
 					</div>
 				</div>
@@ -204,60 +222,26 @@ const spin = stylex.keyframes({
 	},
 });
 const layoutStyles = stylex.create({
+	japanese: {
+		fontSize: "11px",
+		lineHeight: 1.6,
+		color: colors.mutedForeground,
+		marginTop: "6px",
+		marginBottom: "8px",
+	},
+	tax: {
+		fontSize: "10px",
+		fontWeight: 400,
+		color: colors.mutedForeground,
+		marginInlineStart: "6px",
+		whiteSpace: "nowrap",
+	},
 	card: {
 		display: "block",
 		height: "100%",
-		backgroundColor: colors.card,
-		borderTopWidth: "1px",
-		borderTopStyle: "solid",
-		borderTopColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-		},
-		borderRightWidth: "1px",
-		borderRightStyle: "solid",
-		borderRightColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-		},
-		borderBottomWidth: "1px",
-		borderBottomStyle: "solid",
-		borderBottomColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-		},
-		borderLeftWidth: "1px",
-		borderLeftStyle: "solid",
-		borderLeftColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-		},
-		borderRadius: metrics.cardRadius,
-		overflow: "hidden",
-		transitionProperty: {
-			default: "border-color",
-			[conditions.reducedMotion]: "none",
-		},
-		transitionDuration: "150ms",
-		transitionTimingFunction: "ease",
-		outline: {
-			default: null,
-			":focus-visible": "2px solid var(--ring)",
-		},
-		outlineOffset: {
-			default: null,
-			":focus-visible": "3px",
-		},
-		"--store-accent": {
-			default: "transparent",
-			":is([data-store=SevenEleven])": colors.storeSeven,
-			":is([data-store=Lawson])": colors.storeLawson,
-			":is([data-store=FamilyMart])": colors.storeFamily,
-		},
-		animationName: {
-			default: null,
-			[conditions.reducedMotion]: "none",
-		},
+		backgroundColor: "transparent",
+		outline: { default: null, ":focus-visible": "2px solid var(--ring)" },
+		outlineOffset: "3px",
 	},
 	article: {
 		display: "flex",
@@ -267,12 +251,12 @@ const layoutStyles = stylex.create({
 	},
 	imageCanvas: {
 		position: "relative",
-		aspectRatio: "1",
+		aspectRatio: { default: "1.15", [conditions.compactCatalog]: "1" },
 		overflow: "hidden",
 		backgroundColor: colors.imageCanvas,
-		borderBottomWidth: "1px",
-		borderBottomStyle: "solid",
-		borderBottomColor: colors.border,
+		borderRadius: "3px",
+		border: "1px solid",
+		borderColor: colors.border,
 	},
 	safariOverlay: {
 		position: "absolute",
@@ -401,26 +385,8 @@ const layoutStyles = stylex.create({
 		display: "flex",
 		flex: 1,
 		flexDirection: "column",
-		gap: "0.8rem",
-		paddingTop: {
-			default: "1rem",
-			[conditions.compactCatalog]: "0.75rem",
-		},
-		paddingRight: {
-			default: "1rem",
-			[conditions.compactCatalog]: "0.75rem",
-		},
-		paddingBottom: {
-			default: "1rem",
-			[conditions.compactCatalog]: "0.75rem",
-		},
-		paddingLeft: {
-			default: "1rem",
-			[conditions.compactCatalog]: "0.75rem",
-		},
-		borderTopWidth: "3px",
-		borderTopStyle: "solid",
-		borderTopColor: "var(--store-accent)",
+		gap: "10px",
+		paddingTop: "17px",
 	},
 	storeRow: {
 		display: "flex",
@@ -434,8 +400,9 @@ const layoutStyles = stylex.create({
 		lineHeight: "1rem",
 	},
 	storeLabel: {
-		fontSize: "0.875rem",
-		lineHeight: "1.25rem",
+		fontSize: "10px",
+		letterSpacing: ".08em",
+		textTransform: "uppercase",
 		fontWeight: 600,
 	},
 	titleRow: {
@@ -446,13 +413,11 @@ const layoutStyles = stylex.create({
 		},
 	},
 	title: {
-		fontSize: {
-			default: "1rem",
-			[conditions.compactCatalog]: "0.9rem",
-		},
-		lineHeight: 1.375,
-		fontWeight: 600,
+		fontSize: { default: "17px", [conditions.compactCatalog]: "15px" },
+		lineHeight: 1.4,
+		fontWeight: 500,
 		color: colors.foreground,
+		textWrap: "pretty",
 		overflowWrap: "anywhere",
 	},
 	metadata: {
@@ -471,9 +436,8 @@ const layoutStyles = stylex.create({
 		color: colors.mutedForeground,
 	},
 	price: {
-		fontSize: "1rem",
-		lineHeight: "1.5rem",
-		fontWeight: 600,
+		fontSize: "14px",
+		fontWeight: 500,
 		fontVariantNumeric: "tabular-nums",
 		color: colors.foreground,
 	},

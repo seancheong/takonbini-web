@@ -4,7 +4,7 @@ Sources of truth: [colors](../../src/styles/colors.stylex.ts), [dark theme](../.
 
 ## Allowed layer
 
-Components use the semantic variables below, through typed StyleX references; the CSS aliases remain for document defaults and derived color expressions. Add/change literal color values only in the token source as a reviewed token change. Only exported names in the linked modules are importable. `--primary` does not mean “use this for every main button”; catalog primary actions use foreground/background.
+Components use the semantic variables below, through typed StyleX references; the CSS aliases remain for document defaults and derived color expressions. Add/change literal color values only in the token source as a reviewed token change. Only exported names in the linked modules are importable. `--primary` does not mean “use this for every main button”; catalog primary actions use primary/primaryForeground.
 
 ```text
 Background role?
@@ -28,32 +28,32 @@ Every row below is a declared variable, not a recommendation to use every token.
 
 | Variable | Light backing | Dark backing |
 | --- | --- | --- |
-| `--background` | `oklch(0.965 0.004 286)` | `oklch(0.14 0.006 286)` |
-| `--foreground` | `oklch(0.141 0.005 285.823)` | `oklch(0.985 0 0)` |
-| `--card` | `oklch(0.99 0.002 286)` | `oklch(0.2 0.006 286)` |
-| `--card-foreground` | `oklch(0.141 0.005 285.823)` | `oklch(0.985 0 0)` |
-| `--popover` | `oklch(0.99 0.002 286)` | `oklch(0.2 0.006 286)` |
-| `--popover-foreground` | `oklch(0.141 0.005 285.823)` | `oklch(0.985 0 0)` |
-| `--primary` | `oklch(0.515 0.26 276)` | `oklch(0.515 0.26 276)` |
-| `--primary-foreground` | `oklch(1 0 89.9)` | `oklch(1 0 89.9)` |
-| `--secondary` | `oklch(0.561 0.236 277.7)` | `oklch(0.561 0.236 277.7)` |
-| `--secondary-foreground` | `oklch(1 0 89.9)` | `oklch(1 0 89.9)` |
+| `--background` | `#fdfdfb` | `#181818` |
+| `--foreground` | `#252b26` | `#ededed` |
+| `--card` | `#ffffff` | `#222222` |
+| `--card-foreground` | `#252b26` | `#ededed` |
+| `--popover` | `#fdfdfb` | `#222222` |
+| `--popover-foreground` | `#252b26` | `#ededed` |
+| `--primary` | `#354c3b` | `#b4c9a8` |
+| `--primary-foreground` | `#ffffff` | `#1c291e` |
+| `--secondary` | `#edf0e7` | `#29362d` |
+| `--secondary-foreground` | `#243529` | `#dce8d7` |
 | `--success` | `oklch(0.528 0.098 171.5)` | `oklch(0.473 0.086 174.3)` |
 | `--success-foreground` | `oklch(1 0 89.9)` | `oklch(1 0 89.9)` |
 | `--success-accent` | `oklch(0.595 0.113 169)` | `oklch(0.663 0.125 167.3)` |
-| `--link` | `oklch(0.515 0.26 276)` | `oklch(0.68 0.168 281)` |
+| `--link` | `#354c3b` | `#b4c9a8` |
 | `--store-seven` | `oklch(0.553 0.174 38.4)` | `oklch(0.758 0.159 55.9)` |
 | `--store-lawson` | `oklch(0.488 0.217 264.4)` | `oklch(0.714 0.143 254.6)` |
 | `--store-family` | `oklch(0.508 0.105 165.6)` | `oklch(0.773 0.153 163.2)` |
-| `--muted` | `oklch(0.967 0.001 286.375)` | `oklch(0.274 0.006 286.033)` |
-| `--muted-foreground` | `oklch(0.46 0.02 285.938)` | `oklch(0.705 0.015 286.067)` |
-| `--accent` | `oklch(0.967 0.001 286.375)` | `oklch(0.274 0.006 286.033)` |
-| `--accent-foreground` | `oklch(0.21 0.006 285.885)` | `oklch(0.985 0 0)` |
+| `--muted` | `#f1f3ec` | `#292929` |
+| `--muted-foreground` | `#636d5b` | `#b5b5b5` |
+| `--accent` | `#edf0e7` | `#334537` |
+| `--accent-foreground` | `#243529` | `#ededed` |
 | `--destructive` | `oklch(0.577 0.245 27.325)` | `oklch(0.396 0.141 25.723)` |
 | `--destructive-foreground` | `oklch(0.577 0.245 27.325)` | `oklch(0.637 0.237 25.331)` |
-| `--border` | `oklch(0.92 0.004 286.32)` | `oklch(0.274 0.006 286.033)` |
-| `--input` | `oklch(0.92 0.004 286.32)` | `oklch(0.274 0.006 286.033)` |
-| `--ring` | `oklch(0.515 0.26 276)` | `oklch(0.606 0.209 280.3)` |
+| `--border` | `#d9ded1` | `#383838` |
+| `--input` | `#cdd2c8` | `#484848` |
+| `--ring` | `#46664d` | `#b4c9a8` |
 | `--radius` | `0.625rem` | `0.625rem` |
 
 ## Aliases and exceptions

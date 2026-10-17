@@ -1,5 +1,11 @@
 # Typography, layout, and motion
 
+## Approved catalog revamp — 17 October 2026
+
+The catalog hero uses clamp(30px,3.4vw,46px), weight 650, line-height 1.12. Cards use 17px / 500 titles (15px compact), borderless copy, and 1.15 image canvases (square compact). ProductGrid uses two columns below 800px and three above, with 40px/28px gaps. The preview has a 540px max width, viewport-bounded scrolling, and a 230–360px full-width image region. Global scrollbar-gutter stays stable.
+
+The compatibility-migration baseline below is retained as historical context; the approved changes above supersede its geometry and interaction restrictions.
+
 Sources: [document defaults](../../src/styles.css), [metrics](../../src/styles/metrics.stylex.ts), [conditions](../../src/styles/conditions.stylex.ts), [styles.css](../../src/styles.css), [Header](../../src/components/Header.tsx), [CatalogScreen](../../src/features/products/catalog/CatalogScreen.tsx), [Select](../../src/components/ui/select.tsx), [ProductDetailScreen](../../src/features/products/detail/ProductDetailScreen.tsx).
 
 ## Current values, not a new scale

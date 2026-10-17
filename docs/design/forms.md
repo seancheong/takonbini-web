@@ -1,5 +1,11 @@
 # Select and forms
 
+## Approved catalog revamp — 17 October 2026
+
+CatalogFilters is now an inline section spanning the catalog toolbar, with draft/apply/reset semantics. It exposes every category and region and validates whole-yen price ranges. The Filters trigger toggles the section with aria-expanded/aria-controls. ProductPreview owns the native modal; closing restores body overflow and trigger focus.
+
+The compatibility-migration baseline below is retained as historical context; the approved changes above supersede its geometry and interaction restrictions.
+
 ## Select
 
 Use [the existing Radix wrapper](../../src/components/ui/select.tsx) for a single choice such as theme or language. Use labeled checkboxes in CatalogFilters for multiple staged choices; Select has no search/combobox or multi-select API.

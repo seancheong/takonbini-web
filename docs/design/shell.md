@@ -1,5 +1,11 @@
 # Shell components
 
+## Approved catalog revamp — 17 October 2026
+
+Header is in normal document flow, 88px high (76px at the compact breakpoint), with a 36px green octopus icon and uppercase wordmark. The catalog screen uses 42px top and 40px side padding (30px/20px compact). Theme/language controls remain provider-owned.
+
+The compatibility-migration baseline below is retained as historical context; the approved changes above supersede its geometry and interaction restrictions.
+
 ## Header
 
 Use [Header](../../src/components/Header.tsx) once in [the root shell](../../src/routes/__root.tsx), not separately in catalog/detail screens. It owns the home Link and theme/language controls; screens own page headings.
