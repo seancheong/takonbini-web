@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { Suspense, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { colors } from "../../../styles/colors.stylex";
+import { conditions } from "../../../styles/conditions.stylex";
 import ProductDetailError from "../detail/ProductDetailError";
 import ProductDetailPending from "../detail/ProductDetailPending";
 import ProductDetailScreen from "../detail/ProductDetailScreen";
@@ -104,7 +105,10 @@ const styles = stylex.create({
 	dialog: {
 		margin: "auto",
 		width: "min(1120px,calc(100% - 48px))",
-		height: "min(820px, calc(100dvh - 48px))",
+		height: {
+			default: "calc(100dvh - 48px)",
+			[conditions.detailColumns]: "min(820px, calc(100dvh - 48px))",
+		},
 		maxHeight: "calc(100dvh - 48px)",
 		padding: 0,
 		border: "1px solid",
