@@ -69,9 +69,21 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 				</div>
 				<p {...stylex.props(layoutStyles.intro)}>{t("product.subtitle")}</p>
 			</header>
-			<CatalogControls filters={filters} onApply={onApply}>
+			<CatalogControls
+				filters={filters}
+				onApply={onApply}
+				isPending={isRefreshing}
+			>
 				<ProductFilterDrawer
 					filters={draftFilters}
+					activeCount={
+						(filters.stores?.length ?? 0) +
+						(filters.categories?.length ?? 0) +
+						(filters.regions?.length ?? 0) +
+						Number(filters.minPrice !== undefined) +
+						Number(filters.maxPrice !== undefined) +
+						Number(!!filters.includeSoon)
+					}
 					setFilters={setDraftFilters}
 					isFilterOpen={isFilterOpen}
 					setIsFilterOpen={(open) => {
@@ -220,7 +232,7 @@ const layoutStyles = stylex.create({
 	panel: {
 		display: "flex",
 		flexDirection: "column",
-		gap: "24px",
+		gap: "32px",
 		maxWidth: "1200px",
 		width: "100%",
 		marginInline: "auto",
@@ -234,7 +246,7 @@ const layoutStyles = stylex.create({
 		flexDirection: { default: "row", "@media (max-width: 800px)": "column" },
 	},
 	eyebrow: {
-		fontSize: "10px",
+		fontSize: "12px",
 		fontWeight: 500,
 		letterSpacing: ".14em",
 		textTransform: "uppercase",
@@ -253,8 +265,8 @@ const layoutStyles = stylex.create({
 	},
 	intro: {
 		maxWidth: "34ch",
-		fontSize: "13px",
-		lineHeight: 1.65,
+		fontSize: "16px",
+		lineHeight: 1.6,
 		color: colors.mutedForeground,
 	},
 	resultsHeading: {
@@ -262,13 +274,10 @@ const layoutStyles = stylex.create({
 		flexWrap: "wrap",
 		justifyContent: "space-between",
 		alignItems: "baseline",
-		gap: "1rem",
-		paddingTop: "1rem",
-		borderTopWidth: "1px",
-		borderTopStyle: "solid",
-		borderTopColor: colors.border,
+		gap: "16px",
+		paddingTop: "8px",
 	},
-	resultsTitle: { fontSize: "12px", fontWeight: 500 },
+	resultsTitle: { fontSize: "20px", fontWeight: 650, letterSpacing: "-.02em" },
 	count: {
 		color: colors.mutedForeground,
 		fontSize: "0.8rem",
@@ -367,23 +376,12 @@ const layoutStyles = stylex.create({
 	},
 	skeleton: {
 		overflow: "hidden",
-		borderTopWidth: "1px",
-		borderTopStyle: "solid",
-		borderTopColor: colors.border,
-		borderRightWidth: "1px",
-		borderRightStyle: "solid",
-		borderRightColor: colors.border,
-		borderBottomWidth: "1px",
-		borderBottomStyle: "solid",
-		borderBottomColor: colors.border,
-		borderLeftWidth: "1px",
-		borderLeftStyle: "solid",
-		borderLeftColor: colors.border,
-		borderRadius: metrics.cardRadius,
+		borderRadius: "8px",
 		backgroundColor: colors.card,
+		boxShadow: colors.productCardShadow,
 	},
 	skeletonImage: {
-		aspectRatio: "1",
+		aspectRatio: { default: "1.15", [conditions.compactCatalog]: "1" },
 		backgroundColor: colors.muted,
 	},
 	skeletonCopy: {

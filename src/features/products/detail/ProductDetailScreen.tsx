@@ -10,7 +10,7 @@ import {
 	MapPin,
 	Tag,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { productByIdQueryOptions } from "@/features/products/data/product-queries";
 import {
@@ -49,6 +49,11 @@ export default function ProductDetailScreen({
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
 	const { data: product } = useSuspenseQuery(productByIdQueryOptions(id));
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Reset for each product, including navigation between detail pages.
+	useLayoutEffect(() => {
+		if (presentation === "page")
+			window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+	}, [id, presentation]);
 	const image = product.images?.[0];
 	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
@@ -147,6 +152,7 @@ export default function ProductDetailScreen({
 									onLoad={() => setImageLoaded(true)}
 									{...stylex.props(
 										layoutStyles.image,
+										layoutStyles.primaryImage,
 										imageLoaded ? layoutStyles.visible : layoutStyles.hidden,
 									)}
 								/>
@@ -314,7 +320,7 @@ const layoutStyles = stylex.create({
 		marginInlineStart: "6px",
 	},
 	screen: {
-		minHeight: "100vh",
+		minHeight: "calc(100dvh - var(--header-height))",
 		backgroundColor: colors.background,
 		paddingLeft: "1rem",
 		paddingRight: "1rem",
@@ -356,6 +362,7 @@ const layoutStyles = stylex.create({
 	imageCanvas: {
 		position: "relative",
 		aspectRatio: "1",
+		width: "100%",
 		overflow: "hidden",
 		borderRadius: "calc(var(--radius) - 2px)",
 		borderTopWidth: "1px",
@@ -397,6 +404,7 @@ const layoutStyles = stylex.create({
 	hidden: {
 		opacity: 0,
 	},
+	primaryImage: { position: "absolute", inset: 0 },
 	image: {
 		height: "100%",
 		width: "100%",
@@ -407,8 +415,9 @@ const layoutStyles = stylex.create({
 		paddingLeft: "1.5rem",
 	},
 	imageFallback: {
+		position: "absolute",
+		inset: 0,
 		display: "flex",
-		height: "21rem",
 		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "center",
@@ -472,7 +481,7 @@ const layoutStyles = stylex.create({
 	},
 	upcomingBadge: {
 		borderRadius: "9999px",
-		backgroundColor: colors.destructive,
+		backgroundColor: colors.upcomingBadgeBackground,
 		paddingLeft: "0.5rem",
 		paddingRight: "0.5rem",
 		paddingTop: "0.25rem",
@@ -480,11 +489,11 @@ const layoutStyles = stylex.create({
 		fontSize: "0.75rem",
 		lineHeight: "1rem",
 		fontWeight: 600,
-		color: colors.successForeground,
+		color: colors.upcomingBadgeForeground,
 	},
 	newBadge: {
 		borderRadius: "9999px",
-		backgroundColor: colors.success,
+		backgroundColor: colors.newBadgeBackground,
 		paddingLeft: "0.5rem",
 		paddingRight: "0.5rem",
 		paddingTop: "0.25rem",
@@ -492,7 +501,7 @@ const layoutStyles = stylex.create({
 		fontSize: "0.75rem",
 		lineHeight: "1rem",
 		fontWeight: 600,
-		color: colors.successForeground,
+		color: colors.newBadgeForeground,
 	},
 	title: {
 		marginTop: "0.75rem",

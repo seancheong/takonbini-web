@@ -31,7 +31,7 @@ export default function ProductDetailError({
 }
 const layoutStyles = stylex.create({
 	screen: {
-		minHeight: "100vh",
+		minHeight: "calc(100dvh - var(--header-height))",
 		backgroundColor: colors.background,
 		paddingLeft: "1rem",
 		paddingRight: "1rem",

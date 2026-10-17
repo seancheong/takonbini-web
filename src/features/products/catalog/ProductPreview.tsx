@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { Suspense, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { colors } from "../../../styles/colors.stylex";
+import { conditions } from "../../../styles/conditions.stylex";
 import ProductDetailError from "../detail/ProductDetailError";
 import ProductDetailPending from "../detail/ProductDetailPending";
 import ProductDetailScreen from "../detail/ProductDetailScreen";
@@ -41,11 +42,11 @@ export default function ProductPreview({
 	useEffect(() => {
 		const focused = document.activeElement;
 		const scrollY = window.scrollY;
-		const previousOverflow = document.body.style.overflow;
+		const previousOverflow = document.documentElement.style.overflow;
 		dialog.current?.showModal();
-		document.body.style.overflow = "hidden";
+		document.documentElement.style.overflow = "hidden";
 		return () => {
-			document.body.style.overflow = previousOverflow;
+			document.documentElement.style.overflow = previousOverflow;
 			if (focused instanceof HTMLElement)
 				focused.focus({ preventScroll: true });
 			requestAnimationFrame(() =>
@@ -73,14 +74,16 @@ export default function ProductPreview({
 			}}
 		>
 			<div {...stylex.props(styles.content)}>
-				<button
-					type="button"
-					{...stylex.props(styles.close)}
-					aria-label={t("product.details.close")}
-					onClick={() => dialog.current?.close()}
-				>
-					<X size={20} />
-				</button>
+				<div {...stylex.props(styles.closeBar)}>
+					<button
+						type="button"
+						{...stylex.props(styles.close)}
+						aria-label={t("product.details.close")}
+						onClick={() => dialog.current?.close()}
+					>
+						<X size={20} />
+					</button>
+				</div>
 				<CatchBoundary
 					getResetKey={() => id}
 					errorComponent={() => <ProductDetailError filters={filters} />}
@@ -102,6 +105,10 @@ const styles = stylex.create({
 	dialog: {
 		margin: "auto",
 		width: "min(1120px,calc(100% - 48px))",
+		height: {
+			default: "calc(100dvh - 48px)",
+			[conditions.detailColumns]: "min(820px, calc(100dvh - 48px))",
+		},
 		maxHeight: "calc(100dvh - 48px)",
 		padding: 0,
 		border: "1px solid",
@@ -110,6 +117,7 @@ const styles = stylex.create({
 		backgroundColor: colors.background,
 		color: colors.foreground,
 		overflowY: "auto",
+		scrollbarGutter: "stable",
 		overscrollBehavior: "contain",
 		"@media (max-width: 600px)": {
 			width: "100vw",
@@ -121,6 +129,7 @@ const styles = stylex.create({
 		},
 	},
 	content: { position: "relative", minHeight: "100%" },
+	closeBar: { position: "sticky", top: 0, height: 0, zIndex: 2 },
 	close: {
 		position: "absolute",
 		top: "12px",

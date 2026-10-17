@@ -28,11 +28,11 @@ Every row below is a declared variable, not a recommendation to use every token.
 
 | Variable | Light backing | Dark backing |
 | --- | --- | --- |
-| `--background` | `#fdfdfb` | `#181818` |
+| `--background` | `#fdfdfb` | `oklch(0.2 0.008 145)` |
 | `--foreground` | `#252b26` | `#ededed` |
-| `--card` | `#ffffff` | `#222222` |
+| `--card` | `#ffffff` | `oklch(0.25 0.008 145)` |
 | `--card-foreground` | `#252b26` | `#ededed` |
-| `--popover` | `#fdfdfb` | `#222222` |
+| `--popover` | `#fdfdfb` | `oklch(0.25 0.008 145)` |
 | `--popover-foreground` | `#252b26` | `#ededed` |
 | `--primary` | `#354c3b` | `#b4c9a8` |
 | `--primary-foreground` | `#ffffff` | `#1c291e` |
@@ -45,7 +45,7 @@ Every row below is a declared variable, not a recommendation to use every token.
 | `--store-seven` | `oklch(0.553 0.174 38.4)` | `oklch(0.758 0.159 55.9)` |
 | `--store-lawson` | `oklch(0.488 0.217 264.4)` | `oklch(0.714 0.143 254.6)` |
 | `--store-family` | `oklch(0.508 0.105 165.6)` | `oklch(0.773 0.153 163.2)` |
-| `--muted` | `#f1f3ec` | `#292929` |
+| `--muted` | `#f1f3ec` | `oklch(0.28 0.008 145)` |
 | `--muted-foreground` | `#636d5b` | `#b5b5b5` |
 | `--accent` | `#edf0e7` | `#334537` |
 | `--accent-foreground` | `#243529` | `#ededed` |
@@ -53,6 +53,12 @@ Every row below is a declared variable, not a recommendation to use every token.
 | `--destructive-foreground` | `oklch(0.577 0.245 27.325)` | `oklch(0.637 0.237 25.331)` |
 | `--border` | `#d9ded1` | `#383838` |
 | `filterOptionBorder` (typed token) | `#b4bfaa` | `#74816c` |
+| `filterSelected` (typed token) | `oklch(0.9 0.035 145)` | `oklch(0.36 0.035 145)` |
+| `newBadgeBackground` (typed token) | `oklch(0.93 0.035 145)` | `oklch(0.3 0.035 145)` |
+| `newBadgeForeground` (typed token) | `oklch(0.36 0.065 145)` | `oklch(0.84 0.065 145)` |
+| `upcomingBadgeBackground` (typed token) | `oklch(0.94 0.048 80)` | `oklch(0.32 0.048 80)` |
+| `upcomingBadgeForeground` (typed token) | `oklch(0.39 0.078 80)` | `oklch(0.86 0.078 80)` |
+| `errorText` (typed token) | `oklch(0.5 0.18 25)` | `oklch(0.75 0.15 25)` |
 | `--input` | `#cdd2c8` | `#484848` |
 | `--ring` | `#46664d` | `#b4c9a8` |
 | `--radius` | `0.625rem` | `0.625rem` |
@@ -77,6 +83,14 @@ Every row below is a declared variable, not a recommendation to use every token.
   compiled theme classes at document scope so portalled content inherits them.
 
 Correct: `backgroundColor: colors.card`. Incorrect: a new hex literal or an
-invented `bg-indigo-500` utility. For status pairings, preserve the current NEW
-success/success-foreground and upcoming destructive/success-foreground choices;
-this migration does not authorize a palette redesign.
+invented `bg-indigo-500` utility. Status badges use dedicated green NEW and amber upcoming token pairs. See
+[color refinements](color-refinements.md) for the changes and measured contrast.
+
+
+## Product surface tokens
+
+- `productCardShadow`: light uses a black 9% edge, 4% tight shadow, and 6% ambient shadow; dark uses one 12% white ring.
+- `productCardShadowHover`: light uses a black 14% edge, 6% tight shadow, and 8% ambient shadow; dark uses one 20% white ring.
+- `productImageOutline`: pure black at 10% in light, pure white at 10% in dark. The outline is inset 1px and does not change image geometry.
+
+These typed tokens are defined in colors.stylex.ts and remapped by the existing dark theme. They are scoped to product cards, not general controls.

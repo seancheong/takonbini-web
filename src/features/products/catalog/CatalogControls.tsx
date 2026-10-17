@@ -17,11 +17,13 @@ interface CatalogControlsProps {
 	filters: ProductFilters;
 	onApply: (filters: ProductFilters) => void;
 	children: React.ReactNode;
+	isPending?: boolean;
 }
 export default function CatalogControls({
 	filters,
 	onApply,
 	children,
+	isPending = false,
 }: CatalogControlsProps) {
 	const { t } = useTranslation();
 	const id = useId();
@@ -94,12 +96,13 @@ export default function CatalogControls({
 				}),
 		});
 	return (
-		<div>
+		<div {...stylex.props(layoutStyles.controls)}>
 			<div {...stylex.props(layoutStyles.toolbar)}>
 				<search {...stylex.props(layoutStyles.searchSlot)}>
 					<form
 						onSubmit={(event) => {
 							event.preventDefault();
+							if (isPending) return;
 							onApply({
 								...filters,
 								search: search.trim() || undefined,
@@ -111,14 +114,21 @@ export default function CatalogControls({
 							{t("product.filters.searchLabel")}
 						</label>
 						<div {...stylex.props(layoutStyles.searchField)}>
-							<Search
-								size={20}
-								aria-hidden="true"
-								{...stylex.props(layoutStyles.searchIcon)}
-							/>
+							<label
+								htmlFor={id}
+								{...stylex.props(layoutStyles.searchIconLabel)}
+							>
+								<Search
+									size={20}
+									aria-hidden="true"
+									{...stylex.props(layoutStyles.searchIcon)}
+								/>
+							</label>
 							<input
 								id={id}
 								type="search"
+								autoComplete="off"
+								spellCheck={false}
 								value={search}
 								onChange={(event) => setSearch(event.target.value)}
 								placeholder={t("product.filters.searchPlaceholder")}
@@ -126,9 +136,15 @@ export default function CatalogControls({
 							/>
 							<button
 								type="submit"
+								disabled={isPending}
+								aria-busy={isPending}
 								{...stylex.props(layoutStyles.searchSubmit)}
 							>
-								{t("product.filters.searchLabel")}
+								{t(
+									isPending
+										? "product.filters.searchPending"
+										: "product.filters.searchLabel",
+								)}
 							</button>
 						</div>
 					</form>
@@ -216,12 +232,20 @@ const storeDotStyles = stylex.create({
 	FamilyMart: { backgroundColor: colors.storeFamily },
 });
 const layoutStyles = stylex.create({
+	controls: {
+		display: "flex",
+		flexDirection: "column",
+		gap: "16px",
+	},
 	storeDot: { width: "6px", height: "6px", borderRadius: "50%", flexShrink: 0 },
 	toolbar: {
 		display: "grid",
-		gridTemplateColumns: "minmax(0,1fr) auto",
+		gridTemplateColumns: {
+			default: "minmax(0,1fr) auto",
+			[conditions.compactCatalog]: "minmax(0,1fr)",
+		},
 		gap: "16px",
-		alignItems: "start",
+		alignItems: "end",
 	},
 	searchSlot: {
 		flex: 1,
@@ -236,13 +260,21 @@ const layoutStyles = stylex.create({
 		minWidth: "0",
 	},
 	searchLabel: {
+		display: "block",
+		fontSize: "14px",
+		fontWeight: 600,
+		marginBottom: "8px",
+	},
+	searchIconLabel: {
 		position: "absolute",
-		width: "1px",
-		height: "1px",
-		overflow: "hidden",
-		clipPath: "inset(50%)",
+		insetInlineStart: "14px",
+		top: "50%",
+		transform: "translateY(-50%)",
+		display: "flex",
+		cursor: "text",
 	},
 	searchField: {
+		position: "relative",
 		height: "56px",
 		boxSizing: "border-box",
 		display: "flex",
@@ -265,7 +297,7 @@ const layoutStyles = stylex.create({
 		paddingTop: "0.3rem",
 		paddingRight: "0.3rem",
 		paddingBottom: "0.3rem",
-		paddingLeft: "0.9rem",
+		paddingLeft: "44px",
 		outline: {
 			default: null,
 			":focus-within": "2px solid var(--ring)",
@@ -292,7 +324,7 @@ const layoutStyles = stylex.create({
 		flexShrink: 0,
 		whiteSpace: "nowrap",
 		lineHeight: 1.4,
-		minHeight: "38px",
+		minHeight: "44px",
 		display: "inline-flex",
 		justifyContent: "center",
 		alignItems: "center",
@@ -303,7 +335,7 @@ const layoutStyles = stylex.create({
 			":hover": "color-mix(in oklch,var(--primary) 88%,var(--foreground))",
 		},
 		color: colors.primaryForeground,
-		fontSize: "12px",
+		fontSize: "14px",
 		fontWeight: 500,
 		outline: { default: null, ":focus-visible": "2px solid var(--ring)" },
 		outlineOffset: "3px",
@@ -312,7 +344,7 @@ const layoutStyles = stylex.create({
 		display: "flex",
 		flexWrap: "wrap",
 		gap: "0.5rem",
-		marginTop: "1rem",
+		marginTop: 0,
 	},
 	visuallyHidden: {
 		position: "absolute",
@@ -332,7 +364,7 @@ const layoutStyles = stylex.create({
 		display: "inline-flex",
 		alignItems: "center",
 		gap: "8px",
-		minHeight: "40px",
+		minHeight: "44px",
 		padding: "0 16px",
 		border: "1px solid",
 		borderColor: {
@@ -341,14 +373,15 @@ const layoutStyles = stylex.create({
 			':is([aria-pressed="true"])': colors.border,
 		},
 		borderRadius: "3px",
-		fontSize: "12px",
+		fontSize: "14px",
+		fontWeight: 500,
 		backgroundColor: {
 			default: "transparent",
-			':is([aria-pressed="true"])': colors.secondary,
+			':is([aria-pressed="true"])': colors.card,
 		},
 		color: {
 			default: colors.mutedForeground,
-			':is([aria-pressed="true"])': colors.secondaryForeground,
+			':is([aria-pressed="true"])': colors.foreground,
 		},
 		outline: { default: null, ":focus-visible": "2px solid var(--ring)" },
 		outlineOffset: "3px",
@@ -358,7 +391,10 @@ const layoutStyles = stylex.create({
 		flexWrap: "wrap",
 		alignItems: "center",
 		gap: "0.5rem",
-		marginTop: "1rem",
+		marginTop: 0,
+		paddingTop: "16px",
+		borderTop: "1px solid",
+		borderTopColor: colors.border,
 	},
 	filterChip: {
 		display: "inline-flex",
@@ -369,7 +405,7 @@ const layoutStyles = stylex.create({
 		paddingRight: "0.75rem",
 		paddingBottom: "0.5rem",
 		paddingLeft: "0.75rem",
-		fontSize: "0.75rem",
+		fontSize: "14px",
 		backgroundColor: colors.muted,
 		borderRadius: "0.3rem",
 		overflowWrap: "anywhere",
@@ -394,7 +430,7 @@ const layoutStyles = stylex.create({
 		paddingRight: "0.75rem",
 		paddingBottom: "0.5rem",
 		paddingLeft: "0.75rem",
-		fontSize: "0.75rem",
+		fontSize: "14px",
 		backgroundColor: "transparent",
 		borderRadius: "0.3rem",
 		overflowWrap: "anywhere",

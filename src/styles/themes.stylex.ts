@@ -3,13 +3,22 @@ import { colors } from "./colors.stylex";
 import { metrics } from "./metrics.stylex";
 
 export const darkTheme = stylex.createTheme(colors, {
+	errorText: "oklch(0.75 0.15 25)",
+	productCardShadow: "0 0 0 1px oklch(1 0 0 / 0.12)",
+	productCardShadowHover: "0 0 0 1px oklch(1 0 0 / 0.2)",
+	productImageOutline: "oklch(1 0 0 / 0.1)",
+	newBadgeBackground: "oklch(0.3 0.035 145)",
+	newBadgeForeground: "oklch(0.84 0.065 145)",
+	upcomingBadgeBackground: "oklch(0.32 0.048 80)",
+	upcomingBadgeForeground: "oklch(0.86 0.078 80)",
 	filterOptionBorder: "#74816c",
+	filterSelected: "oklch(0.36 0.035 145)",
 	scrollTopBorder: "color-mix(in oklab, var(--primary) 60%, transparent)",
-	background: "#181818",
+	background: "oklch(0.2 0.008 145)",
 	foreground: "#ededed",
-	card: "#222222",
+	card: "oklch(0.25 0.008 145)",
 	cardForeground: "#ededed",
-	popover: "#222222",
+	popover: "oklch(0.25 0.008 145)",
 	popoverForeground: "#ededed",
 	success: "oklch(0.473 0.086 174.3)",
 	successAccent: "oklch(0.663 0.125 167.3)",
@@ -17,7 +26,7 @@ export const darkTheme = stylex.createTheme(colors, {
 	storeSeven: "oklch(0.758 0.159 55.9)",
 	storeLawson: "oklch(0.714 0.143 254.6)",
 	storeFamily: "oklch(0.773 0.153 163.2)",
-	muted: "#292929",
+	muted: "oklch(0.28 0.008 145)",
 	mutedForeground: "#b5b5b5",
 	accent: "#334537",
 	accentForeground: "#ededed",
@@ -35,6 +44,7 @@ export const darkTheme = stylex.createTheme(colors, {
 
 export const themeStyles = stylex.create({
 	bridge: {
+		"--header-height": metrics.headerHeight,
 		"--radius": metrics.radius,
 		"--scroll-top-border": colors.scrollTopBorder,
 		"--background": colors.background,

@@ -21,6 +21,7 @@ export default function CatalogScreen({
 const layoutStyles = stylex.create({
 	div: {
 		minHeight: "100vh",
+		overflowAnchor: "none",
 		backgroundColor: colors.background,
 		paddingInline: { default: "40px", [conditions.compactCatalog]: "20px" },
 		paddingTop: { default: "42px", [conditions.compactCatalog]: "30px" },

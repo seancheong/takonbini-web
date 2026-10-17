@@ -2,7 +2,11 @@
 
 ## Approved catalog revamp — 17 October 2026
 
-Product modal navigation uses a same-route catalog navigation with `productModalId` history state and a `/products/$id` mask with `unmaskOnReload: true`. The catalog stays mounted; Back/close restores its scroll, filters, and loaded pages. Forward reopens the modal. Refresh/direct visits render the standalone detail route. ProductPreview now takes `id`, optional `product`, filters and onClose; it renders the same ProductDetailScreen as the page, with `presentation="modal"`. The old full-detail extra click is removed. The modal is up to 1120px wide, full-screen below 600px, and supports Escape, a close button, and backdrop pointer-down/up dismissal without drag-out dismissal.
+Product modal navigation uses a same-route catalog navigation with `productModalId` history state and a `/products/$id` mask with `unmaskOnReload: true`. The catalog stays mounted; Back/close restores its scroll, filters, and loaded pages. Forward reopens the modal. Refresh/direct visits render the standalone detail route. ProductPreview keeps its Close button in view using a sticky zero-height action bar inside the modal scroll container.
+
+ProductPreview now takes `id`, optional `product`, filters and onClose; it renders the same ProductDetailScreen as the page, with `presentation="modal"`. The old full-detail extra click is removed. The modal is up to 1120px wide, full-screen below 600px, and supports Escape, a close button, and backdrop pointer-down/up dismissal without drag-out dismissal.
+
+NEW badges use newBadgeBackground/newBadgeForeground (muted green); upcoming badges use upcomingBadgeBackground/upcomingBadgeForeground (muted amber). Status colors are independent of actions and errors. ProductDetailScreen uses these same pairs in both modal and standalone presentations.
 
 ProductCard now accepts optional `onPreview(product)`. Ordinary clicks open ProductPreview; modified clicks retain native detail links. The preview uses a native modal dialog, full-width contained photography, an overlaid close button, localized tax labels, and shared full detail content. Pagination and source validation remain in the existing products module.
 
@@ -25,7 +29,7 @@ Incorrect mutation: `<CatalogScreen variant="editorial" />`; Editorial is a futu
 
 Use [CatalogControls](../../src/features/products/catalog/CatalogControls.tsx) for current explicit-submit search, immediate store choices, and applied-filter removal; use CatalogFilters for staged multi-select editing.
 
-Props: required `filters`, `onApply`, `children`. Children supply the filter-dialog trigger. No variants/default style props exist. CatalogPanel is its only caller.
+Props: required `filters`, `onApply`, `children`; optional `isPending` (default false). Children supply the filter-dialog trigger. No variants/default style props exist. CatalogPanel is its only caller.
 
 Correct from CatalogPanel: `<CatalogControls filters={filters} onApply={onApply}>` with ProductFilterDrawer as its child. Incorrect mutation: converting the search onChange into immediate onApply; it changes today's submit-based contract.
 
@@ -87,6 +91,10 @@ Detail loader fails → ProductDetailError + current filters
 Detail loaded → ProductDetailScreen
 ```
 
+
+## Product card surfaces
+
+Each product has one card-colored surface with an 8px radius around both photography and copy. Copy has 16px padding. Light mode uses a layered productCardShadow; dark mode maps it to a 1px translucent white ring. Hover changes only the shadow over 150ms and honors reduced motion. The article clips the image to the outer corners; the image canvas has a 1px inset pure-black/white outline. Loading cards share the surface, radius, padding, and responsive image aspect ratio.
 
 ## Implemented styling
 

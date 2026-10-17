@@ -61,6 +61,7 @@ afterEach(async () => {
 	vi.unstubAllGlobals();
 	vi.restoreAllMocks();
 	document.body.style.overflow = "";
+	document.documentElement.style.overflow = "";
 });
 describe("product preview", () => {
 	it("labels the modal, locks scrolling, and restores it and focus when dismissed", () => {
@@ -68,6 +69,7 @@ describe("product preview", () => {
 		document.body.append(trigger);
 		trigger.focus();
 		document.body.style.overflow = "auto";
+		document.documentElement.style.overflow = "auto";
 		const close = vi.fn();
 		const view = renderPreview(
 			<ProductPreview
@@ -78,13 +80,15 @@ describe("product preview", () => {
 			/>,
 		);
 		expect(screen.getByRole("dialog", { name: "Rice ball" })).toBeTruthy();
-		expect(document.body.style.overflow).toBe("hidden");
+		expect(document.documentElement.style.overflow).toBe("hidden");
+		expect(document.body.style.overflow).toBe("auto");
 		fireEvent.click(
 			screen.getByRole("button", { name: "product.details.close" }),
 		);
 		expect(close).toHaveBeenCalledOnce();
 		view.unmount();
 		expect(document.body.style.overflow).toBe("auto");
+		expect(document.documentElement.style.overflow).toBe("auto");
 		expect(document.activeElement).toBe(trigger);
 		trigger.remove();
 	});

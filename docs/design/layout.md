@@ -2,7 +2,9 @@
 
 ## Approved catalog revamp — 17 October 2026
 
-The catalog hero uses clamp(30px,3.4vw,46px), weight 650, line-height 1.12. Cards use 17px / 500 titles (15px compact), borderless copy, and 1.15 image canvases (square compact). ProductGrid uses one column up to 600px, two from 601–799px, and three from 800px, with 40px/28px gaps. The route-backed product modal has a 1120px max width, viewport-bounded scrolling, and full-screen presentation below 600px. Its image, facts, release date, regions and source use the same detail-screen component as the standalone page. Global scrollbar-gutter stays stable.
+The catalog uses a 32px section gap. Typography uses 12px store/tax/eyebrow labels, 13px Japanese supporting titles, 14px search/store/filter controls, 16px prices and introductory copy (1.6 leading), and 18px card titles (17px compact, 1.4 leading). Search and store controls sit directly on the page with a 16px gap, avoiding nested tinted containers. The results heading uses 20px / 650 text. Filters use a bounded native dialog with wrapping checkbox tiles, 24px section gaps, a scrolling body, and a persistent action footer.
+
+The catalog hero uses clamp(30px,3.4vw,46px), weight 650, line-height 1.12. Cards use 18px / 500 titles (17px compact), 16px padded copy within an 8px-radius shared surface, and 1.15 image canvases (square compact). ProductGrid uses one column up to 600px, two from 601–799px, and three from 800px, with 40px/28px gaps. The route-backed product modal has a 1120px max width, viewport-bounded scrolling, and full-screen presentation below 600px. Its image, facts, release date, regions and source use the same detail-screen component as the standalone page. Global scrollbar-gutter stays stable.
 
 The compatibility-migration baseline below is retained as historical context; the approved changes above supersede its geometry and interaction restrictions.
 
