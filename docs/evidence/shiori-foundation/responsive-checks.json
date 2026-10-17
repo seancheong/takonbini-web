@@ -1,0 +1,146 @@
+[
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "light",
+    "columns": 1,
+    "heading": "This week on the konbini shelf.",
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "dark",
+    "columns": 1,
+    "heading": "This week on the konbini shelf.",
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "locale": "ja",
+    "theme": "light",
+    "columns": 1,
+    "heading": "今週のコンビニ棚から。",
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "locale": "ja",
+    "theme": "dark",
+    "columns": 1,
+    "heading": "今週のコンビニ棚から。",
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "locale": "zh",
+    "theme": "light",
+    "columns": 1,
+    "heading": "本週便利商店貨架，有什麼新鮮事？",
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "locale": "zh",
+    "theme": "dark",
+    "columns": 1,
+    "heading": "本週便利商店貨架，有什麼新鮮事？",
+    "overflow": false
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "light",
+    "columns": 2,
+    "heading": "This week on the konbini shelf.",
+    "overflow": false
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "dark",
+    "columns": 2,
+    "heading": "This week on the konbini shelf.",
+    "overflow": false
+  },
+  {
+    "width": 768,
+    "locale": "ja",
+    "theme": "light",
+    "columns": 2,
+    "heading": "今週のコンビニ棚から。",
+    "overflow": false
+  },
+  {
+    "width": 768,
+    "locale": "ja",
+    "theme": "dark",
+    "columns": 2,
+    "heading": "今週のコンビニ棚から。",
+    "overflow": false
+  },
+  {
+    "width": 768,
+    "locale": "zh",
+    "theme": "light",
+    "columns": 2,
+    "heading": "本週便利商店貨架，有什麼新鮮事？",
+    "overflow": false
+  },
+  {
+    "width": 768,
+    "locale": "zh",
+    "theme": "dark",
+    "columns": 2,
+    "heading": "本週便利商店貨架，有什麼新鮮事？",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "light",
+    "columns": 3,
+    "heading": "This week on the konbini shelf.",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "dark",
+    "columns": 3,
+    "heading": "This week on the konbini shelf.",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "locale": "ja",
+    "theme": "light",
+    "columns": 3,
+    "heading": "今週のコンビニ棚から。",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "locale": "ja",
+    "theme": "dark",
+    "columns": 3,
+    "heading": "今週のコンビニ棚から。",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "locale": "zh",
+    "theme": "light",
+    "columns": 3,
+    "heading": "本週便利商店貨架，有什麼新鮮事？",
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "locale": "zh",
+    "theme": "dark",
+    "columns": 3,
+    "heading": "本週便利商店貨架，有什麼新鮮事？",
+    "overflow": false
+  }
+]

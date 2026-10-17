@@ -18,8 +18,9 @@ export default {
 			changeLanguage: "更改語言",
 		},
 		product: {
-			title: "发现你的下一个便利店心头好。",
-			subtitle: "探索日本 Seven-Eleven、Lawson 和 FamilyMart 的商品。",
+			title: "本週便利商店貨架，有什麼新鮮事？",
+			subtitle:
+				"每週整理日本 7-Eleven、Lawson 與全家便利商店最新推出的食品與飲料。",
 			catalogLabel: "日本 / 便利店商品目录",
 			allStores: "所有商店",
 			results: "商品目录",

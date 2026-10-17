@@ -23,9 +23,9 @@ const layoutStyles = stylex.create({
 	grid: {
 		display: "grid",
 		gridTemplateColumns: {
-			default: "repeat(2, minmax(0, 1fr))",
-			[conditions.tabletGrid]: "repeat(3, minmax(0, 1fr))",
-			[conditions.desktopGrid]: "repeat(4, minmax(0, 1fr))",
+			default: "minmax(0, 1fr)",
+			[conditions.indexTablet]: "repeat(2, minmax(0, 1fr))",
+			[conditions.indexDesktop]: "repeat(3, minmax(0, 1fr))",
 		},
 		gap: {
 			default: "1.5rem 1rem",

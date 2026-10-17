@@ -18,9 +18,9 @@ export default {
 			changeLanguage: "Change Language",
 		},
 		product: {
-			title: "Find your next konbini favorite.",
+			title: "This week on the konbini shelf.",
 			subtitle:
-				"Explore products from Seven-Eleven, Lawson, and FamilyMart across Japan.",
+				"A weekly index of new snacks, meals, sweets, and drinks from 7-Eleven, Lawson, and FamilyMart across Japan.",
 			catalogLabel: "Japan / Convenience store catalog",
 			allStores: "All stores",
 			results: "The catalog",

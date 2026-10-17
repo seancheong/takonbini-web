@@ -6,7 +6,7 @@ Public screen/query/search exports: [products.ts](../../src/features/products/pr
 
 Use CatalogScreen as the `/` page; use ProductDetailScreen on the detail route. CatalogPanel is the internal query/filter/state owner, not a reusable dashboard panel.
 
-Both accept required `filters: ProductFilters` and `onApply`. No style options/default appearance exist. CatalogScreen owns the outer spacing and ScrollTopButton; CatalogPanel owns the hero, controls, result announcements, retry/empty/loading states and grid.
+Both accept required `filters: ProductFilters` and `onApply`. No style options/default appearance exist. CatalogScreen owns outer spacing and ScrollTopButton; CatalogPanel composes WeeklyMasthead, controls, announcements, data states and grid.
 
 Correct from [the route](../../src/routes/index.tsx): `<CatalogScreen filters={filters} onApply={(next) => navigate({ search: catalogSearch.encode(next), replace: true })} />`.
 Incorrect mutation: `<CatalogScreen variant="editorial" />`; Editorial is a future release, not an implemented variant.
@@ -29,7 +29,7 @@ Use [ProductGrid](../../src/features/products/catalog/ProductGrid.tsx) for a lis
 
 Props: required `products`, optional `filters`. It has no density/columns variant. Forward filters so detail navigation retains catalog context. CatalogPanel is its only caller.
 
-Correct from CatalogPanel: `<ProductGrid products={products} filters={filters} />`. Incorrect mutation: adding `density="compact"`; current responsive columns are CSS-defined, not a prop.
+Correct from CatalogPanel: `<ProductGrid products={products} filters={filters} />`. Incorrect mutation: adding `density="compact"`; the approved responsive columns are CSS-defined (one through 520px, two through 800px, three above 800px), not a prop.
 
 ## ProductCard
 
@@ -89,7 +89,21 @@ layer. Keep state, markup, route/search contracts and view-transition identities
 unchanged when editing these styles. Store text uses the typed `storeTextStyles`
 group; the card sets its own `--store-accent` for the owned copy edge.
 
-The search/dialog/grid breakpoints remain 600/800/1100px, and detail columns switch
-at 1024px. Native modal semantics, controlled draft filters, pagination, data
+Search/dialog compact behavior remains at 600px; the Shiori grid switches at
+521/801px, and detail columns still switch at 1024px. Native modal semantics, controlled draft filters, pagination, data
 states and image failure handling remain in their existing owners. See the
 [full migration evidence](../evidence/stylex-migration.md) for parity coverage.
+
+## WeeklyMasthead
+
+Use [WeeklyMasthead](../../src/features/products/catalog/WeeklyMasthead.tsx) once in
+CatalogPanel for the approved localized Weekly introduction; use the root Header
+for navigation. It has no props or variants. It renders one h1 and supporting
+paragraph from `product.title` / `product.subtitle`, with CJK typography selected
+from the active locale. Decorative issue numbering is not part of this component.
+
+Correct: `<WeeklyMasthead />`. Incorrect: adding an `issueNumber` prop or separate
+English-only headline; the approved copy is complete in all three locale files.
+
+The first #27 slice is in progress; full scope and remaining work are tracked in
+[the implementation plan](../plans/phase-7d-shiori-editorial.md).

@@ -11,6 +11,7 @@ import { metrics } from "../../../styles/metrics.stylex";
 import CatalogControls from "./CatalogControls";
 import ProductFilterDrawer from "./CatalogFilters";
 import ProductGrid from "./ProductGrid";
+import WeeklyMasthead from "./WeeklyMasthead";
 
 interface ProductPanelProps {
 	filters: ProductFilters;
@@ -53,17 +54,7 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	);
 	return (
 		<section {...stylex.props(layoutStyles.panel)}>
-			<header {...stylex.props(layoutStyles.heading)}>
-				<div>
-					<p {...stylex.props(layoutStyles.eyebrow)}>
-						{t("product.catalogLabel")}
-					</p>
-					<h1 {...stylex.props(layoutStyles.heroTitle)}>
-						{t("product.title")}
-					</h1>
-				</div>
-				<p {...stylex.props(layoutStyles.intro)}>{t("product.subtitle")}</p>
-			</header>
+			<WeeklyMasthead />
 			<CatalogControls filters={filters} onApply={onApply}>
 				<ProductFilterDrawer
 					filters={draftFilters}
@@ -192,57 +183,6 @@ const layoutStyles = stylex.create({
 		display: "flex",
 		flexDirection: "column",
 		gap: "1.75rem",
-	},
-	heading: {
-		display: "flex",
-		alignItems: {
-			default: "end",
-			[conditions.compactCatalog]: "start",
-		},
-		justifyContent: "space-between",
-		gap: {
-			default: "2rem",
-			[conditions.compactCatalog]: "1rem",
-		},
-		paddingTop: {
-			default: "1rem",
-			[conditions.compactCatalog]: "0",
-		},
-		paddingRight: "0",
-		paddingBottom: "2rem",
-		paddingLeft: "0",
-		borderBottomWidth: "2px",
-		borderBottomStyle: "solid",
-		borderBottomColor: colors.foreground,
-		flexDirection: {
-			default: null,
-			[conditions.compactCatalog]: "column",
-		},
-	},
-	eyebrow: {
-		fontSize: "0.7rem",
-		fontWeight: 650,
-		letterSpacing: "0.14em",
-		textTransform: "uppercase",
-		marginBottom: "1rem",
-		color: colors.mutedForeground,
-	},
-	heroTitle: {
-		maxWidth: "14ch",
-		fontSize: "clamp(2.2rem, 5vw, 4.5rem)",
-		fontWeight: 750,
-		lineHeight: 1.05,
-		letterSpacing: "-0.045em",
-		textWrap: "balance",
-	},
-	intro: {
-		maxWidth: {
-			default: "30ch",
-			[conditions.compactCatalog]: "45ch",
-		},
-		color: colors.mutedForeground,
-		fontSize: "0.95rem",
-		lineHeight: 1.65,
 	},
 	resultsHeading: {
 		display: "flex",
