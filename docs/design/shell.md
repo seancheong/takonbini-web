@@ -2,7 +2,7 @@
 
 ## Approved catalog revamp — 17 October 2026
 
-Header is in normal document flow, 88px high (76px at the compact breakpoint), with a 36px green octopus icon and uppercase wordmark. The catalog screen uses 42px top and 40px side padding (30px/20px compact). Theme/language controls remain provider-owned.
+Header is sticky at the viewport top on layer 20, 88px high (76px compact, 56px in viewports at most 500px tall), with a 36px green octopus icon and uppercase wordmark. The catalog screen uses 42px top and 40px side padding (30px/20px compact). Theme/language controls remain provider-owned.
 
 The compatibility-migration baseline below is retained as historical context; the approved changes above supersede its geometry and interaction restrictions.
 
@@ -40,7 +40,7 @@ Correct from Header: `<LanguageSelect />`. Incorrect mutation: `<LanguageSelect 
 
 Use [ScrollTopButton](../../src/components/ScrollTopButton.tsx) for the catalog's scroll action; use a Link for navigation. This dedicated control is not a general icon-button primitive.
 
-Styling is compiled by StyleX via `stylex.create` and `stylex.props`; it uses the typed semantic colors. No props, variants or sizes exist. It appears when `scrollY > 120`, stays bottom/right at 1.5rem, has a translated label and ArrowUp, and calls smooth scrolling unless reduced motion requests immediate scrolling. [CatalogScreen](../../src/features/products/catalog/CatalogScreen.tsx) is its only caller; motion rules are in [layout](layout.md).
+Styling is compiled by StyleX via `stylex.create` and `stylex.props`; it uses the typed semantic colors. No props, variants or sizes exist. It appears when `scrollY > 120`, stays bottom/right at max(1.5rem, the corresponding safe-area inset) on layer 10, has a translated label and ArrowUp, and calls smooth scrolling unless reduced motion requests immediate scrolling. [CatalogScreen](../../src/features/products/catalog/CatalogScreen.tsx) is its only caller; motion rules are in [layout](layout.md).
 
 Correct from CatalogScreen: `<ScrollTopButton />`. Incorrect mutation: `<ScrollTopButton variant="primary" />`; its primary-token surface is implemented internally, not a selectable variant.
 
@@ -59,3 +59,11 @@ The document applies `themeStyles.bridge`; ThemeProvider adds/removes every
 compiled class from `darkTheme` plus the legacy light/dark marker. Its early
 script receives the classes as serialized data, so it has no module closure.
 Portals inherit the document variables. Keep this ownership in the provider.
+
+
+## Persistent controls
+
+Header stays in document flow with sticky positioning and an opaque background. `metrics.headerHeight` owns its responsive height; the document bridge exposes it to root scroll-padding so keyboard and anchor scrolling clear the header by 16px. The document uses overflow-x: clip to avoid creating an extra scrolling ancestor. Native modals remain above the header in the top layer, and Select popup layer 50 stays above it. The product modal keeps its Close action in a sticky, zero-height bar; the filter dialog already keeps its header/footer outside the scrolling body. Catalog search/store controls remain in document flow to preserve browsing space on short screens.
+
+
+Modal scroll locking belongs on document.documentElement, not body. Setting body overflow to hidden creates a scrolling ancestor for the sticky header, pulling it out of view at nonzero page scroll. Both product and filter dialogs preserve and restore the root's previous inline overflow without changing the body's overflow. Keep scrollbar-gutter stable on the root.

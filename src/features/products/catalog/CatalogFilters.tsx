@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import { SlidersHorizontal, X } from "lucide-react";
-import { useId } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	Category,
@@ -24,6 +24,7 @@ interface ProductFilterDrawerProps {
 	setIsFilterOpen: (open: boolean) => void;
 	onApply: (filters: ProductFilters) => void;
 	onReset: () => void;
+	activeCount?: number;
 }
 export default function ProductFilterDrawer({
 	filters,
@@ -32,9 +33,30 @@ export default function ProductFilterDrawer({
 	setIsFilterOpen,
 	onApply,
 	onReset,
+	activeCount = 0,
 }: ProductFilterDrawerProps) {
 	const { t } = useTranslation();
 	const id = useId();
+	const [touched, setTouched] = useState({ minPrice: false, maxPrice: false });
+	const [badInput, setBadInput] = useState({
+		minPrice: false,
+		maxPrice: false,
+	});
+	const dialog = useRef<HTMLDialogElement>(null);
+	useEffect(() => {
+		if (!isFilterOpen) return;
+		setTouched({ minPrice: false, maxPrice: false });
+		setBadInput({ minPrice: false, maxPrice: false });
+		const focused = document.activeElement;
+		const previousOverflow = document.documentElement.style.overflow;
+		dialog.current?.showModal();
+		document.documentElement.style.overflow = "hidden";
+		return () => {
+			document.documentElement.style.overflow = previousOverflow;
+			if (focused instanceof HTMLElement)
+				focused.focus({ preventScroll: true });
+		};
+	}, [isFilterOpen]);
 	const priceIntegerValid = [filters.minPrice, filters.maxPrice].every(
 		(value) => value === undefined || (Number.isInteger(value) && value >= 0),
 	);
@@ -43,39 +65,98 @@ export default function ProductFilterDrawer({
 		filters.maxPrice === undefined ||
 		filters.minPrice <= filters.maxPrice;
 	const isPriceValid = priceIntegerValid && priceRangeValid;
+	const integerValid = (field: "minPrice" | "maxPrice") => {
+		const value = filters[field];
+		return (
+			!badInput[field] &&
+			(value === undefined || (Number.isInteger(value) && value >= 0))
+		);
+	};
+	const minInvalid = touched.minPrice && !integerValid("minPrice");
+	const maxInvalid =
+		(touched.maxPrice && !integerValid("maxPrice")) ||
+		(touched.maxPrice && !priceRangeValid);
+	const showPriceError = minInvalid || maxInvalid;
 	return (
 		<>
 			<button
 				type="button"
 				aria-controls={id}
+				aria-haspopup="dialog"
+				aria-label={
+					activeCount > 0
+						? `${t("product.filters.title")}, ${t("product.filters.activeCount", { count: activeCount })}`
+						: undefined
+				}
 				aria-expanded={isFilterOpen}
 				onClick={() => setIsFilterOpen(!isFilterOpen)}
-				{...stylex.props(layoutStyles.open)}
+				{...stylex.props(
+					layoutStyles.open,
+					isFilterOpen && layoutStyles.openActive,
+				)}
 			>
 				<SlidersHorizontal size={18} aria-hidden="true" />
 				{t("product.filters.title")}
+				{activeCount > 0 && (
+					<span {...stylex.props(layoutStyles.activeCount)} aria-hidden="true">
+						{activeCount}
+					</span>
+				)}
 			</button>
 			{isFilterOpen && (
-				<section
+				<dialog
+					ref={dialog}
+					onCancel={(event) => {
+						event.preventDefault();
+						setIsFilterOpen(false);
+					}}
+					onClose={() => setIsFilterOpen(false)}
 					id={id}
 					aria-labelledby={`${id}-title`}
 					{...stylex.props(layoutStyles.dialog)}
 					data-slot="catalog-filter-dialog"
 				>
 					<form
+						noValidate
 						onSubmit={(event) => {
 							event.preventDefault();
-							if (isPriceValid) {
+							const invalidNative = Array.from(
+								event.currentTarget.querySelectorAll<HTMLInputElement>(
+									'input[type="number"]',
+								),
+							).find((input) => input.validity.badInput);
+							if (invalidNative) {
+								const field =
+									invalidNative.name === "minPrice" ? "minPrice" : "maxPrice";
+								setBadInput((previous) => ({ ...previous, [field]: true }));
+								setTouched({ minPrice: true, maxPrice: true });
+								invalidNative.focus();
+								return;
+							}
+							if (isPriceValid && !badInput.minPrice && !badInput.maxPrice) {
 								onApply(filters);
 								setIsFilterOpen(false);
+							} else {
+								setTouched({ minPrice: true, maxPrice: true });
+								const field = !integerValid("minPrice")
+									? "minPrice"
+									: "maxPrice";
+								event.currentTarget
+									.querySelector<HTMLInputElement>(`[name="${field}"]`)
+									?.focus();
 							}
 						}}
 						{...stylex.props(layoutStyles.form)}
 					>
 						<div {...stylex.props(layoutStyles.heading)}>
-							<h2 id={`${id}-title`} {...stylex.props(layoutStyles.title)}>
-								{t("product.filters.title")}
-							</h2>
+							<div {...stylex.props(layoutStyles.headingCopy)}>
+								<h2 id={`${id}-title`} {...stylex.props(layoutStyles.title)}>
+									{t("product.filters.title")}
+								</h2>
+								<p {...stylex.props(layoutStyles.description)}>
+									{t("product.filters.description")}
+								</p>
+							</div>
 							<button
 								type="button"
 								aria-label={t("product.filters.hide")}
@@ -114,7 +195,10 @@ export default function ProductFilterDrawer({
 									},
 								] as const
 							).map((group) => (
-								<fieldset key={group.field}>
+								<fieldset
+									key={group.field}
+									{...stylex.props(layoutStyles.group)}
+								>
 									<legend {...stylex.props(layoutStyles.legend)}>
 										{t(`product.filters.${group.title}`)}
 									</legend>
@@ -148,7 +232,7 @@ export default function ProductFilterDrawer({
 									</div>
 								</fieldset>
 							))}
-							<fieldset>
+							<fieldset {...stylex.props(layoutStyles.group)}>
 								<legend {...stylex.props(layoutStyles.legend)}>
 									{t("product.filters.price")}
 								</legend>
@@ -165,32 +249,50 @@ export default function ProductFilterDrawer({
 												step={1}
 												inputMode="numeric"
 												value={filters[field] ?? ""}
-												aria-invalid={!isPriceValid}
-												aria-describedby={
-													!isPriceValid ? `${id}-price-error` : undefined
+												name={field}
+												onBlur={() =>
+													setTouched((previous) => ({
+														...previous,
+														[field]: true,
+													}))
 												}
-												onChange={(event) =>
+												aria-invalid={
+													field === "minPrice" ? minInvalid : maxInvalid
+												}
+												aria-describedby={
+													(field === "minPrice" ? minInvalid : maxInvalid)
+														? `${id}-price-error`
+														: undefined
+												}
+												onChange={(event) => {
+													const invalid = event.target.validity.badInput;
+													setBadInput((previous) => ({
+														...previous,
+														[field]: invalid,
+													}));
 													setFilters({
 														...filters,
 														[field]:
 															event.target.value === ""
 																? undefined
 																: Number(event.target.value),
-													})
-												}
+													});
+												}}
 												{...stylex.props(layoutStyles.priceInput)}
 											/>
 										</label>
 									))}
 								</div>
-								{!isPriceValid ? (
+								{showPriceError ? (
 									<p
 										id={`${id}-price-error`}
 										role="alert"
 										{...stylex.props(layoutStyles.priceError)}
 									>
 										{t(
-											priceIntegerValid
+											priceIntegerValid &&
+												!badInput.minPrice &&
+												!badInput.maxPrice
 												? "product.filters.priceRangeError"
 												: "product.filters.priceIntegerError",
 										)}
@@ -215,62 +317,117 @@ export default function ProductFilterDrawer({
 						<div {...stylex.props(layoutStyles.footer)}>
 							<button
 								type="button"
-								onClick={onReset}
+								onClick={() => {
+									onReset();
+									setTouched({ minPrice: false, maxPrice: false });
+									setBadInput({ minPrice: false, maxPrice: false });
+								}}
 								{...stylex.props(layoutStyles.reset)}
 							>
 								{t("product.filters.reset")}
 							</button>
-							<button
-								type="submit"
-								disabled={!isPriceValid}
-								{...stylex.props(layoutStyles.apply)}
-							>
+							<button type="submit" {...stylex.props(layoutStyles.apply)}>
 								{t("product.filters.apply")}
 							</button>
 						</div>
 					</form>
-				</section>
+				</dialog>
 			)}
 		</>
 	);
 }
 const layoutStyles = stylex.create({
+	activeCount: {
+		display: "inline-grid",
+		placeItems: "center",
+		minWidth: "24px",
+		height: "24px",
+		paddingInline: "4px",
+		borderRadius: "4px",
+		backgroundColor: colors.secondary,
+		color: colors.secondaryForeground,
+		fontSize: "12px",
+		fontVariantNumeric: "tabular-nums",
+	},
+	headingCopy: { display: "flex", flexDirection: "column", gap: "4px" },
+	description: {
+		fontSize: "13px",
+		lineHeight: 1.5,
+		color: colors.mutedForeground,
+	},
+	openActive: {
+		borderColor: colors.primary,
+		backgroundColor: colors.secondary,
+		color: colors.secondaryForeground,
+	},
+	group: {
+		minWidth: 0,
+		padding: 0,
+		margin: 0,
+		border: 0,
+	},
 	open: {
+		justifySelf: "start",
 		height: "56px",
+		transform: {
+			default: "none",
+			":active": "scale(0.96)",
+			[conditions.reducedMotion]: "none",
+		},
 		minHeight: "56px",
 		display: "inline-flex",
 		justifyContent: "center",
 		alignItems: "center",
 		gap: "8px",
 		padding: "0 16px",
-		border: "1px solid",
+		borderWidth: "1px",
+		borderStyle: "solid",
 		borderColor: { default: colors.border, ":hover": colors.mutedForeground },
-		backgroundColor: colors.secondary,
-		color: colors.secondaryForeground,
+		backgroundColor: colors.card,
+		color: colors.foreground,
 		borderRadius: "4px",
-		fontSize: "13px",
+		fontSize: "14px",
 		outline: { default: null, ":focus-visible": "2px solid var(--ring)" },
 		outlineOffset: "3px",
 	},
 	dialog: {
-		gridColumn: "1 / -1",
-		border: "1px solid",
+		margin: { default: "auto", [conditions.compactCatalog]: "auto 0 0" },
+		width: {
+			default: "min(720px,calc(100% - 40px))",
+			[conditions.compactCatalog]: "100%",
+		},
+		maxWidth: "none",
+		maxHeight: {
+			default: "min(860px,calc(100dvh - 64px))",
+			[conditions.compactCatalog]: "calc(100dvh - 24px)",
+		},
+		padding: 0,
+		borderWidth: "1px",
+		borderStyle: "solid",
 		borderColor: colors.border,
-		borderRadius: "4px",
-		backgroundColor: colors.secondary,
+		borderRadius: {
+			default: "12px",
+			[conditions.compactCatalog]: "16px 16px 0 0",
+		},
+		backgroundColor: colors.card,
 		color: colors.foreground,
+		overflow: "hidden",
 	},
-	form: { display: "flex", flexDirection: "column" },
+	form: {
+		display: "flex",
+		flexDirection: "column",
+		maxHeight: {
+			default: "min(860px,calc(100dvh - 64px))",
+			[conditions.compactCatalog]: "calc(100dvh - 24px)",
+		},
+	},
 	heading: {
 		display: "flex",
-		flexShrink: 0,
 		alignItems: "center",
 		justifyContent: "space-between",
-		gap: "1rem",
-		paddingTop: "1rem",
-		paddingRight: "1.5rem",
-		paddingBottom: "1rem",
-		paddingLeft: "1.5rem",
+		gap: "16px",
+		flexShrink: 0,
+		padding: { default: "20px 24px", [conditions.compactCatalog]: "20px" },
 		borderBottomWidth: "1px",
 		borderBottomStyle: "solid",
 		borderBottomColor: colors.border,
@@ -280,6 +437,13 @@ const layoutStyles = stylex.create({
 		fontWeight: 650,
 	},
 	close: {
+		minWidth: "44px",
+		flexShrink: 0,
+		transform: {
+			default: "none",
+			":active": "scale(0.96)",
+			[conditions.reducedMotion]: "none",
+		},
 		minHeight: "44px",
 		display: "inline-flex",
 		justifyContent: "center",
@@ -343,66 +507,58 @@ const layoutStyles = stylex.create({
 		},
 	},
 	content: {
-		display: "grid",
-		gridTemplateColumns: {
-			default: "1fr",
-			[conditions.detailColumns]: "repeat(2,minmax(0,1fr))",
-		},
-		padding: "24px",
+		display: "flex",
+		flexDirection: "column",
+		minHeight: 0,
+		overflowY: "auto",
+		overscrollBehavior: "contain",
 		gap: "24px",
+		padding: { default: "24px", [conditions.compactCatalog]: "20px" },
 	},
 	legend: {
+		padding: 0,
+		marginBottom: "12px",
+		fontSize: "14px",
 		fontWeight: 650,
-		marginBottom: "0.75rem",
-		fontSize: "0.9rem",
+		lineHeight: 1.5,
 	},
 	options: {
 		display: "flex",
 		flexWrap: "wrap",
-		gap: "0.5rem",
+		gap: "8px",
 	},
 	choice: {
 		display: "inline-flex",
-		gap: "0.5rem",
+		gap: "8px",
 		alignItems: "center",
 		minHeight: "44px",
-		paddingTop: "0.5rem",
-		paddingRight: "0.75rem",
-		paddingBottom: "0.5rem",
-		paddingLeft: "0.75rem",
-		borderTopWidth: "1px",
-		borderTopStyle: "solid",
-		borderTopColor: {
+		padding: "10px 12px",
+		borderWidth: "1px",
+		borderStyle: "solid",
+		borderColor: {
 			default: colors.filterOptionBorder,
+			":hover": colors.mutedForeground,
 			':is([data-selected="true"])': colors.primary,
 		},
-		borderRightWidth: "1px",
-		borderRightStyle: "solid",
-		borderRightColor: {
-			default: colors.filterOptionBorder,
-			':is([data-selected="true"])': colors.primary,
-		},
-		borderBottomWidth: "1px",
-		borderBottomStyle: "solid",
-		borderBottomColor: {
-			default: colors.filterOptionBorder,
-			':is([data-selected="true"])': colors.primary,
-		},
-		borderLeftWidth: "1px",
-		borderLeftStyle: "solid",
-		borderLeftColor: {
-			default: colors.filterOptionBorder,
-			':is([data-selected="true"])': colors.primary,
-		},
-		borderRadius: "0.3rem",
-		fontSize: "0.8rem",
+		borderRadius: "6px",
+		fontSize: "14px",
+		fontWeight: 500,
+		lineHeight: 1.5,
 		cursor: "pointer",
 		backgroundColor: {
 			default: colors.card,
-			':is([data-selected="true"])': colors.accent,
+			":hover": colors.muted,
+			':is([data-selected="true"])': colors.filterSelected,
 		},
+		transitionProperty: {
+			default: "background-color, border-color",
+			[conditions.reducedMotion]: "none",
+		},
+		transitionDuration: "150ms",
 	},
 	checkbox: {
+		marginTop: 0,
+		flexShrink: 0,
 		outline: {
 			default: null,
 			":focus-visible": "2px solid var(--ring)",
@@ -421,19 +577,19 @@ const layoutStyles = stylex.create({
 		},
 		accentColor: {
 			default: null,
-			':is([type="checkbox"])': colors.success,
+			':is([type="checkbox"])': colors.primary,
 		},
 	},
 	prices: {
 		display: "grid",
-		gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-		gap: "1rem",
+		gridTemplateColumns: "repeat(2,minmax(0,1fr))",
+		gap: "16px",
 	},
 	priceLabel: {
 		display: "flex",
 		flexDirection: "column",
 		gap: "0.5rem",
-		fontSize: "0.8rem",
+		fontSize: "14px",
 	},
 	priceInput: {
 		outline: {
@@ -461,26 +617,26 @@ const layoutStyles = stylex.create({
 		borderTopWidth: "1px",
 		borderTopStyle: "solid",
 		borderTopColor: {
-			default: null,
-			':is([aria-invalid="true"])': colors.destructive,
+			default: colors.input,
+			':is([aria-invalid="true"])': colors.errorText,
 		},
 		borderRightWidth: "1px",
 		borderRightStyle: "solid",
 		borderRightColor: {
-			default: null,
-			':is([aria-invalid="true"])': colors.destructive,
+			default: colors.input,
+			':is([aria-invalid="true"])': colors.errorText,
 		},
 		borderBottomWidth: "1px",
 		borderBottomStyle: "solid",
 		borderBottomColor: {
-			default: null,
-			':is([aria-invalid="true"])': colors.destructive,
+			default: colors.input,
+			':is([aria-invalid="true"])': colors.errorText,
 		},
 		borderLeftWidth: "1px",
 		borderLeftStyle: "solid",
 		borderLeftColor: {
-			default: null,
-			':is([aria-invalid="true"])': colors.destructive,
+			default: colors.input,
+			':is([aria-invalid="true"])': colors.errorText,
 		},
 		borderRadius: "0.3rem",
 		paddingTop: "0.6rem",
@@ -494,17 +650,22 @@ const layoutStyles = stylex.create({
 		marginTop: "0.75rem",
 		fontSize: "0.875rem",
 		lineHeight: "1.25rem",
-		color: colors.destructive,
+		color: colors.errorText,
 	},
 	upcoming: {
 		display: "flex",
 		alignItems: "center",
-		gap: "0.75rem",
+		gap: "12px",
 		minHeight: "44px",
-		fontSize: "0.9rem",
+		fontSize: "14px",
+		paddingTop: "16px",
+		borderTopWidth: "1px",
+		borderTopStyle: "solid",
+		borderTopColor: colors.border,
 	},
 	footer: {
 		display: "flex",
+		backgroundColor: colors.card,
 		flexShrink: 0,
 		alignItems: "center",
 		justifyContent: "space-between",
@@ -521,6 +682,11 @@ const layoutStyles = stylex.create({
 		borderTopColor: colors.border,
 	},
 	reset: {
+		transform: {
+			default: "none",
+			":active": "scale(0.96)",
+			[conditions.reducedMotion]: "none",
+		},
 		minHeight: "44px",
 		display: "inline-flex",
 		justifyContent: "center",
@@ -552,7 +718,7 @@ const layoutStyles = stylex.create({
 		},
 		borderRadius: metrics.actionRadius,
 		backgroundColor: {
-			default: colors.card,
+			default: "transparent",
 			":hover": colors.muted,
 			":active": colors.accent,
 		},
@@ -560,7 +726,8 @@ const layoutStyles = stylex.create({
 		paddingRight: "1rem",
 		paddingBottom: "0.65rem",
 		paddingLeft: "1rem",
-		fontSize: "0.85rem",
+		fontSize: "14px",
+		color: colors.mutedForeground,
 		fontWeight: 600,
 		whiteSpace: "nowrap",
 		transitionProperty: {
@@ -587,7 +754,13 @@ const layoutStyles = stylex.create({
 		},
 	},
 	apply: {
+		transform: {
+			default: "none",
+			":active": "scale(0.96)",
+			[conditions.reducedMotion]: "none",
+		},
 		minHeight: "44px",
+		minWidth: { default: "auto", [conditions.tabletGrid]: "160px" },
 		display: "inline-flex",
 		justifyContent: "center",
 		alignItems: "center",
@@ -595,38 +768,38 @@ const layoutStyles = stylex.create({
 		borderTopWidth: "1px",
 		borderTopStyle: "solid",
 		borderTopColor: {
-			default: colors.foreground,
+			default: colors.primary,
 			":hover": colors.mutedForeground,
 		},
 		borderRightWidth: "1px",
 		borderRightStyle: "solid",
 		borderRightColor: {
-			default: colors.foreground,
+			default: colors.primary,
 			":hover": colors.mutedForeground,
 		},
 		borderBottomWidth: "1px",
 		borderBottomStyle: "solid",
 		borderBottomColor: {
-			default: colors.foreground,
+			default: colors.primary,
 			":hover": colors.mutedForeground,
 		},
 		borderLeftWidth: "1px",
 		borderLeftStyle: "solid",
 		borderLeftColor: {
-			default: colors.foreground,
+			default: colors.primary,
 			":hover": colors.mutedForeground,
 		},
 		borderRadius: metrics.actionRadius,
 		backgroundColor: {
-			default: colors.foreground,
-			":hover": "color-mix(in oklch, var(--foreground) 85%, var(--background))",
-			":active": colors.accent,
+			default: colors.primary,
+			":hover": "color-mix(in oklch, var(--primary) 88%, var(--foreground))",
+			":active": "color-mix(in oklch, var(--primary) 88%, var(--foreground))",
 		},
 		paddingTop: "0.65rem",
 		paddingRight: "1rem",
 		paddingBottom: "0.65rem",
 		paddingLeft: "1rem",
-		fontSize: "0.85rem",
+		fontSize: "14px",
 		fontWeight: 600,
 		whiteSpace: "nowrap",
 		transitionProperty: {

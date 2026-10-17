@@ -41,11 +41,11 @@ export default function ProductPreview({
 	useEffect(() => {
 		const focused = document.activeElement;
 		const scrollY = window.scrollY;
-		const previousOverflow = document.body.style.overflow;
+		const previousOverflow = document.documentElement.style.overflow;
 		dialog.current?.showModal();
-		document.body.style.overflow = "hidden";
+		document.documentElement.style.overflow = "hidden";
 		return () => {
-			document.body.style.overflow = previousOverflow;
+			document.documentElement.style.overflow = previousOverflow;
 			if (focused instanceof HTMLElement)
 				focused.focus({ preventScroll: true });
 			requestAnimationFrame(() =>
@@ -73,14 +73,16 @@ export default function ProductPreview({
 			}}
 		>
 			<div {...stylex.props(styles.content)}>
-				<button
-					type="button"
-					{...stylex.props(styles.close)}
-					aria-label={t("product.details.close")}
-					onClick={() => dialog.current?.close()}
-				>
-					<X size={20} />
-				</button>
+				<div {...stylex.props(styles.closeBar)}>
+					<button
+						type="button"
+						{...stylex.props(styles.close)}
+						aria-label={t("product.details.close")}
+						onClick={() => dialog.current?.close()}
+					>
+						<X size={20} />
+					</button>
+				</div>
 				<CatchBoundary
 					getResetKey={() => id}
 					errorComponent={() => <ProductDetailError filters={filters} />}
@@ -121,6 +123,7 @@ const styles = stylex.create({
 		},
 	},
 	content: { position: "relative", minHeight: "100%" },
+	closeBar: { position: "sticky", top: 0, height: 0, zIndex: 2 },
 	close: {
 		position: "absolute",
 		top: "12px",

@@ -47,8 +47,10 @@ export default function ScrollTopButton() {
 const styles = stylex.create({
 	button: {
 		position: "fixed",
-		bottom: "1.5rem",
-		right: "1.5rem",
+		bottom: "max(1.5rem, env(safe-area-inset-bottom))",
+		right: "max(1.5rem, env(safe-area-inset-right))",
+		zIndex: 10,
+		touchAction: "manipulation",
 		display: "inline-flex",
 		alignItems: "center",
 		justifyContent: "center",

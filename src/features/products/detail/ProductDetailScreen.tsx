@@ -472,7 +472,7 @@ const layoutStyles = stylex.create({
 	},
 	upcomingBadge: {
 		borderRadius: "9999px",
-		backgroundColor: colors.destructive,
+		backgroundColor: colors.upcomingBadgeBackground,
 		paddingLeft: "0.5rem",
 		paddingRight: "0.5rem",
 		paddingTop: "0.25rem",
@@ -480,11 +480,11 @@ const layoutStyles = stylex.create({
 		fontSize: "0.75rem",
 		lineHeight: "1rem",
 		fontWeight: 600,
-		color: colors.successForeground,
+		color: colors.upcomingBadgeForeground,
 	},
 	newBadge: {
 		borderRadius: "9999px",
-		backgroundColor: colors.success,
+		backgroundColor: colors.newBadgeBackground,
 		paddingLeft: "0.5rem",
 		paddingRight: "0.5rem",
 		paddingTop: "0.25rem",
@@ -492,7 +492,7 @@ const layoutStyles = stylex.create({
 		fontSize: "0.75rem",
 		lineHeight: "1rem",
 		fontWeight: 600,
-		color: colors.successForeground,
+		color: colors.newBadgeForeground,
 	},
 	title: {
 		marginTop: "0.75rem",

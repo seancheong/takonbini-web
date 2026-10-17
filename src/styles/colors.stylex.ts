@@ -1,7 +1,18 @@
 import * as stylex from "@stylexjs/stylex";
 
 export const colors = stylex.defineVars({
+	errorText: "oklch(0.5 0.18 25)",
+	productCardShadow:
+		"0 0 0 1px oklch(0 0 0 / 0.09), 0 1px 3px oklch(0 0 0 / 0.04), 0 4px 10px -4px oklch(0 0 0 / 0.06)",
+	productCardShadowHover:
+		"0 0 0 1px oklch(0 0 0 / 0.14), 0 1px 3px oklch(0 0 0 / 0.06), 0 4px 10px -4px oklch(0 0 0 / 0.08)",
+	productImageOutline: "oklch(0 0 0 / 0.1)",
+	newBadgeBackground: "oklch(0.93 0.035 145)",
+	newBadgeForeground: "oklch(0.36 0.065 145)",
+	upcomingBadgeBackground: "oklch(0.94 0.048 80)",
+	upcomingBadgeForeground: "oklch(0.39 0.078 80)",
 	filterOptionBorder: "#b4bfaa",
+	filterSelected: "oklch(0.9 0.035 145)",
 	scrollTopBorder: "var(--primary)",
 	background: "#fdfdfb",
 	foreground: "#252b26",

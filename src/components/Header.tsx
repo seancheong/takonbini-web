@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { colors } from "../styles/colors.stylex";
 import { conditions } from "../styles/conditions.stylex";
+import { metrics } from "../styles/metrics.stylex";
 import LanguageSelect from "./LanguageSelect";
 import ThemeSelect from "./ThemeSelect";
 export default function Header() {
@@ -31,9 +32,12 @@ export default function Header() {
 }
 const layoutStyles = stylex.create({
 	header: {
-		position: "relative",
+		position: "sticky",
+		top: 0,
+		zIndex: 20,
 		width: "100%",
-		borderBottom: "1px solid",
+		borderBottomWidth: "1px",
+		borderBottomStyle: "solid",
 		borderColor: colors.border,
 		backgroundColor: colors.background,
 		paddingInline: { default: "40px", [conditions.compactCatalog]: "20px" },
@@ -41,7 +45,7 @@ const layoutStyles = stylex.create({
 	inner: {
 		marginInline: "auto",
 		display: "flex",
-		height: { default: "88px", [conditions.compactCatalog]: "76px" },
+		height: metrics.headerHeight,
 		maxWidth: "1200px",
 		alignItems: "center",
 		justifyContent: "space-between",

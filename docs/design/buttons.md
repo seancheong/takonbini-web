@@ -2,7 +2,7 @@
 
 ## Approved catalog revamp — 17 October 2026
 
-Search and Apply now use `colors.primary` / `colors.primaryForeground`. Store choices use secondary/secondaryForeground when selected, neutral hover borders, and small store-color dots. There are no store-colored bottom borders. Filter panel/trigger use the secondary surface in both themes.
+Search and Apply now use `colors.primary` / `colors.primaryForeground`. Store choices use card/foreground with stronger weight when selected, neutral hover borders, and small store-color dots. There are no store-colored bottom borders. The filter trigger uses card by default and secondary when expanded. The filter dialog and footer use card, separated by a border-token divider. Reset stays quiet; Apply uses primary/primaryForeground. Store choices keep a constant 500 weight to avoid movement on selection.
 
 The compatibility-migration baseline below is retained as historical context; the approved changes above supersede its geometry and interaction restrictions.
 

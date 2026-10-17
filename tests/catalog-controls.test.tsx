@@ -42,6 +42,20 @@ function Filters({ onApply }: { onApply: (filters: ProductFilters) => void }) {
 }
 
 describe("catalog discovery", () => {
+	it("shows pending search feedback and prevents another submit", () => {
+		const apply = vi.fn();
+		render(
+			<CatalogControls filters={{}} onApply={apply} isPending>
+				{null}
+			</CatalogControls>,
+		);
+		const button = screen.getByRole("button", {
+			name: "product.filters.searchPending",
+		});
+		expect(button.hasAttribute("disabled")).toBe(true);
+		fireEvent.click(button);
+		expect(apply).not.toHaveBeenCalled();
+	});
 	it("submits a trimmed search while preserving applied filters", () => {
 		const apply = vi.fn();
 		render(
@@ -112,6 +126,105 @@ describe("catalog discovery", () => {
 });
 
 describe("advanced catalog filters", () => {
+	it.each(["minPrice", "maxPrice"] as const)(
+		"rejects native incomplete input in %s and allows correction",
+		(field) => {
+			const apply = vi.fn();
+			render(<Filters onApply={apply} />);
+			fireEvent.click(
+				screen.getByRole("button", { name: "product.filters.title" }),
+			);
+			const input = screen.getByLabelText(`product.filters.${field}`);
+			Object.defineProperty(input, "validity", {
+				configurable: true,
+				value: { badInput: true },
+			});
+			fireEvent.click(
+				screen.getByRole("button", { name: "product.filters.apply" }),
+			);
+			expect(apply).not.toHaveBeenCalled();
+			expect(screen.getByRole("alert").textContent).toBe(
+				"product.filters.priceIntegerError",
+			);
+			expect(input.getAttribute("aria-invalid")).toBe("true");
+			expect(document.activeElement).toBe(input);
+			Object.defineProperty(input, "validity", {
+				configurable: true,
+				value: { badInput: false },
+			});
+			fireEvent.change(input, { target: { value: "400" } });
+			expect(screen.queryByRole("alert")).toBeNull();
+			fireEvent.click(
+				screen.getByRole("button", { name: "product.filters.apply" }),
+			);
+			expect(apply).toHaveBeenCalledWith({
+				stores: [Store.LAWSON],
+				[field]: 400,
+			});
+		},
+	);
+	it("reveals an invalid range on submit and focuses its correction", () => {
+		const apply = vi.fn();
+		render(<Filters onApply={apply} />);
+		fireEvent.click(
+			screen.getByRole("button", { name: "product.filters.title" }),
+		);
+		fireEvent.change(screen.getByLabelText("product.filters.minPrice"), {
+			target: { value: "500" },
+		});
+		fireEvent.change(screen.getByLabelText("product.filters.maxPrice"), {
+			target: { value: "100" },
+		});
+		fireEvent.click(
+			screen.getByRole("button", { name: "product.filters.apply" }),
+		);
+		expect(apply).not.toHaveBeenCalled();
+		expect(screen.getByRole("alert").textContent).toBe(
+			"product.filters.priceRangeError",
+		);
+		expect(document.activeElement).toBe(
+			screen.getByLabelText("product.filters.maxPrice"),
+		);
+	});
+	it("shows the applied count independently of staged selections", () => {
+		render(
+			<ProductFilterDrawer
+				filters={{ stores: [Store.LAWSON] }}
+				activeCount={3}
+				setFilters={vi.fn()}
+				isFilterOpen={false}
+				setIsFilterOpen={vi.fn()}
+				onApply={vi.fn()}
+				onReset={vi.fn()}
+			/>,
+		);
+		expect(screen.getByRole("button").textContent).toBe(
+			"product.filters.title3",
+		);
+	});
+	it("opens a modal and restores page scrolling and focus on cancellation", () => {
+		const apply = vi.fn();
+		render(<Filters onApply={apply} />);
+		const trigger = screen.getByRole("button", {
+			name: "product.filters.title",
+		});
+		trigger.focus();
+		fireEvent.click(trigger);
+		const dialog = screen.getByRole("dialog", {
+			name: "product.filters.title",
+		});
+		expect(dialog.hasAttribute("open")).toBe(true);
+		expect(document.documentElement.style.overflow).toBe("hidden");
+		expect(document.body.style.overflow).toBe("");
+		fireEvent(
+			dialog,
+			new Event("cancel", { bubbles: false, cancelable: true }),
+		);
+		expect(screen.queryByRole("dialog")).toBeNull();
+		expect(document.documentElement.style.overflow).toBe("");
+		expect(document.activeElement).toBe(trigger);
+		expect(apply).not.toHaveBeenCalled();
+	});
 	it("keeps draft selections unapplied until submission", () => {
 		const apply = vi.fn();
 		render(<Filters onApply={apply} />);
@@ -143,6 +256,18 @@ describe("advanced catalog filters", () => {
 		fireEvent.change(screen.getByLabelText("product.filters.maxPrice"), {
 			target: { value: "100" },
 		});
+		expect(screen.queryByRole("alert")).toBeNull();
+		fireEvent.blur(screen.getByLabelText("product.filters.maxPrice"));
+		expect(
+			screen
+				.getByLabelText("product.filters.minPrice")
+				.getAttribute("aria-invalid"),
+		).toBe("false");
+		expect(
+			screen
+				.getByLabelText("product.filters.maxPrice")
+				.getAttribute("aria-invalid"),
+		).toBe("true");
 		expect(screen.getByRole("alert").textContent).toBe(
 			"product.filters.priceRangeError",
 		);
@@ -150,7 +275,7 @@ describe("advanced catalog filters", () => {
 			screen
 				.getByRole("button", { name: "product.filters.apply" })
 				.hasAttribute("disabled"),
-		).toBe(true);
+		).toBe(false);
 		fireEvent.change(screen.getByLabelText("product.filters.maxPrice"), {
 			target: { value: "600" },
 		});
