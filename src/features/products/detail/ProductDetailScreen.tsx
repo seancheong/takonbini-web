@@ -147,6 +147,7 @@ export default function ProductDetailScreen({
 									onLoad={() => setImageLoaded(true)}
 									{...stylex.props(
 										layoutStyles.image,
+										layoutStyles.primaryImage,
 										imageLoaded ? layoutStyles.visible : layoutStyles.hidden,
 									)}
 								/>
@@ -356,6 +357,7 @@ const layoutStyles = stylex.create({
 	imageCanvas: {
 		position: "relative",
 		aspectRatio: "1",
+		width: "100%",
 		overflow: "hidden",
 		borderRadius: "calc(var(--radius) - 2px)",
 		borderTopWidth: "1px",
@@ -397,6 +399,7 @@ const layoutStyles = stylex.create({
 	hidden: {
 		opacity: 0,
 	},
+	primaryImage: { position: "absolute", inset: 0 },
 	image: {
 		height: "100%",
 		width: "100%",
@@ -407,8 +410,9 @@ const layoutStyles = stylex.create({
 		paddingLeft: "1.5rem",
 	},
 	imageFallback: {
+		position: "absolute",
+		inset: 0,
 		display: "flex",
-		height: "21rem",
 		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "center",

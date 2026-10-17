@@ -11,7 +11,7 @@ export default function ProductDetailPending({
 			{...stylex.props(layoutStyles.screen, modal && layoutStyles.modalScreen)}
 		>
 			<div {...stylex.props(layoutStyles.container)}>
-				<div {...stylex.props(layoutStyles.backSkeleton)} />
+				{!modal && <div {...stylex.props(layoutStyles.backSkeleton)} />}
 				<div {...stylex.props(layoutStyles.columns)}>
 					<div {...stylex.props(layoutStyles.imageSkeleton)} />
 					<div>
@@ -30,14 +30,14 @@ const pulse = stylex.keyframes({
 	},
 });
 const layoutStyles = stylex.create({
-	modalScreen: { minHeight: 0, padding: "52px 32px 32px" },
+	modalScreen: { minHeight: 0, padding: "32px", paddingTop: "52px" },
 	screen: {
 		minHeight: "100vh",
 		backgroundColor: colors.background,
 		paddingLeft: "1rem",
 		paddingRight: "1rem",
 		paddingBottom: "4rem",
-		paddingTop: "6rem",
+		paddingTop: "40px",
 	},
 	container: {
 		marginLeft: "auto",
@@ -72,7 +72,7 @@ const layoutStyles = stylex.create({
 		},
 	},
 	imageSkeleton: {
-		aspectRatio: "4/3",
+		aspectRatio: "1",
 		width: "100%",
 		animationName: {
 			default: pulse,
