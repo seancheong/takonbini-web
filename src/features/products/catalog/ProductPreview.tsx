@@ -104,6 +104,7 @@ const styles = stylex.create({
 	dialog: {
 		margin: "auto",
 		width: "min(1120px,calc(100% - 48px))",
+		height: "calc(100dvh - 48px)",
 		maxHeight: "calc(100dvh - 48px)",
 		padding: 0,
 		border: "1px solid",
@@ -112,6 +113,7 @@ const styles = stylex.create({
 		backgroundColor: colors.background,
 		color: colors.foreground,
 		overflowY: "auto",
+		scrollbarGutter: "stable",
 		overscrollBehavior: "contain",
 		"@media (max-width: 600px)": {
 			width: "100vw",
