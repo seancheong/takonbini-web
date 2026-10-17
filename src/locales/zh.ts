@@ -18,7 +18,8 @@ export default {
 			changeLanguage: "更改語言",
 		},
 		product: {
-			title: "发现你的下一个便利店心头好。",
+			taxIncluded: "含税",
+			title: "探索日本便利店。",
 			subtitle: "探索日本 Seven-Eleven、Lawson 和 FamilyMart 的商品。",
 			catalogLabel: "日本 / 便利店商品目录",
 			allStores: "所有商店",
@@ -63,6 +64,8 @@ export default {
 				priceIntegerError: "價格必須為整數。",
 			},
 			details: {
+				close: "关闭商品详情",
+				fullDetails: "查看完整详情",
 				back: "返回商品列表",
 				price: "價格",
 				category: "分類",

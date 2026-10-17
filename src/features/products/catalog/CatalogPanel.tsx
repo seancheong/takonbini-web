@@ -8,9 +8,11 @@ import type { ProductFilters } from "@/features/products/products.contracts";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
 import { metrics } from "../../../styles/metrics.stylex";
+import type { ActiveCatalogProduct } from "../products.contracts";
 import CatalogControls from "./CatalogControls";
 import ProductFilterDrawer from "./CatalogFilters";
 import ProductGrid from "./ProductGrid";
+import ProductPreview from "./ProductPreview";
 
 interface ProductPanelProps {
 	filters: ProductFilters;
@@ -18,6 +20,7 @@ interface ProductPanelProps {
 }
 export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	const { t } = useTranslation();
+	const [selected, setSelected] = useState<ActiveCatalogProduct | null>(null);
 	const [draftFilters, setDraftFilters] = useState<ProductFilters>(filters);
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	useEffect(() => {
@@ -136,7 +139,11 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 				</div>
 			) : products.length ? (
 				<>
-					<ProductGrid products={products} filters={filters} />
+					<ProductGrid
+						products={products}
+						filters={filters}
+						onPreview={setSelected}
+					/>
 
 					<div {...stylex.props(layoutStyles.pagination)}>
 						{hasNextPage ? (
@@ -177,6 +184,13 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 					) : null}
 				</div>
 			) : null}
+			{selected && (
+				<ProductPreview
+					product={selected}
+					filters={filters}
+					onClose={() => setSelected(null)}
+				/>
+			)}
 			<p {...stylex.props(layoutStyles.availability)}>
 				{t("product.availabilityNote")}
 			</p>
@@ -185,64 +199,44 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 }
 const layoutStyles = stylex.create({
 	panel: {
-		marginLeft: "auto",
-		marginRight: "auto",
-		width: "100%",
-		maxWidth: "72rem",
 		display: "flex",
 		flexDirection: "column",
-		gap: "1.75rem",
+		gap: "24px",
+		maxWidth: "1200px",
+		width: "100%",
+		marginInline: "auto",
 	},
 	heading: {
 		display: "flex",
-		alignItems: {
-			default: "end",
-			[conditions.compactCatalog]: "start",
-		},
+		alignItems: { default: "end", "@media (max-width: 800px)": "start" },
 		justifyContent: "space-between",
-		gap: {
-			default: "2rem",
-			[conditions.compactCatalog]: "1rem",
-		},
-		paddingTop: {
-			default: "1rem",
-			[conditions.compactCatalog]: "0",
-		},
-		paddingRight: "0",
-		paddingBottom: "2rem",
-		paddingLeft: "0",
-		borderBottomWidth: "2px",
-		borderBottomStyle: "solid",
-		borderBottomColor: colors.foreground,
-		flexDirection: {
-			default: null,
-			[conditions.compactCatalog]: "column",
-		},
+		gap: "16px",
+		paddingBottom: "8px",
+		flexDirection: { default: "row", "@media (max-width: 800px)": "column" },
 	},
 	eyebrow: {
-		fontSize: "0.7rem",
-		fontWeight: 650,
-		letterSpacing: "0.14em",
+		fontSize: "10px",
+		fontWeight: 500,
+		letterSpacing: ".14em",
 		textTransform: "uppercase",
-		marginBottom: "1rem",
+		marginBottom: "15px",
 		color: colors.mutedForeground,
 	},
 	heroTitle: {
-		maxWidth: "14ch",
-		fontSize: "clamp(2.2rem, 5vw, 4.5rem)",
-		fontWeight: 750,
-		lineHeight: 1.05,
-		letterSpacing: "-0.045em",
-		textWrap: "balance",
+		fontSize: {
+			default: "clamp(30px,3.4vw,46px)",
+			[conditions.compactCatalog]: "36px",
+		},
+		fontWeight: 650,
+		lineHeight: 1.12,
+		letterSpacing: "-.035em",
+		textWrap: "pretty",
 	},
 	intro: {
-		maxWidth: {
-			default: "30ch",
-			[conditions.compactCatalog]: "45ch",
-		},
-		color: colors.mutedForeground,
-		fontSize: "0.95rem",
+		maxWidth: "34ch",
+		fontSize: "13px",
 		lineHeight: 1.65,
+		color: colors.mutedForeground,
 	},
 	resultsHeading: {
 		display: "flex",
@@ -255,10 +249,7 @@ const layoutStyles = stylex.create({
 		borderTopStyle: "solid",
 		borderTopColor: colors.border,
 	},
-	resultsTitle: {
-		fontSize: "1.2rem",
-		fontWeight: 650,
-	},
+	resultsTitle: { fontSize: "12px", fontWeight: 500 },
 	count: {
 		color: colors.mutedForeground,
 		fontSize: "0.8rem",
@@ -349,14 +340,10 @@ const layoutStyles = stylex.create({
 	grid: {
 		display: "grid",
 		gridTemplateColumns: {
-			default: "repeat(2, minmax(0, 1fr))",
-			[conditions.tabletGrid]: "repeat(3, minmax(0, 1fr))",
-			[conditions.desktopGrid]: "repeat(4, minmax(0, 1fr))",
+			default: "repeat(2,minmax(0,1fr))",
+			[conditions.tabletGrid]: "repeat(3,minmax(0,1fr))",
 		},
-		gap: {
-			default: "1.5rem 1rem",
-			[conditions.compactCatalog]: "1rem 0.65rem",
-		},
+		gap: "40px 28px",
 	},
 	skeleton: {
 		overflow: "hidden",

@@ -14,6 +14,10 @@ import { catalogProduct } from "@/features/products/testing/catalog-fixtures";
 vi.mock("@tanstack/react-router", async () => {
 	const React = await import("react");
 	return {
+		useRouter: () => ({
+			state: { location: { state: {} } },
+			history: { canGoBack: () => false },
+		}),
 		Link: ({
 			search,
 			children,

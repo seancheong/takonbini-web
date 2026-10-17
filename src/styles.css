@@ -29,3 +29,5 @@ code { font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', mon
   animation: none;
 }
 @media (prefers-reduced-motion: reduce) { ::view-transition-group(*) { animation-duration: 0s !important; } }
+
+dialog::backdrop { background:var(--dialog-backdrop); }

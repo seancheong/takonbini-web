@@ -18,10 +18,11 @@ export default {
 			changeLanguage: "Change Language",
 		},
 		product: {
-			title: "Find your next konbini favorite.",
+			taxIncluded: "incl. tax",
+			title: "Explore Japan’s konbini.",
 			subtitle:
-				"Explore products from Seven-Eleven, Lawson, and FamilyMart across Japan.",
-			catalogLabel: "Japan / Convenience store catalog",
+				"Food, sweets, and everyday finds from Japan’s convenience stores.",
+			catalogLabel: "The konbini catalog",
 			allStores: "All stores",
 			results: "The catalog",
 			loadedCount: "{{count}} products loaded",
@@ -67,6 +68,8 @@ export default {
 				priceIntegerError: "Price must be a whole number.",
 			},
 			details: {
+				close: "Close product details",
+				fullDetails: "Full product details",
 				back: "Back to products",
 				price: "Price",
 				category: "Category",

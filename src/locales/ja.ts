@@ -18,7 +18,8 @@ export default {
 			changeLanguage: "言語を変更",
 		},
 		product: {
-			title: "次のコンビニのお気に入りを。",
+			taxIncluded: "税込",
+			title: "日本のコンビニを探そう。",
 			subtitle:
 				"セブン-イレブン、ローソン、ファミリーマートの商品を探しましょう。",
 			catalogLabel: "日本 / コンビニ商品カタログ",
@@ -66,6 +67,8 @@ export default {
 				priceIntegerError: "価格は整数で入力してください。",
 			},
 			details: {
+				close: "商品詳細を閉じる",
+				fullDetails: "商品詳細を見る",
 				back: "商品一覧へ戻る",
 				price: "価格",
 				category: "カテゴリー",

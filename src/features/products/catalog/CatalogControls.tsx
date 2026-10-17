@@ -166,6 +166,10 @@ export default function CatalogControls({
 						}
 						{...stylex.props(layoutStyles.storeChoice)}
 					>
+						<span
+							aria-hidden="true"
+							{...stylex.props(layoutStyles.storeDot, storeDotStyles[store])}
+						/>
 						{t(storeLabelKeys[store])}
 					</button>
 				))}
@@ -206,18 +210,18 @@ export default function CatalogControls({
 		</div>
 	);
 }
+const storeDotStyles = stylex.create({
+	SevenEleven: { backgroundColor: colors.storeSeven },
+	Lawson: { backgroundColor: colors.storeLawson },
+	FamilyMart: { backgroundColor: colors.storeFamily },
+});
 const layoutStyles = stylex.create({
+	storeDot: { width: "6px", height: "6px", borderRadius: "50%", flexShrink: 0 },
 	toolbar: {
-		display: "flex",
-		alignItems: "end",
-		gap: {
-			default: "1rem",
-			[conditions.compactCatalog]: "0.75rem",
-		},
-		flexWrap: {
-			default: null,
-			[conditions.compactCatalog]: "wrap",
-		},
+		display: "grid",
+		gridTemplateColumns: "minmax(0,1fr) auto",
+		gap: "16px",
+		alignItems: "start",
 	},
 	searchSlot: {
 		flex: 1,
@@ -232,12 +236,15 @@ const layoutStyles = stylex.create({
 		minWidth: "0",
 	},
 	searchLabel: {
-		display: "block",
-		marginBottom: "0.5rem",
-		fontSize: "0.75rem",
-		fontWeight: 650,
+		position: "absolute",
+		width: "1px",
+		height: "1px",
+		overflow: "hidden",
+		clipPath: "inset(50%)",
 	},
 	searchField: {
+		height: "56px",
+		boxSizing: "border-box",
 		display: "flex",
 		alignItems: "center",
 		gap: "0.75rem",
@@ -273,6 +280,7 @@ const layoutStyles = stylex.create({
 		color: colors.mutedForeground,
 	},
 	searchInput: {
+		flex: "1 1 0%",
 		width: "100%",
 		minWidth: "0",
 		minHeight: "44px",
@@ -281,71 +289,24 @@ const layoutStyles = stylex.create({
 		outline: "none",
 	},
 	searchSubmit: {
-		minHeight: "44px",
+		flexShrink: 0,
+		whiteSpace: "nowrap",
+		lineHeight: 1.4,
+		minHeight: "38px",
 		display: "inline-flex",
 		justifyContent: "center",
 		alignItems: "center",
-		gap: "0.5rem",
-		borderTopWidth: "1px",
-		borderTopStyle: "solid",
-		borderTopColor: {
-			default: colors.foreground,
-			":hover": colors.mutedForeground,
-		},
-		borderRightWidth: "1px",
-		borderRightStyle: "solid",
-		borderRightColor: {
-			default: colors.foreground,
-			":hover": colors.mutedForeground,
-		},
-		borderBottomWidth: "1px",
-		borderBottomStyle: "solid",
-		borderBottomColor: {
-			default: colors.foreground,
-			":hover": colors.mutedForeground,
-		},
-		borderLeftWidth: "1px",
-		borderLeftStyle: "solid",
-		borderLeftColor: {
-			default: colors.foreground,
-			":hover": colors.mutedForeground,
-		},
-		borderRadius: metrics.actionRadius,
+		padding: "8px 12px",
+		borderRadius: "4px",
 		backgroundColor: {
-			default: colors.foreground,
-			":hover": "color-mix(in oklch, var(--foreground) 85%, var(--background))",
-			":active": colors.accent,
+			default: colors.primary,
+			":hover": "color-mix(in oklch,var(--primary) 88%,var(--foreground))",
 		},
-		paddingTop: "0.65rem",
-		paddingRight: "1rem",
-		paddingBottom: "0.65rem",
-		paddingLeft: "1rem",
-		fontSize: "0.85rem",
-		fontWeight: 600,
-		whiteSpace: "nowrap",
-		transitionProperty: {
-			default: "background-color, border-color",
-			[conditions.reducedMotion]: "none",
-		},
-		transitionDuration: "150ms, 150ms",
-		transitionTimingFunction: "ease",
-		opacity: {
-			default: null,
-			":disabled": 0.5,
-		},
-		color: colors.background,
-		outline: {
-			default: null,
-			":focus-visible": "2px solid var(--ring)",
-		},
-		outlineOffset: {
-			default: null,
-			":focus-visible": "3px",
-		},
-		animationName: {
-			default: null,
-			[conditions.reducedMotion]: "none",
-		},
+		color: colors.primaryForeground,
+		fontSize: "12px",
+		fontWeight: 500,
+		outline: { default: null, ":focus-visible": "2px solid var(--ring)" },
+		outlineOffset: "3px",
 	},
 	storePicker: {
 		display: "flex",
@@ -368,67 +329,29 @@ const layoutStyles = stylex.create({
 		borderLeftWidth: 0,
 	},
 	storeChoice: {
-		minHeight: "44px",
-		paddingTop: "0.6rem",
-		paddingRight: "1rem",
-		paddingBottom: "0.6rem",
-		paddingLeft: "1rem",
-		borderTopWidth: "1px",
-		borderTopStyle: "solid",
-		borderTopColor: {
-			default: null,
+		display: "inline-flex",
+		alignItems: "center",
+		gap: "8px",
+		minHeight: "40px",
+		padding: "0 16px",
+		border: "1px solid",
+		borderColor: {
+			default: "transparent",
 			":hover": colors.mutedForeground,
-			':is([aria-pressed="true"])': colors.foreground,
+			':is([aria-pressed="true"])': colors.border,
 		},
-		borderRightWidth: "1px",
-		borderRightStyle: "solid",
-		borderRightColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-			':is([aria-pressed="true"])': colors.foreground,
-		},
-		borderBottomWidth: {
-			default: "1px",
-			':is([data-store="SevenEleven"])': "3px",
-			':is([data-store="Lawson"])': "3px",
-			':is([data-store="FamilyMart"])': "3px",
-		},
-		borderBottomStyle: {
-			default: "solid",
-			':is([data-store="SevenEleven"])': "solid",
-			':is([data-store="Lawson"])': "solid",
-			':is([data-store="FamilyMart"])': "solid",
-		},
-		borderBottomColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-			':is([aria-pressed="true"])': colors.foreground,
-		},
-		borderLeftWidth: "1px",
-		borderLeftStyle: "solid",
-		borderLeftColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-			':is([aria-pressed="true"])': colors.foreground,
-		},
-		borderRadius: metrics.actionRadius,
-		fontSize: "0.85rem",
+		borderRadius: "3px",
+		fontSize: "12px",
 		backgroundColor: {
-			default: colors.card,
-			':is([aria-pressed="true"])': colors.foreground,
+			default: "transparent",
+			':is([aria-pressed="true"])': colors.secondary,
 		},
 		color: {
-			default: null,
-			':is([aria-pressed="true"])': colors.background,
+			default: colors.mutedForeground,
+			':is([aria-pressed="true"])': colors.secondaryForeground,
 		},
-		outline: {
-			default: null,
-			":focus-visible": "2px solid var(--ring)",
-		},
-		outlineOffset: {
-			default: null,
-			":focus-visible": "3px",
-		},
+		outline: { default: null, ":focus-visible": "2px solid var(--ring)" },
+		outlineOffset: "3px",
 	},
 	applied: {
 		display: "flex",

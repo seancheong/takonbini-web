@@ -13,8 +13,8 @@ export default function Header() {
 				<div {...stylex.props(layoutStyles.brand)}>
 					<Link to="/" {...stylex.props(layoutStyles.home)}>
 						<img
-							src="/icon.svg"
-							alt="Takonbini Logo"
+							src="/icon-green.svg"
+							alt=""
 							{...stylex.props(layoutStyles.logo)}
 						/>
 						<span {...stylex.props(layoutStyles.name)}>{t("appName")}</span>
@@ -31,30 +31,18 @@ export default function Header() {
 }
 const layoutStyles = stylex.create({
 	header: {
-		viewTransitionName: "app-header",
-		transform: "translateZ(0)",
-		willChange: "transform",
-		position: "fixed",
-		top: "0px",
-		zIndex: 50,
+		position: "relative",
 		width: "100%",
-		borderBottomWidth: "1px",
-		borderBottomStyle: "solid",
-		borderTopColor: colors.border,
-		borderRightColor: colors.border,
-		borderBottomColor: colors.border,
-		borderLeftColor: colors.border,
+		borderBottom: "1px solid",
+		borderColor: colors.border,
 		backgroundColor: colors.background,
-		paddingLeft: "1rem",
-		paddingRight: "1rem",
+		paddingInline: { default: "40px", [conditions.compactCatalog]: "20px" },
 	},
 	inner: {
-		marginLeft: "auto",
-		marginRight: "auto",
+		marginInline: "auto",
 		display: "flex",
-		height: "4rem",
-		width: "100%",
-		maxWidth: "72rem",
+		height: { default: "88px", [conditions.compactCatalog]: "76px" },
+		maxWidth: "1200px",
 		alignItems: "center",
 		justifyContent: "space-between",
 	},
@@ -72,36 +60,18 @@ const layoutStyles = stylex.create({
 		alignItems: "center",
 	},
 	logo: {
-		display: {
-			default: "none",
-			[conditions.shellLabels]: "block",
-		},
-		height: "1.5rem",
-		width: "1.5rem",
-		marginInlineEnd: {
-			default: null,
-			":not(:last-child)": "0.5rem",
-		},
+		display: "block",
+		width: "36px",
+		height: "36px",
+		flexShrink: 0,
+		marginInlineEnd: "12px",
 	},
 	name: {
-		whiteSpace: "nowrap",
 		fontWeight: 700,
-		fontSize: {
-			default: "0.875rem",
-			[conditions.shellLabels]: "1rem",
-		},
-		lineHeight: {
-			default: "1.25rem",
-			[conditions.shellLabels]: "1.5rem",
-		},
-		display: {
-			default: null,
-			[conditions.shellLabels]: "inline-block",
-		},
-		marginInlineEnd: {
-			default: null,
-			":not(:last-child)": "0.5rem",
-		},
+		fontSize: { default: "18px", [conditions.compactCatalog]: "15px" },
+		textTransform: "uppercase",
+		whiteSpace: "nowrap",
+		letterSpacing: "-.5px",
 	},
 	controls: {
 		display: "flex",

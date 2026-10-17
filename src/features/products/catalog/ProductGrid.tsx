@@ -9,12 +9,22 @@ import ProductCard from "./ProductCard";
 interface ProductGridProps {
 	products: ActiveCatalogProduct[];
 	filters?: ProductFilters;
+	onPreview?: (product: ActiveCatalogProduct) => void;
 }
-export default function ProductGrid({ products, filters }: ProductGridProps) {
+export default function ProductGrid({
+	products,
+	filters,
+	onPreview,
+}: ProductGridProps) {
 	return (
 		<div {...stylex.props(layoutStyles.grid)}>
 			{products.map((product) => (
-				<ProductCard key={product.id} product={product} filters={filters} />
+				<ProductCard
+					key={product.id}
+					product={product}
+					filters={filters}
+					onPreview={onPreview}
+				/>
 			))}
 		</div>
 	);
@@ -23,13 +33,9 @@ const layoutStyles = stylex.create({
 	grid: {
 		display: "grid",
 		gridTemplateColumns: {
-			default: "repeat(2, minmax(0, 1fr))",
-			[conditions.tabletGrid]: "repeat(3, minmax(0, 1fr))",
-			[conditions.desktopGrid]: "repeat(4, minmax(0, 1fr))",
+			default: "repeat(2,minmax(0,1fr))",
+			[conditions.tabletGrid]: "repeat(3,minmax(0,1fr))",
 		},
-		gap: {
-			default: "1.5rem 1rem",
-			[conditions.compactCatalog]: "1rem 0.65rem",
-		},
+		gap: { default: "40px 28px", [conditions.compactCatalog]: "30px 18px" },
 	},
 });

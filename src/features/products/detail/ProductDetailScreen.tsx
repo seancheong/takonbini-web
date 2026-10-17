@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Link } from "@tanstack/react-router";
+import "../model/catalog-navigation";
+import { Link, useRouter } from "@tanstack/react-router";
 import {
 	ArrowLeft,
 	Calendar,
@@ -39,6 +40,7 @@ export default function ProductDetailScreen({
 	id: string;
 	filters: ProductFilters;
 }) {
+	const router = useRouter();
 	const [imageError, setImageError] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const imageRef = useRef<HTMLImageElement | null>(null);
@@ -77,7 +79,31 @@ export default function ProductDetailScreen({
 	return (
 		<div {...stylex.props(layoutStyles.screen)}>
 			<div {...stylex.props(layoutStyles.container)}>
-				<Link to="/" search={filters} {...stylex.props(layoutStyles.back)}>
+				<Link
+					to="/"
+					search={filters}
+					onClick={(event) => {
+						if (
+							event.button !== 0 ||
+							event.metaKey ||
+							event.ctrlKey ||
+							event.shiftKey ||
+							event.altKey ||
+							!router.state.location.state.fromCatalog ||
+							!router.history.canGoBack()
+						)
+							return;
+						event.preventDefault();
+						const y = router.state.location.state.catalogScrollY;
+						const unsubscribe = router.subscribe("onRendered", () => {
+							unsubscribe();
+							if (y !== undefined)
+								window.scrollTo({ top: y, behavior: "instant" });
+						});
+						router.history.back();
+					}}
+					{...stylex.props(layoutStyles.back)}
+				>
 					<ArrowLeft aria-hidden="true" {...stylex.props(layoutStyles.icon)} />
 					{t("product.details.back")}
 				</Link>
@@ -187,6 +213,11 @@ export default function ProductDetailScreen({
 									{product.price === 0
 										? t("product.priceUnknown")
 										: formatPrice(product.price, language)}
+									{product.price > 0 && (
+										<small {...stylex.props(layoutStyles.tax)}>
+											{t("product.taxIncluded")}
+										</small>
+									)}
 								</dd>
 
 								{product.category ? (
@@ -263,13 +294,19 @@ export default function ProductDetailScreen({
 	);
 }
 const layoutStyles = stylex.create({
+	tax: {
+		fontSize: "10px",
+		fontWeight: 400,
+		color: colors.mutedForeground,
+		marginInlineStart: "6px",
+	},
 	screen: {
 		minHeight: "100vh",
 		backgroundColor: colors.background,
 		paddingLeft: "1rem",
 		paddingRight: "1rem",
 		paddingBottom: "4rem",
-		paddingTop: "6rem",
+		paddingTop: "40px",
 	},
 	container: {
 		marginLeft: "auto",
