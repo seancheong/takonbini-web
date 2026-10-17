@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRouterState } from "@tanstack/react-router";
+import { useRouter, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { productsInfiniteQueryOptions } from "@/features/products/data/product-queries";
@@ -8,7 +8,6 @@ import type { ProductFilters } from "@/features/products/products.contracts";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
 import { metrics } from "../../../styles/metrics.stylex";
-import type { ActiveCatalogProduct } from "../products.contracts";
 import CatalogControls from "./CatalogControls";
 import ProductFilterDrawer from "./CatalogFilters";
 import ProductGrid from "./ProductGrid";
@@ -20,7 +19,10 @@ interface ProductPanelProps {
 }
 export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	const { t } = useTranslation();
-	const [selected, setSelected] = useState<ActiveCatalogProduct | null>(null);
+	const router = useRouter();
+	const selectedId = useRouterState({
+		select: (state) => state.location.state.productModalId,
+	});
 	const [draftFilters, setDraftFilters] = useState<ProductFilters>(filters);
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	useEffect(() => {
@@ -142,7 +144,23 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 					<ProductGrid
 						products={products}
 						filters={filters}
-						onPreview={setSelected}
+						onPreview={(product) => {
+							router.navigate({
+								to: "/",
+								search: true,
+								state: (previous) => ({
+									...previous,
+									productModalId: product.id,
+								}),
+								mask: {
+									to: "/products/$id",
+									params: { id: product.id },
+									search: filters,
+									unmaskOnReload: true,
+								},
+								resetScroll: false,
+							});
+						}}
 					/>
 
 					<div {...stylex.props(layoutStyles.pagination)}>
@@ -184,11 +202,12 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 					) : null}
 				</div>
 			) : null}
-			{selected && (
+			{selectedId && (
 				<ProductPreview
-					product={selected}
+					product={products.find((product) => product.id === selectedId)}
+					id={selectedId}
 					filters={filters}
-					onClose={() => setSelected(null)}
+					onClose={() => router.history.back()}
 				/>
 			)}
 			<p {...stylex.props(layoutStyles.availability)}>

@@ -36,9 +36,11 @@ import type { ProductFilters } from "../products.contracts";
 export default function ProductDetailScreen({
 	id,
 	filters,
+	presentation = "page",
 }: {
 	id: string;
 	filters: ProductFilters;
+	presentation?: "page" | "modal";
 }) {
 	const router = useRouter();
 	const [imageError, setImageError] = useState(false);
@@ -77,36 +79,46 @@ export default function ProductDetailScreen({
 		proxy: getProxiedImageUrl(item),
 	}));
 	return (
-		<div {...stylex.props(layoutStyles.screen)}>
+		<div
+			{...stylex.props(
+				layoutStyles.screen,
+				presentation === "modal" && layoutStyles.modalScreen,
+			)}
+		>
 			<div {...stylex.props(layoutStyles.container)}>
-				<Link
-					to="/"
-					search={filters}
-					onClick={(event) => {
-						if (
-							event.button !== 0 ||
-							event.metaKey ||
-							event.ctrlKey ||
-							event.shiftKey ||
-							event.altKey ||
-							!router.state.location.state.fromCatalog ||
-							!router.history.canGoBack()
-						)
-							return;
-						event.preventDefault();
-						const y = router.state.location.state.catalogScrollY;
-						const unsubscribe = router.subscribe("onRendered", () => {
-							unsubscribe();
-							if (y !== undefined)
-								window.scrollTo({ top: y, behavior: "instant" });
-						});
-						router.history.back();
-					}}
-					{...stylex.props(layoutStyles.back)}
-				>
-					<ArrowLeft aria-hidden="true" {...stylex.props(layoutStyles.icon)} />
-					{t("product.details.back")}
-				</Link>
+				{presentation === "page" && (
+					<Link
+						to="/"
+						search={filters}
+						onClick={(event) => {
+							if (
+								event.button !== 0 ||
+								event.metaKey ||
+								event.ctrlKey ||
+								event.shiftKey ||
+								event.altKey ||
+								!router.state.location.state.fromCatalog ||
+								!router.history.canGoBack()
+							)
+								return;
+							event.preventDefault();
+							const y = router.state.location.state.catalogScrollY;
+							const unsubscribe = router.subscribe("onRendered", () => {
+								unsubscribe();
+								if (y !== undefined)
+									window.scrollTo({ top: y, behavior: "instant" });
+							});
+							router.history.back();
+						}}
+						{...stylex.props(layoutStyles.back)}
+					>
+						<ArrowLeft
+							aria-hidden="true"
+							{...stylex.props(layoutStyles.icon)}
+						/>
+						{t("product.details.back")}
+					</Link>
+				)}
 
 				<div {...stylex.props(layoutStyles.columns)}>
 					<div>
@@ -294,6 +306,7 @@ export default function ProductDetailScreen({
 	);
 }
 const layoutStyles = stylex.create({
+	modalScreen: { minHeight: 0, padding: "32px", paddingTop: "52px" },
 	tax: {
 		fontSize: "10px",
 		fontWeight: 400,

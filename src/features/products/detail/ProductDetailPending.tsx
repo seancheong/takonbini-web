@@ -1,9 +1,15 @@
 import * as stylex from "@stylexjs/stylex";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
-export default function ProductDetailPending() {
+export default function ProductDetailPending({
+	modal = false,
+}: {
+	modal?: boolean;
+}) {
 	return (
-		<div {...stylex.props(layoutStyles.screen)}>
+		<div
+			{...stylex.props(layoutStyles.screen, modal && layoutStyles.modalScreen)}
+		>
 			<div {...stylex.props(layoutStyles.container)}>
 				<div {...stylex.props(layoutStyles.backSkeleton)} />
 				<div {...stylex.props(layoutStyles.columns)}>
@@ -24,6 +30,7 @@ const pulse = stylex.keyframes({
 	},
 });
 const layoutStyles = stylex.create({
+	modalScreen: { minHeight: 0, padding: "52px 32px 32px" },
 	screen: {
 		minHeight: "100vh",
 		backgroundColor: colors.background,
