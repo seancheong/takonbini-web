@@ -52,6 +52,7 @@ Every row below is a declared variable, not a recommendation to use every token.
 | `--destructive` | `oklch(0.577 0.245 27.325)` | `oklch(0.396 0.141 25.723)` |
 | `--destructive-foreground` | `oklch(0.577 0.245 27.325)` | `oklch(0.637 0.237 25.331)` |
 | `--border` | `#d9ded1` | `#383838` |
+| `filterOptionBorder` (typed token) | `#b4bfaa` | `#74816c` |
 | `--input` | `#cdd2c8` | `#484848` |
 | `--ring` | `#46664d` | `#b4c9a8` |
 | `--radius` | `0.625rem` | `0.625rem` |

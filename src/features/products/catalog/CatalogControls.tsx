@@ -243,6 +243,8 @@ const layoutStyles = stylex.create({
 		clipPath: "inset(50%)",
 	},
 	searchField: {
+		height: "56px",
+		boxSizing: "border-box",
 		display: "flex",
 		alignItems: "center",
 		gap: "0.75rem",
@@ -278,6 +280,7 @@ const layoutStyles = stylex.create({
 		color: colors.mutedForeground,
 	},
 	searchInput: {
+		flex: "1 1 0%",
 		width: "100%",
 		minWidth: "0",
 		minHeight: "44px",
@@ -286,6 +289,9 @@ const layoutStyles = stylex.create({
 		outline: "none",
 	},
 	searchSubmit: {
+		flexShrink: 0,
+		whiteSpace: "nowrap",
+		lineHeight: 1.4,
 		minHeight: "38px",
 		display: "inline-flex",
 		justifyContent: "center",

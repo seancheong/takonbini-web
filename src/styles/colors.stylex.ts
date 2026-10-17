@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 
 export const colors = stylex.defineVars({
+	filterOptionBorder: "#b4bfaa",
 	scrollTopBorder: "var(--primary)",
 	background: "#fdfdfb",
 	foreground: "#252b26",

@@ -236,7 +236,8 @@ export default function ProductFilterDrawer({
 }
 const layoutStyles = stylex.create({
 	open: {
-		minHeight: "52px",
+		height: "56px",
+		minHeight: "56px",
 		display: "inline-flex",
 		justifyContent: "center",
 		alignItems: "center",
@@ -372,33 +373,33 @@ const layoutStyles = stylex.create({
 		borderTopWidth: "1px",
 		borderTopStyle: "solid",
 		borderTopColor: {
-			default: null,
-			':is([data-selected="true"])': colors.foreground,
+			default: colors.filterOptionBorder,
+			':is([data-selected="true"])': colors.primary,
 		},
 		borderRightWidth: "1px",
 		borderRightStyle: "solid",
 		borderRightColor: {
-			default: null,
-			':is([data-selected="true"])': colors.foreground,
+			default: colors.filterOptionBorder,
+			':is([data-selected="true"])': colors.primary,
 		},
 		borderBottomWidth: "1px",
 		borderBottomStyle: "solid",
 		borderBottomColor: {
-			default: null,
-			':is([data-selected="true"])': colors.foreground,
+			default: colors.filterOptionBorder,
+			':is([data-selected="true"])': colors.primary,
 		},
 		borderLeftWidth: "1px",
 		borderLeftStyle: "solid",
 		borderLeftColor: {
-			default: null,
-			':is([data-selected="true"])': colors.foreground,
+			default: colors.filterOptionBorder,
+			':is([data-selected="true"])': colors.primary,
 		},
 		borderRadius: "0.3rem",
 		fontSize: "0.8rem",
 		cursor: "pointer",
 		backgroundColor: {
-			default: null,
-			':is([data-selected="true"])': colors.muted,
+			default: colors.card,
+			':is([data-selected="true"])': colors.accent,
 		},
 	},
 	checkbox: {

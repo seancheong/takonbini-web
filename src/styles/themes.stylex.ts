@@ -3,6 +3,7 @@ import { colors } from "./colors.stylex";
 import { metrics } from "./metrics.stylex";
 
 export const darkTheme = stylex.createTheme(colors, {
+	filterOptionBorder: "#74816c",
 	scrollTopBorder: "color-mix(in oklab, var(--primary) 60%, transparent)",
 	background: "#181818",
 	foreground: "#ededed",
