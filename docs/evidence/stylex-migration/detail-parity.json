@@ -1,0 +1,128 @@
+[
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "dark",
+    "differences": []
+  },
+  {
+    "width": 390,
+    "locale": "ja",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 390,
+    "locale": "ja",
+    "theme": "dark",
+    "differences": []
+  },
+  {
+    "width": 390,
+    "locale": "zh",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 390,
+    "locale": "zh",
+    "theme": "dark",
+    "differences": []
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "dark",
+    "differences": []
+  },
+  {
+    "width": 768,
+    "locale": "ja",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 768,
+    "locale": "ja",
+    "theme": "dark",
+    "differences": []
+  },
+  {
+    "width": 768,
+    "locale": "zh",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 768,
+    "locale": "zh",
+    "theme": "dark",
+    "differences": []
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "dark",
+    "differences": []
+  },
+  {
+    "width": 1280,
+    "locale": "ja",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 1280,
+    "locale": "ja",
+    "theme": "dark",
+    "differences": []
+  },
+  {
+    "width": 1280,
+    "locale": "zh",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 1280,
+    "locale": "zh",
+    "theme": "dark",
+    "differences": []
+  },
+  {
+    "width": 1023,
+    "locale": "en",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 1024,
+    "locale": "en",
+    "theme": "light",
+    "differences": []
+  },
+  {
+    "width": 1025,
+    "locale": "en",
+    "theme": "light",
+    "differences": []
+  }
+]

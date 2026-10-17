@@ -1,0 +1,191 @@
+[
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 97970,
+    "baselineSha256": "44b9c9cbb9907255a88b3f8829c216196605e7bc90b6b0539b2e7f1ed2b1f524",
+    "candidateSha256": "44b9c9cbb9907255a88b3f8829c216196605e7bc90b6b0539b2e7f1ed2b1f524"
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "dark",
+    "differences": [],
+    "comparedBytes": 96306,
+    "baselineSha256": "3f65fcc905e963cb5b31c3871e80e6916f6f20b5a8f48cb1f80fe602f3071eb5",
+    "candidateSha256": "3f65fcc905e963cb5b31c3871e80e6916f6f20b5a8f48cb1f80fe602f3071eb5"
+  },
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "dark",
+    "differences": [],
+    "comparedBytes": 95854,
+    "baselineSha256": "3bcbe6243a0ee0ef4bebe215dd9d3695277b3c7f35f38fca6cf2454713fe6557",
+    "candidateSha256": "3bcbe6243a0ee0ef4bebe215dd9d3695277b3c7f35f38fca6cf2454713fe6557"
+  },
+  {
+    "width": 390,
+    "locale": "ja",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 97984,
+    "baselineSha256": "ad8de464fdebb70fd159f8e700842757795379f0b0d194010d56df128ee1d079",
+    "candidateSha256": "ad8de464fdebb70fd159f8e700842757795379f0b0d194010d56df128ee1d079"
+  },
+  {
+    "width": 390,
+    "locale": "ja",
+    "theme": "dark",
+    "differences": [],
+    "comparedBytes": 95868,
+    "baselineSha256": "c5d21447a425f90a96679a3839eefd3f805a2ec443dc9608da6ffb45feff77ee",
+    "candidateSha256": "c5d21447a425f90a96679a3839eefd3f805a2ec443dc9608da6ffb45feff77ee"
+  },
+  {
+    "width": 390,
+    "locale": "zh",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 98071,
+    "baselineSha256": "190279cc02d53723eab5c15a8ac0c314e066b0911102692eb61db8bbefca54ea",
+    "candidateSha256": "190279cc02d53723eab5c15a8ac0c314e066b0911102692eb61db8bbefca54ea"
+  },
+  {
+    "width": 390,
+    "locale": "zh",
+    "theme": "dark",
+    "differences": [],
+    "comparedBytes": 95955,
+    "baselineSha256": "0e2b6027161cf1d87af5164adf12b63c25c126acd13a0d90543fb421de6831df",
+    "candidateSha256": "0e2b6027161cf1d87af5164adf12b63c25c126acd13a0d90543fb421de6831df"
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 98360,
+    "baselineSha256": "226e658ed5e1bc071f09538715e397adec49b6dcff1eb0ba166a0d277429d34a",
+    "candidateSha256": "226e658ed5e1bc071f09538715e397adec49b6dcff1eb0ba166a0d277429d34a"
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "dark",
+    "differences": [],
+    "comparedBytes": 96244,
+    "baselineSha256": "f1c2ea697a7f3c2a78e86055f0bf37053618da49c290b96798fb3ef37536e817",
+    "candidateSha256": "f1c2ea697a7f3c2a78e86055f0bf37053618da49c290b96798fb3ef37536e817"
+  },
+  {
+    "width": 768,
+    "locale": "ja",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 98324,
+    "baselineSha256": "3f3dfaae3fdb2fce43eaaf1c278af8231c3d70ff7a3e0ab656a12b3ba62fbe72",
+    "candidateSha256": "3f3dfaae3fdb2fce43eaaf1c278af8231c3d70ff7a3e0ab656a12b3ba62fbe72"
+  },
+  {
+    "width": 768,
+    "locale": "ja",
+    "theme": "dark",
+    "differences": [],
+    "comparedBytes": 96208,
+    "baselineSha256": "727ebdca641cd3ed513e39befd944c508b3bdb8f7f305b853257260be86debd9",
+    "candidateSha256": "727ebdca641cd3ed513e39befd944c508b3bdb8f7f305b853257260be86debd9"
+  },
+  {
+    "width": 768,
+    "locale": "zh",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 98360,
+    "baselineSha256": "de6bf6a154ce963289eb2c910d3a6d1f0d3a7fabe6d79571edd48be5a81e44e8",
+    "candidateSha256": "de6bf6a154ce963289eb2c910d3a6d1f0d3a7fabe6d79571edd48be5a81e44e8"
+  },
+  {
+    "width": 768,
+    "locale": "zh",
+    "theme": "dark",
+    "differences": [],
+    "comparedBytes": 96244,
+    "baselineSha256": "17b991695d536a4f916128ee3d61b91a57b5bbc27e47cc0cbf8575a523cda352",
+    "candidateSha256": "17b991695d536a4f916128ee3d61b91a57b5bbc27e47cc0cbf8575a523cda352"
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 98422,
+    "baselineSha256": "b10850297af68ea139b727899d08c3286789400a157bbdce2ea1d1c5b3f7a7ff",
+    "candidateSha256": "b10850297af68ea139b727899d08c3286789400a157bbdce2ea1d1c5b3f7a7ff"
+  },
+  {
+    "width": 1280,
+    "locale": "ja",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 98386,
+    "baselineSha256": "9591ba42d4a3fc2519cd586769438366763cf9587347a18535e6a7d80a3c8a78",
+    "candidateSha256": "9591ba42d4a3fc2519cd586769438366763cf9587347a18535e6a7d80a3c8a78"
+  },
+  {
+    "width": 1280,
+    "locale": "ja",
+    "theme": "dark",
+    "differences": [],
+    "comparedBytes": 96270,
+    "baselineSha256": "da08627acfd88e5dff010282aa5a72432252a14356d998ff51d3bcca4329faed",
+    "candidateSha256": "da08627acfd88e5dff010282aa5a72432252a14356d998ff51d3bcca4329faed"
+  },
+  {
+    "width": 1280,
+    "locale": "zh",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 98422,
+    "baselineSha256": "4057f04721138df6e4fd35c33c400aafce013fda1ac8b3d37b137b36563fff59",
+    "candidateSha256": "4057f04721138df6e4fd35c33c400aafce013fda1ac8b3d37b137b36563fff59"
+  },
+  {
+    "width": 1280,
+    "locale": "zh",
+    "theme": "dark",
+    "differences": [],
+    "comparedBytes": 96306,
+    "baselineSha256": "a81c43ddeefb9a5133765b9b6647fd52983fc6f24c9e58a90806f97302540272",
+    "candidateSha256": "a81c43ddeefb9a5133765b9b6647fd52983fc6f24c9e58a90806f97302540272"
+  },
+  {
+    "width": 599,
+    "locale": "en",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 98227,
+    "baselineSha256": "8ce609ac31cfdcf68880227eace30db7c14f26e42876c26687d14b625fcf53c3",
+    "candidateSha256": "8ce609ac31cfdcf68880227eace30db7c14f26e42876c26687d14b625fcf53c3"
+  },
+  {
+    "width": 600,
+    "locale": "en",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 98203,
+    "baselineSha256": "a08f508d9c5a90cead603538c4f0bdee02ebe87b23eb10a07e633fa65a8acb2c",
+    "candidateSha256": "a08f508d9c5a90cead603538c4f0bdee02ebe87b23eb10a07e633fa65a8acb2c"
+  },
+  {
+    "width": 601,
+    "locale": "en",
+    "theme": "light",
+    "differences": [],
+    "comparedBytes": 98216,
+    "baselineSha256": "dda8afa32f9793c66ae689712ab01f9fa4bc4ac902f1666c9e5983719d95196d",
+    "candidateSha256": "dda8afa32f9793c66ae689712ab01f9fa4bc4ac902f1666c9e5983719d95196d"
+  }
+]

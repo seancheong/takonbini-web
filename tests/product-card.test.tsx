@@ -137,6 +137,25 @@ describe("product card rendering and navigation", () => {
 		});
 	});
 
+	it("keeps a loaded card image out of the image-loading state during Safari navigation", () => {
+		vi.stubGlobal("navigator", { userAgent: "Version/18.0 Safari/605.1.15" });
+		render(
+			<ProductCard
+				product={{
+					...product,
+					images: ["https://store.example.test/image.jpg"],
+				}}
+			/>,
+		);
+		const image = screen.getByRole("img", { name: "Matcha" });
+		fireEvent.load(image);
+		expect(screen.queryByText("product.imageLoading")).toBeNull();
+		fireEvent.click(screen.getByRole("link", { name: "Matcha" }));
+		expect(screen.queryByText("product.imageLoading")).toBeNull();
+		expect(screen.getByRole("img", { name: "Matcha" })).toBe(image);
+		expect(screen.getByText("product.loading")).toBeTruthy();
+	});
+
 	it("uses the existing field fallback and unknown price presentation", () => {
 		render(
 			<ProductCard product={{ ...product, title: { ja: "抹茶" }, price: 0 }} />,

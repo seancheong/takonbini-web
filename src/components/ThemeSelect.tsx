@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { Laptop, Moon, Sun } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
@@ -8,33 +9,33 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { type Theme, useTheme } from "../contexts/ThemeProvider";
-
+import { colors } from "../styles/colors.stylex";
+import { conditions } from "../styles/conditions.stylex";
+import { metrics } from "../styles/metrics.stylex";
 export default function ThemeSelect() {
 	const { t } = useTranslation();
 	const { setTheme, theme } = useTheme();
-
 	const currentTheme: Theme = theme ?? "system";
 	const currentIcon =
 		currentTheme === "light" ? (
-			<Sun size={16} />
+			<Sun size={16} {...stylex.props(layoutStyles.icon)} />
 		) : currentTheme === "dark" ? (
-			<Moon size={16} />
+			<Moon size={16} {...stylex.props(layoutStyles.icon)} />
 		) : (
-			<Laptop size={16} />
+			<Laptop size={16} {...stylex.props(layoutStyles.icon)} />
 		);
-
 	return (
 		<Select
 			value={currentTheme}
 			onValueChange={(value) => setTheme(value as Theme)}
 		>
 			<SelectTrigger
-				className="w-auto min-w-11 min-h-11 border-none bg-transparent px-2"
+				xstyle={styles.trigger}
 				aria-label={t("theme.selectTheme")}
 			>
-				<div className="flex items-center gap-2">
+				<div {...stylex.props(layoutStyles.row)}>
 					{currentIcon}
-					<span className="hidden sm:inline">
+					<span {...stylex.props(layoutStyles.label)}>
 						<SelectValue>{t(`theme.${currentTheme}`)}</SelectValue>
 					</span>
 				</div>
@@ -42,22 +43,22 @@ export default function ThemeSelect() {
 
 			<SelectContent>
 				<SelectItem value="light">
-					<div className="flex items-center gap-2">
-						<Sun size={16} />
+					<div {...stylex.props(layoutStyles.row)}>
+						<Sun size={16} {...stylex.props(layoutStyles.icon)} />
 						<span>{t("theme.light")}</span>
 					</div>
 				</SelectItem>
 
 				<SelectItem value="dark">
-					<div className="flex items-center gap-2">
-						<Moon size={16} />
+					<div {...stylex.props(layoutStyles.row)}>
+						<Moon size={16} {...stylex.props(layoutStyles.icon)} />
 						<span>{t("theme.dark")}</span>
 					</div>
 				</SelectItem>
 
 				<SelectItem value="system">
-					<div className="flex items-center gap-2">
-						<Laptop size={16} />
+					<div {...stylex.props(layoutStyles.row)}>
+						<Laptop size={16} {...stylex.props(layoutStyles.icon)} />
 						<span>{t("theme.system")}</span>
 					</div>
 				</SelectItem>
@@ -65,3 +66,32 @@ export default function ThemeSelect() {
 		</Select>
 	);
 }
+const styles = stylex.create({
+	trigger: {
+		width: "auto",
+		minHeight: metrics.controlTarget,
+		borderStyle: "none",
+		paddingInline: "0.5rem",
+		minWidth: "2.75rem",
+	},
+});
+const layoutStyles = stylex.create({
+	icon: {
+		width: "1rem",
+		height: "1rem",
+		pointerEvents: "none",
+		flexShrink: 0,
+		color: colors.mutedForeground,
+	},
+	row: {
+		display: "flex",
+		alignItems: "center",
+		gap: "0.5rem",
+	},
+	label: {
+		display: {
+			default: "none",
+			[conditions.shellLabels]: "inline",
+		},
+	},
+});

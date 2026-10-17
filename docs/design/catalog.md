@@ -57,6 +57,12 @@ Props: required `id: string`, `filters: ProductFilters`. Content comes from the 
 
 Correct from [the route](../../src/routes/products.$id.tsx): `<ProductDetailScreen id={Route.useParams().id} filters={Route.useSearch()} />`. Incorrect mutation: omitting filters from its return Link; the visitor loses catalog context.
 
+The router caches catalog scroll by normalized filter values, so the return Link
+and browser Back restore the catalog position. Different filters use a separate
+position; detail routes retain history-entry scroll keys. Navigation to/from
+detail must not insert the catalog refresh row: it changes grid geometry during
+restoration. Keep that row for catalog-to-catalog filtering and catalog fetching.
+
 ## ProductDetailPending and ProductDetailError
 
 Use the exported pending/error components in the detail route's existing pending/error slots; catalog loading/error UI belongs to CatalogPanel.
@@ -72,3 +78,18 @@ Detail loader pending → ProductDetailPending
 Detail loader fails → ProductDetailError + current filters
 Detail loaded → ProductDetailScreen
 ```
+
+
+## Implemented styling
+
+All catalog/detail elements now use their owner's private `layoutStyles` entries
+via `stylex.props`. The old catalog selectors and Tailwind utilities are retired.
+Do not import a private style table from another module or recreate a utility
+layer. Keep state, markup, route/search contracts and view-transition identities
+unchanged when editing these styles. Store text uses the typed `storeTextStyles`
+group; the card sets its own `--store-accent` for the owned copy edge.
+
+The search/dialog/grid breakpoints remain 600/800/1100px, and detail columns switch
+at 1024px. Native modal semantics, controlled draft filters, pagination, data
+states and image failure handling remain in their existing owners. See the
+[full migration evidence](../evidence/stylex-migration.md) for parity coverage.

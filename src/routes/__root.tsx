@@ -1,6 +1,8 @@
+import * as stylex from "@stylexjs/stylex";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
+import { darkTheme, themeStyles } from "../styles/themes.stylex";
 import "../i18n";
 import {
 	createRootRouteWithContext,
@@ -14,6 +16,7 @@ import { getCookie } from "@tanstack/react-start/server";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../components/Header";
+import { StyleXDevStyles } from "../components/StyleXDevStyles";
 import {
 	type Theme,
 	ThemeProvider,
@@ -172,9 +175,17 @@ function RootDocument() {
 	}, [i18n]);
 
 	return (
-		<html lang={i18n.language} suppressHydrationWarning>
+		<html
+			lang={i18n.language}
+			{...stylex.props(
+				themeStyles.bridge,
+				resolvedTheme === "dark" && darkTheme,
+			)}
+			suppressHydrationWarning
+		>
 			<head>
 				<HeadContent />
+				<StyleXDevStyles />
 			</head>
 
 			<body>

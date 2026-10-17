@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import {
@@ -23,12 +24,13 @@ import {
 	type RegionLabelKey,
 	regionLabelKeys,
 	type StoreLabelKey,
-	storeLabelClasses,
 	storeLabelKeys,
 } from "@/features/products/model/product-labels";
 import { isSafari } from "@/features/products/model/product-navigation";
 import type { Language } from "@/i18n";
-
+import { storeTextStyles } from "@/styles/stores.stylex";
+import { colors } from "../../../styles/colors.stylex";
+import { conditions } from "../../../styles/conditions.stylex";
 import type { ProductFilters } from "../products.contracts";
 export default function ProductDetailScreen({
 	id,
@@ -40,28 +42,23 @@ export default function ProductDetailScreen({
 	const [imageError, setImageError] = useState(false);
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const imageRef = useRef<HTMLImageElement | null>(null);
-
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
-
 	const { data: product } = useSuspenseQuery(productByIdQueryOptions(id));
 	const image = product.images?.[0];
 	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
 	const isReleaseSoon = isFutureReleaseDate(product.releaseDate);
 	const viewTransitionName = `product-image-${id}`;
-
 	useEffect(() => {
 		setImageError(false);
 		setImageLoaded(false);
 	}, []);
-
 	useEffect(() => {
 		if (imageRef.current?.complete && imageRef.current.naturalWidth > 0) {
 			setImageLoaded(true);
 		}
 	}, []);
-
 	const title = resolveLocalizedText(product.title, language);
 	const description = resolveLocalizedText(product.description, language);
 	const storeLabelKey =
@@ -77,24 +74,19 @@ export default function ProductDetailScreen({
 		original: item,
 		proxy: getProxiedImageUrl(item),
 	}));
-
 	return (
-		<div className="min-h-screen bg-background px-4 pb-16 pt-24">
-			<div className="mx-auto w-full max-w-6xl">
-				<Link
-					to="/"
-					search={filters}
-					className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground cursor-pointer"
-				>
-					<ArrowLeft className="h-4 w-4" aria-hidden="true" />
+		<div {...stylex.props(layoutStyles.screen)}>
+			<div {...stylex.props(layoutStyles.container)}>
+				<Link to="/" search={filters} {...stylex.props(layoutStyles.back)}>
+					<ArrowLeft aria-hidden="true" {...stylex.props(layoutStyles.icon)} />
 					{t("product.details.back")}
 				</Link>
 
-				<div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-					<div className="space-y-4">
-						<div className="relative aspect-square overflow-hidden rounded-md border border-border/60 bg-white">
+				<div {...stylex.props(layoutStyles.columns)}>
+					<div>
+						<div {...stylex.props(layoutStyles.imageCanvas)}>
 							{showLoading ? (
-								<div className="absolute inset-0 flex items-center justify-center bg-muted/40 text-sm font-semibold text-muted-foreground">
+								<div {...stylex.props(layoutStyles.imageLoading)}>
 									{t("product.imageLoading")}
 								</div>
 							) : null}
@@ -103,21 +95,28 @@ export default function ProductDetailScreen({
 									ref={imageRef}
 									src={imageSrc}
 									alt={title}
-									style={isSafari() ? undefined : { viewTransitionName }}
-									className={`h-full w-full object-contain p-6 ${
-										imageLoaded ? "opacity-100" : "opacity-0"
-									}`}
+									style={
+										isSafari()
+											? undefined
+											: {
+													viewTransitionName,
+												}
+									}
 									fetchPriority="high"
 									loading="eager"
 									decoding="async"
 									onError={() => setImageError(true)}
 									onLoad={() => setImageLoaded(true)}
+									{...stylex.props(
+										layoutStyles.image,
+										imageLoaded ? layoutStyles.visible : layoutStyles.hidden,
+									)}
 								/>
 							) : (
-								<div className="flex h-84 flex-col items-center justify-center gap-2 px-4 text-center text-sm text-muted-foreground">
+								<div {...stylex.props(layoutStyles.imageFallback)}>
 									<span>{t("product.noImage")}</span>
 									{imageError ? (
-										<span className="text-xs font-medium">
+										<span {...stylex.props(layoutStyles.imageError)}>
 											{t("product.unavailable")}
 										</span>
 									) : null}
@@ -126,17 +125,17 @@ export default function ProductDetailScreen({
 						</div>
 
 						{extraImages.length ? (
-							<div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+							<div {...stylex.props(layoutStyles.gallery)}>
 								{extraImages.map((item) => (
 									<div
 										key={item.original}
-										className="aspect-square overflow-hidden rounded-xl border border-border/60 bg-muted"
+										{...stylex.props(layoutStyles.thumbnail)}
 									>
 										<img
 											src={item.proxy}
 											alt={title}
-											className="h-full w-full object-contain p-6"
 											loading="lazy"
+											{...stylex.props(layoutStyles.image)}
 										/>
 									</div>
 								))}
@@ -144,47 +143,47 @@ export default function ProductDetailScreen({
 						) : null}
 					</div>
 
-					<div className="flex flex-col gap-6">
+					<div {...stylex.props(layoutStyles.copy)}>
 						<div>
-							<div className="flex items-center gap-3">
+							<div {...stylex.props(layoutStyles.storeRow)}>
 								<span
-									className={`text-sm font-semibold ${
-										storeLabelClasses[product.store] ?? "text-foreground"
-									}`}
+									{...stylex.props(
+										layoutStyles.storeLabel,
+										storeTextStyles[product.store],
+									)}
 								>
 									{storeLabelKey
 										? t(storeLabelKey as StoreLabelKey)
 										: product.store}
 								</span>
 								{isReleaseSoon ? (
-									<span className="rounded-full bg-destructive px-2 py-1 text-xs font-semibold text-(--success-foreground)">
+									<span {...stylex.props(layoutStyles.upcomingBadge)}>
 										{t("product.releaseSoon")}
 									</span>
 								) : product.isNew ? (
-									<span className="rounded-full bg-(--success) px-2 py-1 text-xs font-semibold text-(--success-foreground)">
+									<span {...stylex.props(layoutStyles.newBadge)}>
 										{t("product.new")}
 									</span>
 								) : null}
 							</div>
 
-							<h1 className="mt-3 text-3xl font-semibold leading-tight text-foreground">
-								{title}
-							</h1>
+							<h1 {...stylex.props(layoutStyles.title)}>{title}</h1>
 
 							{description ? (
-								<p className="mt-4 max-w-prose text-base leading-relaxed text-muted-foreground">
-									{description}
-								</p>
+								<p {...stylex.props(layoutStyles.description)}>{description}</p>
 							) : null}
 						</div>
 
-						<div className="rounded-md border border-border/60 bg-card p-5">
-							<dl className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)] items-center gap-x-6 gap-y-4 text-sm">
-								<dt className="flex items-center gap-3 text-muted-foreground">
-									<JapaneseYen className="h-4 w-4" aria-hidden="true" />
+						<div {...stylex.props(layoutStyles.factsCard)}>
+							<dl {...stylex.props(layoutStyles.facts)}>
+								<dt {...stylex.props(layoutStyles.label)}>
+									<JapaneseYen
+										aria-hidden="true"
+										{...stylex.props(layoutStyles.icon)}
+									/>
 									{t("product.details.price")}
 								</dt>
-								<dd className="min-w-0 text-right text-base font-semibold text-foreground">
+								<dd {...stylex.props(layoutStyles.value)}>
 									{product.price === 0
 										? t("product.priceUnknown")
 										: formatPrice(product.price, language)}
@@ -192,11 +191,14 @@ export default function ProductDetailScreen({
 
 								{product.category ? (
 									<>
-										<dt className="flex items-center gap-3 text-muted-foreground">
-											<Tag className="h-4 w-4" aria-hidden="true" />
+										<dt {...stylex.props(layoutStyles.label)}>
+											<Tag
+												aria-hidden="true"
+												{...stylex.props(layoutStyles.icon)}
+											/>
 											{t("product.details.category")}
 										</dt>
-										<dd className="min-w-0 text-right text-foreground">
+										<dd {...stylex.props(layoutStyles.factValue)}>
 											{categoryLabelKey
 												? t(categoryLabelKey as CategoryLabelKey)
 												: product.category}
@@ -206,11 +208,14 @@ export default function ProductDetailScreen({
 
 								{product.releaseDate ? (
 									<>
-										<dt className="flex items-center gap-3 text-muted-foreground">
-											<Calendar className="h-4 w-4" aria-hidden="true" />
+										<dt {...stylex.props(layoutStyles.label)}>
+											<Calendar
+												aria-hidden="true"
+												{...stylex.props(layoutStyles.icon)}
+											/>
 											{t("product.details.releaseDate")}
 										</dt>
-										<dd className="min-w-0 text-right text-foreground">
+										<dd {...stylex.props(layoutStyles.factValue)}>
 											{product.releaseDate}
 										</dd>
 									</>
@@ -218,13 +223,16 @@ export default function ProductDetailScreen({
 
 								{regionLabels.length ? (
 									<>
-										<dt className="flex items-start gap-3 text-muted-foreground">
-											<MapPin className="mt-0.5 h-4 w-4" aria-hidden="true" />
-											<span className="whitespace-nowrap">
+										<dt {...stylex.props(layoutStyles.regionLabel)}>
+											<MapPin
+												aria-hidden="true"
+												{...stylex.props(layoutStyles.regionIcon)}
+											/>
+											<span {...stylex.props(layoutStyles.regionTitle)}>
 												{t("product.details.regions")}
 											</span>
 										</dt>
-										<dd className="min-w-0 text-right text-foreground wrap-break-word whitespace-normal">
+										<dd {...stylex.props(layoutStyles.regions)}>
 											{regionLabels.join(", ")}
 										</dd>
 									</>
@@ -232,7 +240,7 @@ export default function ProductDetailScreen({
 							</dl>
 						</div>
 
-						<p className="text-sm leading-relaxed text-muted-foreground">
+						<p {...stylex.props(layoutStyles.availability)}>
 							{t("product.availabilityNote")}
 						</p>
 
@@ -240,10 +248,13 @@ export default function ProductDetailScreen({
 							href={product.url}
 							target="_blank"
 							rel="noreferrer"
-							className="inline-flex items-center justify-end gap-2 text-sm font-semibold text-(--link) hover:underline"
+							{...stylex.props(layoutStyles.sourceLink)}
 						>
 							{t("product.details.source")}
-							<ExternalLink className="h-4 w-4" aria-hidden="true" />
+							<ExternalLink
+								aria-hidden="true"
+								{...stylex.props(layoutStyles.icon)}
+							/>
 						</a>
 					</div>
 				</div>
@@ -251,3 +262,288 @@ export default function ProductDetailScreen({
 		</div>
 	);
 }
+const layoutStyles = stylex.create({
+	screen: {
+		minHeight: "100vh",
+		backgroundColor: colors.background,
+		paddingLeft: "1rem",
+		paddingRight: "1rem",
+		paddingBottom: "4rem",
+		paddingTop: "6rem",
+	},
+	container: {
+		marginLeft: "auto",
+		marginRight: "auto",
+		width: "100%",
+		maxWidth: "72rem",
+	},
+	back: {
+		display: "inline-flex",
+		alignItems: "center",
+		gap: "0.5rem",
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+		fontWeight: 600,
+		color: {
+			default: colors.mutedForeground,
+			":hover": colors.foreground,
+		},
+		cursor: "pointer",
+	},
+	icon: {
+		height: "1rem",
+		width: "1rem",
+	},
+	columns: {
+		marginTop: "1.5rem",
+		display: "grid",
+		gap: "2rem",
+		gridTemplateColumns: {
+			default: null,
+			[conditions.detailColumns]: "minmax(0,1.2fr) minmax(0,0.8fr)",
+		},
+	},
+	imageCanvas: {
+		position: "relative",
+		aspectRatio: "1",
+		overflow: "hidden",
+		borderRadius: "calc(var(--radius) - 2px)",
+		borderTopWidth: "1px",
+		borderRightWidth: "1px",
+		borderBottomWidth: "1px",
+		borderLeftWidth: "1px",
+		borderTopStyle: "solid",
+		borderRightStyle: "solid",
+		borderBottomStyle: "solid",
+		borderLeftStyle: "solid",
+		borderTopColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		borderRightColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		borderBottomColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		borderLeftColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		backgroundColor: colors.imageCanvas,
+		marginBottom: {
+			default: null,
+			":not(:last-child)": "1rem",
+		},
+	},
+	imageLoading: {
+		position: "absolute",
+		top: "0px",
+		right: "0px",
+		bottom: "0px",
+		left: "0px",
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: "color-mix(in oklab, var(--muted) 40%, transparent)",
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+		fontWeight: 600,
+		color: colors.mutedForeground,
+	},
+	visible: {
+		opacity: 1,
+	},
+	hidden: {
+		opacity: 0,
+	},
+	image: {
+		height: "100%",
+		width: "100%",
+		objectFit: "contain",
+		paddingTop: "1.5rem",
+		paddingRight: "1.5rem",
+		paddingBottom: "1.5rem",
+		paddingLeft: "1.5rem",
+	},
+	imageFallback: {
+		display: "flex",
+		height: "21rem",
+		flexDirection: "column",
+		alignItems: "center",
+		justifyContent: "center",
+		gap: "0.5rem",
+		paddingLeft: "1rem",
+		paddingRight: "1rem",
+		textAlign: "center",
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+		color: colors.mutedForeground,
+	},
+	imageError: {
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		fontWeight: 500,
+	},
+	gallery: {
+		display: "grid",
+		gridTemplateColumns: {
+			default: "repeat(3, minmax(0, 1fr))",
+			[conditions.shellLabels]: "repeat(4, minmax(0, 1fr))",
+		},
+		gap: "0.75rem",
+		marginBottom: {
+			default: null,
+			":not(:last-child)": "1rem",
+		},
+	},
+	thumbnail: {
+		aspectRatio: "1",
+		overflow: "hidden",
+		borderRadius: "calc(var(--radius) + 4px)",
+		borderTopWidth: "1px",
+		borderRightWidth: "1px",
+		borderBottomWidth: "1px",
+		borderLeftWidth: "1px",
+		borderTopStyle: "solid",
+		borderRightStyle: "solid",
+		borderBottomStyle: "solid",
+		borderLeftStyle: "solid",
+		borderTopColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		borderRightColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		borderBottomColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		borderLeftColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		backgroundColor: colors.muted,
+	},
+	copy: {
+		display: "flex",
+		flexDirection: "column",
+		gap: "1.5rem",
+	},
+	storeRow: {
+		display: "flex",
+		alignItems: "center",
+		gap: "0.75rem",
+	},
+	storeLabel: {
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+		fontWeight: 600,
+	},
+	upcomingBadge: {
+		borderRadius: "9999px",
+		backgroundColor: colors.destructive,
+		paddingLeft: "0.5rem",
+		paddingRight: "0.5rem",
+		paddingTop: "0.25rem",
+		paddingBottom: "0.25rem",
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		fontWeight: 600,
+		color: colors.successForeground,
+	},
+	newBadge: {
+		borderRadius: "9999px",
+		backgroundColor: colors.success,
+		paddingLeft: "0.5rem",
+		paddingRight: "0.5rem",
+		paddingTop: "0.25rem",
+		paddingBottom: "0.25rem",
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		fontWeight: 600,
+		color: colors.successForeground,
+	},
+	title: {
+		marginTop: "0.75rem",
+		fontSize: "1.875rem",
+		lineHeight: 1.25,
+		fontWeight: 600,
+		color: colors.foreground,
+	},
+	description: {
+		marginTop: "1rem",
+		maxWidth: "65ch",
+		fontSize: "1rem",
+		lineHeight: 1.625,
+		color: colors.mutedForeground,
+	},
+	factsCard: {
+		borderRadius: "calc(var(--radius) - 2px)",
+		borderTopWidth: "1px",
+		borderRightWidth: "1px",
+		borderBottomWidth: "1px",
+		borderLeftWidth: "1px",
+		borderTopStyle: "solid",
+		borderRightStyle: "solid",
+		borderBottomStyle: "solid",
+		borderLeftStyle: "solid",
+		borderTopColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		borderRightColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		borderBottomColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		borderLeftColor: "color-mix(in oklab, var(--border) 60%, transparent)",
+		backgroundColor: colors.card,
+		paddingTop: "1.25rem",
+		paddingRight: "1.25rem",
+		paddingBottom: "1.25rem",
+		paddingLeft: "1.25rem",
+	},
+	facts: {
+		display: "grid",
+		gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)",
+		alignItems: "center",
+		columnGap: "1.5rem",
+		rowGap: "1rem",
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+	},
+	label: {
+		display: "flex",
+		alignItems: "center",
+		gap: "0.75rem",
+		color: colors.mutedForeground,
+	},
+	value: {
+		minWidth: "0px",
+		textAlign: "right",
+		fontSize: "1rem",
+		lineHeight: "1.5rem",
+		fontWeight: 600,
+		color: colors.foreground,
+	},
+	factValue: {
+		minWidth: "0px",
+		textAlign: "right",
+		color: colors.foreground,
+	},
+	regionLabel: {
+		display: "flex",
+		alignItems: "flex-start",
+		gap: "0.75rem",
+		color: colors.mutedForeground,
+	},
+	regionIcon: {
+		marginTop: "0.125rem",
+		height: "1rem",
+		width: "1rem",
+	},
+	regionTitle: {
+		whiteSpace: "nowrap",
+	},
+	regions: {
+		minWidth: "0px",
+		textAlign: "right",
+		color: colors.foreground,
+		overflowWrap: "break-word",
+		whiteSpace: "normal",
+	},
+	availability: {
+		fontSize: "0.875rem",
+		lineHeight: 1.625,
+		color: colors.mutedForeground,
+	},
+	sourceLink: {
+		display: "inline-flex",
+		alignItems: "center",
+		justifyContent: "flex-end",
+		gap: "0.5rem",
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+		fontWeight: 600,
+		color: colors.link,
+		textDecorationLine: {
+			default: null,
+			":hover": "underline",
+		},
+	},
+});

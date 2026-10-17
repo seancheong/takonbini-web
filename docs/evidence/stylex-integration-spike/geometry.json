@@ -1,0 +1,142 @@
+[
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 390,
+    "locale": "en",
+    "theme": "dark",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 390,
+    "locale": "ja",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 390,
+    "locale": "ja",
+    "theme": "dark",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 390,
+    "locale": "zh",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 390,
+    "locale": "zh",
+    "theme": "dark",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 768,
+    "locale": "en",
+    "theme": "dark",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 768,
+    "locale": "ja",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 768,
+    "locale": "ja",
+    "theme": "dark",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 768,
+    "locale": "zh",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 768,
+    "locale": "zh",
+    "theme": "dark",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 1280,
+    "locale": "en",
+    "theme": "dark",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 1280,
+    "locale": "ja",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 1280,
+    "locale": "ja",
+    "theme": "dark",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 1280,
+    "locale": "zh",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 1280,
+    "locale": "zh",
+    "theme": "dark",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 639,
+    "locale": "en",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  },
+  {
+    "width": 640,
+    "locale": "en",
+    "theme": "light",
+    "closedGeometryMatches": true,
+    "openGeometryMatches": true
+  }
+]

@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import {
 	createContext,
 	type PropsWithChildren,
@@ -6,6 +7,7 @@ import {
 	useState,
 } from "react";
 import { FunctionOnce } from "@/lib/FunctionOnce";
+import { darkTheme } from "../styles/themes.stylex";
 
 export const themeCookieKey = "takonbini-ui-theme";
 export type Theme = "dark" | "light" | "system";
@@ -19,6 +21,11 @@ type ThemeProviderState = {
 	theme: Theme;
 	setTheme: (theme: Theme) => void;
 };
+
+const compiledDarkThemeClass = stylex.props(darkTheme).className;
+if (!compiledDarkThemeClass)
+	throw new Error("StyleX dark theme did not compile");
+const darkThemeClasses = compiledDarkThemeClass.split(/\s+/);
 
 const initialState: ThemeProviderState = {
 	theme: "system",
@@ -49,7 +56,7 @@ export function ThemeProvider({
 	useEffect(() => {
 		const root = window.document.documentElement;
 
-		root.classList.remove("light", "dark");
+		root.classList.remove("light", "dark", ...darkThemeClasses);
 
 		if (theme === "system") {
 			const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
@@ -58,10 +65,12 @@ export function ThemeProvider({
 				: "light";
 
 			root.classList.add(systemTheme);
+			if (systemTheme === "dark") root.classList.add(...darkThemeClasses);
 			return;
 		}
 
 		root.classList.add(theme);
+		if (theme === "dark") root.classList.add(...darkThemeClasses);
 	}, [theme]);
 
 	const value = {
@@ -75,8 +84,14 @@ export function ThemeProvider({
 
 	return (
 		<ThemeProviderContext.Provider value={value}>
-			<FunctionOnce param={cookieKey}>
-				{(storageKey: string) => {
+			<FunctionOnce param={{ storageKey: cookieKey, darkThemeClasses }}>
+				{({
+					storageKey,
+					darkThemeClasses,
+				}: {
+					storageKey: string;
+					darkThemeClasses: string[];
+				}) => {
 					const cookieMatch = document.cookie.match(
 						new RegExp(`(?:^|; )${storageKey}=([^;]*)`),
 					);
@@ -89,7 +104,7 @@ export function ThemeProvider({
 						((theme === null || theme === "system") &&
 							window.matchMedia("(prefers-color-scheme: dark)").matches)
 					) {
-						document.documentElement.classList.add("dark");
+						document.documentElement.classList.add("dark", ...darkThemeClasses);
 					}
 				}}
 			</FunctionOnce>

@@ -1,0 +1,87 @@
+{
+  "url": "http://127.0.0.1:3102/",
+  "fetchTime": "2026-10-16T12:20:01.709Z",
+  "categories": {
+    "performance": 0.74,
+    "accessibility": 1,
+    "best-practices": 0.96,
+    "seo": 1
+  },
+  "metrics": {
+    "largest-contentful-paint": 4482.2352,
+    "total-blocking-time": 0,
+    "cumulative-layout-shift": 0
+  },
+  "failedAudits": [
+    {
+      "id": "first-contentful-paint",
+      "title": "First Contentful Paint",
+      "score": 0.18
+    },
+    {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "score": 0.37
+    },
+    {
+      "id": "speed-index",
+      "title": "Speed Index",
+      "score": 0.76
+    },
+    {
+      "id": "errors-in-console",
+      "title": "Browser errors were logged to the console",
+      "score": 0
+    },
+    {
+      "id": "interactive",
+      "title": "Time to Interactive",
+      "score": 0.82
+    },
+    {
+      "id": "label-content-name-mismatch",
+      "title": "Elements with visible text labels do not have matching accessible names.",
+      "score": 0
+    },
+    {
+      "id": "total-byte-weight",
+      "title": "Avoid enormous network payloads",
+      "score": 0.5
+    },
+    {
+      "id": "unminified-css",
+      "title": "Minify CSS",
+      "score": 0.5
+    },
+    {
+      "id": "unused-javascript",
+      "title": "Reduce unused JavaScript",
+      "score": 0
+    },
+    {
+      "id": "cache-insight",
+      "title": "Use efficient cache lifetimes",
+      "score": 0.5
+    },
+    {
+      "id": "document-latency-insight",
+      "title": "Document request latency",
+      "score": 0.5
+    },
+    {
+      "id": "image-delivery-insight",
+      "title": "Improve image delivery",
+      "score": 0.5
+    },
+    {
+      "id": "network-dependency-tree-insight",
+      "title": "Network dependency tree",
+      "score": 0
+    },
+    {
+      "id": "render-blocking-insight",
+      "title": "Render-blocking requests",
+      "score": 0
+    }
+  ]
+}

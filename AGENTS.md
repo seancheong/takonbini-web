@@ -19,5 +19,6 @@ may return `403 Resource not accessible by integration` even while `gh` works.
 ## UI and design system
 
 Before adding or changing UI, read [DESIGN.md](DESIGN.md) and its relevant topic.
-Use only implemented components, documented button classes, and semantic color
-tokens. The StyleX plan describes proposed APIs; it does not make them available.
+Use implemented components, documented action roles, and typed semantic colors.
+Check the linked source before importing a StyleX export; private style tables
+are owned by their component.

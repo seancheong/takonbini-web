@@ -1,0 +1,160 @@
+[
+  {
+    "state": "empty",
+    "baseline": [
+      {
+        "rect": [
+          89.5,
+          693.59375,
+          1086,
+          20
+        ],
+        "styles": [
+          "14px",
+          "20px",
+          "oklch(0.705 0.015 286.067)",
+          "rgba(0, 0, 0, 0)",
+          "0px",
+          "0px solid oklch(0.274 0.006 286.033)"
+        ],
+        "tag": "P",
+        "text": "No products match your filters. Try another search or clear the filters."
+      }
+    ],
+    "candidate": [
+      {
+        "rect": [
+          89.5,
+          693.59375,
+          1086,
+          20
+        ],
+        "styles": [
+          "14px",
+          "20px",
+          "oklch(0.705 0.015 286.067)",
+          "rgba(0, 0, 0, 0)",
+          "0px",
+          "0px solid oklch(0.274 0.006 286.033)"
+        ],
+        "tag": "P",
+        "text": "No products match your filters. Try another search or clear the filters."
+      }
+    ]
+  },
+  {
+    "state": "error",
+    "baseline": [
+      {
+        "rect": [
+          64,
+          660.59375,
+          1152,
+          130
+        ],
+        "styles": [
+          "16px",
+          "24px",
+          "oklch(0.985 0 0)",
+          "oklch(0.2 0.006 286)",
+          "24px",
+          "1px solid oklab(0.396 0.127027 0.0611969 / 0.3)"
+        ],
+        "tag": "DIV",
+        "text": "Unable to load products right now. Please try again later.Try again"
+      },
+      {
+        "rect": [
+          89,
+          685.59375,
+          1102,
+          20
+        ],
+        "styles": [
+          "14px",
+          "20px",
+          "oklch(0.985 0 0)",
+          "rgba(0, 0, 0, 0)",
+          "0px",
+          "0px solid oklch(0.274 0.006 286.033)"
+        ],
+        "tag": "P",
+        "text": "Unable to load products right now. Please try again later."
+      },
+      {
+        "rect": [
+          89,
+          721.59375,
+          96.125,
+          44
+        ],
+        "styles": [
+          "14px",
+          "20px",
+          "oklch(0.985 0 0)",
+          "rgba(0, 0, 0, 0)",
+          "0px 16px",
+          "1px solid oklch(0.274 0.006 286.033)"
+        ],
+        "tag": "BUTTON",
+        "text": "Try again"
+      }
+    ],
+    "candidate": [
+      {
+        "rect": [
+          64,
+          660.59375,
+          1152,
+          130
+        ],
+        "styles": [
+          "16px",
+          "24px",
+          "oklch(0.985 0 0)",
+          "oklch(0.2 0.006 286)",
+          "24px",
+          "1px solid oklab(0.396 0.127027 0.0611969 / 0.3)"
+        ],
+        "tag": "DIV",
+        "text": "Unable to load products right now. Please try again later.Try again"
+      },
+      {
+        "rect": [
+          89,
+          685.59375,
+          1102,
+          20
+        ],
+        "styles": [
+          "14px",
+          "20px",
+          "oklch(0.985 0 0)",
+          "rgba(0, 0, 0, 0)",
+          "0px",
+          "0px solid oklch(0.274 0.006 286.033)"
+        ],
+        "tag": "P",
+        "text": "Unable to load products right now. Please try again later."
+      },
+      {
+        "rect": [
+          89,
+          721.59375,
+          96.125,
+          44
+        ],
+        "styles": [
+          "14px",
+          "20px",
+          "oklch(0.985 0 0)",
+          "rgba(0, 0, 0, 0)",
+          "0px 16px",
+          "1px solid oklch(0.274 0.006 286.033)"
+        ],
+        "tag": "BUTTON",
+        "text": "Try again"
+      }
+    ]
+  }
+]

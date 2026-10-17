@@ -1,6 +1,9 @@
+import * as stylex from "@stylexjs/stylex";
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { colors } from "../styles/colors.stylex";
+import { conditions } from "../styles/conditions.stylex";
 
 export default function ScrollTopButton() {
 	const { t } = useTranslation();
@@ -26,11 +29,46 @@ export default function ScrollTopButton() {
 			type="button"
 			aria-label={t("product.scrollTop")}
 			onClick={() => {
-				window.scrollTo({ top: 0, behavior: "smooth" });
+				window.scrollTo({
+					top: 0,
+					behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)")
+						.matches
+						? "auto"
+						: "smooth",
+				});
 			}}
-			className="fixed bottom-6 right-6 inline-flex items-center justify-center rounded-full border border-primary bg-primary p-3 text-primary-foreground shadow-sm transition hover:bg-primary/90 dark:border-primary/60"
+			{...stylex.props(styles.button)}
 		>
-			<ArrowUp className="h-5 w-5" aria-hidden="true" />
+			<ArrowUp {...stylex.props(styles.icon)} aria-hidden="true" />
 		</button>
 	);
 }
+
+const styles = stylex.create({
+	button: {
+		position: "fixed",
+		bottom: "1.5rem",
+		right: "1.5rem",
+		display: "inline-flex",
+		alignItems: "center",
+		justifyContent: "center",
+		borderRadius: "9999px",
+		borderWidth: 1,
+		borderStyle: "solid",
+		borderColor: colors.scrollTopBorder,
+		backgroundColor: {
+			default: colors.primary,
+			":hover": "color-mix(in oklab, var(--primary) 90%, transparent)",
+		},
+		padding: "0.75rem",
+		color: colors.primaryForeground,
+		boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
+		transitionProperty: "background-color, border-color, box-shadow",
+		transitionDuration: {
+			default: "150ms",
+			[conditions.reducedMotion]: "0ms",
+		},
+		transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+	},
+	icon: { width: "1.25rem", height: "1.25rem" },
+});

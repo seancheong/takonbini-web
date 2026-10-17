@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -8,6 +9,10 @@ import type {
 	ProductFilters,
 } from "@/features/products/products.contracts";
 import type { Language } from "@/i18n";
+import { storeTextStyles } from "@/styles/stores.stylex";
+import { colors } from "../../../styles/colors.stylex";
+import { conditions } from "../../../styles/conditions.stylex";
+import { metrics } from "../../../styles/metrics.stylex";
 import {
 	formatPrice,
 	isFutureReleaseDate,
@@ -17,7 +22,6 @@ import {
 	type CategoryLabelKey,
 	categoryLabelKeys,
 	type StoreLabelKey,
-	storeLabelClasses,
 	storeLabelKeys,
 } from "../model/product-labels";
 
@@ -25,7 +29,6 @@ interface ProductCardProps {
 	product: ActiveCatalogProduct;
 	filters?: ProductFilters;
 }
-
 export default function ProductCard({ product, filters }: ProductCardProps) {
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
@@ -35,7 +38,6 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const [isSafariNavigating, setIsSafariNavigating] = useState(false);
 	const imageRef = useRef<HTMLImageElement | null>(null);
-
 	const image = product.images[0];
 	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
 	const title = resolveLocalizedText(product.title, language);
@@ -44,26 +46,24 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 	const categoryLabelKey =
 		product.category &&
 		categoryLabelKeys[product.category as keyof typeof categoryLabelKeys];
-
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
 	const isReleaseSoon = isFutureReleaseDate(product.releaseDate);
 	const viewTransitionName = `product-image-${product.id}`;
-
 	useEffect(() => {
 		setImageError(false);
 		setImageLoaded(false);
 	}, []);
-
 	useEffect(() => {
 		if (imageRef.current?.complete && imageRef.current.naturalWidth > 0) {
 			setImageLoaded(true);
 		}
 	}, []);
-
 	return (
 		<Link
 			to="/products/$id"
-			params={{ id: product.id }}
+			params={{
+				id: product.id,
+			}}
 			search={filters}
 			aria-label={title}
 			preload="intent"
@@ -90,24 +90,34 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 					!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 				navigate({
 					to: "/products/$id",
-					params: { id: product.id },
-					...(filters ? { search: filters } : {}),
-					...(viewTransition ? { viewTransition: true } : {}),
+					params: {
+						id: product.id,
+					},
+					...(filters
+						? {
+								search: filters,
+							}
+						: {}),
+					...(viewTransition
+						? {
+								viewTransition: true,
+							}
+						: {}),
 				});
 			}}
 			data-store={product.store}
-			className="catalog-product group"
+			{...stylex.props(layoutStyles.card)}
 		>
-			<article className="flex h-full flex-col overflow-hidden">
-				<div className="catalog-product-image relative">
+			<article {...stylex.props(layoutStyles.article)}>
+				<div {...stylex.props(layoutStyles.imageCanvas)}>
 					{isSafari() && isSafariNavigating ? (
-						<div className="absolute inset-0 z-10 flex items-center justify-center bg-background/70 text-xs font-semibold text-foreground backdrop-blur-sm">
-							<span className="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-foreground/60 border-t-transparent" />
+						<div {...stylex.props(layoutStyles.safariOverlay)}>
+							<span {...stylex.props(layoutStyles.spinner)} />
 							{t("product.loading")}
 						</div>
 					) : null}
 					{showLoading ? (
-						<div className="absolute inset-0 flex items-center justify-center bg-muted/40 text-xs font-semibold text-muted-foreground">
+						<div {...stylex.props(layoutStyles.loadingOverlay)}>
 							{t("product.imageLoading")}
 						</div>
 					) : null}
@@ -116,38 +126,46 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 							ref={imageRef}
 							src={imageSrc}
 							alt={title}
-							style={isSafari() ? undefined : { viewTransitionName }}
+							style={
+								isSafari()
+									? undefined
+									: {
+											viewTransitionName,
+										}
+							}
 							onError={() => setImageError(true)}
 							onLoad={() => setImageLoaded(true)}
-							className={`h-full w-full object-contain p-4 ${
-								imageLoaded ? "opacity-100" : "opacity-0"
-							}`}
 							decoding="async"
 							loading="lazy"
+							{...stylex.props(
+								layoutStyles.image,
+								imageLoaded ? layoutStyles.visible : layoutStyles.hidden,
+							)}
 						/>
 					) : (
-						<div className="flex h-full w-full flex-col items-center justify-center gap-2 px-4 text-center text-xs text-muted-foreground">
+						<div {...stylex.props(layoutStyles.imageFallback)}>
 							<span>{t("product.noImage")}</span>
 						</div>
 					)}
 
 					{isReleaseSoon ? (
-						<span className="absolute left-3 top-3 rounded-full bg-destructive px-2 py-1 text-xs font-semibold text-(--success-foreground)">
+						<span {...stylex.props(layoutStyles.upcomingBadge)}>
 							{t("product.releaseSoon")}
 						</span>
 					) : product.isNew ? (
-						<span className="absolute left-3 top-3 rounded-full bg-(--success) px-2 py-1 text-xs font-semibold text-(--success-foreground)">
+						<span {...stylex.props(layoutStyles.newBadge)}>
 							{t("product.new")}
 						</span>
 					) : null}
 				</div>
 
-				<div className="catalog-product-copy">
-					<div className="flex flex-wrap items-center gap-2 text-xs">
+				<div {...stylex.props(layoutStyles.copy)}>
+					<div {...stylex.props(layoutStyles.storeRow)}>
 						<span
-							className={`text-sm font-semibold ${
-								storeLabelClasses[product.store] ?? "text-foreground"
-							}`}
+							{...stylex.props(
+								layoutStyles.storeLabel,
+								storeTextStyles[product.store],
+							)}
 						>
 							{storeLabelKey
 								? t(storeLabelKey as StoreLabelKey)
@@ -155,15 +173,13 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 						</span>
 					</div>
 
-					<div className="flex-1">
-						<h2 className="text-base font-semibold leading-snug text-foreground">
-							{title}
-						</h2>
+					<div {...stylex.props(layoutStyles.titleRow)}>
+						<h2 {...stylex.props(layoutStyles.title)}>{title}</h2>
 					</div>
 
-					<div className="flex items-center justify-between gap-3">
+					<div {...stylex.props(layoutStyles.metadata)}>
 						{product.category ? (
-							<span className="text-xs text-muted-foreground">
+							<span {...stylex.props(layoutStyles.category)}>
 								{categoryLabelKey
 									? t(categoryLabelKey as CategoryLabelKey)
 									: product.category}
@@ -171,7 +187,7 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 						) : (
 							<span />
 						)}
-						<span className="text-base font-semibold tabular-nums text-foreground">
+						<span {...stylex.props(layoutStyles.price)}>
 							{product.price === 0
 								? t("product.priceUnknown")
 								: formatPrice(product.price, language)}
@@ -182,3 +198,283 @@ export default function ProductCard({ product, filters }: ProductCardProps) {
 		</Link>
 	);
 }
+const spin = stylex.keyframes({
+	to: {
+		transform: "rotate(360deg)",
+	},
+});
+const layoutStyles = stylex.create({
+	card: {
+		display: "block",
+		height: "100%",
+		backgroundColor: colors.card,
+		borderTopWidth: "1px",
+		borderTopStyle: "solid",
+		borderTopColor: {
+			default: null,
+			":hover": colors.mutedForeground,
+		},
+		borderRightWidth: "1px",
+		borderRightStyle: "solid",
+		borderRightColor: {
+			default: null,
+			":hover": colors.mutedForeground,
+		},
+		borderBottomWidth: "1px",
+		borderBottomStyle: "solid",
+		borderBottomColor: {
+			default: null,
+			":hover": colors.mutedForeground,
+		},
+		borderLeftWidth: "1px",
+		borderLeftStyle: "solid",
+		borderLeftColor: {
+			default: null,
+			":hover": colors.mutedForeground,
+		},
+		borderRadius: metrics.cardRadius,
+		overflow: "hidden",
+		transitionProperty: {
+			default: "border-color",
+			[conditions.reducedMotion]: "none",
+		},
+		transitionDuration: "150ms",
+		transitionTimingFunction: "ease",
+		outline: {
+			default: null,
+			":focus-visible": "2px solid var(--ring)",
+		},
+		outlineOffset: {
+			default: null,
+			":focus-visible": "3px",
+		},
+		"--store-accent": {
+			default: "transparent",
+			":is([data-store=SevenEleven])": colors.storeSeven,
+			":is([data-store=Lawson])": colors.storeLawson,
+			":is([data-store=FamilyMart])": colors.storeFamily,
+		},
+		animationName: {
+			default: null,
+			[conditions.reducedMotion]: "none",
+		},
+	},
+	article: {
+		display: "flex",
+		height: "100%",
+		flexDirection: "column",
+		overflow: "hidden",
+	},
+	imageCanvas: {
+		position: "relative",
+		aspectRatio: "1",
+		overflow: "hidden",
+		backgroundColor: colors.imageCanvas,
+		borderBottomWidth: "1px",
+		borderBottomStyle: "solid",
+		borderBottomColor: colors.border,
+	},
+	safariOverlay: {
+		position: "absolute",
+		top: "0px",
+		right: "0px",
+		bottom: "0px",
+		left: "0px",
+		zIndex: 10,
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: colors.imageCanvas,
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		fontWeight: 600,
+		color: colors.imagePlaceholder,
+		backdropFilter: "blur(8px)",
+	},
+	spinner: {
+		marginRight: "0.5rem",
+		height: "0.75rem",
+		width: "0.75rem",
+		animationName: {
+			default: spin,
+			[conditions.reducedMotion]: "none",
+		},
+		animationDuration: "1s",
+		animationTimingFunction: "linear",
+		animationIterationCount: "infinite",
+		borderRadius: "9999px",
+		borderTopWidth: "2px",
+		borderRightWidth: "2px",
+		borderBottomWidth: "2px",
+		borderLeftWidth: "2px",
+		borderTopStyle: "solid",
+		borderRightStyle: "solid",
+		borderBottomStyle: "solid",
+		borderLeftStyle: "solid",
+		borderTopColor: "transparent",
+		borderRightColor: "color-mix(in oklab, var(--foreground) 60%, transparent)",
+		borderBottomColor:
+			"color-mix(in oklab, var(--foreground) 60%, transparent)",
+		borderLeftColor: "color-mix(in oklab, var(--foreground) 60%, transparent)",
+		transitionProperty: {
+			default: null,
+			[conditions.reducedMotion]: "none",
+		},
+	},
+	loadingOverlay: {
+		position: "absolute",
+		top: "0px",
+		right: "0px",
+		bottom: "0px",
+		left: "0px",
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: colors.imageCanvas,
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		fontWeight: 600,
+		color: colors.imagePlaceholder,
+	},
+	visible: {
+		opacity: 1,
+	},
+	hidden: {
+		opacity: 0,
+	},
+	image: {
+		height: "100%",
+		width: "100%",
+		objectFit: "contain",
+		paddingTop: "1rem",
+		paddingRight: "1rem",
+		paddingBottom: "1rem",
+		paddingLeft: "1rem",
+	},
+	imageFallback: {
+		display: "flex",
+		height: "100%",
+		width: "100%",
+		flexDirection: "column",
+		alignItems: "center",
+		justifyContent: "center",
+		gap: "0.5rem",
+		paddingLeft: "1rem",
+		paddingRight: "1rem",
+		textAlign: "center",
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		color: colors.imagePlaceholder,
+		backgroundColor: colors.imageCanvas,
+	},
+	upcomingBadge: {
+		position: "absolute",
+		left: "0.75rem",
+		top: "0.75rem",
+		borderRadius: "9999px",
+		backgroundColor: colors.destructive,
+		paddingLeft: "0.5rem",
+		paddingRight: "0.5rem",
+		paddingTop: "0.25rem",
+		paddingBottom: "0.25rem",
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		fontWeight: 600,
+		color: colors.successForeground,
+	},
+	newBadge: {
+		position: "absolute",
+		left: "0.75rem",
+		top: "0.75rem",
+		borderRadius: "9999px",
+		backgroundColor: colors.success,
+		paddingLeft: "0.5rem",
+		paddingRight: "0.5rem",
+		paddingTop: "0.25rem",
+		paddingBottom: "0.25rem",
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		fontWeight: 600,
+		color: colors.successForeground,
+	},
+	copy: {
+		display: "flex",
+		flex: 1,
+		flexDirection: "column",
+		gap: "0.8rem",
+		paddingTop: {
+			default: "1rem",
+			[conditions.compactCatalog]: "0.75rem",
+		},
+		paddingRight: {
+			default: "1rem",
+			[conditions.compactCatalog]: "0.75rem",
+		},
+		paddingBottom: {
+			default: "1rem",
+			[conditions.compactCatalog]: "0.75rem",
+		},
+		paddingLeft: {
+			default: "1rem",
+			[conditions.compactCatalog]: "0.75rem",
+		},
+		borderTopWidth: "3px",
+		borderTopStyle: "solid",
+		borderTopColor: "var(--store-accent)",
+	},
+	storeRow: {
+		display: "flex",
+		flexWrap: {
+			default: "wrap",
+			":last-child": "wrap",
+		},
+		alignItems: "center",
+		gap: "0.5rem",
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+	},
+	storeLabel: {
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+		fontWeight: 600,
+	},
+	titleRow: {
+		flex: 1,
+		flexWrap: {
+			default: null,
+			":last-child": "wrap",
+		},
+	},
+	title: {
+		fontSize: {
+			default: "1rem",
+			[conditions.compactCatalog]: "0.9rem",
+		},
+		lineHeight: 1.375,
+		fontWeight: 600,
+		color: colors.foreground,
+		overflowWrap: "anywhere",
+	},
+	metadata: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "space-between",
+		gap: "0.75rem",
+		flexWrap: {
+			default: null,
+			":last-child": "wrap",
+		},
+	},
+	category: {
+		fontSize: "0.75rem",
+		lineHeight: "1rem",
+		color: colors.mutedForeground,
+	},
+	price: {
+		fontSize: "1rem",
+		lineHeight: "1.5rem",
+		fontWeight: 600,
+		fontVariantNumeric: "tabular-nums",
+		color: colors.foreground,
+	},
+});
