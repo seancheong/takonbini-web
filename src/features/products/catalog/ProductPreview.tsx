@@ -104,7 +104,7 @@ const styles = stylex.create({
 	dialog: {
 		margin: "auto",
 		width: "min(1120px,calc(100% - 48px))",
-		height: "calc(100dvh - 48px)",
+		height: "min(820px, calc(100dvh - 48px))",
 		maxHeight: "calc(100dvh - 48px)",
 		padding: 0,
 		border: "1px solid",
