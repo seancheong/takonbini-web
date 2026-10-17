@@ -34,6 +34,7 @@ const layoutStyles = stylex.create({
 	header: {
 		position: "sticky",
 		top: 0,
+		height: metrics.headerHeight,
 		zIndex: 20,
 		width: "100%",
 		borderBottomWidth: "1px",
@@ -45,7 +46,7 @@ const layoutStyles = stylex.create({
 	inner: {
 		marginInline: "auto",
 		display: "flex",
-		height: metrics.headerHeight,
+		height: "100%",
 		maxWidth: "1200px",
 		alignItems: "center",
 		justifyContent: "space-between",

@@ -22,7 +22,10 @@ import ProductCard from "@/features/products/catalog/ProductCard";
 import ProductDetailScreen from "@/features/products/detail/ProductDetailScreen";
 import { productQueries } from "@/features/products/products";
 import { catalogProduct } from "@/features/products/testing/catalog-fixtures";
-import { getScrollRestorationKey } from "@/scroll-restoration";
+import {
+	getScrollRestorationKey,
+	shouldRestoreScroll,
+} from "@/scroll-restoration";
 
 vi.mock("react-i18next", () => ({
 	useTranslation: () => ({ t: (key: string) => key, i18n: { language: "en" } }),
@@ -70,7 +73,7 @@ it("restores the catalog position through the detail return link, including the 
 	const router = createRouter({
 		routeTree: root.addChildren([catalog, detail]),
 		history: createMemoryHistory({ initialEntries: ["/"] }),
-		scrollRestoration: true,
+		scrollRestoration: shouldRestoreScroll,
 		getScrollRestorationKey,
 	});
 	await router.load();
@@ -86,6 +89,22 @@ it("restores the catalog position through the detail return link, including the 
 		fireEvent.scroll(document);
 	});
 	fireEvent.click(screen.getByRole("link", { name: "Matcha" }));
+	await screen.findByRole("link", { name: "product.details.back" });
+	await waitFor(() => expect(scrollY).toBe(0));
+	fireEvent.click(screen.getByRole("link", { name: "product.details.back" }));
+	await screen.findByRole("link", { name: "Matcha" });
+	await waitFor(() => expect(scrollY).toBe(720));
+	fireEvent.click(screen.getByRole("link", { name: "Matcha" }));
+	await screen.findByRole("link", { name: "product.details.back" });
+	await act(async () => {
+		vi.stubGlobal("scrollY", 500);
+		scrollY = 500;
+		fireEvent.scroll(document);
+	});
+	await act(async () => router.history.back());
+	await screen.findByRole("link", { name: "Matcha" });
+	await waitFor(() => expect(scrollY).toBe(720));
+	await act(async () => router.history.forward());
 	await screen.findByRole("link", { name: "product.details.back" });
 	await waitFor(() => expect(scrollY).toBe(0));
 	fireEvent.click(screen.getByRole("link", { name: "product.details.back" }));

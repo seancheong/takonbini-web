@@ -8,3 +8,11 @@ export function getScrollRestorationKey(location: ParsedLocation): string {
 	}
 	return location.state.__TSR_key || location.href;
 }
+
+export function shouldRestoreScroll({
+	location,
+}: {
+	location: ParsedLocation;
+}): boolean {
+	return !location.pathname.startsWith("/products/");
+}

@@ -10,7 +10,7 @@ import {
 	MapPin,
 	Tag,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { productByIdQueryOptions } from "@/features/products/data/product-queries";
 import {
@@ -49,6 +49,11 @@ export default function ProductDetailScreen({
 	const { t, i18n } = useTranslation();
 	const language = i18n.language as Language;
 	const { data: product } = useSuspenseQuery(productByIdQueryOptions(id));
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Reset for each product, including navigation between detail pages.
+	useLayoutEffect(() => {
+		if (presentation === "page")
+			window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+	}, [id, presentation]);
 	const image = product.images?.[0];
 	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
@@ -315,7 +320,7 @@ const layoutStyles = stylex.create({
 		marginInlineStart: "6px",
 	},
 	screen: {
-		minHeight: "100vh",
+		minHeight: "calc(100dvh - var(--header-height))",
 		backgroundColor: colors.background,
 		paddingLeft: "1rem",
 		paddingRight: "1rem",

@@ -32,7 +32,7 @@ const pulse = stylex.keyframes({
 const layoutStyles = stylex.create({
 	modalScreen: { minHeight: 0, padding: "32px", paddingTop: "52px" },
 	screen: {
-		minHeight: "100vh",
+		minHeight: "calc(100dvh - var(--header-height))",
 		backgroundColor: colors.background,
 		paddingLeft: "1rem",
 		paddingRight: "1rem",
