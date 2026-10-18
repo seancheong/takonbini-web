@@ -9,7 +9,7 @@ export default function CatalogScreen({
 	onApply,
 }: {
 	filters: ProductFilters;
-	onApply: (filters: ProductFilters) => void;
+	onApply: (filters: ProductFilters) => void | Promise<void>;
 }) {
 	return (
 		<div {...stylex.props(layoutStyles.div)}>

@@ -4,6 +4,7 @@ import { CatchBoundary } from "@tanstack/react-router";
 import { X } from "lucide-react";
 import { Suspense, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useDialogDismiss } from "../../../hooks/useDialogDismiss";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
 import ProductDetailError from "../detail/ProductDetailError";
@@ -28,6 +29,8 @@ export default function ProductPreview({
 }: ProductPreviewProps) {
 	const { t, i18n } = useTranslation();
 	const dialog = useRef<HTMLDialogElement>(null);
+	const dismiss = useDialogDismiss(dialog);
+	const requestClose = () => dismiss(() => dialog.current?.close());
 	const pressedBackdrop = useRef(false);
 	const isBackdrop = (event: React.PointerEvent<HTMLDialogElement>) => {
 		const bounds = event.currentTarget.getBoundingClientRect();
@@ -61,15 +64,19 @@ export default function ProductPreview({
 	return (
 		<dialog
 			ref={dialog}
+			data-slot="product-preview"
 			aria-label={title}
+			onCancel={(event) => {
+				event.preventDefault();
+				requestClose();
+			}}
 			{...stylex.props(styles.dialog)}
 			onClose={onClose}
 			onPointerDown={(event) => {
 				pressedBackdrop.current = isBackdrop(event);
 			}}
 			onPointerUp={(event) => {
-				if (pressedBackdrop.current && isBackdrop(event))
-					dialog.current?.close();
+				if (pressedBackdrop.current && isBackdrop(event)) requestClose();
 				pressedBackdrop.current = false;
 			}}
 		>
@@ -79,7 +86,7 @@ export default function ProductPreview({
 						type="button"
 						{...stylex.props(styles.close)}
 						aria-label={t("product.details.close")}
-						onClick={() => dialog.current?.close()}
+						onClick={requestClose}
 					>
 						<X size={20} />
 					</button>

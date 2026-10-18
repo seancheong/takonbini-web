@@ -22,7 +22,6 @@ export default {
 			title: "日本のコンビニ商品",
 			subtitle:
 				"セブン-イレブン、ローソン、ファミリーマートの商品情報を掲載しています。",
-			catalogLabel: "商品カタログ",
 			allStores: "すべての店舗",
 			results: "商品一覧",
 			loadedCount: "{{count}}件を表示中",
@@ -48,10 +47,11 @@ export default {
 			end: "条件に一致する商品をすべて表示しました。",
 			scrollTop: "トップに戻る",
 			filters: {
+				appliedFilters: "適用中の絞り込み",
+				noFilters: "絞り込みなし",
 				description:
 					"条件を選択し「適用する」を押してください。リセットしても検索キーワードは残ります。",
 				title: "絞り込み",
-				searchPending: "検索中…",
 				searchLabel: "検索",
 				searchPlaceholder: "商品名・商品説明で検索",
 				stores: "店舗",

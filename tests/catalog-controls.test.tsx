@@ -50,7 +50,7 @@ describe("catalog discovery", () => {
 			</CatalogControls>,
 		);
 		const button = screen.getByRole("button", {
-			name: "product.filters.searchPending",
+			name: "product.filters.searchLabel",
 		});
 		expect(button.hasAttribute("disabled")).toBe(true);
 		fireEvent.click(button);

@@ -162,6 +162,23 @@ function RootDocument() {
 	const resolvedTheme = isTheme(savedTheme) ? savedTheme : "system";
 
 	useEffect(() => {
+		const root = document.documentElement;
+		const keyboard = () => {
+			root.dataset.input = "keyboard";
+		};
+		const pointer = () => {
+			delete root.dataset.input;
+		};
+		document.addEventListener("keydown", keyboard, true);
+		document.addEventListener("pointerdown", pointer, true);
+		return () => {
+			document.removeEventListener("keydown", keyboard, true);
+			document.removeEventListener("pointerdown", pointer, true);
+			delete root.dataset.input;
+		};
+	}, []);
+
+	useEffect(() => {
 		const handler = () => {
 			document.title = i18n.t("appName");
 			document.documentElement.lang = i18n.language;
@@ -199,7 +216,7 @@ function RootDocument() {
 
 					<TanStackDevtools
 						config={{
-							position: "bottom-right",
+							position: "bottom-left",
 						}}
 						plugins={[
 							{

@@ -2,14 +2,7 @@ import * as stylex from "@stylexjs/stylex";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import "../model/catalog-navigation";
 import { Link, useRouter } from "@tanstack/react-router";
-import {
-	ArrowLeft,
-	Calendar,
-	ExternalLink,
-	JapaneseYen,
-	MapPin,
-	Tag,
-} from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { productByIdQueryOptions } from "@/features/products/data/product-queries";
@@ -221,10 +214,6 @@ export default function ProductDetailScreen({
 						<div {...stylex.props(layoutStyles.factsCard)}>
 							<dl {...stylex.props(layoutStyles.facts)}>
 								<dt {...stylex.props(layoutStyles.label)}>
-									<JapaneseYen
-										aria-hidden="true"
-										{...stylex.props(layoutStyles.icon)}
-									/>
 									{t("product.details.price")}
 								</dt>
 								<dd {...stylex.props(layoutStyles.value)}>
@@ -241,10 +230,6 @@ export default function ProductDetailScreen({
 								{product.category ? (
 									<>
 										<dt {...stylex.props(layoutStyles.label)}>
-											<Tag
-												aria-hidden="true"
-												{...stylex.props(layoutStyles.icon)}
-											/>
 											{t("product.details.category")}
 										</dt>
 										<dd {...stylex.props(layoutStyles.factValue)}>
@@ -258,10 +243,6 @@ export default function ProductDetailScreen({
 								{product.releaseDate ? (
 									<>
 										<dt {...stylex.props(layoutStyles.label)}>
-											<Calendar
-												aria-hidden="true"
-												{...stylex.props(layoutStyles.icon)}
-											/>
 											{t("product.details.releaseDate")}
 										</dt>
 										<dd {...stylex.props(layoutStyles.factValue)}>
@@ -272,14 +253,8 @@ export default function ProductDetailScreen({
 
 								{regionLabels.length ? (
 									<>
-										<dt {...stylex.props(layoutStyles.regionLabel)}>
-											<MapPin
-												aria-hidden="true"
-												{...stylex.props(layoutStyles.regionIcon)}
-											/>
-											<span {...stylex.props(layoutStyles.regionTitle)}>
-												{t("product.details.regions")}
-											</span>
+										<dt {...stylex.props(layoutStyles.label)}>
+											{t("product.details.regions")}
 										</dt>
 										<dd {...stylex.props(layoutStyles.regions)}>
 											{regionLabels.join(", ")}
@@ -480,7 +455,7 @@ const layoutStyles = stylex.create({
 		fontWeight: 600,
 	},
 	upcomingBadge: {
-		borderRadius: "9999px",
+		borderRadius: "3px",
 		backgroundColor: colors.upcomingBadgeBackground,
 		paddingLeft: "0.5rem",
 		paddingRight: "0.5rem",
@@ -492,7 +467,7 @@ const layoutStyles = stylex.create({
 		color: colors.upcomingBadgeForeground,
 	},
 	newBadge: {
-		borderRadius: "9999px",
+		borderRadius: "3px",
 		backgroundColor: colors.newBadgeBackground,
 		paddingLeft: "0.5rem",
 		paddingRight: "0.5rem",
@@ -539,7 +514,7 @@ const layoutStyles = stylex.create({
 	},
 	facts: {
 		display: "grid",
-		gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)",
+		gridTemplateColumns: "max-content minmax(0,1fr)",
 		alignItems: "center",
 		columnGap: "1.5rem",
 		rowGap: "1rem",
@@ -547,17 +522,17 @@ const layoutStyles = stylex.create({
 		lineHeight: "1.25rem",
 	},
 	label: {
-		display: "flex",
-		alignItems: "center",
-		gap: "0.75rem",
+		alignSelf: "start",
+		whiteSpace: "nowrap",
 		color: colors.mutedForeground,
 	},
 	value: {
 		minWidth: "0px",
 		textAlign: "right",
-		fontSize: "1rem",
-		lineHeight: "1.5rem",
-		fontWeight: 600,
+		fontSize: "24px",
+		lineHeight: 1.4,
+		fontWeight: 500,
+		fontVariantNumeric: "tabular-nums",
 		color: colors.foreground,
 	},
 	factValue: {
@@ -565,20 +540,7 @@ const layoutStyles = stylex.create({
 		textAlign: "right",
 		color: colors.foreground,
 	},
-	regionLabel: {
-		display: "flex",
-		alignItems: "flex-start",
-		gap: "0.75rem",
-		color: colors.mutedForeground,
-	},
-	regionIcon: {
-		marginTop: "0.125rem",
-		height: "1rem",
-		width: "1rem",
-	},
-	regionTitle: {
-		whiteSpace: "nowrap",
-	},
+
 	regions: {
 		minWidth: "0px",
 		textAlign: "right",

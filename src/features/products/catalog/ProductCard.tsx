@@ -116,7 +116,7 @@ export default function ProductCard({
 			data-store={product.store}
 			{...stylex.props(layoutStyles.card)}
 		>
-			<article {...stylex.props(layoutStyles.article)}>
+			<article data-slot="product-card" {...stylex.props(layoutStyles.article)}>
 				<div {...stylex.props(layoutStyles.imageCanvas)}>
 					{isSafari() && isSafariNavigating ? (
 						<div {...stylex.props(layoutStyles.safariOverlay)}>
@@ -131,6 +131,7 @@ export default function ProductCard({
 					) : null}
 					{imageSrc && !imageError ? (
 						<img
+							data-slot="product-card-image"
 							ref={imageRef}
 							src={imageSrc}
 							alt={title}
@@ -266,10 +267,6 @@ const layoutStyles = stylex.create({
 		aspectRatio: { default: "1.15", [conditions.compactCatalog]: "1" },
 		overflow: "hidden",
 		backgroundColor: colors.imageCanvas,
-		outlineWidth: "1px",
-		outlineStyle: "solid",
-		outlineColor: colors.productImageOutline,
-		outlineOffset: "-1px",
 	},
 	safariOverlay: {
 		position: "absolute",
@@ -286,7 +283,6 @@ const layoutStyles = stylex.create({
 		lineHeight: "1rem",
 		fontWeight: 600,
 		color: colors.imagePlaceholder,
-		backdropFilter: "blur(8px)",
 	},
 	spinner: {
 		marginRight: "0.5rem",
@@ -368,7 +364,7 @@ const layoutStyles = stylex.create({
 		position: "absolute",
 		left: "0.75rem",
 		top: "0.75rem",
-		borderRadius: "9999px",
+		borderRadius: "3px",
 		backgroundColor: colors.upcomingBadgeBackground,
 		paddingLeft: "0.5rem",
 		paddingRight: "0.5rem",
@@ -383,7 +379,7 @@ const layoutStyles = stylex.create({
 		position: "absolute",
 		left: "0.75rem",
 		top: "0.75rem",
-		borderRadius: "9999px",
+		borderRadius: "3px",
 		backgroundColor: colors.newBadgeBackground,
 		paddingLeft: "0.5rem",
 		paddingRight: "0.5rem",

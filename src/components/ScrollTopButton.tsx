@@ -7,9 +7,11 @@ import { conditions } from "../styles/conditions.stylex";
 
 export default function ScrollTopButton() {
 	const { t } = useTranslation();
+	const [ready, setReady] = useState(false);
 	const [showScrollTop, setShowScrollTop] = useState(false);
 
 	useEffect(() => {
+		setReady(true);
 		const updateScroll = () => {
 			setShowScrollTop(window.scrollY > 120);
 		};
@@ -22,11 +24,13 @@ export default function ScrollTopButton() {
 		};
 	}, []);
 
-	if (!showScrollTop) return null;
+	if (!ready) return null;
 
 	return (
 		<button
 			type="button"
+			data-slot="scroll-top"
+			hidden={!showScrollTop}
 			aria-label={t("product.scrollTop")}
 			onClick={() => {
 				window.scrollTo({
@@ -64,8 +68,7 @@ const styles = stylex.create({
 		},
 		padding: "0.75rem",
 		color: colors.primaryForeground,
-		boxShadow: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-		transitionProperty: "background-color, border-color, box-shadow",
+		transitionProperty: "background-color, border-color",
 		transitionDuration: {
 			default: "150ms",
 			[conditions.reducedMotion]: "0ms",

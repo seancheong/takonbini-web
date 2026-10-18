@@ -25,7 +25,11 @@ function Catalog() {
 		<CatalogScreen
 			filters={filters}
 			onApply={(next) =>
-				navigate({ search: catalogSearch.encode(next), replace: true })
+				navigate({
+					search: catalogSearch.encode(next),
+					replace: true,
+					resetScroll: false,
+				})
 			}
 		/>
 	);

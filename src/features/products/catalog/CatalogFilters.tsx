@@ -8,6 +8,7 @@ import {
 	Store,
 } from "@/features/products/model/product-values";
 import type { ProductFilters } from "@/features/products/products.contracts";
+import { useDialogDismiss } from "../../../hooks/useDialogDismiss";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
 import { metrics } from "../../../styles/metrics.stylex";
@@ -43,6 +44,8 @@ export default function ProductFilterDrawer({
 		maxPrice: false,
 	});
 	const dialog = useRef<HTMLDialogElement>(null);
+	const dismiss = useDialogDismiss(dialog, 180);
+	const requestClose = () => dismiss(() => setIsFilterOpen(false));
 	useEffect(() => {
 		if (!isFilterOpen) return;
 		setTouched({ minPrice: false, maxPrice: false });
@@ -108,7 +111,7 @@ export default function ProductFilterDrawer({
 					ref={dialog}
 					onCancel={(event) => {
 						event.preventDefault();
-						setIsFilterOpen(false);
+						requestClose();
 					}}
 					onClose={() => setIsFilterOpen(false)}
 					id={id}
@@ -134,8 +137,10 @@ export default function ProductFilterDrawer({
 								return;
 							}
 							if (isPriceValid && !badInput.minPrice && !badInput.maxPrice) {
-								onApply(filters);
-								setIsFilterOpen(false);
+								dismiss(() => {
+									onApply(filters);
+									setIsFilterOpen(false);
+								});
 							} else {
 								setTouched({ minPrice: true, maxPrice: true });
 								const field = !integerValid("minPrice")
@@ -160,7 +165,7 @@ export default function ProductFilterDrawer({
 							<button
 								type="button"
 								aria-label={t("product.filters.hide")}
-								onClick={() => setIsFilterOpen(false)}
+								onClick={requestClose}
 								{...stylex.props(layoutStyles.close)}
 							>
 								<X size={20} />
@@ -326,7 +331,11 @@ export default function ProductFilterDrawer({
 							>
 								{t("product.filters.reset")}
 							</button>
-							<button type="submit" {...stylex.props(layoutStyles.apply)}>
+							<button
+								type="submit"
+								data-slot="catalog-submit"
+								{...stylex.props(layoutStyles.apply)}
+							>
 								{t("product.filters.apply")}
 							</button>
 						</div>

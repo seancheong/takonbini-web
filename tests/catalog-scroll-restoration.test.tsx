@@ -125,5 +125,9 @@ it("restores the catalog position through the detail return link, including the 
 	await act(async () => router.history.back());
 	await screen.findByRole("link", { name: "Matcha" });
 	await waitFor(() => expect(scrollY).toBe(350));
+	await act(async () => {
+		await router.navigate({ to: "/", search: {}, resetScroll: false });
+	});
+	await waitFor(() => expect(scrollY).toBe(350));
 	client.clear();
 });

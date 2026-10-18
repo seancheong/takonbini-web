@@ -35,3 +35,15 @@ Check local Markdown links, root/topic line budgets (under 100/150), token value
 mapping, and every changed example against real callers. Runtime tests, browser
 parity and build checks are recorded in the full migration evidence; a docs probe
 alone does not establish visual or runtime parity.
+
+## Header menu scroll-lock regression
+
+Browser layout check (jsdom does not calculate sticky positions): scroll the catalog at least one viewport, open each header selector by pointer, and verify the header remains at y=0 and the popup bounds remain within the viewport after its entry animation. Select a different theme/language, confirm the choice changes, and confirm page scrolling resumes at the same position. Repeat opening via keyboard and dismiss with Escape. The failing baseline had header y=-2542 and popup y=-2472.5 because Radix locked body overflow; the root-lock CSS must keep body overflow visible while open. Existing Select tests cover keyboard selection and focus restoration but cannot detect this geometry regression.
+
+## Optimistic store filtering regression
+
+Use a deferred navigation promise in CatalogPanel tests: click a different store and verify aria-pressed changes before resolving navigation, the existing grid remains mounted but inert, and the named loading output appears. Resolve with committed filters and verify the overlay disappears without reverting the selection. Rapid changes must preserve the latest store and other filters; resolving canceled actions without committing new filters must restore the committed selection. CatalogControls tests keep the Search label while disabled. Local browser verification confirmed a constant 52px Chinese Search button before/during refresh and a selected requested store while the overlay was still visible.
+
+For cached filter scroll regression: browse All stores partway down, use the sticky filter dialog to choose a store, return to the top, then click All stores. The viewport must stay at the top instead of restoring the old All stores position. The route-handler test asserts resetScroll:false and the memory-router integration checks preservation when navigating to a catalog key with a different cached position, while the existing detail Back/Forward checks continue to pass.
+
+Visual-restraint verification: inspect catalog and product preview at 1280px and 390px in light/dark themes. English, Japanese, and Chinese headings retain the system family; CJK tracking computes to normal and mobile layouts have no horizontal overflow. Check the rectangular status label, 24px detail price, text-only fact labels, and the single 1px facts rule. Preserve the original locale/theme/filter preferences after review.

@@ -67,3 +67,11 @@ Header stays in document flow with sticky positioning and an opaque background. 
 
 
 Modal scroll locking belongs on document.documentElement, not body. Setting body overflow to hidden creates a scrolling ancestor for the sticky header, pulling it out of view at nonzero page scroll. Both product and filter dialogs preserve and restore the root's previous inline overflow without changing the body's overflow. Keep scrollbar-gutter stable on the root.
+
+Theme/language popups use trigger-aligned popper positioning with 180ms entry and 120ms exit. Theme switches temporarily suppress transitions. After hydration, the back-to-top control stays mounted with native `hidden` visibility below the 120px threshold; supported browsers animate its 6px rise/fade over 150ms and exit over 110ms. Reduced motion makes visibility changes immediate. See [motion](layout.md#catalog-interaction-motion--18-october-2026).
+
+The development-only TanStack launcher sits bottom-left so it does not cover the bottom-right back-to-top action.
+
+Radix Select marks body with `data-scroll-locked` while open. Global CSS transfers that lock to the document root and overrides Radix's important body overflow rule with `overflow: visible`. Otherwise body becomes the sticky header's scrolling ancestor, and popper menus anchor above the viewport after scrolling. Keep this override independent of motion preferences and preserve the attribute-driven cleanup when the menu closes.
+
+The back-to-top button uses its existing primary surface and border without an additional drop shadow. Visibility, focus, and scrolling behavior stay the same.

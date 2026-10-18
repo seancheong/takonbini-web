@@ -55,22 +55,25 @@ export function ThemeProvider({
 
 	useEffect(() => {
 		const root = window.document.documentElement;
-
+		root.dataset.themeSwitching = "true";
 		root.classList.remove("light", "dark", ...darkThemeClasses);
-
-		if (theme === "system") {
-			const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-				.matches
-				? "dark"
-				: "light";
-
-			root.classList.add(systemTheme);
-			if (systemTheme === "dark") root.classList.add(...darkThemeClasses);
-			return;
-		}
-
-		root.classList.add(theme);
-		if (theme === "dark") root.classList.add(...darkThemeClasses);
+		const resolved =
+			theme === "system"
+				? window.matchMedia("(prefers-color-scheme: dark)").matches
+					? "dark"
+					: "light"
+				: theme;
+		root.classList.add(resolved);
+		if (resolved === "dark") root.classList.add(...darkThemeClasses);
+		// Resolve the new theme while transitions are disabled.
+		getComputedStyle(root).color;
+		const frame = requestAnimationFrame(() => {
+			delete root.dataset.themeSwitching;
+		});
+		return () => {
+			cancelAnimationFrame(frame);
+			delete root.dataset.themeSwitching;
+		};
 	}, [theme]);
 
 	const value = {

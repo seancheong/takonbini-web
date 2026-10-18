@@ -16,7 +16,7 @@ Use [the existing Radix wrapper](../../src/components/ui/select.tsx) for a singl
 
 `SelectTrigger.size` is exactly `"sm" | "default"`; default is `"default"` (36px high), `sm` is 32px. These are the only size names. The theme/language callers override minimum height to 44px; preserve that touch target. There is no `variant` prop.
 
-`SelectContent` defaults: `position="item-aligned"`, `align="center"`. Radix also supports `position="popper"` and alignment values; preserve those prop contracts instead of inventing appearance variants. Both production callers use the defaults.
+`SelectContent` defaults: `position="item-aligned"`, `align="center"`. Radix also supports `position="popper"` and alignment values; preserve those prop contracts instead of inventing appearance variants. Theme and language callers use `position="popper"` and `align="end"` so the popup opens from the trigger and stays within the viewport.
 
 Correct, extracted from [LanguageSelect](../../src/components/LanguageSelect.tsx):
 
@@ -59,15 +59,13 @@ for typed overrides and native `style` for runtime inline values. Do not add an 
 
 SVG/value/item-text geometry is applied to owned elements and both shell callers.
 Arbitrary new children must carry their own explicit styles; no global descendant
-selector will size them. Preserve the documented 16px shell icons. Enter/exit and
-side/popup offsets retain the existing values. Select transitions and animations
-now use zero duration with reduced motion.
+selector will size them. Preserve the documented 16px shell icons. Enter/exit use 180ms/120ms ease-out motion with the Radix trigger origin. Popper positioning retains its side offsets. Reduced motion and keyboard actions disable menu animations.
 
 ## Catalog search
 
 Use [CatalogControls](../../src/features/products/catalog/CatalogControls.tsx) inside the existing catalog; use a normal navigation link to open a different page. No shared `Input` component or input size/variant API exists.
 
-Search uses CatalogControls' private `searchForm`, `searchField`, `searchLabel`, and `searchInput` styles. It has a visible associated label, a `type="search"` input at 16px, a 44px minimum input height, and form submission. The decorative search icon is inside an associated overlay label so clicking it focuses the input. Search disables autocomplete and spellcheck; while catalog navigation or refresh is pending, its submit button is disabled and reads Searching… (localized). The submit handler also guards pending requests. Search text is draft until submit; do not silently add debounce or live filtering in #29.
+Search uses CatalogControls' private `searchForm`, `searchField`, `searchLabel`, and `searchInput` styles. It has a visible associated label, a `type="search"` input at 16px, a 44px minimum input height, and form submission. The decorative search icon is inside an associated overlay label so clicking it focuses the input. Search disables autocomplete and spellcheck; while catalog navigation or refresh is pending, its submit button is disabled and retains the localized Search label so its width stays fixed. Loading feedback belongs to the results overlay. The submit handler also guards pending requests. Search text is draft until submit; do not silently add debounce or live filtering in #29.
 
 Correct, from CatalogControls:
 
@@ -113,3 +111,7 @@ On compact screens, search uses the full toolbar width and the filter trigger si
 ## Review fixes
 
 Native `validity.badInput` is checked on editing and before submission: incomplete numeric input is distinct from an intentionally empty price bound. Malformed prices keep the dialog open and focus the offending input. Reset/reopen clears this invalid-draft state. Error text and invalid input borders use the dedicated errorText token. Apply's pressed state preserves the primary foreground/background pairing. The Close action has min-width 44px and cannot flex-shrink.
+
+Pointer-triggered filter dismissal retains the native dialog for its 180ms exit before releasing focus/scroll locking. Apply commits once that exit completes. Keyboard dismissal and reduced-motion dismissal remain immediate. See [motion](layout.md#catalog-interaction-motion--18-october-2026).
+
+The filter dialog enters with a 12px rise/0.98 scale over 250ms on desktop, or a 24px rise over 280ms below 600px. Backdrop timing matches. Keyboard actions and reduced motion are immediate. Sticky access opens this same dialog and copies applied values into the draft.

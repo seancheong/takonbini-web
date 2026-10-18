@@ -21,7 +21,6 @@ export default {
 			taxIncluded: "含稅",
 			title: "日本便利商店商品",
 			subtitle: "瀏覽 7-Eleven、Lawson 與 FamilyMart 的商品資訊。",
-			catalogLabel: "商品目錄",
 			allStores: "所有商店",
 			results: "商品列表",
 			loadedCount: "已顯示 {{count}} 件商品",
@@ -46,10 +45,11 @@ export default {
 			end: "已顯示所有符合條件的商品。",
 			scrollTop: "回到頂部",
 			filters: {
+				appliedFilters: "已套用的篩選",
+				noFilters: "未套用篩選",
 				description:
 					"選擇條件後按「套用篩選」以更新結果。重置時會保留搜尋內容。",
 				title: "篩選",
-				searchPending: "搜尋中…",
 				searchLabel: "搜尋",
 				searchPlaceholder: "搜尋商品名稱或說明",
 				stores: "商店",

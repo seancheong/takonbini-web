@@ -1,4 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
+import type { ReactElement } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { productQueries } from "@/features/products/data/product-queries";
 import type { ProductFilters } from "@/features/products/products.contracts";
@@ -7,12 +8,25 @@ type Loader = (args: {
 	context: { queryClient: QueryClient };
 	deps: { search: ProductFilters };
 }) => unknown;
-const route = vi.hoisted(() => ({ loader: undefined as Loader | undefined }));
+type CatalogElement = ReactElement<{
+	onApply: (filters: ProductFilters) => Promise<void>;
+}>;
+const route = vi.hoisted(() => ({
+	loader: undefined as Loader | undefined,
+	component: undefined as (() => CatalogElement) | undefined,
+	navigate: vi.fn(() => Promise.resolve()),
+}));
 vi.mock("@tanstack/react-router", () => ({
-	createFileRoute: () => (options: { loader: Loader }) => {
-		route.loader = options.loader;
-		return options;
-	},
+	createFileRoute:
+		() => (options: { loader: Loader; component: () => CatalogElement }) => {
+			route.loader = options.loader;
+			route.component = options.component;
+			return {
+				...options,
+				useSearch: () => ({}),
+				useNavigate: () => route.navigate,
+			};
+		},
 }));
 vi.mock("@/features/products/products", async () => ({
 	CatalogScreen: () => null,
@@ -65,4 +79,18 @@ it("waits for the first catalog page before completing the route loader's SSR sn
 		release();
 		client.clear();
 	}
+});
+
+it("preserves scroll position when the actual catalog filter handler navigates to All stores", async () => {
+	if (!route.component) throw new Error("Catalog component was not registered");
+	route.navigate.mockClear();
+	const element = route.component();
+	await element.props.onApply({});
+	expect(route.navigate).toHaveBeenCalledWith(
+		expect.objectContaining({
+			replace: true,
+			resetScroll: false,
+			search: expect.objectContaining({ stores: undefined }),
+		}),
+	);
 });

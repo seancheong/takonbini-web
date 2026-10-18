@@ -2,9 +2,9 @@
 
 ## Approved catalog revamp — 17 October 2026
 
-The catalog uses a 32px section gap. Typography uses 12px store/tax/eyebrow labels, 13px Japanese supporting titles, 14px search/store/filter controls, 16px prices and introductory copy (1.6 leading), and 18px card titles (17px compact, 1.4 leading). Search and store controls sit directly on the page with a 16px gap, avoiding nested tinted containers. The results heading uses 20px / 650 text. Filters use a bounded native dialog with wrapping checkbox tiles, 24px section gaps, a scrolling body, and a persistent action footer.
+The catalog uses a 32px section gap. Typography uses 12px store/tax labels, 13px Japanese supporting titles, 14px search/store/filter controls, 16px prices and introductory copy (1.6 leading), and 18px card titles (17px compact, 1.4 leading). Search and store controls sit directly on the page with a 16px gap, avoiding nested tinted containers. The results heading uses 20px / 650 text. Filters use a bounded native dialog with wrapping checkbox tiles, 24px section gaps, a scrolling body, and a persistent action footer.
 
-The catalog hero uses clamp(30px,3.4vw,46px), weight 650, line-height 1.12. Cards use 18px / 500 titles (17px compact), 16px padded copy within an 8px-radius shared surface, and 1.15 image canvases (square compact). ProductGrid uses one column up to 600px, two from 601–799px, and three from 800px, with 40px/28px gaps. The route-backed product modal has a 1120px max width, viewport-bounded scrolling, and full-screen presentation below 600px. Its image, facts, release date, regions and source use the same detail-screen component as the standalone page. Global scrollbar-gutter stays stable.
+The catalog hero uses clamp(30px,3.4vw,46px), weight 600, line-height 1.18. Cards use 18px / 500 titles (17px compact), 16px padded copy within an 8px-radius shared surface, and 1.15 image canvases (square compact). ProductGrid uses one column up to 600px, two from 601–799px, and three from 800px, with 40px/28px gaps. The route-backed product modal has a 1120px max width, viewport-bounded scrolling, and full-screen presentation below 600px. Its image, facts, release date, regions and source use the same detail-screen component as the standalone page. Global scrollbar-gutter stays stable.
 
 The compatibility-migration baseline below is retained as historical context; the approved changes above supersede its geometry and interaction restrictions.
 
@@ -52,3 +52,29 @@ ProductGrid's owned grid style is the correct geometry. Replacing it with a one-
 - Catalog controls are at least 44px tall. The raw Select sizes are smaller; shell callers explicitly enforce 44px minimums. Preserve the caller override rather than assuming the base primitive passes every touch check.
 
 Use [token roles](tokens.md) for all color-bearing declarations. Current fixed measurements are compatibility evidence, not permission to invent a new global token or universal spacing rule.
+
+## Catalog interaction motion — 18 October 2026
+
+[Motion CSS](../../src/styles/motion.css), imported by styles.css, owns scoped motion through explicit data-slot attributes. Native dialog starting styles, backdrop pseudo-elements, parent-hover image effects, and discrete display transitions live together here; component geometry and semantic colors stay in their owning StyleX tables. Do not use these selectors as general action variants.
+
+| Interaction | Motion |
+| --- | --- |
+| Product preview | 8px rise + fade; 220ms entry, 160ms exit with a 4px nudge |
+| Filter dialog | Desktop 12px rise + scale 0.98 → 1 over 250ms; mobile 24px rise over 280ms; 180ms exit |
+| Dialog backdrop | Fade with identical panel duration and easing |
+| Product image | Hover zoom to 1.025 over 150ms; fine pointers with hover only |
+| Search / Apply | Press scale 0.97 over 120ms; disabled and keyboard actions stay still |
+| Back to top | 6px rise + fade over 150ms; 110ms exit |
+| Theme / language menu | Trigger-origin scale 0.97 + 4px nudge; 180ms entry, 120ms exit |
+
+Dialog and menu easing is cubic-bezier(0.32, 0.72, 0, 1); image/press/scroll feedback uses ease-out. Native dialogs remain modal and retain their focus/scroll lock during pointer-triggered exit. [useDialogDismiss](../../src/hooks/useDialogDismiss.ts) finishes on the panel opacity transition, with a fallback 20ms beyond the configured exit and unmount cleanup. Filter Apply commits once dismissal completes. Browser Back still changes route immediately.
+
+RootDocument tracks keyboard versus pointer input. Keyboard-triggered dialogs, menus, and submit actions have no motion; menu option navigation stays instant. Reduced motion disables all added effects, including fades and press/hover transforms. ThemeProvider suppresses transitions while applying theme classes. Native dialog entry and back-to-top display transitions use progressive CSS support: unsupported browsers retain functional immediate visibility changes.
+
+The hero, initial product grid, store choices, and result replacement have no new entrance or stagger animations.
+
+The sticky applied-filter bar appears without an entrance animation. Its fixed height is 64px; only its chip row scrolls horizontally, preserving product browsing space. Filter panel/backdrop share 250ms desktop and 280ms mobile enters, and 180ms exits; product-preview motion remains unchanged.
+
+Catalog refresh adds an absolute loading overlay over a relative results region, preserving its height and 32px inner section gaps. A card-colored status output sticks at header height + 80px above the scrim; only its 900ms linear spinner rotates, and reduced motion disables rotation. Search text and width stay constant during refresh.
+
+The visual-restraint pass removes the catalog eyebrow. Current hero tracking is -0.015em for Latin and normal for Japanese/Chinese. Product-detail prices use 24px tabular numerals at weight 500 with 1.4 leading. All display and interface text retain the existing system family. Status labels use 3px corners; no new page-load or scrolling motion is introduced.
