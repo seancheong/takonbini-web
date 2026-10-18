@@ -1,0 +1,123 @@
+{
+  "at": "2026-10-18T20:23:28.129123+08:00",
+  "target": "https://takonbini.com",
+  "checks": [
+    {
+      "path": "/?lang=ja",
+      "saved": "zh",
+      "browser": "en",
+      "expected": "ja",
+      "actual": "en",
+      "status": 200,
+      "seconds": 1.742,
+      "pass": false,
+      "title_present": true,
+      "description_present": true
+    },
+    {
+      "path": "/?lang=zh",
+      "saved": "en",
+      "browser": "ja",
+      "expected": "zh-Hant",
+      "actual": "zh-Hant",
+      "status": 200,
+      "seconds": 1.546,
+      "pass": true,
+      "title_present": true,
+      "description_present": true
+    },
+    {
+      "path": "/?lang=en",
+      "saved": "ja",
+      "browser": "zh",
+      "expected": "en",
+      "actual": "ja",
+      "status": 200,
+      "seconds": 3.634,
+      "pass": false,
+      "title_present": true,
+      "description_present": true
+    },
+    {
+      "path": "/?lang=fr",
+      "saved": "ja",
+      "browser": "en",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "seconds": 1.069,
+      "pass": true,
+      "title_present": true,
+      "description_present": true
+    },
+    {
+      "path": "/",
+      "saved": "zh",
+      "browser": "en",
+      "expected": "zh-Hant",
+      "actual": "ja",
+      "status": 200,
+      "seconds": 0.639,
+      "pass": false,
+      "title_present": true,
+      "description_present": true
+    },
+    {
+      "path": "/",
+      "saved": "",
+      "browser": "en;q=0.5,ja;q=0.9",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "seconds": 1.32,
+      "pass": true,
+      "title_present": true,
+      "description_present": true
+    },
+    {
+      "check": "store browse",
+      "store": "SevenEleven",
+      "status": 200,
+      "count": 20,
+      "pass": true,
+      "seconds": 0.603
+    },
+    {
+      "check": "cursor pagination",
+      "count": 20,
+      "pass": true
+    },
+    {
+      "check": "store browse",
+      "store": "Lawson",
+      "status": 200,
+      "count": 20,
+      "pass": true,
+      "seconds": 0.586
+    },
+    {
+      "check": "store browse",
+      "store": "FamilyMart",
+      "status": 200,
+      "count": 20,
+      "pass": true,
+      "seconds": 1.016
+    },
+    {
+      "check": "direct detail SSR",
+      "status": 200,
+      "pass": true,
+      "seconds": 0.679
+    },
+    {
+      "check": "sitemap XML",
+      "status": 200,
+      "entries": 5001,
+      "pass": true,
+      "seconds": 14.642,
+      "limitation": "valid XML and nonempty; completeness not established"
+    }
+  ],
+  "all_pass": false,
+  "timing_note": "single request wall times, not performance benchmark"
+}

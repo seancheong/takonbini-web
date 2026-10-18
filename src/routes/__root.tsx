@@ -1,9 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import type { QueryClient } from "@tanstack/react-query";
-import { Analytics } from "@vercel/analytics/react";
-import { darkTheme, themeStyles } from "../styles/themes.stylex";
-import "../i18n";
 import {
 	createRootRouteWithContext,
 	HeadContent,
@@ -16,6 +13,8 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie } from "@tanstack/react-start/server";
+import { Analytics } from "@vercel/analytics/react";
+import type { i18n as I18n } from "i18next";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "../components/Header";
@@ -25,7 +24,7 @@ import {
 	ThemeProvider,
 	themeCookieKey,
 } from "../contexts/ThemeProvider";
-import i18n, { setSSRLanguage } from "../i18n";
+import { setSSRLanguage } from "../i18n";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import { navigateLocale } from "../locale-navigation";
 import {
@@ -33,10 +32,12 @@ import {
 	parseLocaleSearch,
 	resolveSupportedLanguage,
 } from "../localization";
+import { darkTheme, themeStyles } from "../styles/themes.stylex";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
+	i18n: I18n;
 }
 
 const isTheme = (value: string | undefined): value is Theme =>
@@ -51,11 +52,12 @@ const loaderFn = createServerFn({ method: "GET" }).handler(async () => {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
 	validateSearch: parseLocaleSearch,
 	search: { middlewares: [retainSearchParams(["lang"])] },
-	beforeLoad: async ({ search, preload }) => {
-		if (!preload) await setSSRLanguage(search.lang);
+	beforeLoad: async ({ search, preload, context }) => {
+		if (!preload) await setSSRLanguage(context.i18n, search.lang);
 	},
 	loader: () => loaderFn(),
-	head: () => {
+	head: ({ match }) => {
+		const { i18n } = match.context;
 		const baseUrl = process.env.SITE_URL ?? "http://localhost:3000";
 
 		const title = i18n.t("appName");

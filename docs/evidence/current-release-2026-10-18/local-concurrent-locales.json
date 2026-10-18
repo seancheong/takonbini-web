@@ -1,0 +1,79 @@
+{
+  "at": "2026-10-18T22:20:18.732031+08:00",
+  "target": "http://127.0.0.1:3010",
+  "checks": [
+    {
+      "requested": "en",
+      "actual": "en",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "ja",
+      "actual": "ja",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "zh",
+      "actual": "zh-Hant",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "en",
+      "actual": "en",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "ja",
+      "actual": "ja",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "zh",
+      "actual": "zh-Hant",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "en",
+      "actual": "en",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "ja",
+      "actual": "ja",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "zh",
+      "actual": "zh-Hant",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "en",
+      "actual": "en",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "ja",
+      "actual": "ja",
+      "pass": true,
+      "status": 200
+    },
+    {
+      "requested": "zh",
+      "actual": "zh-Hant",
+      "pass": true,
+      "status": 200
+    }
+  ],
+  "all_pass": true
+}
