@@ -9,7 +9,7 @@ import i18n from "@/i18n";
 export const Route = createFileRoute("/")({
 	component: Catalog,
 	validateSearch: catalogSearch.parse,
-	loaderDeps: ({ search }) => ({ search }),
+	loaderDeps: ({ search }) => ({ search: catalogSearch.parse(search) }),
 	loader: ({ context, deps }) => {
 		return context.queryClient.prefetchInfiniteQuery(
 			productQueries.catalog(catalogSearch.normalize(deps.search)),
@@ -19,7 +19,9 @@ export const Route = createFileRoute("/")({
 });
 
 function Catalog() {
-	const filters = catalogSearch.normalize(Route.useSearch());
+	const filters = catalogSearch.normalize(
+		catalogSearch.parse(Route.useSearch()),
+	);
 	const navigate = Route.useNavigate();
 	return (
 		<CatalogScreen

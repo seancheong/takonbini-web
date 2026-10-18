@@ -12,12 +12,14 @@ export default {
 			selectTheme: "Choose theme",
 		},
 		language: {
+			changed: "Language changed to {{language}}.",
 			en: "English",
 			ja: "Japanese",
-			zh: "Chinese",
+			zh: "Traditional Chinese",
 			changeLanguage: "Change language",
 		},
 		product: {
+			fallbackLanguage: "Shown in {{language}}",
 			taxIncluded: "incl. tax",
 			title: "Japan’s convenience stores",
 			subtitle: "Browse products from 7-Eleven, Lawson, and FamilyMart.",

@@ -5,10 +5,25 @@ export type LocalizedText =
 	| ActiveCatalogProduct["title"]
 	| ActiveCatalogProduct["description"];
 
-export const resolveLocalizedText = (
+const fallbackOrder: Record<Language, Language[]> = {
+	en: ["ja", "zh"],
+	ja: ["en", "zh"],
+	zh: ["ja", "en"],
+};
+
+export function resolveProductText(
 	localizedText: LocalizedText,
-	language: Language,
-) => localizedText[language] || localizedText.en || localizedText.ja || "";
+	requested: Language,
+) {
+	for (const language of [requested, ...fallbackOrder[requested]]) {
+		const text = localizedText[language]?.trim();
+		if (text) return { text, language, fallback: language !== requested };
+	}
+	return { text: "", language: requested, fallback: false };
+}
+
+export const resolveLocalizedText = (text: LocalizedText, language: Language) =>
+	resolveProductText(text, language).text;
 
 const resolveCurrencyLocale = (language: Language) => {
 	if (language === "ja") return "ja-JP";

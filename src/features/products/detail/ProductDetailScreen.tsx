@@ -9,7 +9,7 @@ import { productByIdQueryOptions } from "@/features/products/data/product-querie
 import {
 	formatPrice,
 	isFutureReleaseDate,
-	resolveLocalizedText,
+	resolveProductText,
 } from "@/features/products/model/product-display";
 import { getProxiedImageUrl } from "@/features/products/model/product-images";
 import {
@@ -21,7 +21,7 @@ import {
 	storeLabelKeys,
 } from "@/features/products/model/product-labels";
 import { isSafari } from "@/features/products/model/product-navigation";
-import type { Language } from "@/i18n";
+import { resolveSupportedLanguage } from "@/localization";
 import { storeTextStyles } from "@/styles/stores.stylex";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
@@ -40,7 +40,8 @@ export default function ProductDetailScreen({
 	const [imageLoaded, setImageLoaded] = useState(false);
 	const imageRef = useRef<HTMLImageElement | null>(null);
 	const { t, i18n } = useTranslation();
-	const language = i18n.language as Language;
+	const language =
+		resolveSupportedLanguage(i18n.resolvedLanguage ?? i18n.language) ?? "en";
 	const { data: product } = useSuspenseQuery(productByIdQueryOptions(id));
 	// biome-ignore lint/correctness/useExhaustiveDependencies: Reset for each product, including navigation between detail pages.
 	useLayoutEffect(() => {
@@ -61,8 +62,10 @@ export default function ProductDetailScreen({
 			setImageLoaded(true);
 		}
 	}, []);
-	const title = resolveLocalizedText(product.title, language);
-	const description = resolveLocalizedText(product.description, language);
+	const titleContent = resolveProductText(product.title, language);
+	const title = titleContent.text;
+	const descriptionContent = resolveProductText(product.description, language);
+	const description = descriptionContent.text;
 	const storeLabelKey =
 		storeLabelKeys[product.store as keyof typeof storeLabelKeys];
 	const categoryLabelKey =
@@ -204,10 +207,44 @@ export default function ProductDetailScreen({
 								) : null}
 							</div>
 
-							<h1 {...stylex.props(layoutStyles.title)}>{title}</h1>
+							<h1
+								lang={
+									titleContent.language === "zh"
+										? "zh-Hant"
+										: titleContent.language
+								}
+								{...stylex.props(layoutStyles.title)}
+							>
+								{title}
+							</h1>
+							{titleContent.fallback && (
+								<p {...stylex.props(layoutStyles.fallback)}>
+									{t("product.fallbackLanguage", {
+										language: t(`language.${titleContent.language}`),
+									})}
+								</p>
+							)}
 
 							{description ? (
-								<p {...stylex.props(layoutStyles.description)}>{description}</p>
+								<div>
+									<p
+										lang={
+											descriptionContent.language === "zh"
+												? "zh-Hant"
+												: descriptionContent.language
+										}
+										{...stylex.props(layoutStyles.description)}
+									>
+										{description}
+									</p>
+									{descriptionContent.fallback && (
+										<p {...stylex.props(layoutStyles.fallback)}>
+											{t("product.fallbackLanguage", {
+												language: t(`language.${descriptionContent.language}`),
+											})}
+										</p>
+									)}
+								</div>
 							) : null}
 						</div>
 
@@ -287,6 +324,12 @@ export default function ProductDetailScreen({
 	);
 }
 const layoutStyles = stylex.create({
+	fallback: {
+		fontSize: "12px",
+		lineHeight: 1.5,
+		color: colors.mutedForeground,
+		marginTop: "4px",
+	},
 	modalScreen: { minHeight: 0, padding: "32px", paddingTop: "52px" },
 	tax: {
 		fontSize: "10px",

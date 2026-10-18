@@ -12,12 +12,14 @@ export default {
 			selectTheme: "テーマを選択",
 		},
 		language: {
+			changed: "表示言語を{{language}}に変更しました。",
 			en: "英語",
 			ja: "日本語",
-			zh: "中国語",
+			zh: "繁体字中国語",
 			changeLanguage: "言語を変更",
 		},
 		product: {
+			fallbackLanguage: "{{language}}で表示",
 			taxIncluded: "税込",
 			title: "日本のコンビニ商品",
 			subtitle:

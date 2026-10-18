@@ -32,7 +32,7 @@ Follow device preference → system (provider default)
 
 Use [LanguageSelect](../../src/components/LanguageSelect.tsx) for locale; use ThemeSelect for appearance. Read `SUPPORTED_LANGUAGES` from [i18n](../../src/i18n.ts), and keep translated labels.
 
-No props or variants exist. Supported values are `en`, `zh`, `ja`; fallback is the first supported value. Do not replace the project locale code `zh` with an invented value in callers. Existing Chinese copy includes mixed script; editorial localization changes belong to #27/#16. Header is its only caller.
+No props or variants exist. Supported values are `en`, `zh`, `ja`; fallback is the first supported value. Do not replace the project locale code `zh` with an invented value in callers. The Chinese selector explicitly identifies Traditional Chinese; the document uses `zh-Hant` while URLs and translation data retain the project key `zh`. Header is its only caller.
 
 Correct from Header: `<LanguageSelect />`. Incorrect mutation: `<LanguageSelect size="compact" />`; no such prop exists. Keep Select's visible value and aria-label rather than showing an unlabeled globe.
 
@@ -75,3 +75,9 @@ The development-only TanStack launcher sits bottom-left so it does not cover the
 Radix Select marks body with `data-scroll-locked` while open. Global CSS transfers that lock to the document root and overrides Radix's important body overflow rule with `overflow: visible`. Otherwise body becomes the sticky header's scrolling ancestor, and popper menus anchor above the viewport after scrolling. Keep this override independent of motion preferences and preserve the attribute-driven cleanup when the menu closes.
 
 The back-to-top button uses its existing primary surface and border without an additional drop shadow. Visibility, focus, and scrolling behavior stay the same.
+
+## Locale routing (#16)
+
+The root owns optional `lang` search validation and retention across links, filter changes, and detail masks. Locale precedence is explicit supported URL, saved cookie, weighted supported browser preference, then English. Server rendering resolves this before route content; after hydration a missing locale is added with replace navigation and no scroll reset. Unsupported values fall through to the next source. `LanguageSelect` changes i18next immediately, saves the existing cookie, and calls `navigateLocale` to preserve search, hash, history state, and any detail URL mask. Its persistent output announces explicit changes without moving focus. Locale navigation replaces the current entry and preserves scroll; it does not close/remount a product modal. Product filters and query keys exclude locale.
+
+The document uses English/Japanese/Traditional Chinese language tags and local script-specific font stacks. Preserve the current catalog masthead and submit-based search; the historical Weekly copy is not part of this implementation.

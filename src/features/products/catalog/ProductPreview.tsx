@@ -5,11 +5,13 @@ import { X } from "lucide-react";
 import { Suspense, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDialogDismiss } from "../../../hooks/useDialogDismiss";
+import { resolveSupportedLanguage } from "../../../localization";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
 import ProductDetailError from "../detail/ProductDetailError";
 import ProductDetailPending from "../detail/ProductDetailPending";
 import ProductDetailScreen from "../detail/ProductDetailScreen";
+import { resolveProductText } from "../model/product-display";
 import type {
 	ActiveCatalogProduct,
 	ProductFilters,
@@ -57,10 +59,12 @@ export default function ProductPreview({
 			);
 		};
 	}, []);
-	const title =
-		product?.title[i18n.language as "en" | "ja" | "zh"] ??
-		product?.title.ja ??
-		t("product.details.fullDetails");
+	const title = product
+		? resolveProductText(
+				product.title,
+				resolveSupportedLanguage(i18n.language) ?? "en",
+			).text
+		: t("product.details.fullDetails");
 	return (
 		<dialog
 			ref={dialog}

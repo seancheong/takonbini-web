@@ -13,11 +13,13 @@ export const Route = createFileRoute("/products/$id")({
 		await context.queryClient.ensureQueryData(productQueries.detail(params.id));
 	},
 	pendingComponent: ProductDetailPending,
-	errorComponent: () => <ProductDetailError filters={Route.useSearch()} />,
+	errorComponent: () => (
+		<ProductDetailError filters={catalogSearch.parse(Route.useSearch())} />
+	),
 	component: () => (
 		<ProductDetailScreen
 			id={Route.useParams().id}
-			filters={Route.useSearch()}
+			filters={catalogSearch.parse(Route.useSearch())}
 		/>
 	),
 });
