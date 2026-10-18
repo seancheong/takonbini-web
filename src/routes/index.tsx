@@ -4,7 +4,6 @@ import {
 	catalogSearch,
 	productQueries,
 } from "@/features/products/products";
-import i18n from "@/i18n";
 
 export const Route = createFileRoute("/")({
 	component: Catalog,
@@ -15,7 +14,7 @@ export const Route = createFileRoute("/")({
 			productQueries.catalog(catalogSearch.normalize(deps.search)),
 		);
 	},
-	head: () => ({ meta: [{ title: i18n.t("appName") }] }),
+	head: ({ match }) => ({ meta: [{ title: match.context.i18n.t("appName") }] }),
 });
 
 function Catalog() {

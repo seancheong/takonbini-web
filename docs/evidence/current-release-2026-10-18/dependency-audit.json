@@ -1,0 +1,195 @@
+{
+  "command": "pnpm audit --prod --json",
+  "vulnerabilities": {
+    "info": 0,
+    "low": 0,
+    "moderate": 5,
+    "high": 19,
+    "critical": 2
+  },
+  "note": "Dependency graph findings; deployed runtime reachability is not established.",
+  "advisories": [
+    {
+      "module": "seroval",
+      "title": "Seroval affected by Denial of Service via Array serialization",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-66fc-rw6m-c2q6",
+      "patched_versions": ">=1.4.1"
+    },
+    {
+      "module": "seroval",
+      "title": "seroval Affected by Remote Code Execution via JSON Deserialization",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-3rxj-6cgf-8cfw",
+      "patched_versions": ">=1.4.1"
+    },
+    {
+      "module": "seroval",
+      "title": "seroval Affected by Prototype Pollution via JSON Deserialization",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-hj76-42vx-jwp4",
+      "patched_versions": ">=1.4.1"
+    },
+    {
+      "module": "seroval",
+      "title": "Seroval affected by Denial of Service via Deeply Nested Objects",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-3j22-8qj3-26mx",
+      "patched_versions": ">=1.4.1"
+    },
+    {
+      "module": "rollup",
+      "title": "Rollup 4 has Arbitrary File Write via Path Traversal",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-mw96-cpmx-2vgc",
+      "patched_versions": ">=4.59.0"
+    },
+    {
+      "module": "postcss",
+      "title": "PostCSS has XSS via Unescaped </style> in its CSS Stringify Output",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-qx2v-qp2m-jg93",
+      "patched_versions": ">=8.5.10"
+    },
+    {
+      "module": "ws",
+      "title": "ws: Uninitialized memory disclosure",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-58qx-3vcg-4xpx",
+      "patched_versions": ">=8.20.1"
+    },
+    {
+      "module": "seroval",
+      "title": "seroval affected by Denial of Service via RegExp serialization",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-hx9m-jf43-8ffr",
+      "patched_versions": ">=1.4.1"
+    },
+    {
+      "module": "js-yaml",
+      "title": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-h67p-54hq-rp68",
+      "patched_versions": ">=4.2.0"
+    },
+    {
+      "module": "ws",
+      "title": "ws: Memory exhaustion DoS from tiny fragments and data chunks",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p",
+      "patched_versions": ">=8.21.0"
+    },
+    {
+      "module": "js-yaml",
+      "title": "js-yaml: YAML merge-key chains can force quadratic CPU consumption",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-52cp-r559-cp3m",
+      "patched_versions": ">=4.3.0"
+    },
+    {
+      "module": "postcss",
+      "title": "PostCSS: Arbitrary file read and information disclosure via attacker-controlled sourceMappingURL in CSS comments",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-6g55-p6wh-862q",
+      "patched_versions": ">=8.5.12"
+    },
+    {
+      "module": "seroval",
+      "title": "seroval: `seroval.fromJSON()` Promise resolver type confusion invokes attacker-controlled methods during deserialization",
+      "severity": "critical",
+      "url": "https://github.com/advisories/GHSA-mv8w-475r-vwqw",
+      "patched_versions": ">=1.5.3"
+    },
+    {
+      "module": "postcss",
+      "title": "PostCSS: incomplete fix of GHSA-6g55-p6wh-862q \u2014 attacker-controlled sourceMappingURL reads arbitrary .map files when `from` is unset",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+      "patched_versions": ">=8.5.23"
+    },
+    {
+      "module": "js-yaml",
+      "title": "JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) \u2014 CVE-2026-59870 fix not backported",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-5p4m-2wfm-xmqj",
+      "patched_versions": ">=4.3.1"
+    },
+    {
+      "module": "nanoid",
+      "title": "nanoid: non-secure generators can loop indefinitely with negative size",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-28wg-ghj8-5hjv",
+      "patched_versions": ">=3.3.16"
+    },
+    {
+      "module": "nanoid",
+      "title": "nanoid: custom generators can loop indefinitely when size is zero",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-2v37-7h3g-55p8",
+      "patched_versions": ">=3.3.18"
+    },
+    {
+      "module": "postcss",
+      "title": "PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-r28c-9q8g-f849",
+      "patched_versions": ">=8.5.18"
+    },
+    {
+      "module": "browserslist",
+      "title": "Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-c83g-rgw3-j3cx",
+      "patched_versions": ">=4.28.7"
+    },
+    {
+      "module": "browserslist",
+      "title": "Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeStats)",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-73wf-gq98-2v4g",
+      "patched_versions": ">=4.28.7"
+    },
+    {
+      "module": "nanoid",
+      "title": "nanoid: Integer Overflow or Wraparound",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-xwg4-73v4-xw9w",
+      "patched_versions": ">=3.3.12"
+    },
+    {
+      "module": "baseline-browser-mapping",
+      "title": "baseline-browser-mapping process termination on invalid input causes denial of service",
+      "severity": "moderate",
+      "url": "https://github.com/advisories/GHSA-w5vr-8v7q-w6rv",
+      "patched_versions": ">=2.11.0"
+    },
+    {
+      "module": "js-yaml",
+      "title": "js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-2883-xcg3-v3hh",
+      "patched_versions": ">=4.3.2"
+    },
+    {
+      "module": "seroval",
+      "title": "Seroval: `fromJSON()` Promise thenable assimilation invokes plugin-produced callables (bypass of GHSA-mv8w-475r-vwqw)",
+      "severity": "critical",
+      "url": "https://github.com/advisories/GHSA-p6vx-979v-rg4c",
+      "patched_versions": ">=1.6.2"
+    },
+    {
+      "module": "seroval",
+      "title": "Seroval: Memory exhaustion via unchecked TypedArray length in JSON deserialization",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-jp82-f5mq-hwhp",
+      "patched_versions": ">=1.6.3"
+    },
+    {
+      "module": "source-map-js",
+      "title": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+      "severity": "high",
+      "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+      "patched_versions": ">=1.2.2"
+    }
+  ]
+}

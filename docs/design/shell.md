@@ -81,3 +81,11 @@ The back-to-top button uses its existing primary surface and border without an a
 The root owns optional `lang` search validation and retention across links, filter changes, and detail masks. Locale precedence is explicit supported URL, saved cookie, weighted supported browser preference, then English. Server rendering resolves this before route content; after hydration a missing locale is added with replace navigation and no scroll reset. Unsupported values fall through to the next source. `LanguageSelect` changes i18next immediately, saves the existing cookie, and calls `navigateLocale` to preserve search, hash, history state, and any detail URL mask. Its persistent output announces explicit changes without moving focus. Locale navigation replaces the current entry and preserves scroll; it does not close/remount a product modal. Product filters and query keys exclude locale.
 
 The document uses English/Japanese/Traditional Chinese language tags and local script-specific font stacks. Preserve the current catalog masthead and submit-based search; the historical Weekly copy is not part of this implementation.
+
+## Server locale ownership
+
+Each server router owns a separate translation instance from `getRouterI18n`.
+The router's `I18nextProvider`, root locale resolution, and route metadata use
+that same instance. Never change the module singleton's language during SSR:
+concurrent visitors can otherwise receive another request's language. Browser
+routers retain the existing singleton for language detection and persistence.
