@@ -9,7 +9,7 @@ import ThemeSelect from "./ThemeSelect";
 export default function Header() {
 	const { t } = useTranslation();
 	return (
-		<header {...stylex.props(layoutStyles.header)}>
+		<header data-slot="app-header" {...stylex.props(layoutStyles.header)}>
 			<div {...stylex.props(layoutStyles.inner)}>
 				<div {...stylex.props(layoutStyles.brand)}>
 					<Link to="/" {...stylex.props(layoutStyles.home)}>

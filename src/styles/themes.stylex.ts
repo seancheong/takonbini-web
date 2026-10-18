@@ -6,7 +6,6 @@ export const darkTheme = stylex.createTheme(colors, {
 	errorText: "oklch(0.75 0.15 25)",
 	productCardShadow: "0 0 0 1px oklch(1 0 0 / 0.12)",
 	productCardShadowHover: "0 0 0 1px oklch(1 0 0 / 0.2)",
-	productImageOutline: "oklch(1 0 0 / 0.1)",
 	newBadgeBackground: "oklch(0.3 0.035 145)",
 	newBadgeForeground: "oklch(0.84 0.065 145)",
 	upcomingBadgeBackground: "oklch(0.32 0.048 80)",

@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
-import { Search, X } from "lucide-react";
-import { useEffect, useId, useState } from "react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Store } from "@/features/products/model/product-values";
 import type { ProductFilters } from "@/features/products/products.contracts";
@@ -18,15 +18,46 @@ interface CatalogControlsProps {
 	onApply: (filters: ProductFilters) => void;
 	children: React.ReactNode;
 	isPending?: boolean;
+	onOpenFilters?: () => void;
 }
 export default function CatalogControls({
 	filters,
 	onApply,
 	children,
 	isPending = false,
+	onOpenFilters,
 }: CatalogControlsProps) {
 	const { t } = useTranslation();
 	const id = useId();
+	const controls = useRef<HTMLDivElement>(null);
+	const [showSticky, setShowSticky] = useState(false);
+	useEffect(() => {
+		if (!onOpenFilters || typeof IntersectionObserver === "undefined") return;
+		let observer: IntersectionObserver;
+		const observe = () => {
+			observer?.disconnect();
+			const headerHeight =
+				document
+					.querySelector('[data-slot="app-header"]')
+					?.getBoundingClientRect().height ?? 0;
+			observer = new IntersectionObserver(
+				([entry]) => {
+					setShowSticky(
+						!entry.isIntersecting &&
+							entry.boundingClientRect.bottom <= headerHeight,
+					);
+				},
+				{ rootMargin: `-${headerHeight}px 0px 0px 0px`, threshold: 0 },
+			);
+			if (controls.current) observer.observe(controls.current);
+		};
+		observe();
+		window.addEventListener("resize", observe);
+		return () => {
+			observer.disconnect();
+			window.removeEventListener("resize", observe);
+		};
+	}, [onOpenFilters]);
 	const [search, setSearch] = useState(filters.search ?? "");
 	useEffect(() => setSearch(filters.search ?? ""), [filters.search]);
 	const chips: {
@@ -95,8 +126,9 @@ export default function CatalogControls({
 					includeSoon: undefined,
 				}),
 		});
+	const activeCount = chips.filter((chip) => chip.id !== "search").length;
 	return (
-		<div {...stylex.props(layoutStyles.controls)}>
+		<div ref={controls} {...stylex.props(layoutStyles.controls)}>
 			<div {...stylex.props(layoutStyles.toolbar)}>
 				<search {...stylex.props(layoutStyles.searchSlot)}>
 					<form
@@ -138,13 +170,10 @@ export default function CatalogControls({
 								type="submit"
 								disabled={isPending}
 								aria-busy={isPending}
+								data-slot="catalog-submit"
 								{...stylex.props(layoutStyles.searchSubmit)}
 							>
-								{t(
-									isPending
-										? "product.filters.searchPending"
-										: "product.filters.searchLabel",
-								)}
+								{t("product.filters.searchLabel")}
 							</button>
 						</div>
 					</form>
@@ -223,6 +252,71 @@ export default function CatalogControls({
 					</button>
 				</div>
 			) : null}
+
+			{showSticky && onOpenFilters && (
+				<section
+					aria-label={t("product.filters.appliedFilters")}
+					data-slot="sticky-filters"
+					{...stylex.props(layoutStyles.sticky)}
+				>
+					<div {...stylex.props(layoutStyles.stickyInner)}>
+						<button
+							type="button"
+							onClick={onOpenFilters}
+							aria-haspopup="dialog"
+							aria-label={
+								activeCount
+									? `${t("product.filters.title")}, ${t("product.filters.activeCount", { count: activeCount })}`
+									: t("product.filters.title")
+							}
+							{...stylex.props(layoutStyles.stickyOpen)}
+						>
+							<SlidersHorizontal size={16} aria-hidden="true" />
+							{t("product.filters.title")}
+							{activeCount > 0 && (
+								<span {...stylex.props(layoutStyles.stickyCount)}>
+									{activeCount}
+								</span>
+							)}
+						</button>
+						<div {...stylex.props(layoutStyles.stickyChips)}>
+							{chips.length ? (
+								chips.map((chip) => (
+									<button
+										key={chip.id}
+										type="button"
+										aria-label={t("product.removeFilter", {
+											label: chip.label,
+										})}
+										onClick={chip.remove}
+										{...stylex.props(
+											layoutStyles.filterChip,
+											layoutStyles.stickyChip,
+										)}
+									>
+										{chip.label}
+										<X size={14} aria-hidden="true" />
+									</button>
+								))
+							) : (
+								<span {...stylex.props(layoutStyles.stickyEmpty)}>
+									{t("product.filters.noFilters")}
+								</span>
+							)}
+						</div>
+						<button
+							type="button"
+							onClick={onOpenFilters}
+							title={chips.map((chip) => chip.label).join(" · ")}
+							{...stylex.props(layoutStyles.stickySummary)}
+						>
+							{chips.length
+								? chips.map((chip) => chip.label).join(" · ")
+								: t("product.filters.noFilters")}
+						</button>
+					</div>
+				</section>
+			)}
 		</div>
 	);
 }
@@ -232,6 +326,75 @@ const storeDotStyles = stylex.create({
 	FamilyMart: { backgroundColor: colors.storeFamily },
 });
 const layoutStyles = stylex.create({
+	sticky: {
+		position: "fixed",
+		top: metrics.headerHeight,
+		insetInline: 0,
+		zIndex: 19,
+		backgroundColor: colors.background,
+		color: colors.foreground,
+		borderBottomWidth: "1px",
+		borderBottomStyle: "solid",
+		borderBottomColor: colors.border,
+		paddingInline: { default: "40px", [conditions.compactCatalog]: "20px" },
+	},
+	stickyInner: {
+		maxWidth: "1200px",
+		marginInline: "auto",
+		display: "flex",
+		alignItems: "center",
+		gap: "16px",
+		height: "64px",
+	},
+	stickyOpen: {
+		display: "inline-flex",
+		alignItems: "center",
+		gap: "8px",
+		flexShrink: 0,
+		minHeight: "44px",
+		paddingInline: "12px",
+		borderWidth: "1px",
+		borderStyle: "solid",
+		borderColor: colors.border,
+		backgroundColor: { default: colors.card, ":hover": colors.secondary },
+		color: colors.foreground,
+		borderRadius: "4px",
+		fontSize: "14px",
+		fontWeight: 500,
+		outline: { default: null, ":focus-visible": "2px solid var(--ring)" },
+		outlineOffset: "3px",
+	},
+	stickyCount: {
+		fontSize: "12px",
+		fontVariantNumeric: "tabular-nums",
+		color: colors.mutedForeground,
+	},
+	stickyChips: {
+		display: { default: "flex", [conditions.compactCatalog]: "none" },
+		gap: "8px",
+		alignItems: "center",
+		minWidth: 0,
+		overflowX: "auto",
+		padding: "4px",
+		flex: 1,
+	},
+	stickyChip: { flexShrink: 0, whiteSpace: "nowrap" },
+	stickyEmpty: { fontSize: "13px", color: colors.mutedForeground },
+	stickySummary: {
+		display: { default: "none", [conditions.compactCatalog]: "block" },
+		minHeight: "44px",
+		minWidth: 0,
+		flex: 1,
+		overflow: "hidden",
+		textOverflow: "ellipsis",
+		whiteSpace: "nowrap",
+		textAlign: "start",
+		fontSize: "13px",
+		color: colors.mutedForeground,
+		backgroundColor: "transparent",
+		outline: { default: null, ":focus-visible": "2px solid var(--ring)" },
+		outlineOffset: "3px",
+	},
 	controls: {
 		display: "flex",
 		flexDirection: "column",

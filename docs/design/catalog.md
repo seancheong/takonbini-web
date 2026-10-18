@@ -18,9 +18,9 @@ Public screen/query/search exports: [products.ts](../../src/features/products/pr
 
 Use CatalogScreen as the `/` page; use ProductDetailScreen on the detail route. CatalogPanel is the internal query/filter/state owner, not a reusable dashboard panel.
 
-Both accept required `filters: ProductFilters` and `onApply`. No style options/default appearance exist. CatalogScreen owns the outer spacing and ScrollTopButton; CatalogPanel owns the hero, controls, result announcements, retry/empty/loading states and grid.
+Both accept required `filters: ProductFilters` and `onApply: (filters: ProductFilters) => void | Promise<void>`. Return the navigation promise so the optimistic action lasts until navigation completes. No style options/default appearance exist. CatalogScreen owns the outer spacing and ScrollTopButton; CatalogPanel owns the hero, controls, result announcements, retry/empty/loading states and grid.
 
-Correct from [the route](../../src/routes/index.tsx): `<CatalogScreen filters={filters} onApply={(next) => navigate({ search: catalogSearch.encode(next), replace: true })} />`.
+Correct from [the route](../../src/routes/index.tsx): `<CatalogScreen filters={filters} onApply={(next) => navigate({ search: catalogSearch.encode(next), replace: true, resetScroll: false })} />`.
 Incorrect mutation: `<CatalogScreen variant="editorial" />`; Editorial is a future release, not an implemented variant.
 
 [CatalogPanel](../../src/features/products/catalog/CatalogPanel.tsx) has one caller, [CatalogScreen](../../src/features/products/catalog/CatalogScreen.tsx). Preserve the route's returned prefetch promise: server loading markup and client loaded count otherwise race (PR #71 regression).
@@ -29,9 +29,9 @@ Incorrect mutation: `<CatalogScreen variant="editorial" />`; Editorial is a futu
 
 Use [CatalogControls](../../src/features/products/catalog/CatalogControls.tsx) for current explicit-submit search, immediate store choices, and applied-filter removal; use CatalogFilters for staged multi-select editing.
 
-Props: required `filters`, `onApply`, `children`; optional `isPending` (default false). Children supply the filter-dialog trigger. No variants/default style props exist. CatalogPanel is its only caller.
+Props: required `filters`, `onApply`, `children`; optional `isPending` (default false) and `onOpenFilters`. Children supply the filter-dialog trigger. No variants/default style props exist. CatalogPanel is its only caller.
 
-Correct from CatalogPanel: `<CatalogControls filters={filters} onApply={onApply}>` with ProductFilterDrawer as its child. Incorrect mutation: converting the search onChange into immediate onApply; it changes today's submit-based contract.
+Correct from CatalogPanel: `<CatalogControls filters={optimisticFilters} onApply={applyFilters}>` with ProductFilterDrawer as its child. Incorrect mutation: converting the search onChange into immediate onApply; it changes today's submit-based contract.
 
 See [buttons](buttons.md) for closed action styles and [forms](forms.md) for dialog/field semantics.
 
@@ -72,8 +72,7 @@ Correct from [the route](../../src/routes/products.$id.tsx): `<ProductDetailScre
 The router caches catalog scroll by normalized filter values, so the return Link
 and browser Back restore the catalog position. Different filters use a separate
 position; detail routes retain history-entry scroll keys. Navigation to/from
-detail must not insert the catalog refresh row: it changes grid geometry during
-restoration. Keep that row for catalog-to-catalog filtering and catalog fetching.
+detail must not insert loading content into the catalog flow: it changes grid geometry during restoration. Catalog-to-catalog refresh uses an overlay over the existing results instead.
 
 ## ProductDetailPending and ProductDetailError
 
@@ -94,7 +93,7 @@ Detail loaded → ProductDetailScreen
 
 ## Product card surfaces
 
-Each product has one card-colored surface with an 8px radius around both photography and copy. Copy has 16px padding. Light mode uses a layered productCardShadow; dark mode maps it to a 1px translucent white ring. Hover changes only the shadow over 150ms and honors reduced motion. The article clips the image to the outer corners; the image canvas has a 1px inset pure-black/white outline. Loading cards share the surface, radius, padding, and responsive image aspect ratio.
+Each product has one card-colored surface with an 8px radius around both photography and copy. Copy has 16px padding. Light mode uses a layered productCardShadow; dark mode maps it to a 1px translucent white ring. Hover changes the shadow over 150ms; on fine hover pointers, the image also scales to 1.025 over 150ms while the card stays stationary. Reduced motion disables the zoom. The article clips the image to the outer corners; the image canvas has no additional outline. Loading cards share the surface, radius, padding, and responsive image aspect ratio.
 
 ## Implemented styling
 
@@ -109,3 +108,27 @@ The search/dialog/grid breakpoints remain 600/800/1100px, and detail columns swi
 at 1024px. Native modal semantics, controlled draft filters, pagination, data
 states and image failure handling remain in their existing owners. See the
 [full migration evidence](../evidence/stylex-migration.md) for parity coverage.
+
+ProductPreview uses a 220ms rise/fade and 160ms quieter exit with a synchronized backdrop. Close, backdrop dismissal, focus restoration, and root scroll locking remain native-dialog behaviors. Keyboard and reduced-motion actions stay immediate; see [motion](layout.md#catalog-interaction-motion--18-october-2026).
+
+## Sticky applied-filter access
+
+CatalogControls observes its in-flow controls with IntersectionObserver. Once their bottom passes the sticky header, it renders an opaque, 64px fixed bar immediately below `metrics.headerHeight`, on layer 19 (below the header and native dialogs). It disappears when the original controls return. Search/store geometry remains in flow; no duplicate content reserves space or shifts the grid. Header carries `data-slot="app-header"` for measurement; viewport resize refreshes the observer threshold.
+
+CatalogPanel supplies `onOpenFilters`, which copies applied filters to the existing draft and opens the same native dialog. The bar shows the existing applied-filter removals in one horizontally scrollable desktop row. At <=600px it shows a single-line, ellipsized summary button that opens the full dialog, with full accessible text. The count follows the original trigger: search is summarized but excluded from the filter count. No filters uses localized copy. Focus rings, 44px controls, typed semantic colors, and the existing neutral action hierarchy apply. Root scroll padding includes the extra bar while it is present.
+
+## Optimistic filtering and loading feedback
+
+CatalogPanel owns `useOptimistic(filters)` and runs filter actions inside an async `useTransition`. The action sets the optimistic filters immediately, then awaits the `onApply` navigation promise. Controls, applied chips, and filter counts use that optimistic value; product queries and product navigation continue to use committed route filters. Superseded/canceled actions revert to the current committed state, and rapid store changes use the latest displayed filter values. Opening the staged dialog copies the displayed filters; applying still confirms the draft.
+
+Refresh keeps the current result grid mounted in a relative results region. Its content becomes inert and aria-busy while an absolute scrim blocks stale-product interaction. A separate output announces loading and remains visible with sticky positioning when browsing a long grid. The loading overlay adds no flow height. Its spinner uses transform-only motion and becomes static for reduced motion. Search always keeps its localized Search text; the pending refresh row is removed. Initial loads retain skeletons; pagination retains its own existing progress indicator. Detail navigation does not trigger the filtering overlay.
+
+Filter changes use `resetScroll: false` in the catalog route navigation. This preserves the current viewport when selecting a store, clearing filters, or applying a dialog draft, including when the target filter combination has an older cached position. Product/detail Back navigation retains the existing per-filter restoration keys. Browsers may still clamp scroll when a shorter result list cannot fill the previous position.
+
+## Visual restraint pass — 18 October 2026
+
+The catalog takes its visual cues from convenience-store shelf labels: real product photography, retailer-specific label colors, Japanese source names beneath translations, aligned prices, and small rectangular status labels. Preserve these content-specific choices instead of adding decorative marketing sections, gradients, glass surfaces, or entrance sequences.
+
+The redundant Product catalog eyebrow is removed. The existing system font stack remains; the headline uses weight 600, 1.18 leading, -0.015em Latin tracking, normal Japanese/Chinese tracking, and balanced line wrapping. NEW/upcoming badges use 3px corners in both cards and detail. Cards retain their shared surface/shadow; the extra image-canvas outline is removed. Safari's opaque navigation overlay keeps its spinner but drops a blur that had no useful content to reveal.
+
+Product detail retains its inset facts card with a quiet border, card surface, rounded corners, and 20px padding. Text labels replace decorative price/category/date/region icons; back/source icons retain their directional role. Labels use a content-sized column, leaving remaining width for real region names. The price is 24px / 1.4 at weight 500 with tabular numerals. Values, badges, tax labels, and source information remain unchanged.

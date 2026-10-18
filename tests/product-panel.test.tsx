@@ -1,5 +1,13 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import {
+	act,
+	cleanup,
+	fireEvent,
+	render,
+	screen,
+	waitFor,
+} from "@testing-library/react";
+import { useState } from "react";
 import {
 	afterEach,
 	beforeAll,
@@ -10,6 +18,7 @@ import {
 	vi,
 } from "vitest";
 import { CatalogScreen } from "@/features/products/products";
+import { Store } from "@/features/products/products.contracts";
 
 const query = vi.hoisted(() => ({
 	data: undefined as undefined | { pages: { products: { id: string }[] }[] },
@@ -95,6 +104,101 @@ describe("catalog states", () => {
 		routerState.isLoading = true;
 		render(<CatalogScreen filters={{}} onApply={vi.fn()} />);
 		expect(screen.getByText("product.loading")).toBeTruthy();
+	});
+
+	it("immediately selects the requested store and overlays existing results until navigation completes", async () => {
+		query.data = { pages: [{ products: [{ id: "loaded-product" }] }] };
+		let finish = () => {};
+		function Catalog() {
+			const [filters, setFilters] = useState({ stores: [Store.LAWSON] });
+			return (
+				<CatalogScreen
+					filters={filters}
+					onApply={(next) =>
+						new Promise<void>((resolve) => {
+							finish = () => {
+								setFilters({ stores: next.stores ?? [] });
+								resolve();
+							};
+						})
+					}
+				/>
+			);
+		}
+		render(<Catalog />);
+		fireEvent.click(
+			screen.getByRole("button", { name: "product.store.familyMart" }),
+		);
+		expect(
+			screen
+				.getByRole("button", { name: "product.store.familyMart" })
+				.getAttribute("aria-pressed"),
+		).toBe("true");
+		expect(
+			screen
+				.getByRole("button", { name: "product.store.lawson" })
+				.getAttribute("aria-pressed"),
+		).toBe("false");
+		expect(
+			screen.getByRole("status", { name: "product.loading" }),
+		).toBeTruthy();
+		expect(screen.getByText("loaded-product").closest("[inert]")).toBeTruthy();
+		expect(
+			screen.getByRole("button", { name: "product.filters.searchLabel" }),
+		).toBeTruthy();
+		await act(async () => finish());
+		await waitFor(() =>
+			expect(
+				screen.queryByRole("status", { name: "product.loading" }),
+			).toBeNull(),
+		);
+		expect(
+			screen
+				.getByRole("button", { name: "product.store.familyMart" })
+				.getAttribute("aria-pressed"),
+		).toBe("true");
+	});
+
+	it("keeps the latest store choice during overlapping navigation and rolls back canceled changes", async () => {
+		query.data = { pages: [{ products: [{ id: "loaded-product" }] }] };
+		const complete: (() => void)[] = [];
+		const apply = vi.fn(
+			() => new Promise<void>((resolve) => complete.push(resolve)),
+		);
+		render(
+			<CatalogScreen
+				filters={{ stores: [Store.LAWSON], search: "tea" }}
+				onApply={apply}
+			/>,
+		);
+		fireEvent.click(
+			screen.getByRole("button", { name: "product.store.familyMart" }),
+		);
+		fireEvent.click(
+			screen.getByRole("button", { name: "product.store.sevenEleven" }),
+		);
+		expect(
+			screen
+				.getByRole("button", { name: "product.store.sevenEleven" })
+				.getAttribute("aria-pressed"),
+		).toBe("true");
+		expect(apply).toHaveBeenLastCalledWith({
+			stores: [Store.SEVEN_ELEVEN],
+			search: "tea",
+		});
+		await act(async () => {
+			for (const resolve of complete) resolve();
+		});
+		await waitFor(() =>
+			expect(
+				screen.queryByRole("status", { name: "product.loading" }),
+			).toBeNull(),
+		);
+		expect(
+			screen
+				.getByRole("button", { name: "product.store.lawson" })
+				.getAttribute("aria-pressed"),
+		).toBe("true");
 	});
 
 	it("shows a retryable service failure instead of an empty catalog", () => {

@@ -195,14 +195,11 @@ export {
 };
 
 const enter = stylex.keyframes({
-	from: {
-		opacity: 0,
-		transform:
-			"translate3d(var(--select-enter-x, 0px), var(--select-enter-y, 0px), 0) scale3d(.95, .95, .95)",
-	},
+	from: { opacity: 0, transform: "translateY(-4px) scale(0.97)" },
+	to: { opacity: 1, transform: "translateY(0) scale(1)" },
 });
 const exit = stylex.keyframes({
-	to: { opacity: 0, transform: "scale3d(.95, .95, .95)" },
+	to: { opacity: 0, transform: "translateY(-2px) scale(0.98)" },
 });
 
 const styles = stylex.create({
@@ -270,8 +267,19 @@ const styles = stylex.create({
 		position: "relative",
 		zIndex: 50,
 		maxHeight: "var(--radix-select-content-available-height)",
+		animationName: {
+			default: null,
+			":is([data-state=open])": enter,
+			":is([data-state=closed])": exit,
+			[conditions.reducedMotion]: "none",
+		},
+		animationDuration: {
+			default: "180ms",
+			":is([data-state=closed])": "120ms",
+		},
+		animationTimingFunction: "cubic-bezier(0.32, 0.72, 0, 1)",
 		minWidth: "8rem",
-		transformOrigin: "var(--radix-select-content-transform-origin)",
+		transformOrigin: "var(--radix-select-content-transform-origin, top center)",
 		overflowX: "hidden",
 		overflowY: "auto",
 		borderRadius: "calc(var(--radius) - 2px)",
@@ -281,26 +289,6 @@ const styles = stylex.create({
 		backgroundColor: colors.popover,
 		color: colors.popoverForeground,
 		boxShadow: "0 4px 6px -1px rgb(0 0 0 / .1), 0 2px 4px -2px rgb(0 0 0 / .1)",
-		animationName: {
-			default: null,
-			":is([data-state=open])": enter,
-			":is([data-state=closed])": exit,
-		},
-		animationDuration: {
-			default: "150ms",
-			[conditions.reducedMotion]: "0ms",
-		},
-		animationTimingFunction: "ease",
-		"--select-enter-x": {
-			default: "0px",
-			":is([data-side=left])": "0.5rem",
-			":is([data-side=right])": "-0.5rem",
-		},
-		"--select-enter-y": {
-			default: "0px",
-			":is([data-side=top])": "0.5rem",
-			":is([data-side=bottom])": "-0.5rem",
-		},
 	},
 	popper: {
 		translate: {

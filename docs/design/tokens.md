@@ -91,6 +91,7 @@ invented `bg-indigo-500` utility. Status badges use dedicated green NEW and ambe
 
 - `productCardShadow`: light uses a black 9% edge, 4% tight shadow, and 6% ambient shadow; dark uses one 12% white ring.
 - `productCardShadowHover`: light uses a black 14% edge, 6% tight shadow, and 8% ambient shadow; dark uses one 20% white ring.
-- `productImageOutline`: pure black at 10% in light, pure white at 10% in dark. The outline is inset 1px and does not change image geometry.
 
 These typed tokens are defined in colors.stylex.ts and remapped by the existing dark theme. They are scoped to product cards, not general controls.
+
+The unused productImageOutline token and its dark-theme override were removed with the redundant card image-canvas outline. Card surface/shadow tokens still define the card edge; other palette values are unchanged.

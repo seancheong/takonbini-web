@@ -41,7 +41,7 @@ export default function ThemeSelect() {
 				</div>
 			</SelectTrigger>
 
-			<SelectContent>
+			<SelectContent position="popper" align="end">
 				<SelectItem value="light">
 					<div {...stylex.props(layoutStyles.row)}>
 						<Sun size={16} {...stylex.props(layoutStyles.icon)} />

@@ -52,3 +52,7 @@ has been retired. Do not guess generated StyleX class names.
 Keep the close action in the dialog heading and the language chooser in Header.
 Loading, disabled, pressed, selected, invalid and focus states stay owned by the
 existing component. Do not replace staged Apply with immediate checkbox updates.
+
+Search and Apply alone carry `data-slot="catalog-submit"` for 120ms press feedback at scale 0.97. Keyboard activation, disabled actions, and reduced motion do not scale. This is an owned motion hook, not a reusable visual variant.
+
+CatalogControls owns `stickyOpen` (neutral filter-dialog trigger), `stickyChip` (composed after its existing filterChip), and `stickySummary` (compact-screen dialog access). None uses the primary Search/Apply treatment. The sticky count shares the original filter-trigger semantics and excludes search.

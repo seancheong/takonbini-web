@@ -6,7 +6,6 @@ export const colors = stylex.defineVars({
 		"0 0 0 1px oklch(0 0 0 / 0.09), 0 1px 3px oklch(0 0 0 / 0.04), 0 4px 10px -4px oklch(0 0 0 / 0.06)",
 	productCardShadowHover:
 		"0 0 0 1px oklch(0 0 0 / 0.14), 0 1px 3px oklch(0 0 0 / 0.06), 0 4px 10px -4px oklch(0 0 0 / 0.08)",
-	productImageOutline: "oklch(0 0 0 / 0.1)",
 	newBadgeBackground: "oklch(0.93 0.035 145)",
 	newBadgeForeground: "oklch(0.36 0.065 145)",
 	upcomingBadgeBackground: "oklch(0.94 0.048 80)",

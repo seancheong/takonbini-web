@@ -37,7 +37,7 @@ export default function LanguageSelect() {
 				</div>
 			</SelectTrigger>
 
-			<SelectContent>
+			<SelectContent position="popper" align="end">
 				{SUPPORTED_LANGUAGES.map((language) => (
 					<SelectItem key={language} value={language}>
 						{t(`language.${language}`)}

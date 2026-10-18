@@ -21,7 +21,6 @@ export default {
 			taxIncluded: "incl. tax",
 			title: "Japan’s convenience stores",
 			subtitle: "Browse products from 7-Eleven, Lawson, and FamilyMart.",
-			catalogLabel: "Product catalog",
 			allStores: "All stores",
 			results: "Products",
 			loadedCount: "{{count}} products shown",
@@ -49,10 +48,11 @@ export default {
 			end: "All matching products are shown.",
 			scrollTop: "Scroll to top",
 			filters: {
+				appliedFilters: "Applied filters",
+				noFilters: "No filters applied",
 				description:
 					"Choose filters, then apply them to update the results. Reset keeps your search text.",
 				title: "Filters",
-				searchPending: "Searching…",
 				searchLabel: "Search",
 				searchPlaceholder: "Search product names or descriptions",
 				stores: "Stores",

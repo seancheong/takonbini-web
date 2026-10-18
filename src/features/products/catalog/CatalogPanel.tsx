@@ -1,7 +1,14 @@
 import * as stylex from "@stylexjs/stylex";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter, useRouterState } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { LoaderCircle } from "lucide-react";
+import {
+	useCallback,
+	useEffect,
+	useOptimistic,
+	useState,
+	useTransition,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { productsInfiniteQueryOptions } from "@/features/products/data/product-queries";
 import type { ProductFilters } from "@/features/products/products.contracts";
@@ -15,16 +22,28 @@ import ProductPreview from "./ProductPreview";
 
 interface ProductPanelProps {
 	filters: ProductFilters;
-	onApply: (filters: ProductFilters) => void;
+	onApply: (filters: ProductFilters) => void | Promise<void>;
 }
 export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	const { t } = useTranslation();
 	const router = useRouter();
+	const [optimisticFilters, setOptimisticFilters] = useOptimistic(filters);
+	const [isApplying, startTransition] = useTransition();
+	const applyFilters = (next: ProductFilters) => {
+		startTransition(async () => {
+			setOptimisticFilters(next);
+			await onApply(next);
+		});
+	};
 	const selectedId = useRouterState({
 		select: (state) => state.location.state.productModalId,
 	});
 	const [draftFilters, setDraftFilters] = useState<ProductFilters>(filters);
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
+	const openFilters = useCallback(() => {
+		setDraftFilters(optimisticFilters);
+		setIsFilterOpen(true);
+	}, [optimisticFilters]);
 	useEffect(() => {
 		setDraftFilters(filters);
 	}, [filters]);
@@ -46,7 +65,8 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 			state.location.pathname === "/" &&
 			state.resolvedLocation?.pathname === "/",
 	});
-	const isRefreshing = routerIsLoading || (isFetching && !isFetchingNextPage);
+	const isRefreshing =
+		isApplying || routerIsLoading || (isFetching && !isFetchingNextPage);
 	const hasFilters = Boolean(
 		filters.search ||
 			filters.stores?.length ||
@@ -60,9 +80,6 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 		<section {...stylex.props(layoutStyles.panel)}>
 			<header {...stylex.props(layoutStyles.heading)}>
 				<div>
-					<p {...stylex.props(layoutStyles.eyebrow)}>
-						{t("product.catalogLabel")}
-					</p>
 					<h1 {...stylex.props(layoutStyles.heroTitle)}>
 						{t("product.title")}
 					</h1>
@@ -70,27 +87,28 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 				<p {...stylex.props(layoutStyles.intro)}>{t("product.subtitle")}</p>
 			</header>
 			<CatalogControls
-				filters={filters}
-				onApply={onApply}
+				filters={optimisticFilters}
+				onApply={applyFilters}
 				isPending={isRefreshing}
+				onOpenFilters={openFilters}
 			>
 				<ProductFilterDrawer
 					filters={draftFilters}
 					activeCount={
-						(filters.stores?.length ?? 0) +
-						(filters.categories?.length ?? 0) +
-						(filters.regions?.length ?? 0) +
-						Number(filters.minPrice !== undefined) +
-						Number(filters.maxPrice !== undefined) +
-						Number(!!filters.includeSoon)
+						(optimisticFilters.stores?.length ?? 0) +
+						(optimisticFilters.categories?.length ?? 0) +
+						(optimisticFilters.regions?.length ?? 0) +
+						Number(optimisticFilters.minPrice !== undefined) +
+						Number(optimisticFilters.maxPrice !== undefined) +
+						Number(!!optimisticFilters.includeSoon)
 					}
 					setFilters={setDraftFilters}
 					isFilterOpen={isFilterOpen}
 					setIsFilterOpen={(open) => {
-						if (open) setDraftFilters(filters);
+						if (open) setDraftFilters(optimisticFilters);
 						setIsFilterOpen(open);
 					}}
-					onApply={onApply}
+					onApply={applyFilters}
 					onReset={() =>
 						setDraftFilters({
 							limit: filters.limit,
@@ -99,121 +117,146 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 					}
 				/>
 			</CatalogControls>
-			<div {...stylex.props(layoutStyles.resultsHeading)}>
-				<h2 {...stylex.props(layoutStyles.resultsTitle)}>
-					{t("product.results")}
-				</h2>
-				<output aria-live="polite" {...stylex.props(layoutStyles.count)}>
-					{isLoading
-						? t("product.loading")
-						: data
-							? t("product.loadedCount", {
-									count: products.length,
-								})
-							: null}
-				</output>
-			</div>
+			<div {...stylex.props(layoutStyles.resultsRegion)}>
+				<div
+					aria-busy={isRefreshing}
+					inert={isRefreshing && !isLoading}
+					{...stylex.props(layoutStyles.resultsContent)}
+				>
+					<div {...stylex.props(layoutStyles.resultsHeading)}>
+						<h2 {...stylex.props(layoutStyles.resultsTitle)}>
+							{t("product.results")}
+						</h2>
+						<output aria-live="polite" {...stylex.props(layoutStyles.count)}>
+							{isLoading
+								? t("product.loading")
+								: data
+									? t("product.loadedCount", {
+											count: products.length,
+										})
+									: null}
+						</output>
+					</div>
 
-			{isRefreshing && !isLoading ? (
-				<output {...stylex.props(layoutStyles.refreshStatus)}>
-					{t("product.loading")}
-				</output>
-			) : null}
-
-			{isError ? (
-				<div role="alert" {...stylex.props(layoutStyles.error)}>
-					<p {...stylex.props(layoutStyles.errorText)}>{t("product.error")}</p>
-					<button
-						type="button"
-						onClick={() => (isFetchNextPageError ? fetchNextPage() : refetch())}
-						disabled={isFetching}
-						{...stylex.props(layoutStyles.retry)}
-					>
-						{t("product.retry")}
-					</button>
-				</div>
-			) : null}
-
-			{isLoading ? (
-				<div aria-busy="true" {...stylex.props(layoutStyles.grid)}>
-					{["a", "b", "c", "d", "e", "f", "g", "h"].map((key) => (
-						<div
-							key={key}
-							aria-hidden="true"
-							{...stylex.props(layoutStyles.skeleton)}
-						>
-							<div {...stylex.props(layoutStyles.skeletonImage)} />
-							<div {...stylex.props(layoutStyles.skeletonCopy)}>
-								<span {...stylex.props(layoutStyles.skeletonLine)} />
-								<span {...stylex.props(layoutStyles.skeletonLine)} />
-								<span {...stylex.props(layoutStyles.skeletonLine)} />
-							</div>
-						</div>
-					))}
-				</div>
-			) : products.length ? (
-				<>
-					<ProductGrid
-						products={products}
-						filters={filters}
-						onPreview={(product) => {
-							router.navigate({
-								to: "/",
-								search: true,
-								state: (previous) => ({
-									...previous,
-									productModalId: product.id,
-								}),
-								mask: {
-									to: "/products/$id",
-									params: { id: product.id },
-									search: filters,
-									unmaskOnReload: true,
-								},
-								resetScroll: false,
-							});
-						}}
-					/>
-
-					<div {...stylex.props(layoutStyles.pagination)}>
-						{hasNextPage ? (
+					{isError ? (
+						<div role="alert" {...stylex.props(layoutStyles.error)}>
+							<p {...stylex.props(layoutStyles.errorText)}>
+								{t("product.error")}
+							</p>
 							<button
 								type="button"
-								onClick={() => fetchNextPage()}
-								disabled={isFetchingNextPage}
-								{...stylex.props(layoutStyles.loadMore)}
+								onClick={() =>
+									isFetchNextPageError ? fetchNextPage() : refetch()
+								}
+								disabled={isFetching}
+								{...stylex.props(layoutStyles.retry)}
 							>
-								{isFetchingNextPage
-									? t("product.loadingMore")
-									: t("product.loadMore")}
+								{t("product.retry")}
 							</button>
-						) : (
-							<span {...stylex.props(layoutStyles.refreshStatus)}>
-								{t("product.end")}
-							</span>
-						)}
-					</div>
-				</>
-			) : !isError ? (
-				<div {...stylex.props(layoutStyles.empty)}>
-					<p {...stylex.props(layoutStyles.refreshStatus)}>
-						{t(hasFilters ? "product.noMatches" : "product.empty")}
-					</p>
-					{hasFilters ? (
-						<button
-							type="button"
-							onClick={() =>
-								onApply({
-									limit: filters.limit,
-								})
-							}
-							{...stylex.props(layoutStyles.clearFilters)}
-						>
-							{t("product.clearFilters")}
-						</button>
+						</div>
+					) : null}
+
+					{isLoading ? (
+						<div aria-busy="true" {...stylex.props(layoutStyles.grid)}>
+							{["a", "b", "c", "d", "e", "f", "g", "h"].map((key) => (
+								<div
+									key={key}
+									aria-hidden="true"
+									{...stylex.props(layoutStyles.skeleton)}
+								>
+									<div {...stylex.props(layoutStyles.skeletonImage)} />
+									<div {...stylex.props(layoutStyles.skeletonCopy)}>
+										<span {...stylex.props(layoutStyles.skeletonLine)} />
+										<span {...stylex.props(layoutStyles.skeletonLine)} />
+										<span {...stylex.props(layoutStyles.skeletonLine)} />
+									</div>
+								</div>
+							))}
+						</div>
+					) : products.length ? (
+						<>
+							<ProductGrid
+								products={products}
+								filters={filters}
+								onPreview={(product) => {
+									router.navigate({
+										to: "/",
+										search: true,
+										state: (previous) => ({
+											...previous,
+											productModalId: product.id,
+										}),
+										mask: {
+											to: "/products/$id",
+											params: { id: product.id },
+											search: filters,
+											unmaskOnReload: true,
+										},
+										resetScroll: false,
+									});
+								}}
+							/>
+
+							<div {...stylex.props(layoutStyles.pagination)}>
+								{hasNextPage ? (
+									<button
+										type="button"
+										onClick={() => fetchNextPage()}
+										disabled={isFetchingNextPage}
+										{...stylex.props(layoutStyles.loadMore)}
+									>
+										{isFetchingNextPage
+											? t("product.loadingMore")
+											: t("product.loadMore")}
+									</button>
+								) : (
+									<span {...stylex.props(layoutStyles.refreshStatus)}>
+										{t("product.end")}
+									</span>
+								)}
+							</div>
+						</>
+					) : !isError ? (
+						<div {...stylex.props(layoutStyles.empty)}>
+							<p {...stylex.props(layoutStyles.refreshStatus)}>
+								{t(hasFilters ? "product.noMatches" : "product.empty")}
+							</p>
+							{hasFilters ? (
+								<button
+									type="button"
+									onClick={() =>
+										applyFilters({
+											limit: filters.limit,
+										})
+									}
+									{...stylex.props(layoutStyles.clearFilters)}
+								>
+									{t("product.clearFilters")}
+								</button>
+							) : null}
+						</div>
 					) : null}
 				</div>
-			) : null}
+				{isRefreshing && !isLoading && (
+					<div
+						data-slot="catalog-loading-overlay"
+						{...stylex.props(layoutStyles.loadingOverlay)}
+					>
+						<div {...stylex.props(layoutStyles.loadingScrim)} />
+						<output
+							aria-label={t("product.loading")}
+							{...stylex.props(layoutStyles.loadingStatus)}
+						>
+							<LoaderCircle
+								size={18}
+								aria-hidden="true"
+								{...stylex.props(layoutStyles.loadingSpinner)}
+							/>
+							{t("product.loading")}
+						</output>
+					</div>
+				)}
+			</div>
 			{selectedId && (
 				<ProductPreview
 					product={products.find((product) => product.id === selectedId)}
@@ -228,7 +271,50 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 		</section>
 	);
 }
+const loadingSpin = stylex.keyframes({ to: { transform: "rotate(360deg)" } });
 const layoutStyles = stylex.create({
+	resultsRegion: { position: "relative" },
+	resultsContent: { display: "flex", flexDirection: "column", gap: "32px" },
+	loadingOverlay: {
+		position: "absolute",
+		inset: 0,
+		zIndex: 2,
+		paddingTop: "24px",
+		cursor: "progress",
+	},
+	loadingScrim: {
+		position: "absolute",
+		inset: 0,
+		backgroundColor: colors.background,
+		opacity: 0.85,
+	},
+	loadingStatus: {
+		position: "sticky",
+		top: `calc(${metrics.headerHeight} + 80px)`,
+		marginInline: "auto",
+		width: "fit-content",
+		maxWidth: "100%",
+		zIndex: 1,
+		display: "flex",
+		alignItems: "center",
+		gap: "10px",
+		padding: "12px 16px",
+		borderWidth: "1px",
+		borderStyle: "solid",
+		borderColor: colors.border,
+		borderRadius: "6px",
+		backgroundColor: colors.card,
+		color: colors.foreground,
+		fontSize: "14px",
+		lineHeight: 1.5,
+	},
+	loadingSpinner: {
+		flexShrink: 0,
+		animationName: { default: loadingSpin, [conditions.reducedMotion]: "none" },
+		animationDuration: "900ms",
+		animationTimingFunction: "linear",
+		animationIterationCount: "infinite",
+	},
 	panel: {
 		display: "flex",
 		flexDirection: "column",
@@ -245,23 +331,19 @@ const layoutStyles = stylex.create({
 		paddingBottom: "8px",
 		flexDirection: { default: "row", "@media (max-width: 800px)": "column" },
 	},
-	eyebrow: {
-		fontSize: "12px",
-		fontWeight: 500,
-		letterSpacing: ".14em",
-		textTransform: "uppercase",
-		marginBottom: "15px",
-		color: colors.mutedForeground,
-	},
+
 	heroTitle: {
 		fontSize: {
 			default: "clamp(30px,3.4vw,46px)",
 			[conditions.compactCatalog]: "36px",
 		},
-		fontWeight: 650,
-		lineHeight: 1.12,
-		letterSpacing: "-.035em",
-		textWrap: "pretty",
+		fontWeight: 600,
+		lineHeight: 1.18,
+		letterSpacing: {
+			default: "-.015em",
+			":is(:lang(ja), :lang(zh))": "normal",
+		},
+		textWrap: "balance",
 	},
 	intro: {
 		maxWidth: "34ch",
