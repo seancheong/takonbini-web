@@ -72,6 +72,19 @@ afterEach(() => {
 });
 
 describe("product card rendering and navigation", () => {
+	it("shows the fallback language when the requested title is missing", () => {
+		render(
+			<ProductCard
+				product={{ ...product, title: { ja: "日本語の商品", en: " " } }}
+			/>,
+		);
+		expect(
+			screen
+				.getByRole("heading", { name: "日本語の商品" })
+				.getAttribute("lang"),
+		).toBe("ja");
+		expect(screen.getByText("product.fallbackLanguage")).toBeTruthy();
+	});
 	it("opens the preview without navigating but retains the native product URL", () => {
 		const preview = vi.fn();
 		render(<ProductCard product={product} onPreview={preview} />);

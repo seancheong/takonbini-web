@@ -12,12 +12,14 @@ export default {
 			selectTheme: "選擇主題",
 		},
 		language: {
+			changed: "已切換為{{language}}。",
 			en: "英語",
 			ja: "日語",
-			zh: "中文",
+			zh: "繁體中文",
 			changeLanguage: "更改語言",
 		},
 		product: {
+			fallbackLanguage: "以{{language}}顯示",
 			taxIncluded: "含稅",
 			title: "日本便利商店商品",
 			subtitle: "瀏覽 7-Eleven、Lawson 與 FamilyMart 的商品資訊。",

@@ -11,43 +11,13 @@ import en from "./locales/en";
 import ja from "./locales/ja";
 import zh from "./locales/zh";
 
-export const SUPPORTED_LANGUAGES = ["en", "zh", "ja"] as const;
-export type Language = (typeof SUPPORTED_LANGUAGES)[number];
+import { resolveInitialLanguage, SUPPORTED_LANGUAGES } from "./localization";
+
+export { type Language, SUPPORTED_LANGUAGES } from "./localization";
 
 export const defaultNS = "translation";
 export const i18nCookieName = "i18nextTakonbiniLng";
 const oneYearInSeconds = 60 * 60 * 24 * 365;
-
-const resolveSupportedLanguage = (language?: string) => {
-	if (!language) return undefined;
-
-	const normalized = language.toLowerCase();
-	const exactMatch = SUPPORTED_LANGUAGES.find(
-		(supportedLanguage) => supportedLanguage === normalized,
-	);
-
-	if (exactMatch) return exactMatch;
-
-	return SUPPORTED_LANGUAGES.find((supportedLanguage) =>
-		normalized.startsWith(supportedLanguage),
-	);
-};
-
-const resolveLanguageFromHeader = (acceptLanguage?: string) => {
-	if (!acceptLanguage) return undefined;
-
-	const candidates = acceptLanguage
-		.split(",")
-		.map((entry) => entry.split(";")[0]?.trim())
-		.filter(Boolean) as string[];
-
-	for (const candidate of candidates) {
-		const match = resolveSupportedLanguage(candidate);
-		if (match) return match;
-	}
-
-	return undefined;
-};
 
 i18n
 	// detect user language
@@ -65,7 +35,8 @@ i18n
 		supportedLngs: SUPPORTED_LANGUAGES,
 
 		detection: {
-			order: ["cookie", "navigator", "htmlTag"],
+			order: ["querystring", "cookie", "navigator", "htmlTag"],
+			lookupQuerystring: "lang",
 			lookupCookie: i18nCookieName,
 			caches: ["cookie"],
 			cookieMinutes: 60 * 24 * 365, // 1 year
@@ -76,23 +47,24 @@ i18n
 		},
 	});
 
-export const setSSRLanguage = createIsomorphicFn().server(async () => {
-	const cookieLanguage = getCookie(i18nCookieName);
-	const resolvedCookie = resolveSupportedLanguage(cookieLanguage);
-	const headerLanguage = resolveLanguageFromHeader(
-		getRequestHeader("accept-language"),
-	);
-	const resolvedLanguage =
-		resolvedCookie || headerLanguage || SUPPORTED_LANGUAGES[0];
-
-	await i18n.changeLanguage(resolvedLanguage);
-
-	if (!resolvedCookie) {
-		setCookie(i18nCookieName, resolvedLanguage, {
-			path: "/",
-			maxAge: oneYearInSeconds,
+export const setSSRLanguage = createIsomorphicFn()
+	.server(async (urlLanguage?: string) => {
+		const saved = getCookie(i18nCookieName);
+		const language = resolveInitialLanguage({
+			url: urlLanguage,
+			saved,
+			browser: getRequestHeader("accept-language"),
 		});
-	}
-});
+		await i18n.changeLanguage(language);
+		if (urlLanguage || !saved) {
+			setCookie(i18nCookieName, language, {
+				path: "/",
+				maxAge: oneYearInSeconds,
+			});
+		}
+	})
+	.client(async (urlLanguage?: string) => {
+		if (urlLanguage) await i18n.changeLanguage(urlLanguage);
+	});
 
 export default i18n;

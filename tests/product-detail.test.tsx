@@ -60,6 +60,27 @@ function detail() {
 }
 
 describe("public product detail screen", () => {
+	it("labels a missing description translation without changing a translated title", () => {
+		const product = catalogProduct({
+			title: { ja: "題名", en: "Translated title" },
+			description: { ja: "日本語の説明", en: " " },
+		});
+		const client = new QueryClient();
+		client.setQueryData(productQueries.detail(product.id).queryKey, product);
+		try {
+			const html = renderToString(
+				<QueryClientProvider client={client}>
+					<ProductDetailScreen id={product.id} filters={{}} />
+				</QueryClientProvider>,
+			);
+			expect(html).toContain('lang="en"');
+			expect(html).toContain("Translated title");
+			expect(html).toContain('lang="ja"');
+			expect(html.match(/product.fallbackLanguage/g)).toHaveLength(1);
+		} finally {
+			client.clear();
+		}
+	});
 	it("renders cached product content and the filtered catalog return link on the server", () => {
 		const { client, tree } = detail();
 		try {

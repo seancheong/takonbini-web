@@ -38,3 +38,7 @@ code { font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', mon
 dialog::backdrop { background:var(--dialog-backdrop); }
 
 html:has([data-slot="sticky-filters"]) { scroll-padding-top: calc(var(--header-height) + 80px); }
+
+/* Prefer the local script-specific faces without downloading another font. */
+body:lang(ja) { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Yu Gothic', Meiryo, sans-serif; line-break: strict; }
+body:lang(zh) { font-family: -apple-system, BlinkMacSystemFont, 'PingFang TC', 'Microsoft JhengHei', sans-serif; line-break: strict; }

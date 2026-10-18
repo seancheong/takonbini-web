@@ -8,7 +8,10 @@ import {
 	createRootRouteWithContext,
 	HeadContent,
 	Outlet,
+	retainSearchParams,
 	Scripts,
+	useRouter,
+	useRouterState,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { createServerFn } from "@tanstack/react-start";
@@ -24,6 +27,12 @@ import {
 } from "../contexts/ThemeProvider";
 import i18n, { setSSRLanguage } from "../i18n";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
+import { navigateLocale } from "../locale-navigation";
+import {
+	documentLanguage,
+	parseLocaleSearch,
+	resolveSupportedLanguage,
+} from "../localization";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
@@ -40,9 +49,10 @@ const loaderFn = createServerFn({ method: "GET" }).handler(async () => {
 });
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-	beforeLoad: async () => {
-		// Set the SSR language before loading the route
-		await setSSRLanguage();
+	validateSearch: parseLocaleSearch,
+	search: { middlewares: [retainSearchParams(["lang"])] },
+	beforeLoad: async ({ search, preload }) => {
+		if (!preload) await setSSRLanguage(search.lang);
 	},
 	loader: () => loaderFn(),
 	head: () => {
@@ -158,6 +168,18 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument() {
 	const { i18n } = useTranslation();
+	const router = useRouter();
+	const urlLanguage = useRouterState({
+		select: (state) => resolveSupportedLanguage(state.location.search.lang),
+	});
+	useEffect(() => {
+		if (!urlLanguage) {
+			void navigateLocale(
+				router,
+				resolveSupportedLanguage(i18n.language) ?? "en",
+			);
+		}
+	}, [router, urlLanguage, i18n.language]);
 	const { savedTheme } = Route.useLoaderData();
 	const resolvedTheme = isTheme(savedTheme) ? savedTheme : "system";
 
@@ -181,7 +203,9 @@ function RootDocument() {
 	useEffect(() => {
 		const handler = () => {
 			document.title = i18n.t("appName");
-			document.documentElement.lang = i18n.language;
+			document.documentElement.lang = documentLanguage(
+				resolveSupportedLanguage(i18n.language) ?? "en",
+			);
 		};
 
 		i18n.on("languageChanged", handler);
@@ -194,7 +218,7 @@ function RootDocument() {
 
 	return (
 		<html
-			lang={i18n.language}
+			lang={documentLanguage(resolveSupportedLanguage(i18n.language) ?? "en")}
 			{...stylex.props(
 				themeStyles.bridge,
 				resolvedTheme === "dark" && darkTheme,
