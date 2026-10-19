@@ -1,0 +1,97 @@
+{
+  "measuredAt": "2026-10-19T11:59:25.713882+00:00",
+  "baseUrl": "https://takonbini-7rcz2a2dt-sean-cheong-zhen-xiongs-projects.vercel.app",
+  "method": "Read-only server-rendered HTML and XML; no hydration or ranking claim",
+  "pages": [
+    {
+      "path": "/?lang=en&search=tea",
+      "status": 200,
+      "canonical": [
+        "https://takonbini-web.vercel.app/"
+      ],
+      "ogUrl": [
+        "https://takonbini-web.vercel.app/"
+      ],
+      "expected": "https://takonbini-web.vercel.app/",
+      "pass": true
+    },
+    {
+      "path": "/products/ab7bec709206a1324c96fea0c238b347?lang=en&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini-web.vercel.app/products/ab7bec709206a1324c96fea0c238b347"
+      ],
+      "ogUrl": [
+        "https://takonbini-web.vercel.app/products/ab7bec709206a1324c96fea0c238b347"
+      ],
+      "expected": "https://takonbini-web.vercel.app/products/ab7bec709206a1324c96fea0c238b347",
+      "pass": true
+    },
+    {
+      "path": "/products/ab7bec709206a1324c96fea0c238b347?lang=ja&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini-web.vercel.app/products/ab7bec709206a1324c96fea0c238b347"
+      ],
+      "ogUrl": [
+        "https://takonbini-web.vercel.app/products/ab7bec709206a1324c96fea0c238b347"
+      ],
+      "expected": "https://takonbini-web.vercel.app/products/ab7bec709206a1324c96fea0c238b347",
+      "pass": true
+    },
+    {
+      "path": "/products/ab7bec709206a1324c96fea0c238b347?lang=zh&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini-web.vercel.app/products/ab7bec709206a1324c96fea0c238b347"
+      ],
+      "ogUrl": [
+        "https://takonbini-web.vercel.app/products/ab7bec709206a1324c96fea0c238b347"
+      ],
+      "expected": "https://takonbini-web.vercel.app/products/ab7bec709206a1324c96fea0c238b347",
+      "pass": true
+    },
+    {
+      "path": "/products/c77df0a7a6b7108c73e539041f183c7c?lang=en&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini-web.vercel.app/products/c77df0a7a6b7108c73e539041f183c7c"
+      ],
+      "ogUrl": [
+        "https://takonbini-web.vercel.app/products/c77df0a7a6b7108c73e539041f183c7c"
+      ],
+      "expected": "https://takonbini-web.vercel.app/products/c77df0a7a6b7108c73e539041f183c7c",
+      "pass": true
+    },
+    {
+      "path": "/products/c77df0a7a6b7108c73e539041f183c7c?lang=ja&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini-web.vercel.app/products/c77df0a7a6b7108c73e539041f183c7c"
+      ],
+      "ogUrl": [
+        "https://takonbini-web.vercel.app/products/c77df0a7a6b7108c73e539041f183c7c"
+      ],
+      "expected": "https://takonbini-web.vercel.app/products/c77df0a7a6b7108c73e539041f183c7c",
+      "pass": true
+    },
+    {
+      "path": "/products/c77df0a7a6b7108c73e539041f183c7c?lang=zh&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini-web.vercel.app/products/c77df0a7a6b7108c73e539041f183c7c"
+      ],
+      "ogUrl": [
+        "https://takonbini-web.vercel.app/products/c77df0a7a6b7108c73e539041f183c7c"
+      ],
+      "expected": "https://takonbini-web.vercel.app/products/c77df0a7a6b7108c73e539041f183c7c",
+      "pass": true
+    }
+  ],
+  "sitemap": {
+    "status": 200,
+    "urlCount": 5018,
+    "uniqueUrlCount": 5018,
+    "pass": true
+  }
+}

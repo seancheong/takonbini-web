@@ -32,7 +32,7 @@ locale-specific canonical/hreflang redesign is claimed. See
 
 ## Verification
 
-- Nine targeted assertions failed before implementation. All 109 tests now pass,
+- Nine targeted tests failed before implementation. All 109 tests now pass,
   including enumeration beyond page 50, overlapping IDs, repeated cursors,
   request budget expiry, the URL-count bound, absent configuration, and partial
   upstream failure. Existing characterization expectations for partial success
@@ -55,9 +55,32 @@ locale-specific canonical/hreflang redesign is claimed. See
 
 ## Gates remaining
 
-Hosted preview checks, explicit PR merge approval, main CI, and production SEO
-verification remain separate gates. #26/#29/#27 remain open for their other
+Explicit PR merge approval, main CI, and production SEO verification remain
+separate gates. #26/#29/#27 remain open for their other
 acceptance requirements. No ranking, Search Console, full accessibility,
 controlled performance, browser matrix, or observation-window acceptance is
 inferred from these probes. #24's unattended refresh acceptance and #23's cost/
 stability window are unaffected.
+
+## Hosted preview verification
+
+[PR #84](https://github.com/seancheong/takonbini-web/pull/84) passed Web CI,
+Vercel preview deployment, and both Socket checks. The following probes measured
+implementation commit `6a6cd4a2fb85ebcfbbe8c91dfe0bc7c49062bf4c` on preview
+deployment `7173098278`, before the evidence-only follow-up commit:
+
+- [Seven SSR SEO probes](catalog-seo-2026-10-19/preview-http.json) pass using the
+  [immutable preview](https://takonbini-7rcz2a2dt-sean-cheong-zhen-xiongs-projects.vercel.app).
+- The preview uses its configured site origin `https://takonbini-web.vercel.app`.
+  The first probe incorrectly expected the production custom domain and failed
+  that host expectation. Repeating against the preview's configured origin
+  passed; no application or deployment configuration change was made to obtain
+  that result. Production's `https://takonbini.com` origin must be verified after
+  release. Both preview sitemap and page metadata use the same configured host.
+- The hosted sitemap returns HTTP 200 with 5,018 unique same-origin URLs and both
+  sampled product URLs present. Enumeration completes beyond the old cap.
+- [Six sequential and twelve concurrent locale-precedence probes](catalog-seo-2026-10-19/preview-locales.json)
+  all pass after the root loader/head changes.
+
+These are preview measurements, not production deployment, indexing, ranking,
+or closure of the broader release-acceptance tickets.
