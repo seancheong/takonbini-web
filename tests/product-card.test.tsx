@@ -227,6 +227,11 @@ it("prioritizes only the first catalog image, including after loading more produ
 	);
 	const first = container.querySelectorAll("img")[0];
 	expect(first.getAttribute("loading")).toBe("eager");
+	expect(first.getAttribute("src")).toContain("&w=640");
+	expect(first.getAttribute("srcset")).toContain("&w=1600 1600w");
+	expect(first.getAttribute("sizes")).toContain(
+		"(max-width: 600px) calc(100vw - 40px)",
+	);
 	expect(first.getAttribute("fetchpriority")).toBe("high");
 	expect(container.querySelectorAll("img")[1].getAttribute("loading")).toBe(
 		"lazy",

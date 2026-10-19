@@ -2,7 +2,11 @@ import * as stylex from "@stylexjs/stylex";
 import { Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getProxiedImageUrl } from "@/features/products/model/product-images";
+import {
+	catalogImageSizes,
+	getProductImageSrcSet,
+	getProxiedImageUrl,
+} from "@/features/products/model/product-images";
 import { isSafari } from "@/features/products/model/product-navigation";
 import type {
 	ActiveCatalogProduct,
@@ -46,7 +50,7 @@ export default function ProductCard({
 	const [isSafariNavigating, setIsSafariNavigating] = useState(false);
 	const imageRef = useRef<HTMLImageElement | null>(null);
 	const image = product.images[0];
-	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
+	const imageSrc = image ? getProxiedImageUrl(image, 640) : undefined;
 	const titleContent = resolveProductText(product.title, language);
 	const title = titleContent.text;
 	const storeLabelKey =
@@ -138,6 +142,8 @@ export default function ProductCard({
 							data-slot="product-card-image"
 							ref={imageRef}
 							src={imageSrc}
+							srcSet={image ? getProductImageSrcSet(image) : undefined}
+							sizes={catalogImageSizes}
 							alt={title}
 							style={
 								isSafari()

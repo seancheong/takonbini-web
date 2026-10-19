@@ -136,3 +136,9 @@ Product detail retains its inset facts card with a quiet border, card surface, r
 ## Per-field localized retailer content (#16)
 
 `resolveProductText` resolves each title/description independently, trims empty fields, and returns text plus the actual language and fallback status. The approved order is en → ja → zh, ja → en → zh, or zh → ja → en. Cards and full detail show a quiet localized “Shown in …” note for each field that falls back, with a matching HTML language tag. Empty descriptions stay absent. A translated title never forces its description or the interface to change language. Retailer content is neither generated nor retransformed. Modal accessible titles use the same resolver. Japanese source subtitles remain where they add distinct source text.
+
+## Responsive product images (#86)
+
+Catalog and full-detail images retain their existing aspect-ratio canvases, contained photography, loading/error state and eager/lazy priorities. They now supply a finite width srcset (320/480/640/960/1280/1600) to the existing image route. Catalog sizes follow the 600/800px column breakpoints; full detail supplies its 1024px column split. Gallery images stay lazy. Source product records and original retailer references are unchanged.
+
+The server-only Sharp pipeline emits WebP at quality 80, preserves aspect ratio, caps both dimensions at the selected width, and never enlarges a source. The route accepts only the three observed HTTPS retailer image hosts, validates every redirect, and restricts sizes. Unsupported or failed images use the existing unavailable state. See the image-delivery evidence for resource, cache, runtime and performance limits.

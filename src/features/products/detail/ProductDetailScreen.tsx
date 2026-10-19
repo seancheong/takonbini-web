@@ -11,7 +11,11 @@ import {
 	isFutureReleaseDate,
 	resolveProductText,
 } from "@/features/products/model/product-display";
-import { getProxiedImageUrl } from "@/features/products/model/product-images";
+import {
+	detailImageSizes,
+	getProductImageSrcSet,
+	getProxiedImageUrl,
+} from "@/features/products/model/product-images";
 import {
 	type CategoryLabelKey,
 	categoryLabelKeys,
@@ -49,7 +53,7 @@ export default function ProductDetailScreen({
 			window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 	}, [id, presentation]);
 	const image = product.images?.[0];
-	const imageSrc = image ? getProxiedImageUrl(image) : undefined;
+	const imageSrc = image ? getProxiedImageUrl(image, 960) : undefined;
 	const showLoading = Boolean(imageSrc && !imageError && !imageLoaded);
 	const isReleaseSoon = isFutureReleaseDate(product.releaseDate);
 	const viewTransitionName = `product-image-${id}`;
@@ -77,7 +81,7 @@ export default function ProductDetailScreen({
 	});
 	const extraImages = product.images.slice(1).map((item) => ({
 		original: item,
-		proxy: getProxiedImageUrl(item),
+		proxy: getProxiedImageUrl(item, 320),
 	}));
 	return (
 		<div
@@ -133,6 +137,8 @@ export default function ProductDetailScreen({
 								<img
 									ref={imageRef}
 									src={imageSrc}
+									srcSet={image ? getProductImageSrcSet(image) : undefined}
+									sizes={detailImageSizes}
 									alt={title}
 									style={
 										isSafari()
@@ -173,6 +179,8 @@ export default function ProductDetailScreen({
 									>
 										<img
 											src={item.proxy}
+											srcSet={getProductImageSrcSet(item.original)}
+											sizes="(max-width: 1023px) 25vw, 180px"
 											alt={title}
 											loading="lazy"
 											{...stylex.props(layoutStyles.image)}

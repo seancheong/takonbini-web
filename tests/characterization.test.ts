@@ -347,15 +347,17 @@ describe("image proxy", () => {
 
 		const response = await getHandler(imageRoute)({
 			request: request(
-				"https://web.example.test/api/image?url=https%3A%2F%2Fimages.example.test%2Fp.webp",
+				"https://web.example.test/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fp.webp",
 			),
 			params: {},
 		});
 
 		expect(fetchMock).toHaveBeenCalledWith(
-			"https://images.example.test/p.webp",
+			new URL("https://www.family.co.jp/p.webp"),
 			{
 				headers: { "user-agent": "TakonbiniImageProxy/1.0" },
+				redirect: "manual",
+				signal: expect.any(AbortSignal),
 			},
 		);
 		expect(response.headers.get("content-type")).toBe("image/webp");
