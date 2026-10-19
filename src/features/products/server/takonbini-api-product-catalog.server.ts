@@ -23,6 +23,7 @@ export function createHttpProductCatalogSource(
 		path: string,
 		parameters: URLSearchParams,
 		schema: z.ZodType<T>,
+		signal?: AbortSignal,
 	): Promise<CatalogResult<T>> {
 		if (!configuration.baseUrl || !configuration.apiKey)
 			return {
@@ -40,10 +41,11 @@ export function createHttpProductCatalogSource(
 		try {
 			response = await fetchProducts(url.toString(), {
 				headers: { "x-api-key": configuration.apiKey },
+				...(signal ? { signal } : {}),
 			});
 			body = await response.text();
 		} catch (error) {
-			if (!(error instanceof TypeError)) throw error;
+			if (!(error instanceof TypeError) && !signal?.aborted) throw error;
 			return {
 				ok: false,
 				kind: "unavailable",
@@ -97,30 +99,37 @@ export function createHttpProductCatalogSource(
 		find: (id, parameters = new URLSearchParams()) =>
 			read(`/products/${id}`, parameters, activeCatalogProductSchema),
 		async listIndexableIds() {
-			const ids: string[] = [];
+			const ids = new Set<string>();
+			const cursors = new Set<string>();
+			const signal = AbortSignal.timeout(45_000);
 			let cursor: string | undefined;
-			for (let page = 0; page < 50; page += 1) {
+			for (let page = 0; page < 500; page += 1) {
 				const parameters = new URLSearchParams({ status: "all", limit: "100" });
 				if (cursor) parameters.set("cursor", cursor);
 				const result = await read(
 					"/products",
 					parameters,
 					catalogIndexPageSchema,
+					signal,
 				);
-				if (!result.ok) return { ...result, partialIds: ids };
-				ids.push(...result.value.products.map((product) => product.id));
+				if (!result.ok) return { ...result, partialIds: [...ids] };
+				for (const product of result.value.products) ids.add(product.id);
+				// Reserve one URL for the homepage in the 50,000-URL sitemap.
+				if (ids.size > 49_999) break;
 				if (!result.value.nextCursor)
 					return {
 						ok: true,
-						value: { ids, complete: true },
+						value: { ids: [...ids], complete: true },
 						status: 200,
 						headers: new Headers(),
 					};
 				cursor = result.value.nextCursor;
+				if (cursors.has(cursor)) break;
+				cursors.add(cursor);
 			}
 			return {
 				ok: true,
-				value: { ids, complete: false },
+				value: { ids: [...ids], complete: false },
 				status: 200,
 				headers: new Headers(),
 			};

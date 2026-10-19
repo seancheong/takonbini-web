@@ -196,3 +196,88 @@ describe("remote product validation", () => {
 		).toEqual(["family"]);
 	});
 });
+
+describe("complete sitemap enumeration", () => {
+	it("follows more than 50 pages and deduplicates overlapping products", async () => {
+		let page = 0;
+		const fetchMock = vi.fn<typeof fetch>(async (input) => {
+			const url = input instanceof Request ? input.url : input;
+			expect(new URL(url).searchParams.get("cursor")).toBe(
+				page === 0 ? null : String(page),
+			);
+			page++;
+			return Response.json({
+				products: [{ id: `product-${page}` }, { id: "overlap" }],
+				...(page < 51 ? { nextCursor: String(page) } : {}),
+			});
+		});
+		const result = await createHttpProductCatalogSource({
+			...configuration,
+			fetch: fetchMock,
+		}).listIndexableIds();
+		expect(result.ok && result.value.complete).toBe(true);
+		expect(result.ok && result.value.ids).toHaveLength(52);
+		expect(result.ok && result.value.ids).toContain("product-51");
+	});
+	it("bounds non-terminating pagination without claiming completeness", async () => {
+		let page = 0;
+		const fetchMock = vi.fn(async () =>
+			Response.json({
+				products: [{ id: String(page) }],
+				nextCursor: String(++page),
+			}),
+		);
+		const result = await createHttpProductCatalogSource({
+			...configuration,
+			fetch: fetchMock,
+		}).listIndexableIds();
+		expect(result.ok && result.value.complete).toBe(false);
+		expect(fetchMock).toHaveBeenCalledTimes(500);
+	});
+	it("stops a cursor cycle immediately rather than exhausting the page budget", async () => {
+		const fetchMock = vi.fn(async () =>
+			Response.json({ products: [], nextCursor: "same" }),
+		);
+		const result = await createHttpProductCatalogSource({
+			...configuration,
+			fetch: fetchMock,
+		}).listIndexableIds();
+		expect(result.ok && result.value.complete).toBe(false);
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+	});
+});
+
+it("represents an expired sitemap budget as an unavailable enumeration", async () => {
+	const signal = AbortSignal.abort(
+		new DOMException("deadline", "TimeoutError"),
+	);
+	const timeout = vi.spyOn(AbortSignal, "timeout").mockReturnValue(signal);
+	try {
+		const source = createHttpProductCatalogSource({
+			...configuration,
+			fetch: vi.fn().mockRejectedValue(signal.reason),
+		});
+		expect(await source.listIndexableIds()).toMatchObject({
+			ok: false,
+			origin: "transport",
+			partialIds: [],
+		});
+	} finally {
+		timeout.mockRestore();
+	}
+});
+
+it("marks enumeration incomplete when products exceed the single-sitemap URL limit", async () => {
+	const source = createHttpProductCatalogSource({
+		...configuration,
+		fetch: vi.fn().mockResolvedValue(
+			Response.json({
+				products: Array.from({ length: 50_000 }, (_, i) => ({
+					id: String(i),
+				})),
+			}),
+		),
+	});
+	const result = await source.listIndexableIds();
+	expect(result.ok && result.value.complete).toBe(false);
+});

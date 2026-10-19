@@ -23,7 +23,7 @@ const buildSitemapXml = (siteUrl: string, ids: string[]) => {
   </url>`,
 		...ids.map(
 			(id) => `  <url>
-    <loc>${escapeXml(`${siteUrl}/products/${id}`)}</loc>
+    <loc>${escapeXml(`${siteUrl}/products/${encodeURIComponent(id)}`)}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>`,
@@ -42,21 +42,21 @@ export const Route = createFileRoute("/sitemap.xml")({
 				GET: async ({ request }) => {
 					const siteUrl = getSiteUrl(request);
 					const result = await getProductCatalogSource().listIndexableIds();
-					// Preserve legacy partial sitemaps for HTTP failures and missing configuration.
 					if (
-						!result.ok &&
-						result.origin !== "http" &&
-						result.kind !== "misconfigured"
-					)
-						throw new Error("Unable to enumerate sitemap products");
-					const ids = result.ok ? result.value.ids : (result.partialIds ?? []);
-					const xml = buildSitemapXml(siteUrl, ids);
-
-					return new Response(xml, {
-						status: 200,
-						headers: {
-							"content-type": "application/xml; charset=utf-8",
-						},
+						result.ok &&
+						result.value.complete &&
+						result.value.ids.length <= 49_999
+					) {
+						const xml = buildSitemapXml(siteUrl, result.value.ids);
+						if (new TextEncoder().encode(xml).byteLength <= 52_428_800)
+							return new Response(xml, {
+								status: 200,
+								headers: { "content-type": "application/xml; charset=utf-8" },
+							});
+					}
+					return new Response("Sitemap temporarily unavailable", {
+						status: 503,
+						headers: { "cache-control": "no-store", "retry-after": "300" },
 					});
 				},
 			}),
