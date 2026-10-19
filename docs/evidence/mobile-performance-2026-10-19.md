@@ -1,6 +1,6 @@
-# Mobile performance measurement — 19 October 2026
+# Mobile performance measurement — 19–20 October 2026
 
-## Current production baseline
+## Initial production baseline — 19 October
 
 Production revision `a69d2829beccb27167d783f546cee32ccd21dd5b`, deployment
 `7173213574`, was measured with Lighthouse 13.4.1, Node 24.16.0, and isolated
@@ -76,11 +76,59 @@ CHROME_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
 Detail path: `/products/0d41fc1137e1762b66b05d4539990c2b?lang=en`. Keep the
 foreground workload low; do not run audits in parallel. Raw reports, HTML, and
 traces are retained locally for inspection rather than publishing trace/page
-payloads. Hosted unchanged-control/candidate comparison is still pending at
-this checkpoint. Candidate code is not merged or deployed to production.
+payloads. Hosted comparison and a current-content production repeat are recorded below. Candidate code is not merged or deployed to production.
 
 LCP detail headroom, interaction/INP measurement, representative cache/error/
 locale/device conditions, other Lighthouse categories, accessibility/browser
 coverage, and observation remain open under #27/#29/#26. #24's unattended
 refresh cycles and #23's stable cost/stability window are unaffected. No ranking,
 field-performance, complete accessibility, or real-mobile-device claim is made.
+
+## 20 October follow-up: current content fails the load target
+
+The catalog changed between the initial baseline and this follow-up. The first
+LCP product is now `01e1c84bc70c04a2c7eb082ee879d20c`, rather than the earlier
+lightweight image. Same web revision, different live content: the earlier 96 /
+2.43 s catalog median is **not current performance acceptance**. Raw reports'
+UTC timestamps are retained as emitted; the follow-up is dated to the client's
+20 October session.
+
+[Three fresh production runs](mobile-performance-2026-10-19/production-current-2026-10-20.json)
+now give a median performance score of **74**, **6.77 s LCP**, **0 ms TBT**, and
+**0 CLS**, with about **1.57 MB transferred** during navigation. The critical
+product image alone transfers roughly **593 KB**. The existing proxy forwards
+original retailer images, so their changing size is a concrete content-sensitive
+bottleneck. Lighthouse flags image delivery; this is not evidence that changing
+JavaScript priority alone solves it.
+
+### Paired hosted preview experiment
+
+[Per-run comparison](mobile-performance-2026-10-19/preview-comparison-2026-10-20.json):
+Lighthouse 13.4.1 / Node 24.16 / Headless Chrome 155, identical simulated mobile
+settings, three fresh profiles per arm. Run order was control/candidate,
+candidate/control, control/candidate. The same LCP product ID appears in all six
+runs. The control's source/build inputs match main; only the candidate adds the
+first-image priority behavior and its regression test/documentation.
+
+| Arm | Median score | Median LCP | Median TBT | Median CLS |
+| --- | ---: | ---: | ---: | ---: |
+| Unchanged preview control | 76 | 6.13 s | 4 ms | 0 |
+| First-image-priority preview | 78 | 5.34 s | 1 ms | 0 |
+
+Observed median LCP is approximately 13% lower in this small sample. This is
+**not an isolated causal speedup or acceptance pass**: immutable preview hosts,
+mutable catalog data, and uncontrolled CDN/upstream caches still differ. Control
+LCP ranges 5.37–7.17 s; candidate ranges 5.32–7.68 s. Both arms fail the ≥90
+performance score and ≤2.5 s LCP targets. The candidate's reports confirm
+`loading="eager"` and `fetchpriority="high"` for the LCP image, while the control
+remains lazy, so the intended hint change is active.
+
+PR #85 passes Web CI, Vercel, and both Socket checks; software checks do not mean
+the product's performance gate passed. Keep the PR as a draft pending image
+payload work. No merge or production deployment of the candidate occurred.
+The next fix is bounded responsive/compressed image delivery, including source/
+resource validation and cache behavior, then repeated live mobile measurements
+with representative image sizes. INP/interaction measurement, detail headroom,
+other Lighthouse categories, browser/accessibility, controlled response timing,
+and observation remain open. Do not replace INP with TBT or extrapolate the old
+light-image baseline to a changed catalog.

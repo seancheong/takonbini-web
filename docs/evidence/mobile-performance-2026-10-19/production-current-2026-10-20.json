@@ -1,0 +1,77 @@
+{
+  "followUpDate": "2026-10-20",
+  "url": "https://takonbini.com/?lang=en",
+  "revision": "a69d2829beccb27167d783f546cee32ccd21dd5b",
+  "productionDeployment": 7173213574,
+  "lighthouseVersion": "13.4.1",
+  "nodeVersion": "24.16.0",
+  "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+  "settings": {
+    "formFactor": "mobile",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
+      "disabled": false
+    },
+    "throttlingMethod": "simulate",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    }
+  },
+  "method": "Three sequential browser-cold navigations. Live catalog differs from the earlier baseline; same web revision. CDN/upstream caches not forced cold. Not field data or INP. Report timestamps retained as emitted.",
+  "runs": [
+    {
+      "run": 1,
+      "fetchTime": "2026-10-19T23:19:19.467Z",
+      "score": 76,
+      "lcpMs": 5443.0869999999995,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 1566265,
+      "lcpProductId": "01e1c84bc70c04a2c7eb082ee879d20c",
+      "lcpImageReportedBytes": 622842,
+      "benchmarkIndex": 3108,
+      "warnings": []
+    },
+    {
+      "run": 2,
+      "fetchTime": "2026-10-19T23:19:33.819Z",
+      "score": 74,
+      "lcpMs": 6770.5555,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 1565276,
+      "lcpProductId": "01e1c84bc70c04a2c7eb082ee879d20c",
+      "lcpImageReportedBytes": 622842,
+      "benchmarkIndex": 3106.5,
+      "warnings": []
+    },
+    {
+      "run": 3,
+      "fetchTime": "2026-10-19T23:19:46.458Z",
+      "score": 74,
+      "lcpMs": 6787.755999999999,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 1565221,
+      "lcpProductId": "01e1c84bc70c04a2c7eb082ee879d20c",
+      "lcpImageReportedBytes": 622842,
+      "benchmarkIndex": 3095,
+      "warnings": []
+    }
+  ],
+  "medians": {
+    "score": 74,
+    "lcpMs": 6770.5555,
+    "tbtMs": 0,
+    "cls": 0,
+    "transferBytes": 1565276
+  }
+}

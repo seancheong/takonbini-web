@@ -1,0 +1,166 @@
+{
+  "followUpDate": "2026-10-20",
+  "lighthouseVersion": "13.4.1",
+  "nodeVersion": "24.16.0",
+  "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+  "settings": {
+    "formFactor": "mobile",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
+      "disabled": false
+    },
+    "throttlingMethod": "simulate",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    }
+  },
+  "control": {
+    "commit": "6a6cd4a2fb85ebcfbbe8c91dfe0bc7c49062bf4c",
+    "deployment": 7173098278,
+    "url": "https://takonbini-7rcz2a2dt-sean-cheong-zhen-xiongs-projects.vercel.app/?lang=en",
+    "sourceMatchesProduction": "src, package.json, pnpm-lock.yaml and vite.config.ts diff is empty versus a69d282"
+  },
+  "candidate": {
+    "commit": "60a696129bcf1eb04d4c1475c13a0072076093df",
+    "deployment": 7173484450,
+    "url": "https://takonbini-4ng6luk5l-sean-cheong-zhen-xiongs-projects.vercel.app/?lang=en"
+  },
+  "order": [
+    "control-1",
+    "candidate-1",
+    "candidate-2",
+    "control-2",
+    "control-3",
+    "candidate-3"
+  ],
+  "method": "Sequential browser-cold simulated-mobile audits. Different immutable deployment hosts, live mutable catalog and uncontrolled CDN/upstream caches limit causal attribution. Same LCP product ID confirmed across six samples. Not field data or INP.",
+  "runs": [
+    {
+      "variant": "control",
+      "run": 1,
+      "fetchTime": "2026-10-19T23:17:09.851Z",
+      "score": 69,
+      "lcpMs": 6132.619000000001,
+      "tbtMs": 4,
+      "cls": 0,
+      "transferBytes": 1566553,
+      "benchmarkIndex": 3119,
+      "lcpProductId": "01e1c84bc70c04a2c7eb082ee879d20c",
+      "lcpImageLoading": "lazy",
+      "lcpImageHighPriority": false,
+      "lcpImageReportedBytes": 622842,
+      "imageDeliveryEstimatedSavingsBytes": {},
+      "warnings": []
+    },
+    {
+      "variant": "control",
+      "run": 2,
+      "fetchTime": "2026-10-19T23:17:57.936Z",
+      "score": 79,
+      "lcpMs": 5372.3555,
+      "tbtMs": 4,
+      "cls": 0,
+      "transferBytes": 1565429,
+      "benchmarkIndex": 3154.5,
+      "lcpProductId": "01e1c84bc70c04a2c7eb082ee879d20c",
+      "lcpImageLoading": "lazy",
+      "lcpImageHighPriority": false,
+      "lcpImageReportedBytes": 622842,
+      "imageDeliveryEstimatedSavingsBytes": {},
+      "warnings": []
+    },
+    {
+      "variant": "control",
+      "run": 3,
+      "fetchTime": "2026-10-19T23:18:11.426Z",
+      "score": 76,
+      "lcpMs": 7169.253000000001,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 1565412,
+      "benchmarkIndex": 3180,
+      "lcpProductId": "01e1c84bc70c04a2c7eb082ee879d20c",
+      "lcpImageLoading": "lazy",
+      "lcpImageHighPriority": false,
+      "lcpImageReportedBytes": 622842,
+      "imageDeliveryEstimatedSavingsBytes": {},
+      "warnings": []
+    },
+    {
+      "variant": "candidate",
+      "run": 1,
+      "fetchTime": "2026-10-19T23:17:27.933Z",
+      "score": 71,
+      "lcpMs": 7680.350999999999,
+      "tbtMs": 9,
+      "cls": 0,
+      "transferBytes": 1566597,
+      "benchmarkIndex": 3122.5,
+      "lcpProductId": "01e1c84bc70c04a2c7eb082ee879d20c",
+      "lcpImageLoading": "eager",
+      "lcpImageHighPriority": true,
+      "lcpImageReportedBytes": 622842,
+      "imageDeliveryEstimatedSavingsBytes": {},
+      "warnings": []
+    },
+    {
+      "variant": "candidate",
+      "run": 2,
+      "fetchTime": "2026-10-19T23:17:45.333Z",
+      "score": 78,
+      "lcpMs": 5336.669,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 1565415,
+      "benchmarkIndex": 3112,
+      "lcpProductId": "01e1c84bc70c04a2c7eb082ee879d20c",
+      "lcpImageLoading": "eager",
+      "lcpImageHighPriority": true,
+      "lcpImageReportedBytes": 622842,
+      "imageDeliveryEstimatedSavingsBytes": {},
+      "warnings": []
+    },
+    {
+      "variant": "candidate",
+      "run": 3,
+      "fetchTime": "2026-10-19T23:18:23.726Z",
+      "score": 80,
+      "lcpMs": 5316.8555,
+      "tbtMs": 1.0000000000001137,
+      "cls": 0,
+      "transferBytes": 1565419,
+      "benchmarkIndex": 3150.5,
+      "lcpProductId": "01e1c84bc70c04a2c7eb082ee879d20c",
+      "lcpImageLoading": "eager",
+      "lcpImageHighPriority": true,
+      "lcpImageReportedBytes": 622842,
+      "imageDeliveryEstimatedSavingsBytes": {},
+      "warnings": []
+    }
+  ],
+  "medians": {
+    "control": {
+      "score": 76,
+      "lcpMs": 6132.619000000001,
+      "tbtMs": 4,
+      "cls": 0,
+      "transferBytes": 1565429
+    },
+    "candidate": {
+      "score": 78,
+      "lcpMs": 5336.669,
+      "tbtMs": 1.0000000000001137,
+      "cls": 0,
+      "transferBytes": 1565419
+    }
+  },
+  "observedMedianLcpChangePercent": -12.978957277469883
+}
