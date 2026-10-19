@@ -157,10 +157,7 @@ export default function ProductCard({
 							decoding="async"
 							loading={imagePriority ? "eager" : "lazy"}
 							fetchPriority={imagePriority ? "high" : undefined}
-							{...stylex.props(
-								layoutStyles.image,
-								imageLoaded ? layoutStyles.visible : layoutStyles.hidden,
-							)}
+							{...stylex.props(layoutStyles.image)}
 						/>
 					) : (
 						<div {...stylex.props(layoutStyles.imageFallback)}>
@@ -362,13 +359,8 @@ const layoutStyles = stylex.create({
 		fontWeight: 600,
 		color: colors.imagePlaceholder,
 	},
-	visible: {
-		opacity: 1,
-	},
-	hidden: {
-		opacity: 0,
-	},
 	image: {
+		position: "relative",
 		height: "100%",
 		width: "100%",
 		objectFit: "contain",

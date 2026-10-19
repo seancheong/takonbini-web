@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { act } from "@testing-library/react";
+import { act, fireEvent, render } from "@testing-library/react";
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { describe, expect, it, vi } from "vitest";
@@ -90,6 +90,32 @@ describe("public product detail screen", () => {
 			expect(html).toContain("/?stores=%5B%22Lawson%22%5D");
 			expect(html).not.toContain("product.details.releaseDate");
 		} finally {
+			client.clear();
+		}
+	});
+
+	it("keeps detail loading feedback and its unavailable-image fallback", () => {
+		const product = catalogProduct({
+			images: ["https://www.family.co.jp/p.jpg"],
+		});
+		const client = new QueryClient();
+		client.setQueryData(productQueries.detail(product.id).queryKey, product);
+		const view = render(
+			<QueryClientProvider client={client}>
+				<ProductDetailScreen id={product.id} filters={{}} />
+			</QueryClientProvider>,
+		);
+		try {
+			const image = view.getByRole("img", { name: "Matcha" });
+			expect(view.getByText("product.imageLoading")).toBeTruthy();
+			fireEvent.load(image);
+			expect(view.queryByText("product.imageLoading")).toBeNull();
+			fireEvent.error(image);
+			expect(view.queryByRole("img", { name: "Matcha" })).toBeNull();
+			expect(view.getByText("product.noImage")).toBeTruthy();
+			expect(view.getByText("product.unavailable")).toBeTruthy();
+		} finally {
+			view.unmount();
 			client.clear();
 		}
 	});

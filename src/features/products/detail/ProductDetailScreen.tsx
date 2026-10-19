@@ -155,7 +155,6 @@ export default function ProductDetailScreen({
 									{...stylex.props(
 										layoutStyles.image,
 										layoutStyles.primaryImage,
-										imageLoaded ? layoutStyles.visible : layoutStyles.hidden,
 									)}
 								/>
 							) : (
@@ -418,20 +417,15 @@ const layoutStyles = stylex.create({
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "center",
-		backgroundColor: "color-mix(in oklab, var(--muted) 40%, transparent)",
+		backgroundColor: colors.imageCanvas,
 		fontSize: "0.875rem",
 		lineHeight: "1.25rem",
 		fontWeight: 600,
 		color: colors.mutedForeground,
 	},
-	visible: {
-		opacity: 1,
-	},
-	hidden: {
-		opacity: 0,
-	},
 	primaryImage: { position: "absolute", inset: 0 },
 	image: {
+		position: "relative",
 		height: "100%",
 		width: "100%",
 		objectFit: "contain",

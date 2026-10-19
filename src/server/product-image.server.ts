@@ -181,6 +181,7 @@ export async function serveProductImage(request: Request) {
 				throw new Error("format");
 			bytes = await image
 				.rotate()
+				.flatten({ background: "white" })
 				.resize({
 					width,
 					height: width,

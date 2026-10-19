@@ -53,22 +53,45 @@ describe("bounded product image delivery", () => {
 		const input = await jpeg();
 		vi.stubGlobal(
 			"fetch",
-			vi
-				.fn()
-				.mockResolvedValue(
-					new Response(new Uint8Array(input), {
-						headers: {
-							"content-type": "application/octet-stream",
-							etag: '"original"',
-						},
-					}),
-				),
+			vi.fn().mockResolvedValue(
+				new Response(new Uint8Array(input), {
+					headers: {
+						"content-type": "application/octet-stream",
+						etag: '"original"',
+					},
+				}),
+			),
 		);
 		const response = await serveProductImage(request(""));
 		expect(response.status).toBe(200);
 		expect(response.headers.get("content-type")).toBe("image/jpeg");
 		expect(Buffer.from(await response.arrayBuffer())).toEqual(input);
 		expect(response.headers.get("etag")).toBe('"original"');
+	});
+
+	it("composites transparent sources onto the product canvas so they cover the loading label when painted", async () => {
+		const input = await sharp({
+			create: {
+				width: 40,
+				height: 40,
+				channels: 4,
+				background: { r: 255, g: 0, b: 0, alpha: 0 },
+			},
+		})
+			.png()
+			.toBuffer();
+		vi.stubGlobal(
+			"fetch",
+			vi.fn().mockResolvedValue(new Response(new Uint8Array(input))),
+		);
+		const response = await serveProductImage(request());
+		const bytes = Buffer.from(await response.arrayBuffer());
+		expect((await sharp(bytes).metadata()).hasAlpha).toBe(false);
+		const { data } = await sharp(bytes)
+			.removeAlpha()
+			.raw()
+			.toBuffer({ resolveWithObject: true });
+		expect([...data.subarray(0, 3)]).toEqual([255, 255, 255]);
 	});
 
 	it.each([

@@ -187,6 +187,21 @@ describe("product card rendering and navigation", () => {
 		expect(screen.getByText("product.loading")).toBeTruthy();
 	});
 
+	it("keeps load feedback and replaces a failed image with the existing fallback", () => {
+		render(
+			<ProductCard
+				product={{ ...product, images: ["https://www.family.co.jp/p.jpg"] }}
+			/>,
+		);
+		const image = screen.getByRole("img", { name: "Matcha" });
+		expect(screen.getByText("product.imageLoading")).toBeTruthy();
+		fireEvent.load(image);
+		expect(screen.queryByText("product.imageLoading")).toBeNull();
+		fireEvent.error(image);
+		expect(screen.queryByRole("img", { name: "Matcha" })).toBeNull();
+		expect(screen.getByText("product.noImage")).toBeTruthy();
+	});
+
 	it("uses the existing field fallback and unknown price presentation", () => {
 		render(
 			<ProductCard product={{ ...product, title: { ja: "抹茶" }, price: 0 }} />,
