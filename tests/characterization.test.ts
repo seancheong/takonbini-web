@@ -403,25 +403,29 @@ describe("sitemap", () => {
 		expect(fetchMock).toHaveBeenNthCalledWith(
 			1,
 			"https://api.example.test/products?status=all&limit=100",
-			{ headers: { "x-api-key": "test-secret" } },
+			{
+				headers: { "x-api-key": "test-secret" },
+				signal: expect.any(AbortSignal),
+			},
 		);
 		expect(fetchMock).toHaveBeenNthCalledWith(
 			2,
 			"https://api.example.test/products?status=all&limit=100&cursor=next",
-			{ headers: { "x-api-key": "test-secret" } },
+			{
+				headers: { "x-api-key": "test-secret" },
+				signal: expect.any(AbortSignal),
+			},
 		);
 		expect(response.headers.get("content-type")).toBe(
 			"application/xml; charset=utf-8",
 		);
 		const xml = await response.text();
 		expect(xml).toContain("https://takonbini.example.test/");
-		expect(xml).toContain(
-			"https://takonbini.example.test/products/one&amp;two",
-		);
+		expect(xml).toContain("https://takonbini.example.test/products/one%26two");
 		expect(xml).toContain("https://takonbini.example.test/products/three");
 	});
 
-	it("falls back to the request host and emits the homepage without API credentials", async () => {
+	it("returns unavailable without publishing a homepage-only sitemap when API credentials are missing", async () => {
 		vi.stubEnv("PRODUCTS_API_URL", "");
 		vi.stubEnv("PRODUCTS_API_KEY", "");
 		const fetchMock = vi.fn();
@@ -432,11 +436,11 @@ describe("sitemap", () => {
 			params: {},
 		});
 
-		expect(response.status).toBe(200);
-		expect(await response.text()).toContain("https://preview.example.test/");
+		expect(response.status).toBe(503);
+		expect(await response.text()).not.toContain("<urlset");
 		expect(fetchMock).not.toHaveBeenCalled();
 	});
-	it("preserves the existing partial sitemap after a later upstream HTTP failure", async () => {
+	it("returns unavailable rather than a partial sitemap after a later upstream HTTP failure", async () => {
 		vi.stubEnv("PRODUCTS_API_URL", "https://api.example.test");
 		vi.stubEnv("PRODUCTS_API_KEY", "test-secret");
 		const fetchMock = vi
@@ -455,12 +459,12 @@ describe("sitemap", () => {
 			request: request("https://web.example.test/sitemap.xml"),
 			params: {},
 		});
-		expect(response.status).toBe(200);
-		expect(await response.text()).toContain("/products/first-page");
+		expect(response.status).toBe(503);
+		expect(await response.text()).not.toContain("/products/first-page");
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 	});
 
-	it("preserves the existing sitemap page limit even when more pages exist", async () => {
+	it("stops repeated cursors and returns unavailable", async () => {
 		vi.stubEnv("PRODUCTS_API_URL", "https://api.example.test");
 		vi.stubEnv("PRODUCTS_API_KEY", "test-secret");
 		const fetchMock = vi
@@ -474,7 +478,7 @@ describe("sitemap", () => {
 			request: request("https://web.example.test/sitemap.xml"),
 			params: {},
 		});
-		expect(response.status).toBe(200);
-		expect(fetchMock).toHaveBeenCalledTimes(50);
+		expect(response.status).toBe(503);
+		expect(fetchMock).toHaveBeenCalledTimes(2);
 	});
 });

@@ -1,0 +1,18 @@
+{
+  "method": "In-app browser DOM inspection after hydration and settled client navigation on the local production build",
+  "origin": "http://localhost:3036",
+  "checks": [
+    {
+      "state": "Hydrated standalone product detail",
+      "canonical": ["https://takonbini.com/products/ab7bec709206a1324c96fea0c238b347"],
+      "ogUrl": ["https://takonbini.com/products/ab7bec709206a1324c96fea0c238b347"],
+      "pass": true
+    },
+    {
+      "state": "After Back to products client navigation settled",
+      "canonical": ["https://takonbini.com/"],
+      "ogUrl": ["https://takonbini.com/"],
+      "pass": true
+    }
+  ]
+}

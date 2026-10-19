@@ -46,7 +46,10 @@ const isTheme = (value: string | undefined): value is Theme =>
 const loaderFn = createServerFn({ method: "GET" }).handler(async () => {
 	const savedTheme = await getCookie(themeCookieKey);
 
-	return { savedTheme };
+	return {
+		savedTheme,
+		siteUrl: process.env.SITE_URL ?? "https://takonbini.com",
+	};
 });
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
@@ -56,9 +59,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		if (!preload) await setSSRLanguage(context.i18n, search.lang);
 	},
 	loader: () => loaderFn(),
-	head: ({ match }) => {
+	head: ({ match, matches, loaderData }) => {
 		const { i18n } = match.context;
-		const baseUrl = process.env.SITE_URL ?? "http://localhost:3000";
+		const baseUrl = (loaderData?.siteUrl ?? "https://takonbini.com").replace(
+			/\/$/,
+			"",
+		);
+		const canonicalUrl = new URL(matches.at(-1)?.pathname ?? "/", `${baseUrl}/`)
+			.href;
 
 		const title = i18n.t("appName");
 		const description = i18n.t("metaDescription");
@@ -99,7 +107,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				},
 				{
 					property: "og:url",
-					content: baseUrl,
+					content: canonicalUrl,
 				},
 				{
 					property: "og:image",
@@ -140,7 +148,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				},
 				{
 					rel: "canonical",
-					href: baseUrl,
+					href: canonicalUrl,
 				},
 				{
 					rel: "icon",
