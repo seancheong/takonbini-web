@@ -6,6 +6,7 @@ const hosts = new Set([
 	"www.family.co.jp",
 	"www.lawson.co.jp",
 	"img-afd.7api-01.dp1.sej.co.jp",
+	"www.sej.co.jp",
 ]);
 const maxBytes = 8 * 1024 * 1024;
 const maxPixels = 8_000_000;

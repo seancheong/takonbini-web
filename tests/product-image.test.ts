@@ -184,6 +184,36 @@ describe("bounded product image delivery", () => {
 		expect((await pending).status).toBe(502);
 		vi.useRealTimers();
 	});
+	it("expires queued work and returns a retryable response", async () => {
+		vi.useFakeTimers();
+		vi.stubGlobal(
+			"fetch",
+			vi
+				.fn()
+				.mockImplementation(
+					(_url, { signal }) =>
+						new Promise((_resolve, reject) =>
+							signal.addEventListener(
+								"abort",
+								() => reject(new Error("aborted")),
+								{ once: true },
+							),
+						),
+				),
+		);
+		const active = Array.from({ length: 4 }, () =>
+			serveProductImage(request()),
+		);
+		const queued = serveProductImage(request());
+		await vi.advanceTimersByTimeAsync(8001);
+		const response = await queued;
+		expect(response.status).toBe(503);
+		expect(response.headers.get("retry-after")).toBe("5");
+		expect(response.headers.get("cache-control")).toBe("no-store");
+		await vi.advanceTimersByTimeAsync(2000);
+		await Promise.all(active);
+	});
+
 	it("bounds active fetches and the waiting queue", async () => {
 		const resolvers: Array<(response: Response) => void> = [];
 		const fetchMock = vi
