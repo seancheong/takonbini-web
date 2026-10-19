@@ -60,6 +60,28 @@ function failure(status: number) {
 		},
 	});
 }
+function rasterType(bytes: Buffer) {
+	if (bytes.subarray(0, 3).equals(Buffer.from([0xff, 0xd8, 0xff])))
+		return "image/jpeg";
+	if (
+		bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
+	)
+		return "image/png";
+	if (
+		bytes.toString("ascii", 0, 4) === "RIFF" &&
+		bytes.toString("ascii", 8, 12) === "WEBP"
+	)
+		return "image/webp";
+	if (["GIF87a", "GIF89a"].includes(bytes.toString("ascii", 0, 6)))
+		return "image/gif";
+	if (
+		bytes.toString("ascii", 4, 8) === "ftyp" &&
+		bytes.toString("ascii", 8, 12) === "avif"
+	)
+		return "image/avif";
+	throw new Error("format");
+}
+
 async function download(url: URL, signal: AbortSignal) {
 	for (let redirects = 0; redirects <= 3; redirects++) {
 		if (!allowed(url)) throw new Error("source");
@@ -143,7 +165,7 @@ export async function serveProductImage(request: Request) {
 	try {
 		const upstream = await download(url, controller.signal);
 		let bytes = upstream.bytes;
-		let type = upstream.headers.get("content-type")?.split(";")[0];
+		let type = rasterType(bytes);
 		let etag = upstream.headers.get("etag");
 		if (width !== undefined) {
 			const image = sharp(bytes, {
@@ -171,16 +193,6 @@ export async function serveProductImage(request: Request) {
 			if (bytes.length > maxBytes) throw new Error("size");
 			type = "image/webp";
 			etag = `"${createHash("sha256").update(bytes).digest("hex")}"`;
-		} else if (
-			![
-				"image/jpeg",
-				"image/png",
-				"image/webp",
-				"image/avif",
-				"image/gif",
-			].includes(type ?? "")
-		) {
-			throw new Error("format");
 		}
 		const headers = new Headers({
 			"content-type": type ?? "application/octet-stream",

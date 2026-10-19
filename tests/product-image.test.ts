@@ -49,6 +49,45 @@ describe("bounded product image delivery", () => {
 		expect(response.headers.has("set-cookie")).toBe(false);
 	});
 
+	it("preserves original JPEG bytes when the retailer labels them octet-stream", async () => {
+		const input = await jpeg();
+		vi.stubGlobal(
+			"fetch",
+			vi
+				.fn()
+				.mockResolvedValue(
+					new Response(new Uint8Array(input), {
+						headers: {
+							"content-type": "application/octet-stream",
+							etag: '"original"',
+						},
+					}),
+				),
+		);
+		const response = await serveProductImage(request(""));
+		expect(response.status).toBe(200);
+		expect(response.headers.get("content-type")).toBe("image/jpeg");
+		expect(Buffer.from(await response.arrayBuffer())).toEqual(input);
+		expect(response.headers.get("etag")).toBe('"original"');
+	});
+
+	it.each([
+		"www.family.co.jp",
+		"www.lawson.co.jp",
+		"img-afd.7api-01.dp1.sej.co.jp",
+		"www.sej.co.jp",
+	])("accepts observed retailer host %s", async (host) => {
+		const input = await jpeg();
+		vi.stubGlobal(
+			"fetch",
+			vi.fn().mockResolvedValue(new Response(new Uint8Array(input))),
+		);
+		const url = new URL("https://web.test/api/image");
+		url.searchParams.set("url", `https://${host}/p.jpg`);
+		url.searchParams.set("w", "320");
+		expect((await serveProductImage(new Request(url))).status).toBe(200);
+	});
+
 	it.each([
 		"&w=0",
 		"&w=641",

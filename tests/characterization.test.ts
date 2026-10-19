@@ -333,7 +333,7 @@ describe("image proxy", () => {
 
 	it("streams allowed images with cache and validator headers", async () => {
 		const fetchMock = vi.fn().mockResolvedValue(
-			new Response("image-bytes", {
+			new Response(new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]), {
 				status: 200,
 				headers: {
 					"content-type": "image/webp",
@@ -360,7 +360,7 @@ describe("image proxy", () => {
 				signal: expect.any(AbortSignal),
 			},
 		);
-		expect(response.headers.get("content-type")).toBe("image/webp");
+		expect(response.headers.get("content-type")).toBe("image/png");
 		expect(response.headers.get("etag")).toBe('"img-v1"');
 		expect(response.headers.get("last-modified")).toBe(
 			"Mon, 01 Jan 2024 00:00:00 GMT",
@@ -369,7 +369,9 @@ describe("image proxy", () => {
 			"public, max-age=86400, s-maxage=604800, stale-while-revalidate=86400",
 		);
 		expect(response.headers.has("set-cookie")).toBe(false);
-		expect(await response.text()).toBe("image-bytes");
+		expect(new Uint8Array(await response.arrayBuffer())).toEqual(
+			new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]),
+		);
 	});
 });
 
