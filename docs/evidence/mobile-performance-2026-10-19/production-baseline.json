@@ -1,0 +1,135 @@
+{
+  "revision": "a69d2829beccb27167d783f546cee32ccd21dd5b",
+  "productionDeployment": 7173213574,
+  "lighthouseVersion": "13.4.1",
+  "nodeVersion": "24.16.0",
+  "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+  "settings": {
+    "formFactor": "mobile",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
+      "disabled": false
+    },
+    "throttlingMethod": "simulate",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    }
+  },
+  "method": "Three sequential interleaved browser-cold navigations per page, fresh Chrome profile per run; CDN/API caches not forced cold; English, fresh locale/theme cookie state; system theme was not forced. Bootstrap run on unsupported Node 22.16 excluded. Not field data or INP measurement.",
+  "runs": [
+    {
+      "page": "catalog",
+      "run": 1,
+      "fetchTime": "2026-10-19T12:10:49.117Z",
+      "score": 95,
+      "lcpMs": 2499.6945,
+      "fcpMs": 2049.6945,
+      "tbtMs": 0,
+      "cls": 0,
+      "speedIndexMs": 3193.21035599967,
+      "transferBytes": 1215450,
+      "ttfbMs": 15,
+      "benchmarkIndex": 3138.5
+    },
+    {
+      "page": "catalog",
+      "run": 2,
+      "fetchTime": "2026-10-19T12:11:13.165Z",
+      "score": 96,
+      "lcpMs": 2427.6915,
+      "fcpMs": 1977.6915,
+      "tbtMs": 0,
+      "cls": 0,
+      "speedIndexMs": 2564.034234000055,
+      "transferBytes": 1215468,
+      "ttfbMs": 17,
+      "benchmarkIndex": 3203
+    },
+    {
+      "page": "catalog",
+      "run": 3,
+      "fetchTime": "2026-10-19T12:11:36.370Z",
+      "score": 96,
+      "lcpMs": 2420.9935,
+      "fcpMs": 1970.9935,
+      "tbtMs": 0,
+      "cls": 0,
+      "speedIndexMs": 2810.485775999707,
+      "transferBytes": 1215507,
+      "ttfbMs": 14,
+      "benchmarkIndex": 3165
+    },
+    {
+      "page": "detail",
+      "run": 1,
+      "fetchTime": "2026-10-19T12:11:01.671Z",
+      "score": 96,
+      "lcpMs": 2589.791,
+      "fcpMs": 1839.791,
+      "tbtMs": 1,
+      "cls": 0,
+      "speedIndexMs": 2266.060707999907,
+      "transferBytes": 334775,
+      "ttfbMs": 15,
+      "benchmarkIndex": 3155.5
+    },
+    {
+      "page": "detail",
+      "run": 2,
+      "fetchTime": "2026-10-19T12:11:25.136Z",
+      "score": 96,
+      "lcpMs": 2515.0715,
+      "fcpMs": 1840.0715,
+      "tbtMs": 0,
+      "cls": 0,
+      "speedIndexMs": 2220.5442479994053,
+      "transferBytes": 334807,
+      "ttfbMs": 17,
+      "benchmarkIndex": 3178.5
+    },
+    {
+      "page": "detail",
+      "run": 3,
+      "fetchTime": "2026-10-19T12:11:48.616Z",
+      "score": 96,
+      "lcpMs": 2567.9735,
+      "fcpMs": 1817.9735,
+      "tbtMs": 0,
+      "cls": 0,
+      "speedIndexMs": 2260.0687340006266,
+      "transferBytes": 334812,
+      "ttfbMs": 16,
+      "benchmarkIndex": 3175.5
+    }
+  ],
+  "medians": {
+    "catalog": {
+      "score": 96,
+      "lcpMs": 2427.6915,
+      "fcpMs": 1977.6915,
+      "tbtMs": 0,
+      "cls": 0,
+      "speedIndexMs": 2810.485775999707,
+      "transferBytes": 1215468,
+      "ttfbMs": 15
+    },
+    "detail": {
+      "score": 96,
+      "lcpMs": 2567.9735,
+      "fcpMs": 1839.791,
+      "tbtMs": 0,
+      "cls": 0,
+      "speedIndexMs": 2260.0687340006266,
+      "transferBytes": 334807,
+      "ttfbMs": 16
+    }
+  }
+}

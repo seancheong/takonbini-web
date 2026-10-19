@@ -47,7 +47,7 @@ Correct from CatalogPanel: `<ProductGrid products={products} filters={filters} /
 
 Use [ProductCard](../../src/features/products/catalog/ProductCard.tsx) as a product navigation link; use a button for actions and the grid for collection geometry.
 
-Props: required `product: ActiveCatalogProduct`, optional `filters`. The first image, missing/error image state, category, store label, zero-price state, and release badges determine content; none is a variant prop.
+Props: required `product: ActiveCatalogProduct`, optional `filters`, `onPreview`, and `imagePriority` (default false). ProductGrid prioritizes only its first card image with eager loading and high fetch priority; subsequent cards, including appended Load more results, remain lazy. This avoids delaying the measured mobile LCP image without making every catalog image compete for early bandwidth. The first image, missing/error image state, category, store label, zero-price state, and release badges determine content; none is a variant prop.
 
 Correct from ProductGrid: `<ProductCard key={product.id} product={product} filters={filters} />`. Incorrect mutation: rendering the card as a clickable div; it loses native link behavior and modifier clicks.
 

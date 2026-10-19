@@ -26,11 +26,13 @@ import {
 
 interface ProductCardProps {
 	product: ActiveCatalogProduct;
+	imagePriority?: boolean;
 	filters?: ProductFilters;
 	onPreview?: (product: ActiveCatalogProduct) => void;
 }
 export default function ProductCard({
 	product,
+	imagePriority = false,
 	filters,
 	onPreview,
 }: ProductCardProps) {
@@ -147,7 +149,8 @@ export default function ProductCard({
 							onError={() => setImageError(true)}
 							onLoad={() => setImageLoaded(true)}
 							decoding="async"
-							loading="lazy"
+							loading={imagePriority ? "eager" : "lazy"}
+							fetchPriority={imagePriority ? "high" : undefined}
 							{...stylex.props(
 								layoutStyles.image,
 								imageLoaded ? layoutStyles.visible : layoutStyles.hidden,

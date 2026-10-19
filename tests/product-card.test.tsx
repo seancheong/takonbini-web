@@ -4,6 +4,7 @@ import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import ProductCard from "@/features/products/catalog/ProductCard";
+import ProductGrid from "@/features/products/catalog/ProductGrid";
 import type { ActiveCatalogProduct } from "@/features/products/products.contracts";
 
 const routerMocks = vi.hoisted(() => ({
@@ -212,4 +213,27 @@ describe("product card rendering and navigation", () => {
 		expect(recoverableErrors).toEqual([]);
 		await act(async () => root.unmount());
 	});
+});
+
+it("prioritizes only the first catalog image, including after loading more products", () => {
+	const products = ["first", "second", "third"].map((id) => ({
+		...product,
+		id,
+		title: { ja: id, en: id },
+		images: [`https://store.example.test/${id}.jpg`],
+	}));
+	const { container, rerender } = render(
+		<ProductGrid products={products.slice(0, 2)} />,
+	);
+	const first = container.querySelectorAll("img")[0];
+	expect(first.getAttribute("loading")).toBe("eager");
+	expect(first.getAttribute("fetchpriority")).toBe("high");
+	expect(container.querySelectorAll("img")[1].getAttribute("loading")).toBe(
+		"lazy",
+	);
+	rerender(<ProductGrid products={products} />);
+	expect(container.querySelectorAll('img[fetchpriority="high"]')).toHaveLength(
+		1,
+	);
+	expect(container.querySelectorAll('img[loading="lazy"]')).toHaveLength(2);
 });
