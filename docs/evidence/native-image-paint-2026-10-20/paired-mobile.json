@@ -1,0 +1,339 @@
+{
+  "control": {
+    "commit": "2250366b263e87620dbf944dd4f6f9245a041af2",
+    "deployment": 7187639848,
+    "host": "https://takonbini-inacilbqp-sean-cheong-zhen-xiongs-projects.vercel.app"
+  },
+  "candidate": {
+    "commit": "fdac37c27dc7ebf59d34f5616a3427fa763521fc",
+    "deployment": 7187732452,
+    "host": "https://takonbini-mmcp93vrs-sean-cheong-zhen-xiongs-projects.vercel.app"
+  },
+  "lighthouseVersion": "13.4.1",
+  "environment": {
+    "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
+    "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+    "benchmarkIndex": 3131,
+    "credits": {}
+  },
+  "settings": {
+    "output": [
+      "json",
+      "html"
+    ],
+    "maxWaitForFcp": 30000,
+    "maxWaitForLoad": 45000,
+    "pauseAfterFcpMs": 1000,
+    "pauseAfterLoadMs": 1000,
+    "networkQuietThresholdMs": 1000,
+    "cpuQuietThresholdMs": 1000,
+    "formFactor": "mobile",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    },
+    "throttlingMethod": "simulate",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
+      "disabled": false
+    },
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+    "auditMode": false,
+    "gatherMode": false,
+    "clearStorageTypes": [
+      "file_systems",
+      "shader_cache",
+      "service_workers",
+      "cache_storage"
+    ],
+    "disableStorageReset": false,
+    "debugNavigation": false,
+    "channel": "cli",
+    "usePassiveGathering": false,
+    "disableFullPageScreenshot": false,
+    "skipAboutBlank": false,
+    "blankPage": "about:blank",
+    "ignoreStatusCode": false,
+    "locale": "en-US",
+    "blockedUrlPatterns": null,
+    "additionalTraceCategories": null,
+    "extraHeaders": null,
+    "precomputedLanternData": null,
+    "onlyAudits": null,
+    "onlyCategories": [
+      "performance"
+    ],
+    "skipAudits": null
+  },
+  "rows": [
+    {
+      "variant": "candidate",
+      "scenario": "catalog",
+      "run": 1,
+      "fetchTime": "2026-10-19T23:47:24.375Z",
+      "score": 87,
+      "lcpMs": 3211.943,
+      "tbtMs": 12,
+      "cls": 0,
+      "transferBytes": 497404,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "MISS",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "candidate",
+      "scenario": "catalog",
+      "run": 2,
+      "fetchTime": "2026-10-19T23:48:03.816Z",
+      "score": 97,
+      "lcpMs": 2145.3334999999997,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 497392,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "HIT",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "candidate",
+      "scenario": "catalog",
+      "run": 3,
+      "fetchTime": "2026-10-19T23:49:04.649Z",
+      "score": 100,
+      "lcpMs": 1387.4075,
+      "tbtMs": 1.5,
+      "cls": 0,
+      "transferBytes": 497515,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "HIT",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "candidate",
+      "scenario": "detail",
+      "run": 1,
+      "fetchTime": "2026-10-19T23:47:52.111Z",
+      "score": 97,
+      "lcpMs": 2130.8555,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 275339,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "HIT",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "candidate",
+      "scenario": "detail",
+      "run": 2,
+      "fetchTime": "2026-10-19T23:48:28.379Z",
+      "score": 100,
+      "lcpMs": 1225.397,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 275372,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "HIT",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "candidate",
+      "scenario": "detail",
+      "run": 3,
+      "fetchTime": "2026-10-19T23:49:28.381Z",
+      "score": 97,
+      "lcpMs": 2149.441,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 275367,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "HIT",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "control",
+      "scenario": "catalog",
+      "run": 1,
+      "fetchTime": "2026-10-19T23:47:10.307Z",
+      "score": 89,
+      "lcpMs": 3497.441,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 497479,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "MISS",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "control",
+      "scenario": "catalog",
+      "run": 2,
+      "fetchTime": "2026-10-19T23:48:16.071Z",
+      "score": 99,
+      "lcpMs": 2134.7200000000003,
+      "tbtMs": 15.5,
+      "cls": 0,
+      "transferBytes": 497638,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "HIT",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "control",
+      "scenario": "catalog",
+      "run": 3,
+      "fetchTime": "2026-10-19T23:48:52.175Z",
+      "score": 96,
+      "lcpMs": 2727.5265,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 497508,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "HIT",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "control",
+      "scenario": "detail",
+      "run": 1,
+      "fetchTime": "2026-10-19T23:47:40.314Z",
+      "score": 95,
+      "lcpMs": 2738.8175,
+      "tbtMs": 8,
+      "cls": 0,
+      "transferBytes": 275469,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "HIT",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "control",
+      "scenario": "detail",
+      "run": 2,
+      "fetchTime": "2026-10-19T23:48:39.945Z",
+      "score": 97,
+      "lcpMs": 2572.0215,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 275503,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "HIT",
+          "fromDiskCache": false
+        }
+      ]
+    },
+    {
+      "variant": "control",
+      "scenario": "detail",
+      "run": 3,
+      "fetchTime": "2026-10-19T23:49:17.017Z",
+      "score": 97,
+      "lcpMs": 2581.1405,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 275502,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "lcpImageCache": [
+        {
+          "status": 200,
+          "edgeCache": "HIT",
+          "fromDiskCache": false
+        }
+      ]
+    }
+  ],
+  "medians": {
+    "control": {
+      "catalog": {
+        "score": 96,
+        "lcpMs": 2727.5265,
+        "tbtMs": 0,
+        "cls": 0,
+        "transferBytes": 497508
+      },
+      "detail": {
+        "score": 97,
+        "lcpMs": 2581.1405,
+        "tbtMs": 0,
+        "cls": 0,
+        "transferBytes": 275502
+      }
+    },
+    "candidate": {
+      "catalog": {
+        "score": 97,
+        "lcpMs": 2145.3334999999997,
+        "tbtMs": 1.5,
+        "cls": 0,
+        "transferBytes": 497404
+      },
+      "detail": {
+        "score": 97,
+        "lcpMs": 2130.8555,
+        "tbtMs": 0,
+        "cls": 0,
+        "transferBytes": 275367
+      }
+    }
+  }
+}

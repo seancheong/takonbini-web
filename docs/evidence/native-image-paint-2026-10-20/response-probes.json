@@ -1,0 +1,147 @@
+{
+  "rows": [
+    {
+      "run": 1,
+      "variant": "control",
+      "case": "catalog",
+      "status": 200,
+      "totalMs": 1487.0,
+      "bytes": 91572,
+      "edgeCache": "MISS",
+      "etag": null,
+      "sha256": null
+    },
+    {
+      "run": 1,
+      "variant": "control",
+      "case": "image",
+      "status": 200,
+      "totalMs": 118.9,
+      "bytes": 46012,
+      "edgeCache": "HIT",
+      "etag": "\"6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784\"",
+      "sha256": "6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784"
+    },
+    {
+      "run": 1,
+      "variant": "candidate",
+      "case": "catalog",
+      "status": 200,
+      "totalMs": 1293.0,
+      "bytes": 91592,
+      "edgeCache": "MISS",
+      "etag": null,
+      "sha256": null
+    },
+    {
+      "run": 1,
+      "variant": "candidate",
+      "case": "image",
+      "status": 200,
+      "totalMs": 123.3,
+      "bytes": 46012,
+      "edgeCache": "HIT",
+      "etag": "\"6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784\"",
+      "sha256": "6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784"
+    },
+    {
+      "run": 2,
+      "variant": "candidate",
+      "case": "catalog",
+      "status": 200,
+      "totalMs": 856.9,
+      "bytes": 91592,
+      "edgeCache": "MISS",
+      "etag": null,
+      "sha256": null
+    },
+    {
+      "run": 2,
+      "variant": "candidate",
+      "case": "image",
+      "status": 200,
+      "totalMs": 130.8,
+      "bytes": 46012,
+      "edgeCache": "HIT",
+      "etag": "\"6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784\"",
+      "sha256": "6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784"
+    },
+    {
+      "run": 2,
+      "variant": "control",
+      "case": "catalog",
+      "status": 200,
+      "totalMs": 709.4,
+      "bytes": 91572,
+      "edgeCache": "MISS",
+      "etag": null,
+      "sha256": null
+    },
+    {
+      "run": 2,
+      "variant": "control",
+      "case": "image",
+      "status": 200,
+      "totalMs": 103.5,
+      "bytes": 46012,
+      "edgeCache": "HIT",
+      "etag": "\"6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784\"",
+      "sha256": "6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784"
+    },
+    {
+      "run": 3,
+      "variant": "control",
+      "case": "catalog",
+      "status": 200,
+      "totalMs": 646.3,
+      "bytes": 91572,
+      "edgeCache": "MISS",
+      "etag": null,
+      "sha256": null
+    },
+    {
+      "run": 3,
+      "variant": "control",
+      "case": "image",
+      "status": 200,
+      "totalMs": 151.4,
+      "bytes": 46012,
+      "edgeCache": "HIT",
+      "etag": "\"6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784\"",
+      "sha256": "6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784"
+    },
+    {
+      "run": 3,
+      "variant": "candidate",
+      "case": "catalog",
+      "status": 200,
+      "totalMs": 835.6,
+      "bytes": 91592,
+      "edgeCache": "MISS",
+      "etag": null,
+      "sha256": null
+    },
+    {
+      "run": 3,
+      "variant": "candidate",
+      "case": "image",
+      "status": 200,
+      "totalMs": 121.6,
+      "bytes": 46012,
+      "edgeCache": "HIT",
+      "etag": "\"6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784\"",
+      "sha256": "6f480bb924a45ab523ed6b98fa3f1e3f34ba45187be8154278da21cef3430784"
+    }
+  ],
+  "medians": {
+    "control": {
+      "catalog": 709.4,
+      "image": 118.9
+    },
+    "candidate": {
+      "catalog": 856.9,
+      "image": 123.3
+    }
+  },
+  "identicalOpaqueImageBytes": true
+}

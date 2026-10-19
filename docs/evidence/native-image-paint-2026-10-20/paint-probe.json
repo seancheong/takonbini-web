@@ -1,0 +1,27 @@
+{
+  "applicationScriptsBlockedByCsp": true,
+  "control": {
+    "commit": "2250366",
+    "detailImageDownloaded": true,
+    "opacity": 0,
+    "photoVisible": false
+  },
+  "candidate": {
+    "commit": "fdac37c",
+    "detailImageDownloaded": true,
+    "detailOpacity": 1,
+    "detailPosition": "absolute",
+    "catalogImageDownloaded": true,
+    "catalogOpacity": 1,
+    "catalogPosition": "relative",
+    "photoVisible": true,
+    "releaseBadgeVisible": true
+  },
+  "normalHostedCandidate": {
+    "imageDownloaded": true,
+    "opacity": 1,
+    "loadingLabelsAfterHydration": 0,
+    "capturedWarningsOrErrors": 0,
+    "modalOpenCloseAndFocusReturn": true
+  }
+}

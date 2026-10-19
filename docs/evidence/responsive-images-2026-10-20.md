@@ -1,5 +1,7 @@
 # Responsive product images — 20 October 2026
 
+Current follow-up: [native image paint](native-image-paint-2026-10-20.md) removes the proved hydration visibility blocker and records passing candidate medians, while preserving first-source/response limitations. The failing medians and draft decision below are the earlier checkpoint, not the latest status.
+
 Implementation for #86 extends draft #85. Not merged, not deployed to production, and no performance acceptance is inferred from unit tests.
 
 ## Delivery contract and bounds

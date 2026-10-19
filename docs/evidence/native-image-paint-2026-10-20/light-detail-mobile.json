@@ -1,0 +1,41 @@
+{
+  "commit": "fdac37c27dc7ebf59d34f5616a3427fa763521fc",
+  "deployment": 7187732452,
+  "url": "https://takonbini-mmcp93vrs-sean-cheong-zhen-xiongs-projects.vercel.app/products/0d41fc1137e1762b66b05d4539990c2b?lang=en",
+  "rows": [
+    {
+      "run": 1,
+      "fetchTime": "2026-10-19T23:50:01.978Z",
+      "score": 96,
+      "lcpMs": 2695.939,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 268658
+    },
+    {
+      "run": 2,
+      "fetchTime": "2026-10-19T23:50:14.701Z",
+      "score": 100,
+      "lcpMs": 1232.1464999999998,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 268756
+    },
+    {
+      "run": 3,
+      "fetchTime": "2026-10-19T23:50:26.168Z",
+      "score": 100,
+      "lcpMs": 1236.555,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 268701
+    }
+  ],
+  "medians": {
+    "score": 100,
+    "lcpMs": 1236.555,
+    "tbtMs": 0,
+    "cls": 0,
+    "transferBytes": 268701
+  }
+}
