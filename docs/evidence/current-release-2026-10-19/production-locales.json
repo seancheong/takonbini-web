@@ -1,0 +1,171 @@
+{
+  "at": "2026-10-19T10:11:38.793765+00:00",
+  "target": "https://takonbini.com",
+  "sequential": [
+    {
+      "path": "/?lang=ja",
+      "saved": "zh",
+      "browser": "en",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/?lang=zh",
+      "saved": "en",
+      "browser": "ja",
+      "expected": "zh-Hant",
+      "actual": "zh-Hant",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/?lang=en",
+      "saved": "ja",
+      "browser": "zh",
+      "expected": "en",
+      "actual": "en",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/?lang=fr",
+      "saved": "ja",
+      "browser": "en",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/",
+      "saved": "zh",
+      "browser": "en",
+      "expected": "zh-Hant",
+      "actual": "zh-Hant",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/",
+      "saved": "",
+      "browser": "en;q=0.5,ja;q=0.9",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "pass": true
+    }
+  ],
+  "concurrent": [
+    {
+      "path": "/?lang=ja",
+      "saved": "zh",
+      "browser": "en",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/?lang=zh",
+      "saved": "en",
+      "browser": "ja",
+      "expected": "zh-Hant",
+      "actual": "zh-Hant",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/?lang=en",
+      "saved": "ja",
+      "browser": "zh",
+      "expected": "en",
+      "actual": "en",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/?lang=fr",
+      "saved": "ja",
+      "browser": "en",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/",
+      "saved": "zh",
+      "browser": "en",
+      "expected": "zh-Hant",
+      "actual": "zh-Hant",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/",
+      "saved": "",
+      "browser": "en;q=0.5,ja;q=0.9",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/?lang=ja",
+      "saved": "zh",
+      "browser": "en",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/?lang=zh",
+      "saved": "en",
+      "browser": "ja",
+      "expected": "zh-Hant",
+      "actual": "zh-Hant",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/?lang=en",
+      "saved": "ja",
+      "browser": "zh",
+      "expected": "en",
+      "actual": "en",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/?lang=fr",
+      "saved": "ja",
+      "browser": "en",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/",
+      "saved": "zh",
+      "browser": "en",
+      "expected": "zh-Hant",
+      "actual": "zh-Hant",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "path": "/",
+      "saved": "",
+      "browser": "en;q=0.5,ja;q=0.9",
+      "expected": "ja",
+      "actual": "ja",
+      "status": 200,
+      "pass": true
+    }
+  ],
+  "all_pass": true
+}
