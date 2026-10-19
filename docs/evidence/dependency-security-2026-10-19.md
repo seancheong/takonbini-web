@@ -47,7 +47,7 @@ of generated client assets did not find those package names. Bundling and
 minification mean these observations are not proof of complete code exclusion.
 The security result rests on patched resolutions and fresh full-graph auditing,
 not an exemption based on dev/build classification. Hosted preview verification
-and post-deployment production checks must be recorded separately.
+is recorded below. Post-deployment production checks remain required.
 
 ## Local validation
 
@@ -75,3 +75,14 @@ session result.
 The build retains the existing Nitro preference for Vite 8 and large client
 chunk warning. Local tooling: Node 22.16.0 and pnpm 10.20.0. Audit results are a
 point-in-time registry check, not a guarantee against future advisories.
+
+## Hosted preview
+
+PR #83 implementation commit `d691bdcabd96476ca6dc10febcbd24bad1c21fce`
+passes Web CI and both Socket Security checks. Vercel preview deployment
+`7171787747` succeeded for that commit. All six sequential and twelve concurrent
+locale probes pass: [results](dependency-security-2026-10-19/preview-locales.json).
+The hosted English catalog renders 20 products; opening a product renders its
+detail dialog, and Escape returns to the catalog with focus on the product link.
+No warning/error browser logs were captured in that hosted session. This
+follow-up changes evidence files only; production deployment remains pending.
