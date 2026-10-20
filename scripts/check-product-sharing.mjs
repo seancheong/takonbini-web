@@ -35,7 +35,7 @@ const address = api.address();
 assert.ok(address && typeof address === "object");
 process.env.PRODUCTS_API_URL = `http://127.0.0.1:${address.port}`;
 process.env.PRODUCTS_API_KEY = "synthetic-local-fixture";
-process.env.SITE_URL = "https://sharing.example.test";
+process.env.SITE_URL = "https://canonical.example.test";
 const directory = resolve(
 	process.argv[2] ?? ".vercel/output/functions/__server.func",
 );
@@ -83,7 +83,7 @@ try {
 			])
 				assert.deepEqual(meta(html, key), [description]);
 			assert.deepEqual(meta(html, "og:url"), [
-				`https://sharing.example.test/products/${product.id}`,
+				`https://canonical.example.test/products/${product.id}`,
 			]);
 			const image = product.images[0]
 				? `https://sharing.example.test/api/share-image?url=${encodeURIComponent(product.images[0])}`

@@ -163,7 +163,8 @@ metadata and the document title; product routes do not append competing tags.
 per-field locale fallback order as cards/detail. Missing descriptions use the
 localized site description; unavailable products use site metadata.
 
-Sharing images use an absolute `/api/share-image?url=…` URL for the first allowed
+Sharing image URLs use the request’s serialized origin, independently of the
+configured canonical origin, so immutable previews serve their own images. They use an absolute `/api/share-image?url=…` URL for the first allowed
 retailer photograph. This native Nitro handler reuses the existing image source,
 redirect, download, decode, time, pixel, admission and cache bounds and emits a
 JPEG within 1280×1280 without cropping or enlargement. It falls back via an

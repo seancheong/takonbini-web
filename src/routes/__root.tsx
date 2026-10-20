@@ -12,7 +12,7 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { createServerFn } from "@tanstack/react-start";
-import { getCookie } from "@tanstack/react-start/server";
+import { getCookie, getRequestUrl } from "@tanstack/react-start/server";
 import { Analytics } from "@vercel/analytics/react";
 import type { i18n as I18n } from "i18next";
 import { useEffect } from "react";
@@ -53,6 +53,7 @@ const loaderFn = createServerFn({ method: "GET" }).handler(async () => {
 
 	return {
 		savedTheme,
+		imageOrigin: getRequestUrl().origin,
 		siteUrl: process.env.SITE_URL ?? "https://takonbini.com",
 	};
 });
@@ -73,6 +74,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		const canonicalUrl = new URL(matches.at(-1)?.pathname ?? "/", `${baseUrl}/`)
 			.href;
 
+		const imageOrigin = loaderData?.imageOrigin ?? baseUrl;
 		const siteTitle = i18n.t("appName");
 		const productId = /^\/products\/([^/]+)\/?$/.exec(
 			matches.at(-1)?.pathname ?? "",
@@ -84,13 +86,13 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 					)
 				: undefined,
 			i18n.language,
-			baseUrl,
+			imageOrigin,
 		);
 		const title = product?.title
 			? `${product.title} | ${siteTitle}`
 			: siteTitle;
 		const description = product?.description || i18n.t("metaDescription");
-		const ogImage = product?.image ?? `${baseUrl}/share-default.jpg`;
+		const ogImage = product?.image ?? `${imageOrigin}/share-default.jpg`;
 		const imageAlt = product?.image ? product.title || siteTitle : siteTitle;
 
 		return {

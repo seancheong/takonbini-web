@@ -12,7 +12,7 @@ const head = Route.options.head as unknown as (context: {
 		};
 	};
 	matches: { pathname: string; routeId?: string; params?: { id: string } }[];
-	loaderData: { siteUrl: string };
+	loaderData: { siteUrl: string; imageOrigin?: string };
 }) => {
 	meta: {
 		name?: string;
@@ -21,7 +21,11 @@ const head = Route.options.head as unknown as (context: {
 		title?: string;
 	}[];
 };
-async function metadata(product: unknown, language = "en") {
+async function metadata(
+	product: unknown,
+	language = "en",
+	imageOrigin?: string,
+) {
 	const queryClient = new QueryClient();
 	queryClient.setQueryData(productQueries.detail("one").queryKey, product);
 	const context = {
@@ -43,7 +47,7 @@ async function metadata(product: unknown, language = "en") {
 				params: { id: "one" },
 			},
 		],
-		loaderData: { siteUrl: "https://preview.example.test/" },
+		loaderData: { siteUrl: "https://preview.example.test/", imageOrigin },
 	};
 	return head(context);
 }
@@ -127,4 +131,26 @@ it.each([
 it("uses localized site description when the product has no description", async () => {
 	const result = await metadata({ ...product, description: { ja: "" } });
 	expect(values(result, "og:description")).toEqual(["Browse the catalog"]);
+});
+
+it("uses the deployment origin for images independently of canonical configuration", async () => {
+	const result = await metadata(
+		product,
+		"en",
+		"https://deployment.example.test",
+	);
+	expect(values(result, "og:image")).toEqual([
+		"https://deployment.example.test/api/share-image?url=https%3A%2F%2Fwww.family.co.jp%2Fphoto.jpg",
+	]);
+	expect(values(result, "og:url")).toEqual([
+		"https://preview.example.test/products/one",
+	]);
+	const missing = await metadata(
+		undefined,
+		"en",
+		"https://deployment.example.test",
+	);
+	expect(values(missing, "og:image")).toEqual([
+		"https://deployment.example.test/share-default.jpg",
+	]);
 });
