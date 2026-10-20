@@ -1,3 +1,4 @@
+import { QueryClient } from "@tanstack/react-query";
 import { afterEach, expect, it, vi } from "vitest";
 import { Route } from "@/routes/__root";
 
@@ -16,11 +17,17 @@ it.each(["/", "/products/one", "/products/two"])(
 			links: { rel: string; href: string }[];
 			meta: { property?: string; content?: string }[];
 		};
-		const result = await head({
-			match: { context: { i18n: { t: (key) => key } } },
+		const context = {
+			match: {
+				context: {
+					queryClient: new QueryClient(),
+					i18n: { t: (key: string) => key },
+				},
+			},
 			matches: [{ pathname: "/" }, { pathname }],
 			loaderData: { siteUrl: "https://takonbini.example.test/" },
-		});
+		};
+		const result = await head(context);
 		const expected = `https://takonbini.example.test${pathname}`;
 		expect(result.links.filter((link) => link.rel === "canonical")).toEqual([
 			{ rel: "canonical", href: expected },

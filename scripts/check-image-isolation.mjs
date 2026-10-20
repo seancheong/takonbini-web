@@ -48,3 +48,13 @@ assert.equal(output.toString("ascii", 8, 12), "WEBP");
 console.log(
 	"Compiled image validation and native transform pass without loading React SSR.",
 );
+const shared = await app.fetch(
+	new Request(
+		"https://web.example.test/api/share-image?url=https%3A%2F%2Fwww.family.co.jp%2Fisolation-fixture.png",
+	),
+);
+assert.equal(shared.status, 200);
+assert.equal(shared.headers.get("content-type"), "image/jpeg");
+assert.equal(Buffer.from(await shared.arrayBuffer()).readUInt16BE(0), 0xffd8);
+assert.equal(downloads, 2);
+console.log("Compiled sharing JPEG delivery passes without loading React SSR.");

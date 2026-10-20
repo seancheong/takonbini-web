@@ -152,3 +152,28 @@ Product photos paint as soon as the browser decodes them; loaded state no longer
 ### Image transport boundary
 
 Nitro handles `/api/image` before the React SSR catch-all. Its native server adapter accepts GET/HEAD, rejects other methods before loading the processor, and imports the bounded image pipeline on demand. Do not reintroduce a TanStack UI-route handler for this endpoint: image requests must not load the React/router dependency graph. The compiled isolation check in Web CI exercises invalid input and a real native WebP transform with a local fixture and no external fetch. Existing URL, source/redirect validation, admission, byte/pixel/time, cache and fallback contracts remain.
+
+## Product sharing metadata (#27)
+
+The root head reads the already-fetched detail product from the request’s query
+cache when the standalone product route matches. No second fetch or extra product
+loader payload is required. The root owns the single set of description/Open Graph/Twitter
+metadata and the document title; product routes do not append competing tags.
+`productSharing` is exported by the products entrypoint and uses the same
+per-field locale fallback order as cards/detail. Missing descriptions use the
+localized site description; unavailable products use site metadata.
+
+Sharing image URLs use the request’s serialized origin, independently of the
+configured canonical origin, so immutable previews serve their own images. They use an absolute `/api/share-image?url=…` URL for the first allowed
+retailer photograph. This native Nitro handler reuses the existing image source,
+redirect, download, decode, time, pixel, admission and cache bounds and emits a
+JPEG within 1280×1280 without cropping or enlargement. It falls back via an
+uncached redirect to `/share-default.jpg` on unavailable/invalid images. Only
+the known 1200×630 static fallback declares dimensions; product dimensions are
+not invented. Ordinary `/api/image` WebP/original behavior remains as documented.
+The fallback uses the current icon and existing light theme tokens; regenerate
+with `node scripts/generate-share-fallback.mjs` after an intentional brand change.
+
+Canonical and Open Graph URLs retain the existing query-free product path.
+Platform recrawling/cache behavior and actual Instagram rendering require
+post-release verification; metadata does not force old messages to refresh.

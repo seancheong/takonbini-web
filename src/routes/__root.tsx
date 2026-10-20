@@ -12,11 +12,16 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { createServerFn } from "@tanstack/react-start";
-import { getCookie } from "@tanstack/react-start/server";
+import { getCookie, getRequestUrl } from "@tanstack/react-start/server";
 import { Analytics } from "@vercel/analytics/react";
 import type { i18n as I18n } from "i18next";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import {
+	type ActiveCatalogProduct,
+	productQueries,
+	productSharing,
+} from "@/features/products/products";
 import Header from "../components/Header";
 import { StyleXDevStyles } from "../components/StyleXDevStyles";
 import {
@@ -48,6 +53,7 @@ const loaderFn = createServerFn({ method: "GET" }).handler(async () => {
 
 	return {
 		savedTheme,
+		imageOrigin: getRequestUrl().origin,
 		siteUrl: process.env.SITE_URL ?? "https://takonbini.com",
 	};
 });
@@ -68,9 +74,26 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		const canonicalUrl = new URL(matches.at(-1)?.pathname ?? "/", `${baseUrl}/`)
 			.href;
 
-		const title = i18n.t("appName");
-		const description = i18n.t("metaDescription");
-		const ogImage = `${baseUrl}/og.png`;
+		const imageOrigin = loaderData?.imageOrigin ?? baseUrl;
+		const siteTitle = i18n.t("appName");
+		const productId = /^\/products\/([^/]+)\/?$/.exec(
+			matches.at(-1)?.pathname ?? "",
+		)?.[1];
+		const product = productSharing(
+			typeof productId === "string"
+				? match.context.queryClient.getQueryData<ActiveCatalogProduct>(
+						productQueries.detail(decodeURIComponent(productId)).queryKey,
+					)
+				: undefined,
+			i18n.language,
+			imageOrigin,
+		);
+		const title = product?.title
+			? `${product.title} | ${siteTitle}`
+			: siteTitle;
+		const description = product?.description || i18n.t("metaDescription");
+		const ogImage = product?.image ?? `${imageOrigin}/share-default.jpg`;
+		const imageAlt = product?.image ? product.title || siteTitle : siteTitle;
 
 		return {
 			meta: [
@@ -103,7 +126,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				},
 				{
 					property: "og:site_name",
-					content: title,
+					content: siteTitle,
 				},
 				{
 					property: "og:url",
@@ -113,14 +136,17 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 					property: "og:image",
 					content: ogImage,
 				},
+				{ property: "og:image:alt", content: imageAlt },
 				{
-					property: "og:image:width",
-					content: "1200",
+					property: "og:image:type",
+					content: "image/jpeg",
 				},
-				{
-					property: "og:image:height",
-					content: "630",
-				},
+				...(!product?.image
+					? [
+							{ property: "og:image:width", content: "1200" },
+							{ property: "og:image:height", content: "630" },
+						]
+					: []),
 				{
 					name: "twitter:card",
 					content: "summary_large_image",
@@ -133,10 +159,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 					name: "twitter:description",
 					content: description,
 				},
-				{
-					name: "twitter:image",
-					content: ogImage,
-				},
+				{ name: "twitter:image", content: ogImage },
+				{ name: "twitter:image:alt", content: imageAlt },
 				{
 					title,
 				},
@@ -212,7 +236,6 @@ function RootDocument() {
 
 	useEffect(() => {
 		const handler = () => {
-			document.title = i18n.t("appName");
 			document.documentElement.lang = documentLanguage(
 				resolveSupportedLanguage(i18n.language) ?? "en",
 			);

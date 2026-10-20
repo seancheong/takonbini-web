@@ -1,13 +1,8 @@
 import { createHash } from "node:crypto";
 import sharp from "sharp";
+import { isAllowedProductImageUrl as allowed } from "@/features/products/model/product-image-source";
 import { productImageWidths } from "@/features/products/model/product-images";
 
-const hosts = new Set([
-	"www.family.co.jp",
-	"www.lawson.co.jp",
-	"img-afd.7api-01.dp1.sej.co.jp",
-	"www.sej.co.jp",
-]);
 const maxBytes = 8 * 1024 * 1024;
 const maxPixels = 8_000_000;
 const cacheControl =
@@ -41,15 +36,6 @@ function release() {
 	const next = waiting.shift();
 	if (next) next();
 	else active--;
-}
-function allowed(url: URL) {
-	return (
-		url.protocol === "https:" &&
-		!url.username &&
-		!url.password &&
-		!url.port &&
-		hosts.has(url.hostname)
-	);
 }
 function failure(status: number) {
 	return new Response("Image unavailable", {
@@ -127,7 +113,10 @@ async function download(url: URL, signal: AbortSignal) {
 	throw new Error("redirect");
 }
 
-export async function serveProductImage(request: Request) {
+export async function serveProductImage(
+	request: Request,
+	format: "webp" | "jpeg" = "webp",
+) {
 	const parameters = new URL(request.url).searchParams;
 	const target = parameters.get("url");
 	let url: URL;
@@ -179,20 +168,20 @@ export async function serveProductImage(request: Request) {
 				(metadata.pages ?? 1) > 1
 			)
 				throw new Error("format");
-			bytes = await image
-				.rotate()
-				.flatten({ background: "white" })
-				.resize({
-					width,
-					height: width,
-					fit: "inside",
-					withoutEnlargement: true,
-				})
-				.webp({ quality: 80, effort: 2 })
+			const resized = image.rotate().flatten({ background: "white" }).resize({
+				width,
+				height: width,
+				fit: "inside",
+				withoutEnlargement: true,
+			});
+			bytes = await (format === "jpeg"
+				? resized.jpeg({ quality: 85 })
+				: resized.webp({ quality: 80, effort: 2 })
+			)
 				.timeout({ seconds: 2 })
 				.toBuffer();
 			if (bytes.length > maxBytes) throw new Error("size");
-			type = "image/webp";
+			type = format === "jpeg" ? "image/jpeg" : "image/webp";
 			etag = `"${createHash("sha256").update(bytes).digest("hex")}"`;
 		}
 		const headers = new Headers({
