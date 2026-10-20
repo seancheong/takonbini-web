@@ -1,0 +1,364 @@
+{
+  "implementation": "b9d9afb3da9d2c7c596ce2a16690530845e18390",
+  "deployment": 7187531911,
+  "host": "https://takonbini-5f76dqjjo-sean-cheong-zhen-xiongs-projects.vercel.app",
+  "lighthouseVersion": "13.4.1",
+  "environment": {
+    "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36",
+    "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+    "benchmarkIndex": 3108.5,
+    "credits": {}
+  },
+  "settings": {
+    "output": [
+      "json",
+      "html"
+    ],
+    "maxWaitForFcp": 30000,
+    "maxWaitForLoad": 45000,
+    "pauseAfterFcpMs": 1000,
+    "pauseAfterLoadMs": 1000,
+    "networkQuietThresholdMs": 1000,
+    "cpuQuietThresholdMs": 1000,
+    "formFactor": "mobile",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 562.5,
+      "downloadThroughputKbps": 1474.5600000000002,
+      "uploadThroughputKbps": 675,
+      "cpuSlowdownMultiplier": 4
+    },
+    "throttlingMethod": "simulate",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
+      "disabled": false
+    },
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+    "auditMode": false,
+    "gatherMode": false,
+    "clearStorageTypes": [
+      "file_systems",
+      "shader_cache",
+      "service_workers",
+      "cache_storage"
+    ],
+    "disableStorageReset": false,
+    "debugNavigation": false,
+    "channel": "cli",
+    "usePassiveGathering": false,
+    "disableFullPageScreenshot": false,
+    "skipAboutBlank": false,
+    "blankPage": "about:blank",
+    "ignoreStatusCode": false,
+    "locale": "en-US",
+    "blockedUrlPatterns": null,
+    "additionalTraceCategories": null,
+    "extraHeaders": null,
+    "precomputedLanternData": null,
+    "onlyAudits": null,
+    "onlyCategories": [
+      "performance"
+    ],
+    "skipAudits": null
+  },
+  "rows": [
+    {
+      "scenario": "catalog-heavy",
+      "run": 1,
+      "fetchTime": "2026-10-19T23:33:41.646Z",
+      "score": 87,
+      "lcpMs": 3262.9294999999997,
+      "tbtMs": 40.58850000000007,
+      "cls": 0,
+      "transferBytes": 497480,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 46012
+        },
+        {
+          "status": 200,
+          "bytes": 13126
+        },
+        {
+          "status": 200,
+          "bytes": 29074
+        },
+        {
+          "status": 200,
+          "bytes": 63100
+        },
+        {
+          "status": 200,
+          "bytes": 33756
+        },
+        {
+          "status": 200,
+          "bytes": 61502
+        }
+      ]
+    },
+    {
+      "scenario": "catalog-heavy",
+      "run": 2,
+      "fetchTime": "2026-10-19T23:34:33.211Z",
+      "score": 94,
+      "lcpMs": 2730.2405,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 497468,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 46012
+        },
+        {
+          "status": 200,
+          "bytes": 13126
+        },
+        {
+          "status": 200,
+          "bytes": 29074
+        },
+        {
+          "status": 200,
+          "bytes": 63100
+        },
+        {
+          "status": 200,
+          "bytes": 33756
+        },
+        {
+          "status": 200,
+          "bytes": 61502
+        }
+      ]
+    },
+    {
+      "scenario": "catalog-heavy",
+      "run": 3,
+      "fetchTime": "2026-10-19T23:35:19.980Z",
+      "score": 96,
+      "lcpMs": 2671.5645,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 497444,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 46012
+        },
+        {
+          "status": 200,
+          "bytes": 13126
+        },
+        {
+          "status": 200,
+          "bytes": 29074
+        },
+        {
+          "status": 200,
+          "bytes": 63100
+        },
+        {
+          "status": 200,
+          "bytes": 33756
+        },
+        {
+          "status": 200,
+          "bytes": 61502
+        }
+      ]
+    },
+    {
+      "scenario": "catalog-light",
+      "run": 1,
+      "fetchTime": "2026-10-19T23:33:57.981Z",
+      "score": 100,
+      "lcpMs": 1105.879,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 279744,
+      "lcpNode": "Japan\u2019s convenience stores",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 39120
+        }
+      ]
+    },
+    {
+      "scenario": "catalog-light",
+      "run": 2,
+      "fetchTime": "2026-10-19T23:34:45.454Z",
+      "score": 100,
+      "lcpMs": 1229.967,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 279847,
+      "lcpNode": "Japan\u2019s convenience stores",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 39120
+        }
+      ]
+    },
+    {
+      "scenario": "catalog-light",
+      "run": 3,
+      "fetchTime": "2026-10-19T23:35:32.555Z",
+      "score": 100,
+      "lcpMs": 1227.208,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 279781,
+      "lcpNode": "Japan\u2019s convenience stores",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 39120
+        }
+      ]
+    },
+    {
+      "scenario": "detail-heavy",
+      "run": 1,
+      "fetchTime": "2026-10-19T23:34:10.111Z",
+      "score": 95,
+      "lcpMs": 2726.0845,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 275403,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 46012
+        }
+      ]
+    },
+    {
+      "scenario": "detail-heavy",
+      "run": 2,
+      "fetchTime": "2026-10-19T23:34:57.129Z",
+      "score": 96,
+      "lcpMs": 2707.9105000000004,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 275415,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 46012
+        }
+      ]
+    },
+    {
+      "scenario": "detail-heavy",
+      "run": 3,
+      "fetchTime": "2026-10-19T23:35:44.155Z",
+      "score": 97,
+      "lcpMs": 2679.4024999999997,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 275429,
+      "lcpNode": "Large Onigiri with Char Siu Mayo",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 46012
+        }
+      ]
+    },
+    {
+      "scenario": "detail-light",
+      "run": 1,
+      "fetchTime": "2026-10-19T23:34:21.814Z",
+      "score": 97,
+      "lcpMs": 2576.6745,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 268786,
+      "lcpNode": "Chiikawa Shooting Star Gummies",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 39120
+        }
+      ]
+    },
+    {
+      "scenario": "detail-light",
+      "run": 2,
+      "fetchTime": "2026-10-19T23:35:08.539Z",
+      "score": 99,
+      "lcpMs": 2134.884,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 268769,
+      "lcpNode": "Chiikawa Shooting Star Gummies",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 39120
+        }
+      ]
+    },
+    {
+      "scenario": "detail-light",
+      "run": 3,
+      "fetchTime": "2026-10-19T23:35:55.442Z",
+      "score": 96,
+      "lcpMs": 2489.3675,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 268768,
+      "lcpNode": "Chiikawa Shooting Star Gummies",
+      "imageResponses": [
+        {
+          "status": 200,
+          "bytes": 39120
+        }
+      ]
+    }
+  ],
+  "medians": {
+    "catalog-heavy": {
+      "score": 94,
+      "lcpMs": 2730.2405,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 497468
+    },
+    "catalog-light": {
+      "score": 100,
+      "lcpMs": 1227.208,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 279781
+    },
+    "detail-heavy": {
+      "score": 96,
+      "lcpMs": 2707.9105000000004,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 275415
+    },
+    "detail-light": {
+      "score": 97,
+      "lcpMs": 2489.3675,
+      "tbtMs": 0,
+      "cls": 0,
+      "transferBytes": 268769
+    }
+  }
+}

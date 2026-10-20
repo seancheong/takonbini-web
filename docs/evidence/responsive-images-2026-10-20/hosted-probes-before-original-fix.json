@@ -1,0 +1,61 @@
+[
+  {
+    "case": "original",
+    "status": 502,
+    "bytes": 17,
+    "ms": 433,
+    "cache": "MISS",
+    "cacheControl": "no-store",
+    "contentType": "text/plain;charset=UTF-8"
+  },
+  {
+    "case": "optimized",
+    "status": 200,
+    "bytes": 26540,
+    "ms": 513,
+    "cache": "MISS",
+    "cacheControl": "public, max-age=86400",
+    "contentType": "image/webp"
+  },
+  {
+    "case": "original-repeat",
+    "status": 502,
+    "bytes": 17,
+    "ms": 391,
+    "cache": "MISS",
+    "cacheControl": "no-store",
+    "contentType": "text/plain;charset=UTF-8"
+  },
+  {
+    "case": "optimized-repeat",
+    "status": 200,
+    "bytes": 26540,
+    "ms": 107,
+    "cache": "HIT",
+    "cacheControl": "public, max-age=86400",
+    "contentType": "image/webp"
+  },
+  {
+    "case": "invalid-width",
+    "status": 400,
+    "bytes": 17,
+    "ms": 351,
+    "cache": "MISS",
+    "cacheControl": "no-store",
+    "contentType": "text/plain;charset=UTF-8"
+  },
+  {
+    "case": "extra-option",
+    "status": 400,
+    "bytes": 17,
+    "ms": 334,
+    "cache": "MISS",
+    "cacheControl": "no-store",
+    "contentType": "text/plain;charset=UTF-8"
+  },
+  {
+    "case": "conditional",
+    "status": 304,
+    "bytes": 0
+  }
+]

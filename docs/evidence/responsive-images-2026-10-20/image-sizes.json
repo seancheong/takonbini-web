@@ -1,0 +1,134 @@
+[
+  {
+    "label": "heavy",
+    "width": 320,
+    "sourceWidth": 1340,
+    "sourceHeight": 1000,
+    "originalBytes": 622842,
+    "outputBytes": 9574,
+    "outputWidth": 320,
+    "outputHeight": 239,
+    "transformMs": 83.12995799999999
+  },
+  {
+    "label": "heavy",
+    "width": 640,
+    "sourceWidth": 1340,
+    "sourceHeight": 1000,
+    "originalBytes": 622842,
+    "outputBytes": 26540,
+    "outputWidth": 640,
+    "outputHeight": 478,
+    "transformMs": 45.96633299999985
+  },
+  {
+    "label": "heavy",
+    "width": 960,
+    "sourceWidth": 1340,
+    "sourceHeight": 1000,
+    "originalBytes": 622842,
+    "outputBytes": 46012,
+    "outputWidth": 960,
+    "outputHeight": 716,
+    "transformMs": 43.37854200000015
+  },
+  {
+    "label": "heavy",
+    "width": 1600,
+    "sourceWidth": 1340,
+    "sourceHeight": 1000,
+    "originalBytes": 622842,
+    "outputBytes": 67338,
+    "outputWidth": 1340,
+    "outputHeight": 1000,
+    "transformMs": 43.41750000000002
+  },
+  {
+    "label": "light",
+    "width": 320,
+    "sourceWidth": 600,
+    "sourceHeight": 600,
+    "originalBytes": 105889,
+    "outputBytes": 16224,
+    "outputWidth": 320,
+    "outputHeight": 320,
+    "transformMs": 8.71033400000033
+  },
+  {
+    "label": "light",
+    "width": 640,
+    "sourceWidth": 600,
+    "sourceHeight": 600,
+    "originalBytes": 105889,
+    "outputBytes": 39120,
+    "outputWidth": 600,
+    "outputHeight": 600,
+    "transformMs": 13.972249999999804
+  },
+  {
+    "label": "light",
+    "width": 960,
+    "sourceWidth": 600,
+    "sourceHeight": 600,
+    "originalBytes": 105889,
+    "outputBytes": 39120,
+    "outputWidth": 600,
+    "outputHeight": 600,
+    "transformMs": 14.775666999999885
+  },
+  {
+    "label": "light",
+    "width": 1600,
+    "sourceWidth": 600,
+    "sourceHeight": 600,
+    "originalBytes": 105889,
+    "outputBytes": 39120,
+    "outputWidth": 600,
+    "outputHeight": 600,
+    "transformMs": 13.162166999999954
+  },
+  {
+    "label": "lawson",
+    "width": 320,
+    "sourceWidth": 520,
+    "sourceHeight": 400,
+    "originalBytes": 279028,
+    "outputBytes": 24340,
+    "outputWidth": 320,
+    "outputHeight": 246,
+    "transformMs": 14.066874999999527
+  },
+  {
+    "label": "lawson",
+    "width": 640,
+    "sourceWidth": 520,
+    "sourceHeight": 400,
+    "originalBytes": 279028,
+    "outputBytes": 54968,
+    "outputWidth": 520,
+    "outputHeight": 400,
+    "transformMs": 15.534249999999702
+  },
+  {
+    "label": "lawson",
+    "width": 960,
+    "sourceWidth": 520,
+    "sourceHeight": 400,
+    "originalBytes": 279028,
+    "outputBytes": 54968,
+    "outputWidth": 520,
+    "outputHeight": 400,
+    "transformMs": 18.493249999999534
+  },
+  {
+    "label": "lawson",
+    "width": 1600,
+    "sourceWidth": 520,
+    "sourceHeight": 400,
+    "originalBytes": 279028,
+    "outputBytes": 54968,
+    "outputWidth": 520,
+    "outputHeight": 400,
+    "transformMs": 14.309709000000112
+  }
+]

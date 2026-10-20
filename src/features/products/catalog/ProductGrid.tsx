@@ -18,10 +18,11 @@ export default function ProductGrid({
 }: ProductGridProps) {
 	return (
 		<div {...stylex.props(layoutStyles.grid)}>
-			{products.map((product) => (
+			{products.map((product, index) => (
 				<ProductCard
 					key={product.id}
 					product={product}
+					imagePriority={index === 0}
 					filters={filters}
 					onPreview={onPreview}
 				/>

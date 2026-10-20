@@ -4,6 +4,7 @@ import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import ProductCard from "@/features/products/catalog/ProductCard";
+import ProductGrid from "@/features/products/catalog/ProductGrid";
 import type { ActiveCatalogProduct } from "@/features/products/products.contracts";
 
 const routerMocks = vi.hoisted(() => ({
@@ -186,6 +187,21 @@ describe("product card rendering and navigation", () => {
 		expect(screen.getByText("product.loading")).toBeTruthy();
 	});
 
+	it("keeps load feedback and replaces a failed image with the existing fallback", () => {
+		render(
+			<ProductCard
+				product={{ ...product, images: ["https://www.family.co.jp/p.jpg"] }}
+			/>,
+		);
+		const image = screen.getByRole("img", { name: "Matcha" });
+		expect(screen.getByText("product.imageLoading")).toBeTruthy();
+		fireEvent.load(image);
+		expect(screen.queryByText("product.imageLoading")).toBeNull();
+		fireEvent.error(image);
+		expect(screen.queryByRole("img", { name: "Matcha" })).toBeNull();
+		expect(screen.getByText("product.noImage")).toBeTruthy();
+	});
+
 	it("uses the existing field fallback and unknown price presentation", () => {
 		render(
 			<ProductCard product={{ ...product, title: { ja: "抹茶" }, price: 0 }} />,
@@ -212,4 +228,32 @@ describe("product card rendering and navigation", () => {
 		expect(recoverableErrors).toEqual([]);
 		await act(async () => root.unmount());
 	});
+});
+
+it("prioritizes only the first catalog image, including after loading more products", () => {
+	const products = ["first", "second", "third"].map((id) => ({
+		...product,
+		id,
+		title: { ja: id, en: id },
+		images: [`https://store.example.test/${id}.jpg`],
+	}));
+	const { container, rerender } = render(
+		<ProductGrid products={products.slice(0, 2)} />,
+	);
+	const first = container.querySelectorAll("img")[0];
+	expect(first.getAttribute("loading")).toBe("eager");
+	expect(first.getAttribute("src")).toContain("&w=640");
+	expect(first.getAttribute("srcset")).toContain("&w=1600 1600w");
+	expect(first.getAttribute("sizes")).toContain(
+		"(max-width: 600px) calc(100vw - 40px)",
+	);
+	expect(first.getAttribute("fetchpriority")).toBe("high");
+	expect(container.querySelectorAll("img")[1].getAttribute("loading")).toBe(
+		"lazy",
+	);
+	rerender(<ProductGrid products={products} />);
+	expect(container.querySelectorAll('img[fetchpriority="high"]')).toHaveLength(
+		1,
+	);
+	expect(container.querySelectorAll('img[loading="lazy"]')).toHaveLength(2);
 });

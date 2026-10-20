@@ -1,0 +1,61 @@
+[
+  {
+    "case": "original",
+    "status": 200,
+    "bytes": 622842,
+    "ms": 2346,
+    "cache": "MISS",
+    "cacheControl": "public, max-age=86400",
+    "contentType": "image/jpeg"
+  },
+  {
+    "case": "optimized",
+    "status": 200,
+    "bytes": 26540,
+    "ms": 760,
+    "cache": "MISS",
+    "cacheControl": "public, max-age=86400",
+    "contentType": "image/webp"
+  },
+  {
+    "case": "original-repeat",
+    "status": 200,
+    "bytes": 622842,
+    "ms": 210,
+    "cache": "HIT",
+    "cacheControl": "public, max-age=86400",
+    "contentType": "image/jpeg"
+  },
+  {
+    "case": "optimized-repeat",
+    "status": 200,
+    "bytes": 26540,
+    "ms": 355,
+    "cache": "HIT",
+    "cacheControl": "public, max-age=86400",
+    "contentType": "image/webp"
+  },
+  {
+    "case": "invalid-width",
+    "status": 400,
+    "bytes": 17,
+    "ms": 571,
+    "cache": "MISS",
+    "cacheControl": "no-store",
+    "contentType": "text/plain;charset=UTF-8"
+  },
+  {
+    "case": "extra-option",
+    "status": 400,
+    "bytes": 17,
+    "ms": 364,
+    "cache": "MISS",
+    "cacheControl": "no-store",
+    "contentType": "text/plain;charset=UTF-8"
+  },
+  {
+    "case": "conditional",
+    "status": 304,
+    "bytes": 0
+  }
+]
