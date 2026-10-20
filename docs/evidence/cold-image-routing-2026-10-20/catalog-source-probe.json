@@ -1,0 +1,67 @@
+{
+  "revision": "d8583b5d3235103779139ed62a3a309a6e7b435e",
+  "deployment": 7197183674,
+  "method": "Temporary server timing around the authenticated validated catalog source in the public proxy; five sequential read-only requests on an otherwise unvisited preview. First request may include web startup; function/upstream cold state not forced. Headers omit upstream identifiers/credentials. Not a Lighthouse acceptance series.",
+  "samples": [
+    {
+      "run": 1,
+      "headersMs": 836.6885000000001,
+      "totalMs": 840.130625,
+      "catalogSourceMs": 174.7,
+      "status": 200,
+      "bytes": 18813,
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 2,
+      "headersMs": 580.1395829999999,
+      "totalMs": 584.07975,
+      "catalogSourceMs": 60.2,
+      "status": 200,
+      "bytes": 18813,
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 3,
+      "headersMs": 297.8567080000001,
+      "totalMs": 299.2302920000001,
+      "catalogSourceMs": 87.8,
+      "status": 200,
+      "bytes": 18813,
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 4,
+      "headersMs": 473.76183399999985,
+      "totalMs": 479.3663750000001,
+      "catalogSourceMs": 55.7,
+      "status": 200,
+      "bytes": 18813,
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 5,
+      "headersMs": 602.272792,
+      "totalMs": 605.3637919999999,
+      "catalogSourceMs": 52.5,
+      "status": 200,
+      "bytes": 18813,
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    }
+  ]
+}

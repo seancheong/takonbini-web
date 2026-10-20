@@ -1,0 +1,14 @@
+[
+  {
+    "method": "HEAD",
+    "status": 400,
+    "cacheControl": "no-store",
+    "allow": null
+  },
+  {
+    "method": "POST",
+    "status": 405,
+    "cacheControl": "no-store",
+    "allow": "GET, HEAD"
+  }
+]

@@ -1,0 +1,119 @@
+{
+  "method": "Six alternating fresh Node processes using real compiled image routes and native transforms with the same local PNG, mocked zero-delay retailer fetch. No real network; OS state not forced; not Vercel timing/billing estimates.",
+  "samples": [
+    {
+      "fetches": 2,
+      "samples": [
+        {
+          "run": 0,
+          "totalMs": 111.91716699999998,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        },
+        {
+          "run": 1,
+          "totalMs": 2.904624999999953,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        }
+      ],
+      "arm": "control",
+      "repeat": 1
+    },
+    {
+      "fetches": 2,
+      "samples": [
+        {
+          "run": 0,
+          "totalMs": 53.361000000000004,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        },
+        {
+          "run": 1,
+          "totalMs": 2.7027499999999947,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        }
+      ],
+      "arm": "candidate",
+      "repeat": 1
+    },
+    {
+      "fetches": 2,
+      "samples": [
+        {
+          "run": 0,
+          "totalMs": 31.750082999999997,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        },
+        {
+          "run": 1,
+          "totalMs": 2.837333000000001,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        }
+      ],
+      "arm": "candidate",
+      "repeat": 2
+    },
+    {
+      "fetches": 2,
+      "samples": [
+        {
+          "run": 0,
+          "totalMs": 65.535208,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        },
+        {
+          "run": 1,
+          "totalMs": 3.0670420000000007,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        }
+      ],
+      "arm": "control",
+      "repeat": 2
+    },
+    {
+      "fetches": 2,
+      "samples": [
+        {
+          "run": 0,
+          "totalMs": 63.946167,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        },
+        {
+          "run": 1,
+          "totalMs": 2.924915999999996,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        }
+      ],
+      "arm": "control",
+      "repeat": 3
+    },
+    {
+      "fetches": 2,
+      "samples": [
+        {
+          "run": 0,
+          "totalMs": 31.223167,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        },
+        {
+          "run": 1,
+          "totalMs": 2.5798750000000013,
+          "bytes": 2274,
+          "etag": "\"772c77de57eac11c8d7da7a68232a4ac99db84205555efcab6c3e5fbebdc3c0b\""
+        }
+      ],
+      "arm": "candidate",
+      "repeat": 3
+    }
+  ]
+}

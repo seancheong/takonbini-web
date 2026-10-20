@@ -32,6 +32,10 @@ CLS and TBT are zero in all nine. Target-image browser disk cache is false. All 
 
 The cold catalog breakdown is approximately 151 ms TTFB, 1,312 ms resource discovery delay, 1,291 ms resource load and 18 ms render delay. The target image MISS reaches headers about 765 ms after request start. The immediate remaining failure is therefore a catalog/data/image delivery critical path, unlike the long post-download presentation interval isolated earlier. This does not assign the whole discovery interval to a particular API/SSR/bootstrap cause without further instrumentation.
 
+## Follow-up
+
+The [cold image-routing investigation](./cold-image-routing-2026-10-20.md) preserves the unsuccessful lazy-only and direct-Nitro preview series. The latter passes compiled React isolation and all correctness checks but still fails its first catalog sample at 3.201 s. It does not supersede this initial failed run with a passing release claim. Vercel early HTTP 103 also means the breakdown above understates final-document header waiting; see the follow-up timing interpretation.
+
 ## Current decision and next task
 
 Keep #88 draft and #86 open. Adoption of a better-documented measurement method did not automatically make the release green; the audit's failure result is preserved. Next diagnose and reduce the first catalog navigation's SSR/data/image discovery-and-load waterfall under the adopted method, without weakening bounds, hiding the slow run or adding speculative unbounded work. Re-run failed conditions after a justified change.
