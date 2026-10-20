@@ -1,0 +1,14 @@
+{
+  "approval": "Maintainer explicitly approved merging API PR #93 and applying 1024 MiB",
+  "verifiedUtc": "2026-10-20T12:59:42.041543+00:00",
+  "memoryBeforeMiB": 256,
+  "memoryAfterMiB": 1024,
+  "timeoutSeconds": 10,
+  "revisionGuardUsed": true,
+  "state": "Active",
+  "lastUpdateStatus": "Successful",
+  "codeDigestUnchanged": true,
+  "roleEnvironmentRuntimeArchitectureHandlerAndOtherReviewedConfigUnchanged": true,
+  "catalogRequestsBeforeBrowserReleaseCheck": 0,
+  "scope": "Initial unqualified function update only; later observation showed the serving route still used a published 256 MiB version."
+}

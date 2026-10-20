@@ -2,6 +2,10 @@
 
 The maintainer explicitly chose **“Run isolated benchmark (Recommended)”** for the prepared single-scratch-function, 18-read comparison. That authorization covered this experiment and cleanup, not a production memory change, merge, new public endpoint or recurring work. The experiment completed all 18 calls. Production remains at **256 MiB**, with its original modification timestamp.
 
+## Later artifact-scope correction
+
+[Rollout inspection](./api-memory-rollout-2026-10-20.md) subsequently found that the benchmark copied the unqualified function artifact, while API Gateway served a different pinned artifact. Their unpacked code also differs; this is not merely ZIP metadata. The figures below remain measurements of the benchmarked artifact and must not be presented as a precise measured gain for the serving artifact. Production memory was later rolled out while preserving the original serving code, and separate browser/live validation is required.
+
 ## Method and scope
 
 The harness copied the existing released ZIP and verified its SHA-256 against the source Lambda configuration, reusing the existing role/environment in one temporary Tokyo function: Node.js 22, arm64, 10-second timeout, reserved concurrency one. No new IAM role/policy, function URL, API Gateway integration, schedule or provisioned concurrency was created. Each invocation was a read-only `GET /products?limit=20&status=allWithoutSoon`.

@@ -1,0 +1,14 @@
+{
+  "method": "Read-only timestamp-window correlation around first post-rollout catalog capture; not an end-to-end trace. Milliseconds and MiB.",
+  "captureUtc": "2026-10-20T12:59:56.595Z",
+  "reports": [
+    {
+      "endUtc": "2026-10-20T13:00:00.677000+00:00",
+      "Duration": 1626.63,
+      "Billed Duration": 2148.0,
+      "Memory Size": 256.0,
+      "Max Memory Used": 127.0,
+      "Init Duration": 521.19
+    }
+  ]
+}

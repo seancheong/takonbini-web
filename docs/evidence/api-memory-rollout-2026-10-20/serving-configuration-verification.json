@@ -1,0 +1,12 @@
+{
+  "approval": "API #93 merge and production 1024 MiB explicitly approved",
+  "stage": "serving-memory-verified",
+  "servingCodeDiffersFromLatest": true,
+  "latestOriginalRestored": true,
+  "aliasUpdated": true,
+  "servingMemoryMiB": 1024,
+  "servingCodeDigestUnchanged": true,
+  "servingOtherReviewedConfigurationUnchanged": true,
+  "rollbackServingVersionRetained": true,
+  "verifiedUtc": "2026-10-20T13:04:29.833610+00:00"
+}
