@@ -236,7 +236,6 @@ function RootDocument() {
 
 	useEffect(() => {
 		const handler = () => {
-			document.title = i18n.t("appName");
 			document.documentElement.lang = documentLanguage(
 				resolveSupportedLanguage(i18n.language) ?? "en",
 			);
