@@ -26,4 +26,22 @@ The rollout preserved both artifacts. It downloaded and digest-checked the curre
 
 Final control-plane verification confirms serving memory **1,024 MiB**, exact original serving code digest and other reviewed configuration preserved, plus the original unqualified code restored at 1,024 MiB. No application data, role, environment, runtime declaration, handler, timeout, gateway route or authentication policy changed. [Sanitized serving verification](./api-memory-rollout-2026-10-20/serving-configuration-verification.json). Publication/alias metadata are not a substitute for observing the configuration on real requests.
 
-The corrected serving route now needs a fresh browser series on a new unvisited preview, followed by API REPORT correlation and preview/production correctness checks. The previous preview's successful image URLs have already been warmed, so it will not be reused as a fresh MISS claim. No claim that #86 passes is made before this validation. The configured higher-memory resource tradeoff and actual bill/traffic-mix limits remain explicit.
+## Corrected serving rollout: measured verification
+
+The fresh nine-run browser series used preview **bb7a8a4 / deployment 7200499773**, without preceding application/image smoke requests. The agreed Chrome-default-feature applied-throttling method, sequential fresh profiles and original failure history are preserved. [All nine samples and method](./api-memory-rollout-2026-10-20/after-serving-correction-mobile.json).
+
+| Case | LCP runs (s) | Scores | Target-image cache |
+| --- | --- | --- | --- |
+| Catalog | **3.995**, 1.428, 1.270 | **80**, 100, 100 | MISS/HIT/HIT |
+| Heavy detail | 1.495, 1.358, 1.177 | 100, 100, 100 | HIT/HIT/HIT |
+| Light detail | 1.133, 1.174, 1.064 | 100, 100, 100 | MISS/HIT/HIT |
+
+All CLS are zero; first catalog TBT is 31.35 ms and other TBT values zero. TBT is not field INP. Command exit **1**: first catalog still fails score ≥90 and LCP ≤2.5 s. Eight passing samples do not replace this first failure or prove a cold retailer source/device pass.
+
+[The timestamp-correlated real invocation](./api-memory-rollout-2026-10-20/after-serving-correction-api.json) reports **1,024 MiB**, initialization **397.89 ms**, handler **455.28 ms**, billed **854 ms**, peak **137 MiB**. Correlation uses capture time/window, not a distributed trace or controlled before/after experiment. It verifies actual serving memory; it does not establish the isolated benchmark's exact percentage gain on this different artifact.
+
+The first document's final headers arrive at **2,403.705 ms** after request start despite an early header at 144.514 ms. Lighthouse LCP breakdown is 146.274 ms reported TTFB, 2,362.588 ms resource discovery delay, 1,477.565 ms image loading and 8.733 ms rendering. The early response must not be read as completed HTML delivery. Backend duration alone does not explain the entire document wait. Next #86 work is to measure the remaining document/SSR delivery and first-MISS image delay independently, then repeat the unchanged release gate on a fresh candidate.
+
+After the series, both [preview](./api-memory-rollout-2026-10-20/preview-continuity.json) and [production](./api-memory-rollout-2026-10-20/production-continuity.json) pass 6 sequential locale cases, 12 concurrent locale cases, 7 canonical/Open Graph/responsive-priority-image cases and 5 image probes each, including invalid width and conditional 304. [Direct API checks](./api-memory-rollout-2026-10-20/api-smoke.json) pass health 200, authenticated catalog 200 and unauthenticated catalog 401. API Gateway routing was independently checked unchanged and targeting the updated serving configuration.
+
+**Result:** approved API configuration merged and serving memory deployed/verified; #86 remains open. Web #88 remains draft/unmerged and production web remains the approved #87 release. No user UX acceptance, production web release acceptance, field INP, forced cold-source result, account-bill verification or 30-day stability window is claimed. The higher-memory billed-resource tradeoff remains; preserve the previous serving version for rollback. Future deployment automation should verify the configuration actually serving requests; its ownership/routing follow-up remains a local draft pending authorization to publish detailed infrastructure findings.
