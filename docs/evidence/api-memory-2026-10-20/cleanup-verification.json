@@ -1,0 +1,14 @@
+{
+  "temporaryFunctionAbsent": true,
+  "temporaryLogGroupAbsent": true,
+  "sourceMemoryMiB": 256,
+  "sourceTimeoutSeconds": 10,
+  "sourceLastModifiedUnchanged": true,
+  "unreservedConcurrencyRestored": true,
+  "successfulReadCount": 18,
+  "allResponsesIdentical": true,
+  "observedColdCount": 9,
+  "lateLogGroupObservedAfterInitialCleanup": true,
+  "additionalOwnedLogGroupDeletionIssued": true,
+  "finalVerificationPassed": true
+}

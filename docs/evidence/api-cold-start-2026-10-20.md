@@ -39,3 +39,8 @@ The real read-only plan passes against the active configuration. Account concurr
 ## Current status
 
 PR #88 remains draft and unmerged. Its app implementation is still the verified rollback/native-image baseline; this follow-up adds evidence only. Next obtain the isolated-benchmark decision, then run it if approved and use measured latency/resource results to justify any API change. Production remains #87 / 0b6d03d; API settings remain unchanged. #86 and #17/#26/#27/#29 stay open. Production verification and the existing cost/resources/INP/device/accessibility/global/observation gates remain. #24 still has one evidenced new-configuration scheduled success and the next nominal opportunity is 21 October 02:00 Malaysia time; #23's stable 30-day window has not started.
+
+
+## Subsequent approved benchmark
+
+The maintainer later approved the isolated experiment. [All 18 results and independently verified cleanup](./api-memory-2026-10-20.md) supersede the execution-pending status above: 256/512/1,024 MiB cold medians are 1.872/1.167/0.831 seconds, with higher billed GB-seconds at the larger settings. Production memory remains 256 MiB. A separate configuration proposal is prepared for review; benchmark approval is not production-change or merge approval.
