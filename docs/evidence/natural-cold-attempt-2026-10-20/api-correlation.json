@@ -1,0 +1,14 @@
+{
+  "method": "Read-only timestamp-window correlation around first unprimed preview catalog capture, not a distributed trace; no production configuration changes or forced cold state. Milliseconds and MiB.",
+  "captureUtc": "2026-10-20T13:31:32.780Z",
+  "coldInvocationObserved": false,
+  "reports": [
+    {
+      "Duration": 27.45,
+      "Billed Duration": 28.0,
+      "Memory Size": 1024.0,
+      "Max Memory Used": 157.0,
+      "endUtc": "2026-10-20T13:31:33.402000+00:00"
+    }
+  ]
+}
