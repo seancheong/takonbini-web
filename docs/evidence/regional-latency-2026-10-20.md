@@ -1,0 +1,11 @@
+# Regional latency experiment — 20 October 2026
+
+Continues #86. The current image MISS headers report Singapore edge / Washington US function (`sin1::iad1`); catalog data lives in Tokyo ([ADR 0005](../adr/0005-use-on-demand-dynamodb-with-rebuild-recovery.md)). The hypothesis is that a Tokyo function reduces trips between the function and its Japan-based dependencies. This requires measurement; geographic proximity alone is not acceptance.
+
+The control preview explicitly pins `vercel.functions.regions` to `iad1`, preserving the observed production region. The candidate will change only that value to `hnd1`. Both use the same merged #87 application implementation, image transform/cache/resource bounds, API and catalog data. Production stays unchanged until an explicitly approved PR merge.
+
+Compare sequential fresh-profile mobile Lighthouse catalog/heavy-detail/light-detail runs and observe actual image cache state. A detail URL may already be warm after the catalog; do not label it source-cold. Independently compare previously unused image URL/width keys across both deployments, alternating order, recording MISS/HIT, bytes, ETag, region and response times. Do not add arbitrary cache-busting parameters or mutate data. Include all samples and slow cases. Remote networking and instance/upstream state remain uncontrolled; a regional association is not isolated per-component CPU evidence.
+
+Verify generated `.vc-config.json`, deployed function region, SSR/SEO/locale/browser continuity, and unchanged browser assets. This moves the shared server function, including SSR/API/image routes; it does not add regional replication or paid services. It may change latency for users elsewhere and regional compute pricing; actual billing and global user performance remain separate gates.
+
+Configuration sources: [Nitro Vercel function settings](https://nitro.build/deploy/providers/vercel), [Vercel function regions](https://vercel.com/docs/functions/configuring-functions/region), [Vercel region codes](https://vercel.com/docs/regions). The installed Nitro types support `vercel.functions.regions`; the emitted artifact and real deployment will be checked rather than relying on docs alone.
