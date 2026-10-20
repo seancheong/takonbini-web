@@ -1,0 +1,8 @@
+{
+  "check": "Existing raw-HTML locale/heading probe",
+  "expectedLanguage": "ja",
+  "actualLanguage": "ja",
+  "expectedHeading": "\u65e5\u672c\u306e\u30b3\u30f3\u30d3\u30cb\u5546\u54c1",
+  "actualHeading": "\u65e5\u672c\u306e\u30b3\u30f3\u30d3\u30cb\u5546\u54c1\u65e5\u672c\u306e\u30b3\u30f3\u30d3\u30cb\u5546\u54c1",
+  "interpretation": "Suspense fallback and resolved boundary both appear in raw streamed HTML. This does not prove two visible headings after browser reveal; the raw-HTML compatibility check fails. Full subsequent continuity series was not run after this failure."
+}

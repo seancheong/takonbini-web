@@ -37,3 +37,8 @@ Hosted continuity passes six sequential and twelve concurrent locale cases, seve
 ## Remaining work
 
 Keep #86 and #17/#26/#27/#29 open and #88 draft. Next isolate the final-document/header wait and first uncached image delivery with controlled cold/warm conditions, then make a justified change and rerun the release gate. Do not add unbounded prefetching or weaken bounds to hide the first sample. The original simulated failures and both unsuccessful follow-ups remain evidence. Higher published Tokyo per-unit rates, actual resource/cost acceptance, device/INP/accessibility/global coverage and production verification remain open. Exact PR merge approval is still required.
+
+
+## Subsequent experiment
+
+The [catalog streaming follow-up](./catalog-streaming-2026-10-20.md) sent the shell earlier but still failed the first catalog sample at 4.258 s and introduced a duplicate-heading raw-HTML regression. It was reverted; the native image-route implementation above remains the application baseline. No new passing release claim or production deployment follows from that experiment.

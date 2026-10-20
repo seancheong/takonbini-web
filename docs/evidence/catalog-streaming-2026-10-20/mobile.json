@@ -1,0 +1,226 @@
+{
+  "method": "Maintainer-agreed applied throttling, Chrome default features; original simulated failures remain historical evidence.",
+  "origin": "https://takonbini-mk1qv1rcs-sean-cheong-zhen-xiongs-projects.vercel.app",
+  "versions": {
+    "lighthouse": "13.4.1",
+    "chrome-launcher": "1.2.2"
+  },
+  "settings": {
+    "output": "json",
+    "maxWaitForFcp": 30000,
+    "maxWaitForLoad": 45000,
+    "pauseAfterFcpMs": 5250,
+    "pauseAfterLoadMs": 5250,
+    "networkQuietThresholdMs": 5250,
+    "cpuQuietThresholdMs": 5250,
+    "formFactor": "mobile",
+    "throttling": {
+      "rttMs": 150,
+      "throughputKbps": 1638.4,
+      "requestLatencyMs": 150,
+      "downloadThroughputKbps": 1638.4,
+      "uploadThroughputKbps": 750,
+      "cpuSlowdownMultiplier": 4
+    },
+    "throttlingMethod": "devtools",
+    "screenEmulation": {
+      "mobile": true,
+      "width": 412,
+      "height": 823,
+      "deviceScaleFactor": 1.75,
+      "disabled": false
+    },
+    "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+    "auditMode": false,
+    "gatherMode": false,
+    "clearStorageTypes": [
+      "file_systems",
+      "shader_cache",
+      "service_workers",
+      "cache_storage"
+    ],
+    "disableStorageReset": false,
+    "debugNavigation": false,
+    "channel": "node",
+    "usePassiveGathering": false,
+    "disableFullPageScreenshot": false,
+    "skipAboutBlank": false,
+    "blankPage": "about:blank",
+    "ignoreStatusCode": false,
+    "locale": "en-US",
+    "blockedUrlPatterns": null,
+    "additionalTraceCategories": "cc,viz",
+    "extraHeaders": null,
+    "precomputedLanternData": null,
+    "onlyAudits": null,
+    "onlyCategories": [
+      "performance"
+    ],
+    "skipAudits": null
+  },
+  "spawnArguments": [
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "--remote-debugging-port=<PORT>",
+    "--user-data-dir=<TEMP_PROFILE>",
+    "--headless",
+    "--disable-gpu",
+    "--no-first-run",
+    "about:blank"
+  ],
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+  "samples": [
+    {
+      "case": "catalog",
+      "run": 1,
+      "score": 85,
+      "LCP_ms": 4258.372,
+      "TBT_ms": 79.9390000000003,
+      "CLS": 0,
+      "transfer_bytes": 339370,
+      "images": [
+        {
+          "url": "https://takonbini-mk1qv1rcs-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "MISS",
+          "diskCache": false
+        }
+      ]
+    },
+    {
+      "case": "heavy-detail",
+      "run": 1,
+      "score": 99,
+      "LCP_ms": 1955.807,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275350,
+      "images": [
+        {
+          "url": "https://takonbini-mk1qv1rcs-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false
+        }
+      ]
+    },
+    {
+      "case": "light-detail",
+      "run": 1,
+      "score": 99,
+      "LCP_ms": 1644.579,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268666,
+      "images": [
+        {
+          "url": "https://takonbini-mk1qv1rcs-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "MISS",
+          "diskCache": false
+        }
+      ]
+    },
+    {
+      "case": "catalog",
+      "run": 2,
+      "score": 99,
+      "LCP_ms": 1797.45,
+      "TBT_ms": 24.498000000000047,
+      "CLS": 0,
+      "transfer_bytes": 339390,
+      "images": [
+        {
+          "url": "https://takonbini-mk1qv1rcs-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false
+        }
+      ]
+    },
+    {
+      "case": "heavy-detail",
+      "run": 2,
+      "score": 100,
+      "LCP_ms": 1439.625,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275377,
+      "images": [
+        {
+          "url": "https://takonbini-mk1qv1rcs-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false
+        }
+      ]
+    },
+    {
+      "case": "light-detail",
+      "run": 2,
+      "score": 100,
+      "LCP_ms": 1159.401,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268673,
+      "images": [
+        {
+          "url": "https://takonbini-mk1qv1rcs-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false
+        }
+      ]
+    },
+    {
+      "case": "catalog",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1307.517,
+      "TBT_ms": 16.96199999999999,
+      "CLS": 0,
+      "transfer_bytes": 339461,
+      "images": [
+        {
+          "url": "https://takonbini-mk1qv1rcs-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false
+        }
+      ]
+    },
+    {
+      "case": "heavy-detail",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1332.876,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275335,
+      "images": [
+        {
+          "url": "https://takonbini-mk1qv1rcs-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false
+        }
+      ]
+    },
+    {
+      "case": "light-detail",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1219.928,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268675,
+      "images": [
+        {
+          "url": "https://takonbini-mk1qv1rcs-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "revision": "ffd333a",
+  "deployment": 7197518486,
+  "method": "Sequential read-only HTTPS with fresh urllib connections; invalid native image before first SSR, no successful image fetch. Cold platform/source state unknown; not matched-pair causality or browser acceptance.",
+  "samples": [
+    {
+      "path": "/api/image",
+      "status": 400,
+      "headersMs": 1336.044292,
+      "totalMs": 1338.168917,
+      "bytes": 17,
+      "region": [
+        "sin1",
+        "hnd1"
+      ],
+      "cache": "MISS"
+    },
+    {
+      "path": "/?lang=en",
+      "status": 200,
+      "headersMs": 1288.7324170000002,
+      "totalMs": 1335.323917,
+      "bytes": 91592,
+      "region": [
+        "sin1",
+        "hnd1"
+      ],
+      "cache": "MISS"
+    },
+    {
+      "path": "/?lang=en",
+      "status": 200,
+      "headersMs": 687.9612079999999,
+      "totalMs": 794.3450420000003,
+      "bytes": 91592,
+      "region": [
+        "sin1",
+        "hnd1"
+      ],
+      "cache": "MISS"
+    },
+    {
+      "path": "/api/image",
+      "status": 400,
+      "headersMs": 444.6472909999999,
+      "totalMs": 447.6507499999998,
+      "bytes": 17,
+      "region": [
+        "sin1",
+        "hnd1"
+      ],
+      "cache": "MISS"
+    },
+    {
+      "path": "/?lang=en",
+      "status": 200,
+      "headersMs": 808.729375,
+      "totalMs": 902.82975,
+      "bytes": 91592,
+      "region": [
+        "sin1",
+        "hnd1"
+      ],
+      "cache": "MISS"
+    }
+  ]
+}
