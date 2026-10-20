@@ -45,3 +45,6 @@ jobs:
 
       - name: Image route isolation
         run: node scripts/check-image-isolation.mjs
+
+      - name: Product sharing crawler HTML
+        run: node scripts/check-product-sharing.mjs
