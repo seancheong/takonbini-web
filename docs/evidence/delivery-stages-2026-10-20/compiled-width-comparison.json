@@ -1,0 +1,89 @@
+{
+  "method": "Compiled native route, same snapshotted 622842-byte retailer JPEG, mocked in-memory download; twelve interleaved requests in one process, no hosted/network/cold-start or quality-acceptance claim.",
+  "samples": [
+    {
+      "width": 960,
+      "bytes": 46012,
+      "outputWidth": 960,
+      "outputHeight": 716,
+      "handlerMs": 64.871459
+    },
+    {
+      "width": 768,
+      "bytes": 34390,
+      "outputWidth": 768,
+      "outputHeight": 573,
+      "handlerMs": 38.826707999999996
+    },
+    {
+      "width": 768,
+      "bytes": 34390,
+      "outputWidth": 768,
+      "outputHeight": 573,
+      "handlerMs": 38.41829100000001
+    },
+    {
+      "width": 960,
+      "bytes": 46012,
+      "outputWidth": 960,
+      "outputHeight": 716,
+      "handlerMs": 44.857
+    },
+    {
+      "width": 768,
+      "bytes": 34390,
+      "outputWidth": 768,
+      "outputHeight": 573,
+      "handlerMs": 38.98445799999999
+    },
+    {
+      "width": 960,
+      "bytes": 46012,
+      "outputWidth": 960,
+      "outputHeight": 716,
+      "handlerMs": 45.26741599999997
+    },
+    {
+      "width": 960,
+      "bytes": 46012,
+      "outputWidth": 960,
+      "outputHeight": 716,
+      "handlerMs": 44.88737499999996
+    },
+    {
+      "width": 768,
+      "bytes": 34390,
+      "outputWidth": 768,
+      "outputHeight": 573,
+      "handlerMs": 38.508667
+    },
+    {
+      "width": 960,
+      "bytes": 46012,
+      "outputWidth": 960,
+      "outputHeight": 716,
+      "handlerMs": 45.11095799999998
+    },
+    {
+      "width": 768,
+      "bytes": 34390,
+      "outputWidth": 768,
+      "outputHeight": 573,
+      "handlerMs": 37.92516699999999
+    },
+    {
+      "width": 768,
+      "bytes": 34390,
+      "outputWidth": 768,
+      "outputHeight": 573,
+      "handlerMs": 38.39808400000004
+    },
+    {
+      "width": 960,
+      "bytes": 46012,
+      "outputWidth": 960,
+      "outputHeight": 716,
+      "handlerMs": 44.29362500000002
+    }
+  ]
+}
