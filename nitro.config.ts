@@ -4,7 +4,7 @@ export default defineNitroConfig({
   preset: 'vercel',
   vercel: {
     functions: {
-      regions: ['iad1'],
+      regions: ['hnd1'],
     },
   },
 })
