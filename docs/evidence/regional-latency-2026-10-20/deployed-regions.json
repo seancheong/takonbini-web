@@ -1,0 +1,20 @@
+[
+  {
+    "arm": "control",
+    "status": 400,
+    "region": [
+      "sin1",
+      "iad1"
+    ],
+    "cacheControl": "no-store"
+  },
+  {
+    "arm": "candidate",
+    "status": 400,
+    "region": [
+      "sin1",
+      "hnd1"
+    ],
+    "cacheControl": "no-store"
+  }
+]
