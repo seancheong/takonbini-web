@@ -1,0 +1,982 @@
+{
+  "method": "Diagnostic applied throttling; separate from standard simulated acceptance. Exact Chrome spawn arguments retained with temporary profile/port redacted. No application changes.",
+  "limitations": "Applied-throttling diagnostic, not a replacement for original simulated release gate. Default-feature controls also remove other launcher defaults, so only baseline/enabled pairs isolate a single feature. All 21 samples retained; no physical-device or exact Chromium internal cause claimed.",
+  "arms": {
+    "baseline": {
+      "spawnArguments": [
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "--remote-debugging-port=<PORT>",
+        "--user-data-dir=<TEMP_PROFILE>",
+        "--disable-features=Translate,OptimizationHints,MediaRouter,DialMediaRouteProvider,CalculateNativeWinOcclusion,InterestFeedContentSuggestions,CertificateTransparencyComponentUpdater,AutofillServerCommunication,PrivacySandboxSettings4,RenderDocument",
+        "--disable-extensions",
+        "--disable-component-extensions-with-background-pages",
+        "--disable-background-networking",
+        "--disable-component-update",
+        "--disable-client-side-phishing-detection",
+        "--disable-sync",
+        "--metrics-recording-only",
+        "--disable-default-apps",
+        "--mute-audio",
+        "--no-default-browser-check",
+        "--no-first-run",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-renderer-backgrounding",
+        "--disable-background-timer-throttling",
+        "--disable-ipc-flooding-protection",
+        "--password-store=basic",
+        "--use-mock-keychain",
+        "--force-fieldtrials=*BackgroundTracing/default/",
+        "--disable-hang-monitor",
+        "--disable-prompt-on-repost",
+        "--disable-domain-reliability",
+        "--propagate-iph-for-testing",
+        "--headless",
+        "--disable-gpu",
+        "--no-first-run",
+        "about:blank"
+      ],
+      "settings": {
+        "output": "json",
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 5250,
+        "pauseAfterLoadMs": 5250,
+        "networkQuietThresholdMs": 5250,
+        "cpuQuietThresholdMs": 5250,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 150,
+          "downloadThroughputKbps": 1638.4,
+          "uploadThroughputKbps": 750,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "devtools",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": [
+          "file_systems",
+          "shader_cache",
+          "service_workers",
+          "cache_storage"
+        ],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "node",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": "cc,viz",
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": [
+          "performance"
+        ],
+        "skipAudits": null
+      },
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36"
+    },
+    "enabled": {
+      "spawnArguments": [
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "--remote-debugging-port=<PORT>",
+        "--user-data-dir=<TEMP_PROFILE>",
+        "--disable-features=Translate,OptimizationHints,MediaRouter,DialMediaRouteProvider,CalculateNativeWinOcclusion,InterestFeedContentSuggestions,CertificateTransparencyComponentUpdater,AutofillServerCommunication,PrivacySandboxSettings4",
+        "--disable-extensions",
+        "--disable-component-extensions-with-background-pages",
+        "--disable-background-networking",
+        "--disable-component-update",
+        "--disable-client-side-phishing-detection",
+        "--disable-sync",
+        "--metrics-recording-only",
+        "--disable-default-apps",
+        "--mute-audio",
+        "--no-default-browser-check",
+        "--no-first-run",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-renderer-backgrounding",
+        "--disable-background-timer-throttling",
+        "--disable-ipc-flooding-protection",
+        "--password-store=basic",
+        "--use-mock-keychain",
+        "--force-fieldtrials=*BackgroundTracing/default/",
+        "--disable-hang-monitor",
+        "--disable-prompt-on-repost",
+        "--disable-domain-reliability",
+        "--propagate-iph-for-testing",
+        "--headless",
+        "--disable-gpu",
+        "--no-first-run",
+        "--enable-features=RenderDocument",
+        "about:blank"
+      ],
+      "settings": {
+        "output": "json",
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 5250,
+        "pauseAfterLoadMs": 5250,
+        "networkQuietThresholdMs": 5250,
+        "cpuQuietThresholdMs": 5250,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 150,
+          "downloadThroughputKbps": 1638.4,
+          "uploadThroughputKbps": 750,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "devtools",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": [
+          "file_systems",
+          "shader_cache",
+          "service_workers",
+          "cache_storage"
+        ],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "node",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": "cc,viz",
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": [
+          "performance"
+        ],
+        "skipAudits": null
+      },
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36"
+    },
+    "stockFeatures": {
+      "spawnArguments": [
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        "--remote-debugging-port=<PORT>",
+        "--user-data-dir=<TEMP_PROFILE>",
+        "--headless",
+        "--disable-gpu",
+        "--no-first-run",
+        "about:blank"
+      ],
+      "settings": {
+        "output": "json",
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 5250,
+        "pauseAfterLoadMs": 5250,
+        "networkQuietThresholdMs": 5250,
+        "cpuQuietThresholdMs": 5250,
+        "formFactor": "mobile",
+        "throttling": {
+          "rttMs": 150,
+          "throughputKbps": 1638.4,
+          "requestLatencyMs": 150,
+          "downloadThroughputKbps": 1638.4,
+          "uploadThroughputKbps": 750,
+          "cpuSlowdownMultiplier": 4
+        },
+        "throttlingMethod": "devtools",
+        "screenEmulation": {
+          "mobile": true,
+          "width": 412,
+          "height": 823,
+          "deviceScaleFactor": 1.75,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": [
+          "file_systems",
+          "shader_cache",
+          "service_workers",
+          "cache_storage"
+        ],
+        "disableStorageReset": false,
+        "debugNavigation": false,
+        "channel": "node",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": "cc,viz",
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": [
+          "performance"
+        ],
+        "skipAudits": null
+      },
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36"
+    }
+  },
+  "fixtures": {
+    "image.webp": {
+      "bytes": 39120,
+      "sha256": "2a46a49d6029bc00795818f28ae3a95ad2dc92223c65158955180cc0f68a30dd"
+    },
+    "page.html": {
+      "bytes": 9097,
+      "sha256": "3dc8aa31ceb1cd19760e809fc8a209565947ebe7c8368570a3968e8d6bd19c2c"
+    },
+    "style.css": {
+      "bytes": 40597,
+      "sha256": "9cb06856273e87f55c92745f1d1c945f61d3ad096cdb43d5335f3b7f9ba207e1"
+    },
+    "minimal.html": {
+      "bytes": 362,
+      "sha256": "ef396a7d6d9e1130b1749c2f469d35c751f30c427c7248f9e98de2eb93cb18dc"
+    }
+  },
+  "samples": [
+    {
+      "case": "live",
+      "arm": "baseline",
+      "run": 1,
+      "score": 100,
+      "LCP_ms": 1273.854,
+      "observedFCP_ms": 959,
+      "observedLCP_ms": 1274,
+      "observedLoad_ms": 2025,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 139.656
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 454.725
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 671.585
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 7.888
+        }
+      ]
+    },
+    {
+      "case": "live",
+      "arm": "enabled",
+      "run": 1,
+      "score": 100,
+      "LCP_ms": 1513.272,
+      "observedFCP_ms": 1298,
+      "observedLCP_ms": 1513,
+      "observedLoad_ms": 2235,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 170.127
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 653.161
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 682.778
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 7.206
+        }
+      ]
+    },
+    {
+      "case": "static",
+      "arm": "baseline",
+      "run": 1,
+      "score": 94,
+      "LCP_ms": 2508.276,
+      "observedFCP_ms": 2508,
+      "observedLCP_ms": 2508,
+      "observedLoad_ms": 822,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 255.556
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 21.031
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 536.516
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 1695.173
+        }
+      ]
+    },
+    {
+      "case": "static",
+      "arm": "enabled",
+      "run": 1,
+      "score": 100,
+      "LCP_ms": 907.383,
+      "observedFCP_ms": 907,
+      "observedLCP_ms": 907,
+      "observedLoad_ms": 846,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 252.688
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 40.198
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 535.085
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 79.412
+        }
+      ]
+    },
+    {
+      "case": "minimal",
+      "arm": "baseline",
+      "run": 1,
+      "score": 100,
+      "LCP_ms": 621.267,
+      "observedFCP_ms": 289,
+      "observedLCP_ms": 621,
+      "observedLoad_ms": 614,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 254.29099999237062
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 12.698000007629394
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 346.677
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 7.601
+        }
+      ]
+    },
+    {
+      "case": "minimal",
+      "arm": "enabled",
+      "run": 1,
+      "score": 100,
+      "LCP_ms": 634.155,
+      "observedFCP_ms": 300,
+      "observedLCP_ms": 634,
+      "observedLoad_ms": 624,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 251.34500000762938
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 22.233999992370606
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 348.755
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 11.821
+        }
+      ]
+    },
+    {
+      "case": "live",
+      "arm": "enabled",
+      "run": 2,
+      "score": 100,
+      "LCP_ms": 1114.645,
+      "observedFCP_ms": 892,
+      "observedLCP_ms": 1115,
+      "observedLoad_ms": 1842,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 150.399
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 281.412
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 675.684
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 7.15
+        }
+      ]
+    },
+    {
+      "case": "live",
+      "arm": "baseline",
+      "run": 2,
+      "score": 93,
+      "LCP_ms": 2570.669,
+      "observedFCP_ms": 2571,
+      "observedLCP_ms": 2571,
+      "observedLoad_ms": 1881,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 232.1969999923706
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 236.1230000076294
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 674.992
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 1427.357
+        }
+      ]
+    },
+    {
+      "case": "static",
+      "arm": "enabled",
+      "run": 2,
+      "score": 100,
+      "LCP_ms": 895.457,
+      "observedFCP_ms": 895,
+      "observedLCP_ms": 895,
+      "observedLoad_ms": 874,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 256.909
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 26.302
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 544.403
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 67.843
+        }
+      ]
+    },
+    {
+      "case": "static",
+      "arm": "baseline",
+      "run": 2,
+      "score": 94,
+      "LCP_ms": 2510.806,
+      "observedFCP_ms": 2511,
+      "observedLCP_ms": 2511,
+      "observedLoad_ms": 815,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 252.049
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 17.729
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 527.654
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 1713.374
+        }
+      ]
+    },
+    {
+      "case": "minimal",
+      "arm": "enabled",
+      "run": 2,
+      "score": 100,
+      "LCP_ms": 625.883,
+      "observedFCP_ms": 304,
+      "observedLCP_ms": 626,
+      "observedLoad_ms": 620,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 254.663
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 23.08
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 341.295
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 6.845
+        }
+      ]
+    },
+    {
+      "case": "minimal",
+      "arm": "baseline",
+      "run": 2,
+      "score": 100,
+      "LCP_ms": 621.323,
+      "observedFCP_ms": 295,
+      "observedLCP_ms": 621,
+      "observedLoad_ms": 617,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 251.909
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 16.114
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 346.922
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 6.378
+        }
+      ]
+    },
+    {
+      "case": "live",
+      "arm": "baseline",
+      "run": 3,
+      "score": 94,
+      "LCP_ms": 2543.24,
+      "observedFCP_ms": 2543,
+      "observedLCP_ms": 2543,
+      "observedLoad_ms": 1864,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 136.807
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 312.799
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 677.551
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 1416.083
+        }
+      ]
+    },
+    {
+      "case": "live",
+      "arm": "enabled",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1106.723,
+      "observedFCP_ms": 889,
+      "observedLCP_ms": 1107,
+      "observedLoad_ms": 1835,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 170.362
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 253.734
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 675.277
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 7.35
+        }
+      ]
+    },
+    {
+      "case": "static",
+      "arm": "baseline",
+      "run": 3,
+      "score": 94,
+      "LCP_ms": 2478.891,
+      "observedFCP_ms": 2479,
+      "observedLCP_ms": 2479,
+      "observedLoad_ms": 826,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 259.07
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 21.607
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 527.054
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 1671.16
+        }
+      ]
+    },
+    {
+      "case": "static",
+      "arm": "enabled",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 901.146,
+      "observedFCP_ms": 901,
+      "observedLCP_ms": 901,
+      "observedLoad_ms": 845,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 251.854
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 41.79
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 534.435
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 73.067
+        }
+      ]
+    },
+    {
+      "case": "minimal",
+      "arm": "baseline",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 621.496,
+      "observedFCP_ms": 296,
+      "observedLCP_ms": 621,
+      "observedLoad_ms": 615,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 253.425
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 13.789
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 346.751
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 7.531
+        }
+      ]
+    },
+    {
+      "case": "minimal",
+      "arm": "enabled",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 636.035,
+      "observedFCP_ms": 307,
+      "observedLCP_ms": 636,
+      "observedLoad_ms": 630,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 256.142
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 26.597
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 346.077
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 7.219
+        }
+      ]
+    },
+    {
+      "case": "live",
+      "arm": "stockFeatures",
+      "run": 1,
+      "score": 100,
+      "LCP_ms": 1096.257,
+      "observedFCP_ms": 895,
+      "observedLCP_ms": 1096,
+      "observedLoad_ms": 1826,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 274.234
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 141.21
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 673.897
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 6.916
+        }
+      ]
+    },
+    {
+      "case": "live",
+      "arm": "stockFeatures",
+      "run": 2,
+      "score": 100,
+      "LCP_ms": 1086.42,
+      "observedFCP_ms": 880,
+      "observedLCP_ms": 1086,
+      "observedLoad_ms": 1812,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 177.749
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 222.592
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 674.34
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 11.739
+        }
+      ]
+    },
+    {
+      "case": "live",
+      "arm": "stockFeatures",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1237.502,
+      "observedFCP_ms": 1011,
+      "observedLCP_ms": 1238,
+      "observedLoad_ms": 1956,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "breakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 204.641
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 345.747
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 680.224
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 6.89
+        }
+      ]
+    }
+  ]
+}

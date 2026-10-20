@@ -1,0 +1,18 @@
+[
+  {
+    "case": "static",
+    "arm": "baseline",
+    "run": 1,
+    "mainRendererPaintImage_ms": 1496.688,
+    "firstContentfulPaint_ms": 2508.276,
+    "paintToPresentation_ms": 1011.588
+  },
+  {
+    "case": "static",
+    "arm": "enabled",
+    "run": 1,
+    "mainRendererPaintImage_ms": 882.237,
+    "firstContentfulPaint_ms": 907.383,
+    "paintToPresentation_ms": 25.146
+  }
+]
