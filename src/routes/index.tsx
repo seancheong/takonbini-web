@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Await, createFileRoute } from "@tanstack/react-router";
 import {
 	CatalogScreen,
 	catalogSearch,
@@ -9,10 +9,13 @@ export const Route = createFileRoute("/")({
 	component: Catalog,
 	validateSearch: catalogSearch.parse,
 	loaderDeps: ({ search }) => ({ search: catalogSearch.parse(search) }),
-	loader: ({ context, deps }) => {
-		return context.queryClient.prefetchInfiniteQuery(
+	loader: async ({ context, deps }) => {
+		const catalogReady = context.queryClient.prefetchInfiniteQuery(
 			productQueries.catalog(catalogSearch.normalize(deps.search)),
 		);
+		if (import.meta.env.SSR) return { catalogReady };
+		await catalogReady;
+		return { catalogReady: undefined };
 	},
 	head: ({ match }) => ({ meta: [{ title: match.context.i18n.t("appName") }] }),
 });
@@ -22,7 +25,8 @@ function Catalog() {
 		catalogSearch.parse(Route.useSearch()),
 	);
 	const navigate = Route.useNavigate();
-	return (
+	const { catalogReady } = Route.useLoaderData();
+	const screen = (
 		<CatalogScreen
 			filters={filters}
 			onApply={(next) =>
@@ -33,5 +37,12 @@ function Catalog() {
 				})
 			}
 		/>
+	);
+	return catalogReady ? (
+		<Await promise={catalogReady} fallback={screen}>
+			{() => screen}
+		</Await>
+	) : (
+		screen
 	);
 }

@@ -152,3 +152,8 @@ Product photos paint as soon as the browser decodes them; loaded state no longer
 ### Image transport boundary
 
 Nitro handles `/api/image` before the React SSR catch-all. Its native server adapter accepts GET/HEAD, rejects other methods before loading the processor, and imports the bounded image pipeline on demand. Do not reintroduce a TanStack UI-route handler for this endpoint: image requests must not load the React/router dependency graph. The compiled isolation check in Web CI exercises invalid input and a real native WebP transform with a local fixture and no external fetch. Existing URL, source/redirect validation, admission, byte/pixel/time, cache and fallback contracts remain.
+
+
+### Catalog shell streaming
+
+On server-rendered catalog requests, the route starts the existing query and returns its pending completion promise. An Await boundary renders the existing CatalogScreen loading state while the source is pending, allowing the root shell and stylesheet to stream first; resolved product markup and query data follow in the same response. Browser filter navigation still awaits prefetch completion before committing the new route, preserving the mounted-grid loading overlay and scroll behavior. No cross-request catalog or HTML cache is added. The compiled CI check holds the source unresolved and verifies early stylesheet delivery, eventual product HTML, one source request and no serialized fixture credential.
