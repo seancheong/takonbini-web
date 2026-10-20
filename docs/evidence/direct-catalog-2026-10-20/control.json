@@ -1,0 +1,187 @@
+{
+  "upstreamDelayMs": 25,
+  "selfProxyDelayMs": 50,
+  "warmups": 2,
+  "samples": [
+    {
+      "run": 1,
+      "path": "/?lang=en",
+      "ms": 85.443084,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 1,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 80.40875000000005,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 2,
+      "path": "/?lang=en",
+      "ms": 87.56466699999987,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 2,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 86.65229199999999,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 3,
+      "path": "/?lang=en",
+      "ms": 82.20841700000005,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 3,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 87.86199999999985,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 4,
+      "path": "/?lang=en",
+      "ms": 87.58770900000013,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 4,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 84.58329099999992,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 5,
+      "path": "/?lang=en",
+      "ms": 84.990542,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 5,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 85.41270799999984,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 6,
+      "path": "/?lang=en",
+      "ms": 84.86654200000021,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 6,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 84.328667,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 7,
+      "path": "/?lang=en",
+      "ms": 85.7199999999998,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 7,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 86.24916699999994,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 8,
+      "path": "/?lang=en",
+      "ms": 87.41850000000022,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 8,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 83.80804200000011,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 9,
+      "path": "/?lang=en",
+      "ms": 83.99787500000002,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 9,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 84.10933399999976,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 10,
+      "path": "/?lang=en",
+      "ms": 83.10899999999992,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 10,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 80.43899999999985,
+      "calls": [
+        "web.example.test",
+        "api.example.test"
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { createIsomorphicFn } from "@tanstack/react-start";
 import type {
 	ActiveCatalogProduct,
 	CatalogPage,
@@ -7,22 +8,9 @@ import type {
 const productStatus = (filters: ProductFilters) =>
 	filters.includeSoon ? "all" : "allWithoutSoon";
 
-const getApiBaseUrl = () => {
-	if (typeof window !== "undefined") {
-		return window.location.origin;
-	}
+const getApiBaseUrl = () => window.location.origin;
 
-	const vercelUrl = process.env.VERCEL_URL;
-	if (vercelUrl) {
-		return `https://${vercelUrl}`;
-	}
-
-	const host = process.env.HOST ?? "localhost:3000";
-	const protocol = process.env.PROTOCOL ?? "http";
-	return `${protocol}://${host}`;
-};
-
-export const getProducts = async () => {
+const getProductsInBrowser = async () => {
 	const url = new URL(`${getApiBaseUrl()}/api/products`);
 	url.searchParams.set("status", "allWithoutSoon");
 	const response = await fetch(url.toString());
@@ -46,7 +34,7 @@ export const getProducts = async () => {
 	return response.json() as Promise<CatalogPage>;
 };
 
-export const getProductById = async (id: string) => {
+const getProductByIdInBrowser = async (id: string) => {
 	const response = await fetch(`${getApiBaseUrl()}/api/products/${id}`);
 
 	if (!response.ok) {
@@ -68,10 +56,57 @@ export const getProductById = async (id: string) => {
 	return response.json() as Promise<ActiveCatalogProduct>;
 };
 
-export const getProductsPage = async (
+const getProductsPageInBrowser = async (
 	cursor: string | undefined,
 	filters: ProductFilters,
 ) => {
+	const searchParams = productParameters(cursor, filters);
+	const query = searchParams.toString();
+	const baseUrl = `${getApiBaseUrl()}/api/products`;
+	const response = await fetch(query ? `${baseUrl}?${query}` : baseUrl);
+
+	if (!response.ok) {
+		let body = "";
+		try {
+			body = await response.text();
+		} catch (error) {
+			console.error("Failed reading products page response body", { error });
+		}
+		console.error("Products page request failed", {
+			status: response.status,
+			body: body.slice(0, 2000),
+		});
+		throw new Error("Failed to fetch products.");
+	}
+
+	return response.json() as Promise<CatalogPage>;
+};
+
+export const getProducts = createIsomorphicFn()
+	.server(async () => {
+		const { readProducts } = await import("./products-query.server");
+		return readProducts(new URLSearchParams({ status: "allWithoutSoon" }));
+	})
+	.client(getProductsInBrowser);
+
+export const getProductById = createIsomorphicFn()
+	.server(async (id: string) => {
+		const { readProduct } = await import("./products-query.server");
+		return readProduct(id);
+	})
+	.client(getProductByIdInBrowser);
+
+export const getProductsPage = createIsomorphicFn()
+	.server(async (cursor: string | undefined, filters: ProductFilters) => {
+		const { readProducts } = await import("./products-query.server");
+		return readProducts(productParameters(cursor, filters));
+	})
+	.client(getProductsPageInBrowser);
+
+function productParameters(
+	cursor: string | undefined,
+	filters: ProductFilters,
+) {
 	const searchParams = new URLSearchParams();
 
 	if (cursor) {
@@ -108,23 +143,5 @@ export const getProductsPage = async (
 		searchParams.set("regions", filters.regions.join(","));
 	}
 
-	const query = searchParams.toString();
-	const baseUrl = `${getApiBaseUrl()}/api/products`;
-	const response = await fetch(query ? `${baseUrl}?${query}` : baseUrl);
-
-	if (!response.ok) {
-		let body = "";
-		try {
-			body = await response.text();
-		} catch (error) {
-			console.error("Failed reading products page response body", { error });
-		}
-		console.error("Products page request failed", {
-			status: response.status,
-			body: body.slice(0, 2000),
-		});
-		throw new Error("Failed to fetch products.");
-	}
-
-	return response.json() as Promise<CatalogPage>;
-};
+	return searchParams;
+}
