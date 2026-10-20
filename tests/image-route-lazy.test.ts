@@ -12,24 +12,17 @@ vi.mock("@/server/product-image.server", () => {
 	return { serveProductImage: source.serve };
 });
 
-import { Route } from "@/routes/api.image";
+import imageHandler from "@/server/product-image-handler";
 
 it("does not initialize the native image handler with the route tree, but delegates image requests", async () => {
 	expect(source.initialized).toBe(false);
-	const route = Route as unknown as {
-		options: {
-			server: {
-				handlers: (input: { createHandlers: <T>(value: T) => T }) => {
-					GET: (input: { request: Request }) => Promise<Response>;
-				};
-			};
-		};
-	};
-	const configured = route.options.server.handlers({
-		createHandlers: <T>(value: T) => value,
-	});
+	const rejected = await imageHandler.fetch(
+		new Request("https://web.example.test/api/image", { method: "POST" }),
+	);
+	expect(rejected.status).toBe(405);
+	expect(source.initialized).toBe(false);
 	const request = new Request("https://web.example.test/api/image?url=fixture");
-	const response = await configured.GET({ request });
+	const response = await imageHandler.fetch(request);
 	expect(source.initialized).toBe(true);
 	expect(source.serve).toHaveBeenCalledExactlyOnceWith(request);
 	expect(await response.text()).toBe("fixture");
