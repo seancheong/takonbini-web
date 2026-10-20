@@ -1,0 +1,93 @@
+{
+  "method": "Read-only CloudWatch START/REPORT grouped internally by log stream; identifiers omitted. Nine requests occur in the same order and time windows as the nine sequential browser captures. Correlation is strong but not an end-to-end distributed trace. Milliseconds and MiB.",
+  "configuration": {
+    "memoryMiB": 256,
+    "runtime": "nodejs22.x",
+    "architecture": "arm64",
+    "timeoutSeconds": 10
+  },
+  "samples": [
+    {
+      "startUtc": "2026-10-20T11:22:51.934000+00:00",
+      "route": "catalog",
+      "endUtc": "2026-10-20T11:22:53.469000+00:00",
+      "Duration": 1534.4,
+      "Billed Duration": 2072.0,
+      "Memory Size": 256.0,
+      "Max Memory Used": 127.0,
+      "Init Duration": 537.51
+    },
+    {
+      "startUtc": "2026-10-20T11:23:12.693000+00:00",
+      "route": "detail",
+      "endUtc": "2026-10-20T11:23:13.148000+00:00",
+      "Duration": 454.8,
+      "Billed Duration": 455.0,
+      "Memory Size": 256.0,
+      "Max Memory Used": 128.0
+    },
+    {
+      "startUtc": "2026-10-20T11:23:30.963000+00:00",
+      "route": "detail",
+      "endUtc": "2026-10-20T11:23:31.248000+00:00",
+      "Duration": 284.44,
+      "Billed Duration": 285.0,
+      "Memory Size": 256.0,
+      "Max Memory Used": 128.0
+    },
+    {
+      "startUtc": "2026-10-20T11:23:52.119000+00:00",
+      "route": "catalog",
+      "endUtc": "2026-10-20T11:23:52.309000+00:00",
+      "Duration": 189.98,
+      "Billed Duration": 190.0,
+      "Memory Size": 256.0,
+      "Max Memory Used": 128.0
+    },
+    {
+      "startUtc": "2026-10-20T11:24:11.474000+00:00",
+      "route": "detail",
+      "endUtc": "2026-10-20T11:24:11.549000+00:00",
+      "Duration": 74.84,
+      "Billed Duration": 75.0,
+      "Memory Size": 256.0,
+      "Max Memory Used": 128.0
+    },
+    {
+      "startUtc": "2026-10-20T11:24:29.111000+00:00",
+      "route": "detail",
+      "endUtc": "2026-10-20T11:24:29.169000+00:00",
+      "Duration": 57.34,
+      "Billed Duration": 58.0,
+      "Memory Size": 256.0,
+      "Max Memory Used": 128.0
+    },
+    {
+      "startUtc": "2026-10-20T11:24:46.865000+00:00",
+      "route": "catalog",
+      "endUtc": "2026-10-20T11:24:47.009000+00:00",
+      "Duration": 142.81,
+      "Billed Duration": 143.0,
+      "Memory Size": 256.0,
+      "Max Memory Used": 130.0
+    },
+    {
+      "startUtc": "2026-10-20T11:25:05.819000+00:00",
+      "route": "detail",
+      "endUtc": "2026-10-20T11:25:06.031000+00:00",
+      "Duration": 210.24,
+      "Billed Duration": 211.0,
+      "Memory Size": 256.0,
+      "Max Memory Used": 133.0
+    },
+    {
+      "startUtc": "2026-10-20T11:25:23.643000+00:00",
+      "route": "detail",
+      "endUtc": "2026-10-20T11:25:23.810000+00:00",
+      "Duration": 166.63,
+      "Billed Duration": 167.0,
+      "Memory Size": 256.0,
+      "Max Memory Used": 135.0
+    }
+  ]
+}

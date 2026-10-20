@@ -1,0 +1,29 @@
+{
+  "status": "prepared; execution approval requested; no temporary function created",
+  "memoryOrderMiB": [
+    256,
+    512,
+    1024,
+    1024,
+    512,
+    256,
+    512,
+    256,
+    1024
+  ],
+  "coldAttempts": 9,
+  "immediateRepeats": 9,
+  "totalInvocations": 18,
+  "timeoutSeconds": 10,
+  "reservedConcurrency": 1,
+  "runtime": "nodejs22.x",
+  "architecture": "arm64",
+  "region": "ap-northeast-1",
+  "artifact": "copy existing released ZIP; verify its SHA-256 before use",
+  "access": "reuse existing API role/environment; no new IAM role/policy or public endpoint",
+  "reads": "GET /products?limit=20&status=allWithoutSoon only",
+  "mutationTarget": "one generated scratch function only; never source function, alias or API Gateway",
+  "measurements": "Require REPORT Init Duration for each cold attempt, record repeats/cache limits and billed GB-seconds; compare response digests; retain failures",
+  "cleanup": "delete only owned scratch function and log group; preserve cleanup failures and recovery name locally",
+  "validation": "Read-only plan against active configuration and five mocked safety tests pass; not a hosted benchmark result"
+}

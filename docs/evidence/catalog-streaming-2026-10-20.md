@@ -35,3 +35,8 @@ Revert ba2edbf removes the loader/Await experiment, its test changes, compiled s
 Next distinguish backend duration from delivery delay with read-only hosted timing before another application change. The local AWS session reports expiration and needs `aws login --profile default`; the maintainer was asked to refresh it. Vercel CLI reads return 403 and the browser lookup reaches login, so the project's active compute settings are not verified or changed. Vercel documents production-only bytecode caching and production pre-warming; preview timings therefore cannot establish production cold-start equivalence ([official Fluid compute documentation](https://vercel.com/docs/fluid-compute)). No gate is waived on that basis.
 
 Exact-PR merge approval, post-merge production verification, controlled response/resources/cost acceptance and the existing device/INP/accessibility/global/observation limits remain. #24's next nominal scheduled opportunity remains 21 October 02:00 Malaysia time, subject to GitHub delay; #23's stable 30-day window has not started.
+
+
+## Subsequent AWS timing read
+
+After the maintainer refreshed the session, [read-only API timing](./api-cold-start-2026-10-20.md) identified a matching cold invocation with 537.51 ms initialization and 1,534.40 ms handler duration during the first streaming capture. This narrows the earlier uncertainty: the worse browser sample cannot be attributed solely to streaming. The experiment remains reverted after its failed release and raw-HTML checks. A bounded isolated memory comparison is prepared but has not run; explicit execution approval is pending.
