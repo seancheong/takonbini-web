@@ -14,6 +14,18 @@ import { Route as catalogRoute } from "@/routes/index";
 import { Route as detailRoute } from "@/routes/products.$id";
 import { Route as sitemapRoute } from "@/routes/sitemap[.]xml";
 
+vi.mock("@tanstack/react-start", async (importOriginal) => ({
+	...(await importOriginal<typeof import("@tanstack/react-start")>()),
+	createIsomorphicFn: () => ({
+		server: (server: (...args: unknown[]) => unknown) => ({
+			client:
+				(client: (...args: unknown[]) => unknown) =>
+				(...args: unknown[]) =>
+					(typeof window === "undefined" ? server : client)(...args),
+		}),
+	}),
+}));
+
 type HandlerInput = { request: Request; params: Record<string, string> };
 type GetHandler = (input: HandlerInput) => Promise<Response>;
 type RouteWithHandlers = {
@@ -168,8 +180,8 @@ describe("catalog query parsing and requests", () => {
 	});
 
 	it("encodes the active filters and cursor for the catalog API", async () => {
-		vi.stubEnv("HOST", "catalog.test");
-		vi.stubEnv("PROTOCOL", "https");
+		vi.stubEnv("PRODUCTS_API_URL", "https://catalog.test");
+		vi.stubEnv("PRODUCTS_API_KEY", "test-secret");
 		const fetchMock = vi.fn().mockResolvedValue(
 			new Response(JSON.stringify({ products: [], nextCursor: "page-2" }), {
 				status: 200,
@@ -192,7 +204,7 @@ describe("catalog query parsing and requests", () => {
 
 		const calledUrl = new URL(fetchMock.mock.calls[0][0] as string);
 		expect(calledUrl.origin).toBe("https://catalog.test");
-		expect(calledUrl.pathname).toBe("/api/products");
+		expect(calledUrl.pathname).toBe("/products");
 		expect(Object.fromEntries(calledUrl.searchParams)).toEqual({
 			cursor: "page-1",
 			limit: "10",

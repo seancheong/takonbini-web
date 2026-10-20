@@ -1,0 +1,167 @@
+{
+  "upstreamDelayMs": 25,
+  "selfProxyDelayMs": 50,
+  "warmups": 2,
+  "samples": [
+    {
+      "run": 1,
+      "path": "/?lang=en",
+      "ms": 31.202999999999975,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 1,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 30.018749999999955,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 2,
+      "path": "/?lang=en",
+      "ms": 30.406542000000172,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 2,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 30.006209000000126,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 3,
+      "path": "/?lang=en",
+      "ms": 31.20916699999998,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 3,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 30.506374999999935,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 4,
+      "path": "/?lang=en",
+      "ms": 30.095916999999872,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 4,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 27.933457999999973,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 5,
+      "path": "/?lang=en",
+      "ms": 28.82395900000006,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 5,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 27.495791000000054,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 6,
+      "path": "/?lang=en",
+      "ms": 30.557708000000048,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 6,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 32.43999999999983,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 7,
+      "path": "/?lang=en",
+      "ms": 33.96658300000013,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 7,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 31.742291000000023,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 8,
+      "path": "/?lang=en",
+      "ms": 30.255333000000064,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 8,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 32.478541999999834,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 9,
+      "path": "/?lang=en",
+      "ms": 32.788291999999956,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 9,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 36.971542,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 10,
+      "path": "/?lang=en",
+      "ms": 33.43100000000004,
+      "calls": [
+        "api.example.test"
+      ]
+    },
+    {
+      "run": 10,
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c?lang=en",
+      "ms": 31.496834000000035,
+      "calls": [
+        "api.example.test"
+      ]
+    }
+  ]
+}

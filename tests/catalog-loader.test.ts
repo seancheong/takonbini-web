@@ -38,17 +38,24 @@ vi.mock("@/features/products/products", async () => ({
 vi.mock("@/i18n", () => ({ default: { t: (key: string) => key } }));
 import "@/routes/index";
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+	vi.unstubAllGlobals();
+	vi.unstubAllEnvs();
+});
 
 it("waits for the first catalog page before completing the route loader's SSR snapshot", async () => {
+	vi.stubEnv("PRODUCTS_API_URL", "https://api.example.test");
+	vi.stubEnv("PRODUCTS_API_KEY", "test-secret");
 	const client = new QueryClient({
 		defaultOptions: { queries: { retry: false } },
 	});
 	let release = () => {};
+	let requested = false;
 	vi.stubGlobal(
 		"fetch",
 		() =>
 			new Promise<Response>((resolve) => {
+				requested = true;
 				release = () => resolve(Response.json({ products: [] }));
 			}),
 	);
@@ -63,7 +70,7 @@ it("waits for the first catalog page before completing the route loader's SSR sn
 		const done = Promise.resolve(result).then(() => {
 			settled = true;
 		});
-		await Promise.resolve();
+		await vi.waitFor(() => expect(requested).toBe(true));
 		expect(settled).toBe(false);
 		release();
 		await done;
