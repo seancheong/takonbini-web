@@ -4,7 +4,7 @@ PR #88 and issue #86 remain open and the PR stays draft. This follow-up investig
 
 ## Controlled applied-throttling matrix
 
-Twenty-one fresh-profile Lighthouse 13.4.1 / Chrome 155 / Node 24.16 runs: eighteen in a three-case × two-launcher-state × three-repeat matrix, plus three supporting default-feature live-page runs. Runs are sequential, arm order alternates by repeat, and every result is retained. Mobile viewport is 412×823 / DPR 1.75. Network throttling is applied through DevTools: requested latency 150 ms, download 1638.4 Kbps, upload 750 Kbps, CPU slowdown 4×. The retained `configSettings` record all effective Lighthouse settings. This applied method differs from the original simulated series and cannot be substituted silently.
+Twenty-seven distinct fresh-profile Lighthouse 13.4.1 / Chrome 155 / Node 24.16 runs: eighteen in a three-case × two-launcher-state × three-repeat matrix, plus nine supporting default-feature runs across the representative cases. Runs are sequential, arm order alternates by repeat, and every result is retained. Mobile viewport is 412×823 / DPR 1.75. Network throttling is applied through DevTools: requested latency 150 ms, download 1638.4 Kbps, upload 750 Kbps, CPU slowdown 4×. The retained `configSettings` record all effective Lighthouse settings. This applied method differs from the original simulated series and cannot be substituted silently.
 
 The isolated pair copies the complete installed chrome-launcher default flags. Both arms ignore automatically appended defaults and use the same common headless/GPU flags. The variant removes only RenderDocument from the disabled-feature list and adds an explicit enable. Actual child-process spawn arguments were recorded (temporary profile/port redacted); all nine pairs have exactly the intended three argument differences and identical Lighthouse settings. This is launch-argument verification, not independent introspection of Chrome's resolved feature state.
 
@@ -36,6 +36,21 @@ The remaining failed gate is performance: some original lab LCP values exceed 2.
 
 The maintainer asked what remains failing and whether it is serious; this was a clarification, **not approval to change acceptance criteria or merge**. Retain PR #88 as draft and #86 open under the original gate. The regional cache-MISS/response benefits, higher published Tokyo per-unit pricing and resource/cost/global-device limitations remain as recorded in the regional evidence.
 
-Next release task is an explicit measurement-method decision: retain the simulated gate and investigate the launcher/upstream behavior further, or agree a documented applied-throttling gate while preserving all original results. If a new method is agreed, measure the full representative catalog/heavy-detail/light-detail set under it before deciding release readiness; the light-detail-only diagnostic here is insufficient. No original gate is marked passed by this document.
+Next release task is an explicit measurement-method decision: retain the simulated gate and investigate the launcher/upstream behavior further, or agree a documented applied-throttling gate while preserving all original results. The full representative applied/default-feature set is recorded below for review. If that method is agreed, preserve its limitations and complete any remaining cold-source and release checks before deciding readiness. No original gate is marked passed by this document.
 
 Sanitized samples, settings, launch arguments, fixture hashes and trace summaries are in [the evidence directory](./first-frame-2026-10-20/). The fixture generator takes an output directory and the existing public light-product JSON as arguments; it uses no credentials. Raw traces/reports and fixtures remain local, outside the product runtime. No permanent debug instrumentation or dependencies were added.
+
+
+## Full representative default-feature check
+
+The default-feature control was extended with six additional captures (catalog and heavy detail, three each), reusing the three previously recorded light-detail captures. There are 27 distinct captures in this follow-up; the two JSON files intentionally overlap on those same three light-detail rows rather than representing repeat measurements.
+
+| Case | Applied LCP runs (s) | Median | Scores |
+| --- | --- | ---: | --- |
+| Catalog | 1.310, 1.347, 1.327 | 1.327 s | 100, 100, 100 |
+| Heavy detail | 1.211, 1.265, 1.101 | 1.211 s | 100, 100, 100 |
+| Light detail | 1.096, 1.086, 1.238 | 1.096 s | 100, 100, 100 |
+
+All nine meet the scoped score/LCP/CLS thresholds under this explicitly different applied method; CLS and TBT are zero. Target-image cache is MISS/HIT/HIT for catalog, HIT/HIT/HIT for both detail cases, with browser disk cache false. Thus the first catalog observation includes an output-cache MISS within target, but this does not establish light-detail cold-source, cold-function, all-source-CDN, real-device or global acceptance. The server's physical source-fetch/cache state is not directly instrumented. All images come from the unchanged Tokyo preview; no successful sample replaces an original failed simulated run.
+
+This completes a concrete proposed-method comparison for maintainer review. It does not by itself change #86's agreed gate or authorize merge. The maintainer's severity question remains a request for explanation, not agreement to a replacement measurement method. PR #88 stays draft until a release-ready decision is made explicitly.
