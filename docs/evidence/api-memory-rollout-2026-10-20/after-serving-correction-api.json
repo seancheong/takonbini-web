@@ -1,0 +1,14 @@
+{
+  "method": "Read-only timestamp-window correlation; not a distributed trace. Milliseconds and MiB.",
+  "captureUtc": "2026-10-20T13:07:38.737Z",
+  "reports": [
+    {
+      "Duration": 455.28,
+      "Billed Duration": 854.0,
+      "Memory Size": 1024.0,
+      "Max Memory Used": 137.0,
+      "Init Duration": 397.89,
+      "endUtc": "2026-10-20T13:07:41.154000+00:00"
+    }
+  ]
+}

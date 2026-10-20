@@ -139,7 +139,7 @@ Product detail retains its inset facts card with a quiet border, card surface, r
 
 ## Responsive product images (#86)
 
-Catalog and full-detail images retain their existing aspect-ratio canvases, contained photography, loading/error state and eager/lazy priorities. They now supply a finite width srcset (320/480/640/960/1280/1600) to the existing image route. Catalog sizes follow the 600/800px column breakpoints; full detail supplies its 1024px column split. Gallery images stay lazy. Source product records and original retailer references are unchanged.
+Catalog and full-detail images retain their existing aspect-ratio canvases, contained photography, loading/error state and eager/lazy priorities. They now supply a finite width srcset (320/480/640/768/960/1280/1600) to the existing image route. Catalog sizes follow the 600/800px column breakpoints; full detail supplies its 1024px column split. Gallery images stay lazy. Source product records and original retailer references are unchanged.
 
 The server-only Sharp pipeline emits WebP at quality 80, preserves aspect ratio, caps both dimensions at the selected width, and never enlarges a source. The route accepts only the four observed HTTPS retailer image hosts, validates every redirect, and restricts sizes. Unsupported or failed images use the existing unavailable state. See the image-delivery evidence for resource, cache, runtime and performance limits.
 
@@ -147,3 +147,8 @@ The server-only Sharp pipeline emits WebP at quality 80, preserves aspect ratio,
 ### Native image paint before hydration
 
 Product photos paint as soon as the browser decodes them; loaded state no longer controls image opacity. Positioned images paint above the preceding loading label, while release badges and Safari navigation feedback retain their ordering. The label remains until the normal image load handler updates React state; failed and missing images retain their existing fallback. Transparent transformed sources are composited onto the same white canvas used in both themes so loading text cannot show through a decoded image. The original-byte URL is unchanged. Reserved geometry, priorities and view-transition identities remain intact.
+
+
+### Image transport boundary
+
+Nitro handles `/api/image` before the React SSR catch-all. Its native server adapter accepts GET/HEAD, rejects other methods before loading the processor, and imports the bounded image pipeline on demand. Do not reintroduce a TanStack UI-route handler for this endpoint: image requests must not load the React/router dependency graph. The compiled isolation check in Web CI exercises invalid input and a real native WebP transform with a local fixture and no external fetch. Existing URL, source/redirect validation, admission, byte/pixel/time, cache and fallback contracts remain.

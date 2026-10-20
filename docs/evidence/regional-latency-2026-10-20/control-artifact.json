@@ -1,0 +1,30 @@
+{
+  "function": {
+    "handler": "index.mjs",
+    "launcherType": "Nodejs",
+    "shouldAddHelpers": false,
+    "supportsResponseStreaming": true,
+    "regions": [
+      "iad1"
+    ],
+    "runtime": "nodejs24.x"
+  },
+  "assets": {
+    "api.products._id-DtqBFgK5.js": "1433cdb51c1aff581f48a2d0d3e4c4cbee8b7c1cfb1875fbdaa7eac0aec19730",
+    "sitemap_._xml-DtqBFgK5.js": "1433cdb51c1aff581f48a2d0d3e4c4cbee8b7c1cfb1875fbdaa7eac0aec19730",
+    "ProductDetailError-CNFbA1n8.js": "b791f5ebf56d13d1cc0a51329238a78181a585148da2dd840de7cd1440460314",
+    "products._id-DJqVn4Xo.js": "70e27eb127af7e23b4f9575bd16e6db03ad845909742816a32d02d9e60026d7d",
+    "api.products-DtqBFgK5.js": "1433cdb51c1aff581f48a2d0d3e4c4cbee8b7c1cfb1875fbdaa7eac0aec19730",
+    "index-DVly5o8f.js": "c6fb95ea276bc3fee750a18f9dc78f86e23945f1f9a900db791dd9d426261b50",
+    "styles-BfPHeM9H.css": "9cb06856273e87f55c92745f1d1c945f61d3ad096cdb43d5335f3b7f9ba207e1",
+    "api.image-DtqBFgK5.js": "1433cdb51c1aff581f48a2d0d3e4c4cbee8b7c1cfb1875fbdaa7eac0aec19730",
+    "index-DyrlkWyk.js": "559c39bf9bcdf2c2ee08432f14962225aad90cabbef3ee5b3181d934c45626b5",
+    "ProductDetailScreen-NcPXNgU2.js": "99723b7f5e190ceda40b0b5b1e90dac0ab33ce5cb1786e43c2d7029e14af8997",
+    "arrow-left-9oSCvlix.js": "8fd9156ea3ca3372598495d1caa40b0359ba53c8fc25acbe70bcdd8312656c56",
+    "products._id-BGitniWq.js": "28b4b14bbd91bdca9668ef9b696fb1dc9b28e4757021442d868b02cf7515f214"
+  },
+  "gzip": {
+    "js": 186072,
+    "css": 10272
+  }
+}

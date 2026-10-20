@@ -1,0 +1,18 @@
+{
+  "method": "Timestamp-window correlation around first candidate catalog navigation, not distributed trace; no forced-cold guarantee. Milliseconds and MiB.",
+  "captureUtc": "2026-10-20T13:23:12.517Z",
+  "reports": [
+    {
+      "Duration": 25.09,
+      "Billed Duration": 26.0,
+      "Memory Size": 1024.0,
+      "Max Memory Used": 151.0
+    },
+    {
+      "Duration": 4.99,
+      "Billed Duration": 5.0,
+      "Memory Size": 1024.0,
+      "Max Memory Used": 151.0
+    }
+  ]
+}

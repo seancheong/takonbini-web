@@ -1,0 +1,17 @@
+[
+  {
+    "path": "/health",
+    "authenticated": false,
+    "status": 200
+  },
+  {
+    "path": "/products?limit=20&status=allWithoutSoon",
+    "authenticated": true,
+    "status": 200
+  },
+  {
+    "path": "/products?limit=20&status=allWithoutSoon",
+    "authenticated": false,
+    "status": 401
+  }
+]

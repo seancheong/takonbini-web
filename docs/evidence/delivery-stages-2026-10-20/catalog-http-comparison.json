@@ -1,0 +1,97 @@
+{
+  "method": "Twelve sequential interleaved HTTP catalog GETs on immutable pre-width/candidate previews, all included. TLS/network/backend/platform state uncontrolled; no causal or forced-cold claim. Individually gzip-compressed emitted asset sums are not initial-route transfer.",
+  "samples": [
+    {
+      "arm": "control",
+      "status": 200,
+      "headersMs": 1565.033375,
+      "totalMs": 1654.42475,
+      "bytes": 91592
+    },
+    {
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 305.30700000000024,
+      "totalMs": 440.27029100000027,
+      "bytes": 94264
+    },
+    {
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 271.00133400000016,
+      "totalMs": 368.3701250000002,
+      "bytes": 94264
+    },
+    {
+      "arm": "control",
+      "status": 200,
+      "headersMs": 720.0525830000001,
+      "totalMs": 783.8780830000003,
+      "bytes": 91592
+    },
+    {
+      "arm": "control",
+      "status": 200,
+      "headersMs": 521.4803749999999,
+      "totalMs": 617.3631249999997,
+      "bytes": 91592
+    },
+    {
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 329.56637500000016,
+      "totalMs": 419.1682499999998,
+      "bytes": 94264
+    },
+    {
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 293.0988750000001,
+      "totalMs": 419.2187500000006,
+      "bytes": 94264
+    },
+    {
+      "arm": "control",
+      "status": 200,
+      "headersMs": 286.92991600000005,
+      "totalMs": 373.8806659999998,
+      "bytes": 91592
+    },
+    {
+      "arm": "control",
+      "status": 200,
+      "headersMs": 264.44987500000036,
+      "totalMs": 359.7302500000001,
+      "bytes": 91592
+    },
+    {
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 299.21808399999964,
+      "totalMs": 373.57758399999955,
+      "bytes": 94264
+    },
+    {
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 243.57604099999986,
+      "totalMs": 336.32933300000013,
+      "bytes": 94264
+    },
+    {
+      "arm": "control",
+      "status": 200,
+      "headersMs": 269.09975000000054,
+      "totalMs": 302.06512500000036,
+      "bytes": 91592
+    }
+  ],
+  "medianTotalMs": {
+    "control": 495.62189549999977,
+    "candidate": 396.3729169999997
+  },
+  "candidateEmittedGzipBytes": {
+    "js": 185977,
+    "css": 10272
+  }
+}

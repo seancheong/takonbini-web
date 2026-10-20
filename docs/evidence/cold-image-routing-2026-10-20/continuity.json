@@ -1,0 +1,226 @@
+{
+  "sequentialLocales": [
+    {
+      "query": "?lang=ja",
+      "cookie": "zh",
+      "acceptLanguage": "en",
+      "expected": "ja",
+      "passed": true
+    },
+    {
+      "query": "?lang=zh",
+      "cookie": "en",
+      "acceptLanguage": "ja",
+      "expected": "zh-Hant",
+      "passed": true
+    },
+    {
+      "query": "?lang=en",
+      "cookie": "ja",
+      "acceptLanguage": "zh",
+      "expected": "en",
+      "passed": true
+    },
+    {
+      "query": "",
+      "cookie": "ja",
+      "acceptLanguage": "en",
+      "expected": "ja",
+      "passed": true
+    },
+    {
+      "query": "",
+      "cookie": "zh",
+      "acceptLanguage": "en",
+      "expected": "zh-Hant",
+      "passed": true
+    },
+    {
+      "query": "",
+      "cookie": null,
+      "acceptLanguage": "zh-TW,ja;q=0.7,en;q=0.5",
+      "expected": "zh-Hant",
+      "passed": true
+    }
+  ],
+  "concurrentLocales": [
+    {
+      "query": "?lang=ja",
+      "cookie": "zh",
+      "acceptLanguage": "en",
+      "expected": "ja",
+      "passed": true
+    },
+    {
+      "query": "?lang=zh",
+      "cookie": "en",
+      "acceptLanguage": "ja",
+      "expected": "zh-Hant",
+      "passed": true
+    },
+    {
+      "query": "?lang=en",
+      "cookie": "ja",
+      "acceptLanguage": "zh",
+      "expected": "en",
+      "passed": true
+    },
+    {
+      "query": "",
+      "cookie": "ja",
+      "acceptLanguage": "en",
+      "expected": "ja",
+      "passed": true
+    },
+    {
+      "query": "",
+      "cookie": "zh",
+      "acceptLanguage": "en",
+      "expected": "zh-Hant",
+      "passed": true
+    },
+    {
+      "query": "",
+      "cookie": null,
+      "acceptLanguage": "zh-TW,ja;q=0.7,en;q=0.5",
+      "expected": "zh-Hant",
+      "passed": true
+    },
+    {
+      "query": "?lang=ja",
+      "cookie": "zh",
+      "acceptLanguage": "en",
+      "expected": "ja",
+      "passed": true
+    },
+    {
+      "query": "?lang=zh",
+      "cookie": "en",
+      "acceptLanguage": "ja",
+      "expected": "zh-Hant",
+      "passed": true
+    },
+    {
+      "query": "?lang=en",
+      "cookie": "ja",
+      "acceptLanguage": "zh",
+      "expected": "en",
+      "passed": true
+    },
+    {
+      "query": "",
+      "cookie": "ja",
+      "acceptLanguage": "en",
+      "expected": "ja",
+      "passed": true
+    },
+    {
+      "query": "",
+      "cookie": "zh",
+      "acceptLanguage": "en",
+      "expected": "zh-Hant",
+      "passed": true
+    },
+    {
+      "query": "",
+      "cookie": null,
+      "acceptLanguage": "zh-TW,ja;q=0.7,en;q=0.5",
+      "expected": "zh-Hant",
+      "passed": true
+    }
+  ],
+  "seo": [
+    {
+      "path": "/",
+      "lang": "en",
+      "canonical": "https://takonbini-web.vercel.app/",
+      "responsivePriorityImage": true,
+      "passed": true
+    },
+    {
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c",
+      "lang": "en",
+      "canonical": "https://takonbini-web.vercel.app/products/01e1c84bc70c04a2c7eb082ee879d20c",
+      "responsivePriorityImage": true,
+      "passed": true
+    },
+    {
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c",
+      "lang": "ja",
+      "canonical": "https://takonbini-web.vercel.app/products/01e1c84bc70c04a2c7eb082ee879d20c",
+      "responsivePriorityImage": true,
+      "passed": true
+    },
+    {
+      "path": "/products/01e1c84bc70c04a2c7eb082ee879d20c",
+      "lang": "zh",
+      "canonical": "https://takonbini-web.vercel.app/products/01e1c84bc70c04a2c7eb082ee879d20c",
+      "responsivePriorityImage": true,
+      "passed": true
+    },
+    {
+      "path": "/products/0d41fc1137e1762b66b05d4539990c2b",
+      "lang": "en",
+      "canonical": "https://takonbini-web.vercel.app/products/0d41fc1137e1762b66b05d4539990c2b",
+      "responsivePriorityImage": true,
+      "passed": true
+    },
+    {
+      "path": "/products/0d41fc1137e1762b66b05d4539990c2b",
+      "lang": "ja",
+      "canonical": "https://takonbini-web.vercel.app/products/0d41fc1137e1762b66b05d4539990c2b",
+      "responsivePriorityImage": true,
+      "passed": true
+    },
+    {
+      "path": "/products/0d41fc1137e1762b66b05d4539990c2b",
+      "lang": "zh",
+      "canonical": "https://takonbini-web.vercel.app/products/0d41fc1137e1762b66b05d4539990c2b",
+      "responsivePriorityImage": true,
+      "passed": true
+    }
+  ],
+  "images": [
+    {
+      "case": "original",
+      "status": 200,
+      "bytes": 622842,
+      "type": "image/jpeg",
+      "edgeCache": "MISS",
+      "cacheControl": "public, max-age=86400",
+      "sha256": "e7daf5fa8231952f5d252b3ed33e0ed52e8242827eb2358303b5865918b9971b"
+    },
+    {
+      "case": "optimized",
+      "status": 200,
+      "bytes": 26540,
+      "type": "image/webp",
+      "edgeCache": "MISS",
+      "cacheControl": "public, max-age=86400",
+      "sha256": "98e7b915367770571ac28c1f00fc289cc5470b6333642447ba1590626fe1523f"
+    },
+    {
+      "case": "optimized-repeat",
+      "status": 200,
+      "bytes": 26540,
+      "type": "image/webp",
+      "edgeCache": "HIT",
+      "cacheControl": "public, max-age=86400",
+      "sha256": "98e7b915367770571ac28c1f00fc289cc5470b6333642447ba1590626fe1523f"
+    },
+    {
+      "case": "invalid-width",
+      "status": 400,
+      "bytes": 17,
+      "type": "text/plain;charset=UTF-8",
+      "edgeCache": "MISS",
+      "cacheControl": "no-store",
+      "sha256": "7817cd06563196ee0ed979cfa3ecb7fa02fc29fcada4b8564de7a0a63fdef572"
+    },
+    {
+      "case": "conditional",
+      "status": 304,
+      "bytes": 0
+    }
+  ]
+}

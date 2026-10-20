@@ -1,0 +1,992 @@
+{
+  "method": "Twelve new product/source/480px keys, first request then repeat; alternating arm order; HTTP only; source CDN and function instance state unknown; edge cache observed",
+  "priorAttempt": "Earlier heavy/light width probes ran but a Lawson fixture shape mismatch stopped the script before results were saved. Those already-requested keys are excluded from this experiment; no timings or cold-cache claims are inferred for that attempt.",
+  "sources": [
+    {
+      "store": "SevenEleven",
+      "id": "08f8cc06fc48646b8c7c55d655cc996f",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/091943/69FDDE2740E3AEB621FABB3CF8774E06.jpg",
+      "width": 480
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0a6bae432f8f07001b1d78aec7fac8a1",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/091873/5DC9342B22DBD6B303592D4D20FE5D7F.jpg",
+      "width": 480
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0b80213077816b71301a278ec4e77365",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/044961/0750BBE423E4F527CEAD082CFB616A38.jpg",
+      "width": 480
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0c14ff010f6cccedde055fa325c87f5d",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/044823/E7F4AA1E1CF8FB83F00BAB07608189A5.jpg",
+      "width": 480
+    },
+    {
+      "store": "FamilyMart",
+      "id": "0448db121200c1164d751101facf1b78",
+      "source": "https://www.family.co.jp/content/dam/family/goods/1945119.jpg",
+      "width": 480
+    },
+    {
+      "store": "FamilyMart",
+      "id": "0fafbc410167c512609e0a3fea653745",
+      "source": "https://www.family.co.jp/content/dam/family/goods/2234762.jpg",
+      "width": 480
+    },
+    {
+      "store": "FamilyMart",
+      "id": "109e71efa5533b882e3cf144e248a365",
+      "source": "https://www.family.co.jp/content/dam/family/goods/1950960.jpg",
+      "width": 480
+    },
+    {
+      "store": "FamilyMart",
+      "id": "129d8383c9e82db9feb25b6ff3ba56ea",
+      "source": "https://www.family.co.jp/content/dam/family/goods/0254816.jpg",
+      "width": 480
+    },
+    {
+      "store": "Lawson",
+      "id": "12b10991d99f4df4544abcede223c088",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l824213.jpg",
+      "width": 480
+    },
+    {
+      "store": "Lawson",
+      "id": "23d6ee06d4df42c1d049a911eef59854",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l821736.jpg",
+      "width": 480
+    },
+    {
+      "store": "Lawson",
+      "id": "23f9cf388f49a06e7e5813ed2b50f181",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l822955.jpg",
+      "width": 480
+    },
+    {
+      "store": "Lawson",
+      "id": "2768b064e17ce10601e145dba60a3a0c",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l820899.jpg",
+      "width": 480
+    }
+  ],
+  "samples": [
+    {
+      "store": "SevenEleven",
+      "id": "08f8cc06fc48646b8c7c55d655cc996f",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/091943/69FDDE2740E3AEB621FABB3CF8774E06.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 557.8225,
+      "totalMs": 559.3782499999999,
+      "bytes": 20262,
+      "sha256": "80d769451229dfea17fc13d60680ebce205d76faac9df100326baddc456fe491",
+      "etag": "\"80d769451229dfea17fc13d60680ebce205d76faac9df100326baddc456fe491\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "08f8cc06fc48646b8c7c55d655cc996f",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/091943/69FDDE2740E3AEB621FABB3CF8774E06.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 235.23554199999984,
+      "totalMs": 242.5207919999999,
+      "bytes": 20262,
+      "sha256": "80d769451229dfea17fc13d60680ebce205d76faac9df100326baddc456fe491",
+      "etag": "\"80d769451229dfea17fc13d60680ebce205d76faac9df100326baddc456fe491\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "08f8cc06fc48646b8c7c55d655cc996f",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/091943/69FDDE2740E3AEB621FABB3CF8774E06.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 101.48437500000007,
+      "totalMs": 114.64620799999992,
+      "bytes": 20262,
+      "sha256": "80d769451229dfea17fc13d60680ebce205d76faac9df100326baddc456fe491",
+      "etag": "\"80d769451229dfea17fc13d60680ebce205d76faac9df100326baddc456fe491\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "08f8cc06fc48646b8c7c55d655cc996f",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/091943/69FDDE2740E3AEB621FABB3CF8774E06.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 101.80516699999997,
+      "totalMs": 103.42812499999998,
+      "bytes": 20262,
+      "sha256": "80d769451229dfea17fc13d60680ebce205d76faac9df100326baddc456fe491",
+      "etag": "\"80d769451229dfea17fc13d60680ebce205d76faac9df100326baddc456fe491\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0a6bae432f8f07001b1d78aec7fac8a1",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/091873/5DC9342B22DBD6B303592D4D20FE5D7F.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 224.40333299999992,
+      "totalMs": 226.4068330000002,
+      "bytes": 36378,
+      "sha256": "e00921abb94099d97963d5f7a8737fdb9040ddfbc57563b1f6ec6003f51a63bb",
+      "etag": "\"e00921abb94099d97963d5f7a8737fdb9040ddfbc57563b1f6ec6003f51a63bb\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0a6bae432f8f07001b1d78aec7fac8a1",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/091873/5DC9342B22DBD6B303592D4D20FE5D7F.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 358.6900420000001,
+      "totalMs": 365.99329199999977,
+      "bytes": 36378,
+      "sha256": "e00921abb94099d97963d5f7a8737fdb9040ddfbc57563b1f6ec6003f51a63bb",
+      "etag": "\"e00921abb94099d97963d5f7a8737fdb9040ddfbc57563b1f6ec6003f51a63bb\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0a6bae432f8f07001b1d78aec7fac8a1",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/091873/5DC9342B22DBD6B303592D4D20FE5D7F.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 241.77520800000042,
+      "totalMs": 246.45783300000002,
+      "bytes": 36378,
+      "sha256": "e00921abb94099d97963d5f7a8737fdb9040ddfbc57563b1f6ec6003f51a63bb",
+      "etag": "\"e00921abb94099d97963d5f7a8737fdb9040ddfbc57563b1f6ec6003f51a63bb\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0a6bae432f8f07001b1d78aec7fac8a1",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/091873/5DC9342B22DBD6B303592D4D20FE5D7F.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 93.50295799999975,
+      "totalMs": 97.83620799999993,
+      "bytes": 36378,
+      "sha256": "e00921abb94099d97963d5f7a8737fdb9040ddfbc57563b1f6ec6003f51a63bb",
+      "etag": "\"e00921abb94099d97963d5f7a8737fdb9040ddfbc57563b1f6ec6003f51a63bb\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0b80213077816b71301a278ec4e77365",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/044961/0750BBE423E4F527CEAD082CFB616A38.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 460.87612499999994,
+      "totalMs": 464.4447079999998,
+      "bytes": 13714,
+      "sha256": "afe2423758c32c33f48103f1ac28606a1cba30a4e3bbb0d1af57a0c7d44fd923",
+      "etag": "\"afe2423758c32c33f48103f1ac28606a1cba30a4e3bbb0d1af57a0c7d44fd923\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0b80213077816b71301a278ec4e77365",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/044961/0750BBE423E4F527CEAD082CFB616A38.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 268.3179170000001,
+      "totalMs": 269.66016700000006,
+      "bytes": 13714,
+      "sha256": "afe2423758c32c33f48103f1ac28606a1cba30a4e3bbb0d1af57a0c7d44fd923",
+      "etag": "\"afe2423758c32c33f48103f1ac28606a1cba30a4e3bbb0d1af57a0c7d44fd923\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0b80213077816b71301a278ec4e77365",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/044961/0750BBE423E4F527CEAD082CFB616A38.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 214.27708300000026,
+      "totalMs": 215.72679199999988,
+      "bytes": 13714,
+      "sha256": "afe2423758c32c33f48103f1ac28606a1cba30a4e3bbb0d1af57a0c7d44fd923",
+      "etag": "\"afe2423758c32c33f48103f1ac28606a1cba30a4e3bbb0d1af57a0c7d44fd923\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0b80213077816b71301a278ec4e77365",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/044961/0750BBE423E4F527CEAD082CFB616A38.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 107.10895799999997,
+      "totalMs": 109.77408300000002,
+      "bytes": 13714,
+      "sha256": "afe2423758c32c33f48103f1ac28606a1cba30a4e3bbb0d1af57a0c7d44fd923",
+      "etag": "\"afe2423758c32c33f48103f1ac28606a1cba30a4e3bbb0d1af57a0c7d44fd923\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0c14ff010f6cccedde055fa325c87f5d",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/044823/E7F4AA1E1CF8FB83F00BAB07608189A5.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 305.86166599999973,
+      "totalMs": 375.26500000000016,
+      "bytes": 36308,
+      "sha256": "b7d0f1dd2400fa23c47cd5bc137c793bb91b2536f7201da347ad3d5f4e326b77",
+      "etag": "\"b7d0f1dd2400fa23c47cd5bc137c793bb91b2536f7201da347ad3d5f4e326b77\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0c14ff010f6cccedde055fa325c87f5d",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/044823/E7F4AA1E1CF8FB83F00BAB07608189A5.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 382.7373749999996,
+      "totalMs": 602.2310409999995,
+      "bytes": 36308,
+      "sha256": "b7d0f1dd2400fa23c47cd5bc137c793bb91b2536f7201da347ad3d5f4e326b77",
+      "etag": "\"b7d0f1dd2400fa23c47cd5bc137c793bb91b2536f7201da347ad3d5f4e326b77\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0c14ff010f6cccedde055fa325c87f5d",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/044823/E7F4AA1E1CF8FB83F00BAB07608189A5.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 131.7871669999997,
+      "totalMs": 134.44187499999938,
+      "bytes": 36308,
+      "sha256": "b7d0f1dd2400fa23c47cd5bc137c793bb91b2536f7201da347ad3d5f4e326b77",
+      "etag": "\"b7d0f1dd2400fa23c47cd5bc137c793bb91b2536f7201da347ad3d5f4e326b77\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "SevenEleven",
+      "id": "0c14ff010f6cccedde055fa325c87f5d",
+      "source": "https://img-afd.7api-01.dp1.sej.co.jp/item-image/044823/E7F4AA1E1CF8FB83F00BAB07608189A5.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 88.571666,
+      "totalMs": 94.36416600000008,
+      "bytes": 36308,
+      "sha256": "b7d0f1dd2400fa23c47cd5bc137c793bb91b2536f7201da347ad3d5f4e326b77",
+      "etag": "\"b7d0f1dd2400fa23c47cd5bc137c793bb91b2536f7201da347ad3d5f4e326b77\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "0448db121200c1164d751101facf1b78",
+      "source": "https://www.family.co.jp/content/dam/family/goods/1945119.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 743.5447079999999,
+      "totalMs": 744.8022910000001,
+      "bytes": 9756,
+      "sha256": "c1f8f0a367643686af6017fa4f2f33e8c39c2491015967863b2686ded0a6547b",
+      "etag": "\"c1f8f0a367643686af6017fa4f2f33e8c39c2491015967863b2686ded0a6547b\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "0448db121200c1164d751101facf1b78",
+      "source": "https://www.family.co.jp/content/dam/family/goods/1945119.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 254.65987499999977,
+      "totalMs": 256.6514170000005,
+      "bytes": 9756,
+      "sha256": "c1f8f0a367643686af6017fa4f2f33e8c39c2491015967863b2686ded0a6547b",
+      "etag": "\"c1f8f0a367643686af6017fa4f2f33e8c39c2491015967863b2686ded0a6547b\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "0448db121200c1164d751101facf1b78",
+      "source": "https://www.family.co.jp/content/dam/family/goods/1945119.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 100.98116599999952,
+      "totalMs": 102.27341599999917,
+      "bytes": 9756,
+      "sha256": "c1f8f0a367643686af6017fa4f2f33e8c39c2491015967863b2686ded0a6547b",
+      "etag": "\"c1f8f0a367643686af6017fa4f2f33e8c39c2491015967863b2686ded0a6547b\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "0448db121200c1164d751101facf1b78",
+      "source": "https://www.family.co.jp/content/dam/family/goods/1945119.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 91.7735000000004,
+      "totalMs": 93.62145800000033,
+      "bytes": 9756,
+      "sha256": "c1f8f0a367643686af6017fa4f2f33e8c39c2491015967863b2686ded0a6547b",
+      "etag": "\"c1f8f0a367643686af6017fa4f2f33e8c39c2491015967863b2686ded0a6547b\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "0fafbc410167c512609e0a3fea653745",
+      "source": "https://www.family.co.jp/content/dam/family/goods/2234762.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 236.31608299999928,
+      "totalMs": 392.7092079999994,
+      "bytes": 75302,
+      "sha256": "3a0116d4c949d5730a0a10b7af94e9892e2a4f9bbcbbc569c03db0a963e1d955",
+      "etag": "\"3a0116d4c949d5730a0a10b7af94e9892e2a4f9bbcbbc569c03db0a963e1d955\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "0fafbc410167c512609e0a3fea653745",
+      "source": "https://www.family.co.jp/content/dam/family/goods/2234762.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 243.49266699999993,
+      "totalMs": 261.9717499999998,
+      "bytes": 75302,
+      "sha256": "3a0116d4c949d5730a0a10b7af94e9892e2a4f9bbcbbc569c03db0a963e1d955",
+      "etag": "\"3a0116d4c949d5730a0a10b7af94e9892e2a4f9bbcbbc569c03db0a963e1d955\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "0fafbc410167c512609e0a3fea653745",
+      "source": "https://www.family.co.jp/content/dam/family/goods/2234762.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 142.93837499999995,
+      "totalMs": 161.45287500000018,
+      "bytes": 75302,
+      "sha256": "3a0116d4c949d5730a0a10b7af94e9892e2a4f9bbcbbc569c03db0a963e1d955",
+      "etag": "\"3a0116d4c949d5730a0a10b7af94e9892e2a4f9bbcbbc569c03db0a963e1d955\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "0fafbc410167c512609e0a3fea653745",
+      "source": "https://www.family.co.jp/content/dam/family/goods/2234762.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 121.54033299999955,
+      "totalMs": 147.39058299999996,
+      "bytes": 75302,
+      "sha256": "3a0116d4c949d5730a0a10b7af94e9892e2a4f9bbcbbc569c03db0a963e1d955",
+      "etag": "\"3a0116d4c949d5730a0a10b7af94e9892e2a4f9bbcbbc569c03db0a963e1d955\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "109e71efa5533b882e3cf144e248a365",
+      "source": "https://www.family.co.jp/content/dam/family/goods/1950960.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 276.159292,
+      "totalMs": 277.8441669999996,
+      "bytes": 13900,
+      "sha256": "b73e6cdf143f395f4956249949fece001101bee4bc9c1c3fd0c5a64e1b3825f2",
+      "etag": "\"b73e6cdf143f395f4956249949fece001101bee4bc9c1c3fd0c5a64e1b3825f2\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "109e71efa5533b882e3cf144e248a365",
+      "source": "https://www.family.co.jp/content/dam/family/goods/1950960.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 224.9443339999999,
+      "totalMs": 297.8293749999992,
+      "bytes": 13900,
+      "sha256": "b73e6cdf143f395f4956249949fece001101bee4bc9c1c3fd0c5a64e1b3825f2",
+      "etag": "\"b73e6cdf143f395f4956249949fece001101bee4bc9c1c3fd0c5a64e1b3825f2\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "109e71efa5533b882e3cf144e248a365",
+      "source": "https://www.family.co.jp/content/dam/family/goods/1950960.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 158.6946659999997,
+      "totalMs": 161.99258300000085,
+      "bytes": 13900,
+      "sha256": "b73e6cdf143f395f4956249949fece001101bee4bc9c1c3fd0c5a64e1b3825f2",
+      "etag": "\"b73e6cdf143f395f4956249949fece001101bee4bc9c1c3fd0c5a64e1b3825f2\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "109e71efa5533b882e3cf144e248a365",
+      "source": "https://www.family.co.jp/content/dam/family/goods/1950960.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 120.6874159999991,
+      "totalMs": 122.47508299999943,
+      "bytes": 13900,
+      "sha256": "b73e6cdf143f395f4956249949fece001101bee4bc9c1c3fd0c5a64e1b3825f2",
+      "etag": "\"b73e6cdf143f395f4956249949fece001101bee4bc9c1c3fd0c5a64e1b3825f2\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "129d8383c9e82db9feb25b6ff3ba56ea",
+      "source": "https://www.family.co.jp/content/dam/family/goods/0254816.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 94.15674999999979,
+      "totalMs": 99.28045799999907,
+      "bytes": 16428,
+      "sha256": "1985e6daf6157a1b61331dfa9323a748feb48bd095a2e744ec0208c898341aa0",
+      "etag": "\"1985e6daf6157a1b61331dfa9323a748feb48bd095a2e744ec0208c898341aa0\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "129d8383c9e82db9feb25b6ff3ba56ea",
+      "source": "https://www.family.co.jp/content/dam/family/goods/0254816.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 102.6394160000006,
+      "totalMs": 108.18470799999957,
+      "bytes": 16428,
+      "sha256": "1985e6daf6157a1b61331dfa9323a748feb48bd095a2e744ec0208c898341aa0",
+      "etag": "\"1985e6daf6157a1b61331dfa9323a748feb48bd095a2e744ec0208c898341aa0\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "129d8383c9e82db9feb25b6ff3ba56ea",
+      "source": "https://www.family.co.jp/content/dam/family/goods/0254816.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 97.27083300000139,
+      "totalMs": 99.62595800000074,
+      "bytes": 16428,
+      "sha256": "1985e6daf6157a1b61331dfa9323a748feb48bd095a2e744ec0208c898341aa0",
+      "etag": "\"1985e6daf6157a1b61331dfa9323a748feb48bd095a2e744ec0208c898341aa0\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "FamilyMart",
+      "id": "129d8383c9e82db9feb25b6ff3ba56ea",
+      "source": "https://www.family.co.jp/content/dam/family/goods/0254816.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 97.28525000000054,
+      "totalMs": 101.78587500000091,
+      "bytes": 16428,
+      "sha256": "1985e6daf6157a1b61331dfa9323a748feb48bd095a2e744ec0208c898341aa0",
+      "etag": "\"1985e6daf6157a1b61331dfa9323a748feb48bd095a2e744ec0208c898341aa0\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "12b10991d99f4df4544abcede223c088",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l824213.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 126.49866599999982,
+      "totalMs": 163.06883300000052,
+      "bytes": 47884,
+      "sha256": "ad8b999e6e496aecc8c6c2a259f99ff162b1dd10ce870f6769c13aad2e01e267",
+      "etag": "\"ad8b999e6e496aecc8c6c2a259f99ff162b1dd10ce870f6769c13aad2e01e267\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "12b10991d99f4df4544abcede223c088",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l824213.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 259.5183329999991,
+      "totalMs": 330.0705829999995,
+      "bytes": 47884,
+      "sha256": "ad8b999e6e496aecc8c6c2a259f99ff162b1dd10ce870f6769c13aad2e01e267",
+      "etag": "\"ad8b999e6e496aecc8c6c2a259f99ff162b1dd10ce870f6769c13aad2e01e267\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "12b10991d99f4df4544abcede223c088",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l824213.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 92.1551669999996,
+      "totalMs": 109.74883299999938,
+      "bytes": 47884,
+      "sha256": "ad8b999e6e496aecc8c6c2a259f99ff162b1dd10ce870f6769c13aad2e01e267",
+      "etag": "\"ad8b999e6e496aecc8c6c2a259f99ff162b1dd10ce870f6769c13aad2e01e267\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "12b10991d99f4df4544abcede223c088",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l824213.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 114.55824999999997,
+      "totalMs": 131.31841700000103,
+      "bytes": 47884,
+      "sha256": "ad8b999e6e496aecc8c6c2a259f99ff162b1dd10ce870f6769c13aad2e01e267",
+      "etag": "\"ad8b999e6e496aecc8c6c2a259f99ff162b1dd10ce870f6769c13aad2e01e267\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "23d6ee06d4df42c1d049a911eef59854",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l821736.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 244.7183750000015,
+      "totalMs": 325.91495900000035,
+      "bytes": 15126,
+      "sha256": "a40433cf55c2e9f62e107917435702c90aa340e58be9b352fa3e3b6d39e963d7",
+      "etag": "\"a40433cf55c2e9f62e107917435702c90aa340e58be9b352fa3e3b6d39e963d7\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "23d6ee06d4df42c1d049a911eef59854",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l821736.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 837.0072079999993,
+      "totalMs": 1050.4815829999998,
+      "bytes": 15126,
+      "sha256": "a40433cf55c2e9f62e107917435702c90aa340e58be9b352fa3e3b6d39e963d7",
+      "etag": "\"a40433cf55c2e9f62e107917435702c90aa340e58be9b352fa3e3b6d39e963d7\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "23d6ee06d4df42c1d049a911eef59854",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l821736.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 82.86579199999977,
+      "totalMs": 85.47037499999988,
+      "bytes": 15126,
+      "sha256": "a40433cf55c2e9f62e107917435702c90aa340e58be9b352fa3e3b6d39e963d7",
+      "etag": "\"a40433cf55c2e9f62e107917435702c90aa340e58be9b352fa3e3b6d39e963d7\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "23d6ee06d4df42c1d049a911eef59854",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l821736.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 84.62229199999882,
+      "totalMs": 86.28337499999894,
+      "bytes": 15126,
+      "sha256": "a40433cf55c2e9f62e107917435702c90aa340e58be9b352fa3e3b6d39e963d7",
+      "etag": "\"a40433cf55c2e9f62e107917435702c90aa340e58be9b352fa3e3b6d39e963d7\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "23f9cf388f49a06e7e5813ed2b50f181",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l822955.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 857.9252919999991,
+      "totalMs": 1082.4422919999997,
+      "bytes": 38424,
+      "sha256": "e416e629c3a8e71f43bb2867aa4bb2f622b2a2c43a6ea8d3d5c0e192fea06e48",
+      "etag": "\"e416e629c3a8e71f43bb2867aa4bb2f622b2a2c43a6ea8d3d5c0e192fea06e48\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "23f9cf388f49a06e7e5813ed2b50f181",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l822955.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 325.6245,
+      "totalMs": 474.16658300000057,
+      "bytes": 38424,
+      "sha256": "e416e629c3a8e71f43bb2867aa4bb2f622b2a2c43a6ea8d3d5c0e192fea06e48",
+      "etag": "\"e416e629c3a8e71f43bb2867aa4bb2f622b2a2c43a6ea8d3d5c0e192fea06e48\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "23f9cf388f49a06e7e5813ed2b50f181",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l822955.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 296.73000000000013,
+      "totalMs": 300.74020800000056,
+      "bytes": 38424,
+      "sha256": "e416e629c3a8e71f43bb2867aa4bb2f622b2a2c43a6ea8d3d5c0e192fea06e48",
+      "etag": "\"e416e629c3a8e71f43bb2867aa4bb2f622b2a2c43a6ea8d3d5c0e192fea06e48\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "23f9cf388f49a06e7e5813ed2b50f181",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l822955.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 96.64800000000007,
+      "totalMs": 98.60100000000038,
+      "bytes": 38424,
+      "sha256": "e416e629c3a8e71f43bb2867aa4bb2f622b2a2c43a6ea8d3d5c0e192fea06e48",
+      "etag": "\"e416e629c3a8e71f43bb2867aa4bb2f622b2a2c43a6ea8d3d5c0e192fea06e48\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "2768b064e17ce10601e145dba60a3a0c",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l820899.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 364.6693340000002,
+      "totalMs": 366.2292919999999,
+      "bytes": 27918,
+      "sha256": "db34193147015c89ff49eeedd76e4096835a1b09d61ddc5e6087875f1a7f4d72",
+      "etag": "\"db34193147015c89ff49eeedd76e4096835a1b09d61ddc5e6087875f1a7f4d72\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "2768b064e17ce10601e145dba60a3a0c",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l820899.jpg",
+      "width": 480,
+      "repeat": false,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 828.6508329999994,
+      "totalMs": 1051.4105419999992,
+      "bytes": 27918,
+      "sha256": "db34193147015c89ff49eeedd76e4096835a1b09d61ddc5e6087875f1a7f4d72",
+      "etag": "\"db34193147015c89ff49eeedd76e4096835a1b09d61ddc5e6087875f1a7f4d72\"",
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "2768b064e17ce10601e145dba60a3a0c",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l820899.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "candidate",
+      "status": 200,
+      "headersMs": 83.01691700000013,
+      "totalMs": 85.37541699999984,
+      "bytes": 27918,
+      "sha256": "db34193147015c89ff49eeedd76e4096835a1b09d61ddc5e6087875f1a7f4d72",
+      "etag": "\"db34193147015c89ff49eeedd76e4096835a1b09d61ddc5e6087875f1a7f4d72\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "store": "Lawson",
+      "id": "2768b064e17ce10601e145dba60a3a0c",
+      "source": "https://www.lawson.co.jp/recommend/original/detail/img/l820899.jpg",
+      "width": 480,
+      "repeat": true,
+      "arm": "control",
+      "status": 200,
+      "headersMs": 90.94349999999984,
+      "totalMs": 93.10629199999987,
+      "bytes": 27918,
+      "sha256": "db34193147015c89ff49eeedd76e4096835a1b09d61ddc5e6087875f1a7f4d72",
+      "etag": "\"db34193147015c89ff49eeedd76e4096835a1b09d61ddc5e6087875f1a7f4d72\"",
+      "cache": "HIT",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    }
+  ]
+}

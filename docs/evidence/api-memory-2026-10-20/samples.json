@@ -1,0 +1,357 @@
+{
+  "plan": {
+    "mode": "isolated memory comparison; source function unchanged",
+    "region": "ap-northeast-1",
+    "runtime": "nodejs22.x",
+    "architecture": "arm64",
+    "memoryOrderMiB": [
+      256,
+      512,
+      1024,
+      1024,
+      512,
+      256,
+      512,
+      256,
+      1024
+    ],
+    "coldAttempts": 9,
+    "immediateRepeats": 9,
+    "totalInvocations": 18,
+    "timeoutSeconds": 10,
+    "reservedConcurrency": 1,
+    "reuseReleasedArtifact": true,
+    "reuseExistingRoleAndEnvironment": true,
+    "publicEndpoint": false,
+    "schedules": false,
+    "provisionedConcurrency": false,
+    "sourceFunctionUpdates": false,
+    "newIamRolesOrPolicies": false,
+    "dataOperations": "GET /products?limit=20&status=allWithoutSoon only",
+    "cleanup": "delete only this run's temporary function and log group",
+    "limits": "Billed GB-seconds will be recorded, not treated as actual account billing. Backend state remains shared/uncontrolled."
+  },
+  "startedUtc": "2026-10-20T12:44:23.930577+00:00",
+  "samples": [
+    {
+      "round": 1,
+      "memoryMiB": 256,
+      "immediateRepeat": false,
+      "observedCold": true,
+      "report": {
+        "Duration": 1446.61,
+        "Billed Duration": 1865.0,
+        "Memory Size": 256.0,
+        "Max Memory Used": 128.0,
+        "Init Duration": 417.75
+      },
+      "clientWithCliMs": 2814.9679170000004,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.46625
+    },
+    {
+      "round": 1,
+      "memoryMiB": 256,
+      "immediateRepeat": true,
+      "observedCold": false,
+      "report": {
+        "Duration": 92.07,
+        "Billed Duration": 93.0,
+        "Memory Size": 256.0,
+        "Max Memory Used": 131.0
+      },
+      "clientWithCliMs": 968.3844999999991,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.02325
+    },
+    {
+      "round": 2,
+      "memoryMiB": 512,
+      "immediateRepeat": false,
+      "observedCold": true,
+      "report": {
+        "Duration": 959.29,
+        "Billed Duration": 1463.0,
+        "Memory Size": 512.0,
+        "Max Memory Used": 136.0,
+        "Init Duration": 503.3
+      },
+      "clientWithCliMs": 2472.649040999997,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.7315
+    },
+    {
+      "round": 2,
+      "memoryMiB": 512,
+      "immediateRepeat": true,
+      "observedCold": false,
+      "report": {
+        "Duration": 100.2,
+        "Billed Duration": 101.0,
+        "Memory Size": 512.0,
+        "Max Memory Used": 140.0
+      },
+      "clientWithCliMs": 924.956415999997,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.0505
+    },
+    {
+      "round": 3,
+      "memoryMiB": 1024,
+      "immediateRepeat": false,
+      "observedCold": true,
+      "report": {
+        "Duration": 452.85,
+        "Billed Duration": 835.0,
+        "Memory Size": 1024.0,
+        "Max Memory Used": 138.0,
+        "Init Duration": 381.63
+      },
+      "clientWithCliMs": 1738.482042000001,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.835
+    },
+    {
+      "round": 3,
+      "memoryMiB": 1024,
+      "immediateRepeat": true,
+      "observedCold": false,
+      "report": {
+        "Duration": 40.15,
+        "Billed Duration": 41.0,
+        "Memory Size": 1024.0,
+        "Max Memory Used": 139.0
+      },
+      "clientWithCliMs": 868.2022499999995,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.041
+    },
+    {
+      "round": 4,
+      "memoryMiB": 1024,
+      "immediateRepeat": false,
+      "observedCold": true,
+      "report": {
+        "Duration": 371.32,
+        "Billed Duration": 723.0,
+        "Memory Size": 1024.0,
+        "Max Memory Used": 133.0,
+        "Init Duration": 351.55
+      },
+      "clientWithCliMs": 1656.6395840000005,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.723
+    },
+    {
+      "round": 4,
+      "memoryMiB": 1024,
+      "immediateRepeat": true,
+      "observedCold": false,
+      "report": {
+        "Duration": 44.33,
+        "Billed Duration": 45.0,
+        "Memory Size": 1024.0,
+        "Max Memory Used": 136.0
+      },
+      "clientWithCliMs": 921.7795829999957,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.045
+    },
+    {
+      "round": 5,
+      "memoryMiB": 512,
+      "immediateRepeat": false,
+      "observedCold": true,
+      "report": {
+        "Duration": 776.59,
+        "Billed Duration": 1167.0,
+        "Memory Size": 512.0,
+        "Max Memory Used": 133.0,
+        "Init Duration": 390.04
+      },
+      "clientWithCliMs": 2042.3213750000002,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.5835
+    },
+    {
+      "round": 5,
+      "memoryMiB": 512,
+      "immediateRepeat": true,
+      "observedCold": false,
+      "report": {
+        "Duration": 217.21,
+        "Billed Duration": 218.0,
+        "Memory Size": 512.0,
+        "Max Memory Used": 139.0
+      },
+      "clientWithCliMs": 1038.1037920000012,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.109
+    },
+    {
+      "round": 6,
+      "memoryMiB": 256,
+      "immediateRepeat": false,
+      "observedCold": true,
+      "report": {
+        "Duration": 1472.86,
+        "Billed Duration": 1872.0,
+        "Memory Size": 256.0,
+        "Max Memory Used": 128.0,
+        "Init Duration": 399.12
+      },
+      "clientWithCliMs": 2885.300958000002,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.468
+    },
+    {
+      "round": 6,
+      "memoryMiB": 256,
+      "immediateRepeat": true,
+      "observedCold": false,
+      "report": {
+        "Duration": 171.84,
+        "Billed Duration": 172.0,
+        "Memory Size": 256.0,
+        "Max Memory Used": 134.0
+      },
+      "clientWithCliMs": 1228.8417910000007,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.043
+    },
+    {
+      "round": 7,
+      "memoryMiB": 512,
+      "immediateRepeat": false,
+      "observedCold": true,
+      "report": {
+        "Duration": 776.53,
+        "Billed Duration": 1155.0,
+        "Memory Size": 512.0,
+        "Max Memory Used": 136.0,
+        "Init Duration": 378.08
+      },
+      "clientWithCliMs": 3403.0924170000035,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.5775
+    },
+    {
+      "round": 7,
+      "memoryMiB": 512,
+      "immediateRepeat": true,
+      "observedCold": false,
+      "report": {
+        "Duration": 201.48,
+        "Billed Duration": 202.0,
+        "Memory Size": 512.0,
+        "Max Memory Used": 138.0
+      },
+      "clientWithCliMs": 1227.3602080000003,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.101
+    },
+    {
+      "round": 8,
+      "memoryMiB": 256,
+      "immediateRepeat": false,
+      "observedCold": true,
+      "report": {
+        "Duration": 1524.07,
+        "Billed Duration": 2057.0,
+        "Memory Size": 256.0,
+        "Max Memory Used": 128.0,
+        "Init Duration": 532.69
+      },
+      "clientWithCliMs": 2954.870917000001,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.51425
+    },
+    {
+      "round": 8,
+      "memoryMiB": 256,
+      "immediateRepeat": true,
+      "observedCold": false,
+      "report": {
+        "Duration": 104.58,
+        "Billed Duration": 105.0,
+        "Memory Size": 256.0,
+        "Max Memory Used": 131.0
+      },
+      "clientWithCliMs": 988.0946669999986,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.02625
+    },
+    {
+      "round": 9,
+      "memoryMiB": 1024,
+      "immediateRepeat": false,
+      "observedCold": true,
+      "report": {
+        "Duration": 435.78,
+        "Billed Duration": 831.0,
+        "Memory Size": 1024.0,
+        "Max Memory Used": 136.0,
+        "Init Duration": 394.98
+      },
+      "clientWithCliMs": 1888.5765840000063,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.831
+    },
+    {
+      "round": 9,
+      "memoryMiB": 1024,
+      "immediateRepeat": true,
+      "observedCold": false,
+      "report": {
+        "Duration": 34.35,
+        "Billed Duration": 35.0,
+        "Memory Size": 1024.0,
+        "Max Memory Used": 138.0
+      },
+      "clientWithCliMs": 886.4554170000076,
+      "status": 200,
+      "productCount": 20,
+      "sameBody": true,
+      "billedGbSeconds": 0.035
+    }
+  ],
+  "cleanup": {
+    "functionDeleted": true,
+    "logGroupDeleted": true
+  },
+  "method": "Maintainer-approved isolated copy of released ZIP (digest verified), existing role/environment, Tokyo Node22 arm64, serial configuration-reset trials. Lambda REPORT timings; clientWithCliMs includes CLI/login/network overhead and is not API latency. Source Mongo/SSM state shared/uncontrolled; three cold samples and three immediate repeats per setting, not a steady-state or browser test."
+}

@@ -1,0 +1,245 @@
+[
+  {
+    "capture": "catalog-1",
+    "requests": [
+      {
+        "type": "Document",
+        "status": 200,
+        "startMs": 0.0,
+        "completeMs": 1461.59,
+        "finalHeadersAfterRequestMs": 1299.503,
+        "firstHeadersAfterRequestMs": 139.162,
+        "serverTiming": "catalog;dur=116.8, handler;dur=429.1",
+        "edgeCache": "MISS",
+        "age": "0"
+      },
+      {
+        "type": "Image",
+        "status": 200,
+        "startMs": 1380.636,
+        "completeMs": 2568.315,
+        "finalHeadersAfterRequestMs": 763.051,
+        "firstHeadersAfterRequestMs": 759.888,
+        "serverTiming": "queue;dur=0.1, download;dur=37.1, process;dur=180.8, handler;dur=365.3",
+        "edgeCache": "MISS",
+        "age": "0"
+      }
+    ]
+  },
+  {
+    "capture": "catalog-2",
+    "requests": [
+      {
+        "type": "Document",
+        "status": 200,
+        "startMs": 0.0,
+        "completeMs": 842.1,
+        "finalHeadersAfterRequestMs": 518.721,
+        "firstHeadersAfterRequestMs": 159.517,
+        "serverTiming": "catalog;dur=90.6, handler;dur=143.5",
+        "edgeCache": "MISS",
+        "age": "0"
+      },
+      {
+        "type": "Image",
+        "status": 200,
+        "startMs": 555.88,
+        "completeMs": 1341.564,
+        "finalHeadersAfterRequestMs": 162.81,
+        "firstHeadersAfterRequestMs": 27.228,
+        "serverTiming": "queue;dur=0.1, download;dur=37.1, process;dur=180.8, handler;dur=365.3",
+        "edgeCache": "HIT",
+        "age": "59"
+      }
+    ]
+  },
+  {
+    "capture": "catalog-3",
+    "requests": [
+      {
+        "type": "Document",
+        "status": 200,
+        "startMs": 0.0,
+        "completeMs": 490.596,
+        "finalHeadersAfterRequestMs": 403.996,
+        "firstHeadersAfterRequestMs": 144.403,
+        "serverTiming": "catalog;dur=69.3, handler;dur=95.9",
+        "edgeCache": "MISS",
+        "age": "0"
+      },
+      {
+        "type": "Image",
+        "status": 200,
+        "startMs": 431.882,
+        "completeMs": 1228.517,
+        "finalHeadersAfterRequestMs": 165.124,
+        "firstHeadersAfterRequestMs": 27.452,
+        "serverTiming": "queue;dur=0.1, download;dur=37.1, process;dur=180.8, handler;dur=365.3",
+        "edgeCache": "HIT",
+        "age": "114"
+      }
+    ]
+  },
+  {
+    "capture": "heavy-detail-1",
+    "requests": [
+      {
+        "type": "Document",
+        "status": 200,
+        "startMs": 0.0,
+        "completeMs": 811.809,
+        "finalHeadersAfterRequestMs": 753.303,
+        "firstHeadersAfterRequestMs": 243.224,
+        "serverTiming": "handler;dur=372.8",
+        "edgeCache": "MISS",
+        "age": "0"
+      },
+      {
+        "type": "Image",
+        "status": 200,
+        "startMs": 804.26,
+        "completeMs": 1534.531,
+        "finalHeadersAfterRequestMs": 162.054,
+        "firstHeadersAfterRequestMs": 34.925,
+        "serverTiming": "queue;dur=0.1, download;dur=37.1, process;dur=180.8, handler;dur=365.3",
+        "edgeCache": "HIT",
+        "age": "20"
+      }
+    ]
+  },
+  {
+    "capture": "heavy-detail-2",
+    "requests": [
+      {
+        "type": "Document",
+        "status": 200,
+        "startMs": 0.0,
+        "completeMs": 430.258,
+        "finalHeadersAfterRequestMs": 364.989,
+        "firstHeadersAfterRequestMs": 155.179,
+        "serverTiming": "handler;dur=50.0",
+        "edgeCache": "MISS",
+        "age": "0"
+      },
+      {
+        "type": "Image",
+        "status": 200,
+        "startMs": 407.127,
+        "completeMs": 1138.839,
+        "finalHeadersAfterRequestMs": 173.18,
+        "firstHeadersAfterRequestMs": 30.563,
+        "serverTiming": "queue;dur=0.1, download;dur=37.1, process;dur=180.8, handler;dur=365.3",
+        "edgeCache": "HIT",
+        "age": "78"
+      }
+    ]
+  },
+  {
+    "capture": "heavy-detail-3",
+    "requests": [
+      {
+        "type": "Document",
+        "status": 200,
+        "startMs": 0.0,
+        "completeMs": 669.072,
+        "finalHeadersAfterRequestMs": 641.022,
+        "firstHeadersAfterRequestMs": 164.824,
+        "serverTiming": "handler;dur=293.1",
+        "edgeCache": "MISS",
+        "age": "0"
+      },
+      {
+        "type": "Image",
+        "status": 200,
+        "startMs": 684.494,
+        "completeMs": 1412.9,
+        "finalHeadersAfterRequestMs": 155.269,
+        "firstHeadersAfterRequestMs": 21.847,
+        "serverTiming": "queue;dur=0.1, download;dur=37.1, process;dur=180.8, handler;dur=365.3",
+        "edgeCache": "HIT",
+        "age": "135"
+      }
+    ]
+  },
+  {
+    "capture": "light-detail-1",
+    "requests": [
+      {
+        "type": "Document",
+        "status": 200,
+        "startMs": 0.0,
+        "completeMs": 569.69,
+        "finalHeadersAfterRequestMs": 541.018,
+        "firstHeadersAfterRequestMs": 344.004,
+        "serverTiming": "handler;dur=72.0",
+        "edgeCache": "MISS",
+        "age": "0"
+      },
+      {
+        "type": "Image",
+        "status": 200,
+        "startMs": 581.09,
+        "completeMs": 1256.82,
+        "finalHeadersAfterRequestMs": 209.679,
+        "firstHeadersAfterRequestMs": 154.192,
+        "serverTiming": "queue;dur=0.0, download;dur=9.9, process;dur=31.7, handler;dur=42.4",
+        "edgeCache": "MISS",
+        "age": "0"
+      }
+    ]
+  },
+  {
+    "capture": "light-detail-2",
+    "requests": [
+      {
+        "type": "Document",
+        "status": 200,
+        "startMs": 0.0,
+        "completeMs": 403.1,
+        "finalHeadersAfterRequestMs": 372.964,
+        "firstHeadersAfterRequestMs": 188.856,
+        "serverTiming": "handler;dur=47.9",
+        "edgeCache": "MISS",
+        "age": "0"
+      },
+      {
+        "type": "Image",
+        "status": 200,
+        "startMs": 403.394,
+        "completeMs": 1075.351,
+        "finalHeadersAfterRequestMs": 162.166,
+        "firstHeadersAfterRequestMs": 27.503,
+        "serverTiming": "queue;dur=0.0, download;dur=9.9, process;dur=31.7, handler;dur=42.4",
+        "edgeCache": "HIT",
+        "age": "57"
+      }
+    ]
+  },
+  {
+    "capture": "light-detail-3",
+    "requests": [
+      {
+        "type": "Document",
+        "status": 200,
+        "startMs": 0.0,
+        "completeMs": 417.697,
+        "finalHeadersAfterRequestMs": 379.56,
+        "firstHeadersAfterRequestMs": 156.829,
+        "serverTiming": "handler;dur=57.6",
+        "edgeCache": "MISS",
+        "age": "0"
+      },
+      {
+        "type": "Image",
+        "status": 200,
+        "startMs": 414.472,
+        "completeMs": 1088.288,
+        "finalHeadersAfterRequestMs": 172.348,
+        "firstHeadersAfterRequestMs": 30.812,
+        "serverTiming": "queue;dur=0.0, download;dur=9.9, process;dur=31.7, handler;dur=42.4",
+        "edgeCache": "HIT",
+        "age": "113"
+      }
+    ]
+  }
+]

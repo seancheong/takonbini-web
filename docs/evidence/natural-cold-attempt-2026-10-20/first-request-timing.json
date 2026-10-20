@@ -1,0 +1,62 @@
+[
+  {
+    "capture": "catalog-1",
+    "type": "Document",
+    "status": 200,
+    "edgeCache": "MISS",
+    "firstHeadersAfterRequestMs": 228.457,
+    "finalHeadersAfterRequestMs": 612.808,
+    "contentLength": null,
+    "serverTiming": null
+  },
+  {
+    "capture": "catalog-1",
+    "type": "Image",
+    "status": 200,
+    "edgeCache": "MISS",
+    "firstHeadersAfterRequestMs": 251.541,
+    "finalHeadersAfterRequestMs": 282.52,
+    "contentLength": "34390",
+    "serverTiming": null
+  },
+  {
+    "capture": "heavy-detail-1",
+    "type": "Document",
+    "status": 200,
+    "edgeCache": "MISS",
+    "firstHeadersAfterRequestMs": 172.894,
+    "finalHeadersAfterRequestMs": 821.072,
+    "contentLength": null,
+    "serverTiming": null
+  },
+  {
+    "capture": "heavy-detail-1",
+    "type": "Image",
+    "status": 200,
+    "edgeCache": "HIT",
+    "firstHeadersAfterRequestMs": 29.61,
+    "finalHeadersAfterRequestMs": 166.562,
+    "contentLength": "34390",
+    "serverTiming": null
+  },
+  {
+    "capture": "light-detail-1",
+    "type": "Document",
+    "status": 200,
+    "edgeCache": "MISS",
+    "firstHeadersAfterRequestMs": 137.468,
+    "finalHeadersAfterRequestMs": 349.211,
+    "contentLength": null,
+    "serverTiming": null
+  },
+  {
+    "capture": "light-detail-1",
+    "type": "Image",
+    "status": 200,
+    "edgeCache": "MISS",
+    "firstHeadersAfterRequestMs": 170.041,
+    "finalHeadersAfterRequestMs": 220.65,
+    "contentLength": "39120",
+    "serverTiming": null
+  }
+]

@@ -1,0 +1,118 @@
+{
+  "method": "Read-only CloudWatch REPORT records from one second before to ten seconds after each first catalog capture. Timestamp-only association, no end-to-end request trace; identifiers omitted. Milliseconds and MiB.",
+  "cases": [
+    {
+      "case": "adopted-initial",
+      "captureUtc": "2026-10-20T07:19:28.931Z",
+      "LCP_ms": 2771.787,
+      "reportsInWindow": [
+        {
+          "endUtc": "2026-10-20T07:19:28.007000+00:00",
+          "Duration": 59.97,
+          "Billed Duration": 60.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 148.0
+        },
+        {
+          "endUtc": "2026-10-20T07:19:28.247000+00:00",
+          "Duration": 69.93,
+          "Billed Duration": 70.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 148.0
+        },
+        {
+          "endUtc": "2026-10-20T07:19:28.486000+00:00",
+          "Duration": 69.44,
+          "Billed Duration": 70.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 148.0
+        },
+        {
+          "endUtc": "2026-10-20T07:19:28.727000+00:00",
+          "Duration": 81.07,
+          "Billed Duration": 82.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 148.0
+        },
+        {
+          "endUtc": "2026-10-20T07:19:28.927000+00:00",
+          "Duration": 60.37,
+          "Billed Duration": 61.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 148.0
+        },
+        {
+          "endUtc": "2026-10-20T07:19:29.167000+00:00",
+          "Duration": 81.97,
+          "Billed Duration": 82.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 148.0
+        },
+        {
+          "endUtc": "2026-10-20T07:19:29.332000+00:00",
+          "Duration": 26.9,
+          "Billed Duration": 27.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 148.0
+        },
+        {
+          "endUtc": "2026-10-20T07:19:30.353000+00:00",
+          "Duration": 21.93,
+          "Billed Duration": 22.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 148.0
+        }
+      ]
+    },
+    {
+      "case": "lazy-image",
+      "captureUtc": "2026-10-20T10:14:50.453Z",
+      "LCP_ms": 3409.006,
+      "reportsInWindow": [
+        {
+          "endUtc": "2026-10-20T10:14:52.469000+00:00",
+          "Duration": 720.63,
+          "Billed Duration": 721.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 123.0
+        }
+      ]
+    },
+    {
+      "case": "native-image",
+      "captureUtc": "2026-10-20T10:32:27.210Z",
+      "LCP_ms": 3200.53,
+      "reportsInWindow": [
+        {
+          "endUtc": "2026-10-20T10:32:29.082000+00:00",
+          "Duration": 660.47,
+          "Billed Duration": 661.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 124.0
+        },
+        {
+          "endUtc": "2026-10-20T10:32:36.282000+00:00",
+          "Duration": 503.87,
+          "Billed Duration": 504.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 126.0
+        }
+      ]
+    },
+    {
+      "case": "streaming",
+      "captureUtc": "2026-10-20T11:22:49.965Z",
+      "LCP_ms": 4258.372,
+      "reportsInWindow": [
+        {
+          "endUtc": "2026-10-20T11:22:53.469000+00:00",
+          "Duration": 1534.4,
+          "Billed Duration": 2072.0,
+          "Memory Size": 256.0,
+          "Max Memory Used": 127.0,
+          "Init Duration": 537.51
+        }
+      ]
+    }
+  ]
+}

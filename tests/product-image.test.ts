@@ -300,9 +300,26 @@ describe("bounded product image delivery", () => {
 			(await Promise.all(requests)).every((r) => [502, 503].includes(r.status)),
 		).toBe(true);
 	});
+	it("serves a 768px candidate covering a 372px card at DPR 1.75", async () => {
+		const input = await jpeg();
+		vi.stubGlobal(
+			"fetch",
+			vi.fn().mockResolvedValue(new Response(new Uint8Array(input))),
+		);
+		const response = await serveProductImage(request("&w=768"));
+		expect(response.status).toBe(200);
+		const metadata = await sharp(
+			Buffer.from(await response.arrayBuffer()),
+		).metadata();
+		expect(metadata).toMatchObject({ width: 768, height: 512, format: "webp" });
+		const candidates = getProductImageSrcSet(source)
+			.split(", ")
+			.map((candidate) => Number(candidate.split(" ").at(-1)?.slice(0, -1)));
+		expect(candidates.find((width) => width >= 372 * 1.75)).toBe(768);
+	});
 	it("emits finite width candidates and the catalog breakpoint geometry", () => {
 		const srcset = getProductImageSrcSet(source);
-		expect(srcset.split(", ")).toHaveLength(6);
+		expect(srcset.split(", ")).toHaveLength(7);
 		expect(srcset).toContain("&w=640 640w");
 		expect(catalogImageSizes).toContain(
 			"(max-width: 600px) calc(100vw - 40px)",

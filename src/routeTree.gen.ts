@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as ApiImageRouteImport } from './routes/api.image'
 import { Route as ApiProductsRouteImport } from './routes/api.products'
 import { Route as ProductsIdRouteImport } from './routes/products.$id'
 import { Route as ApiProductsIdRouteImport } from './routes/api.products.$id'
@@ -24,11 +23,6 @@ const IndexRoute = IndexRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiImageRoute = ApiImageRouteImport.update({
-  id: '/api/image',
-  path: '/api/image',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiProductsRoute = ApiProductsRouteImport.update({
@@ -50,7 +44,6 @@ const ApiProductsIdRoute = ApiProductsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/api/image': typeof ApiImageRoute
   '/api/products': typeof ApiProductsRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
   '/api/products/$id': typeof ApiProductsIdRoute
@@ -58,7 +51,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/api/image': typeof ApiImageRoute
   '/api/products': typeof ApiProductsRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
   '/api/products/$id': typeof ApiProductsIdRoute
@@ -67,7 +59,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/api/image': typeof ApiImageRoute
   '/api/products': typeof ApiProductsRouteWithChildren
   '/products/$id': typeof ProductsIdRoute
   '/api/products/$id': typeof ApiProductsIdRoute
@@ -77,7 +68,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/sitemap.xml'
-    | '/api/image'
     | '/api/products'
     | '/products/$id'
     | '/api/products/$id'
@@ -85,7 +75,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/sitemap.xml'
-    | '/api/image'
     | '/api/products'
     | '/products/$id'
     | '/api/products/$id'
@@ -93,7 +82,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/sitemap.xml'
-    | '/api/image'
     | '/api/products'
     | '/products/$id'
     | '/api/products/$id'
@@ -102,7 +90,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  ApiImageRoute: typeof ApiImageRoute
   ApiProductsRoute: typeof ApiProductsRouteWithChildren
   ProductsIdRoute: typeof ProductsIdRoute
 }
@@ -121,13 +108,6 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/image': {
-      id: '/api/image'
-      path: '/api/image'
-      fullPath: '/api/image'
-      preLoaderRoute: typeof ApiImageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/products': {
@@ -169,7 +149,6 @@ const ApiProductsRouteWithChildren = ApiProductsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  ApiImageRoute: ApiImageRoute,
   ApiProductsRoute: ApiProductsRouteWithChildren,
   ProductsIdRoute: ProductsIdRoute,
 }

@@ -1,0 +1,345 @@
+{
+  "method": "Six alternating-order pairs per route, immutable hosts, sequential HTTP GETs; uncontrolled network/upstream/instance state; not an isolated production causal benchmark",
+  "hosts": {
+    "control": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app",
+    "candidate": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app"
+  },
+  "samples": [
+    {
+      "run": 1,
+      "route": "catalog",
+      "arm": "control",
+      "headersMs": 2728.351958,
+      "totalMs": 2958.341667,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 1,
+      "route": "catalog",
+      "arm": "candidate",
+      "headersMs": 1648.7385829999996,
+      "totalMs": 1780.9618750000004,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 1,
+      "route": "detail",
+      "arm": "control",
+      "headersMs": 681.8442499999993,
+      "totalMs": 687.7403329999999,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 1,
+      "route": "detail",
+      "arm": "candidate",
+      "headersMs": 378.3059170000005,
+      "totalMs": 389.94224999999983,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 2,
+      "route": "catalog",
+      "arm": "candidate",
+      "headersMs": 310.1326250000005,
+      "totalMs": 416.6011250000006,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 2,
+      "route": "catalog",
+      "arm": "control",
+      "headersMs": 638.9437500000001,
+      "totalMs": 668.374666,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 2,
+      "route": "detail",
+      "arm": "candidate",
+      "headersMs": 347.88370899999956,
+      "totalMs": 350.8436249999995,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 2,
+      "route": "detail",
+      "arm": "control",
+      "headersMs": 660.9503330000006,
+      "totalMs": 661.4811249999999,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 3,
+      "route": "catalog",
+      "arm": "control",
+      "headersMs": 548.7745420000003,
+      "totalMs": 793.083459,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 3,
+      "route": "catalog",
+      "arm": "candidate",
+      "headersMs": 292.67704199999935,
+      "totalMs": 408.39925000000045,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 3,
+      "route": "detail",
+      "arm": "control",
+      "headersMs": 532.3658330000001,
+      "totalMs": 539.6902080000015,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 3,
+      "route": "detail",
+      "arm": "candidate",
+      "headersMs": 328.13670799999886,
+      "totalMs": 329.0941669999992,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 4,
+      "route": "catalog",
+      "arm": "candidate",
+      "headersMs": 296.7129589999988,
+      "totalMs": 393.22812500000026,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 4,
+      "route": "catalog",
+      "arm": "control",
+      "headersMs": 692.9244999999984,
+      "totalMs": 920.9810839999992,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 4,
+      "route": "detail",
+      "arm": "candidate",
+      "headersMs": 305.54587499999997,
+      "totalMs": 311.3310000000009,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 4,
+      "route": "detail",
+      "arm": "control",
+      "headersMs": 540.9123329999996,
+      "totalMs": 546.3422080000005,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 5,
+      "route": "catalog",
+      "arm": "control",
+      "headersMs": 607.3364999999989,
+      "totalMs": 851.1881249999984,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 5,
+      "route": "catalog",
+      "arm": "candidate",
+      "headersMs": 382.21633400000064,
+      "totalMs": 407.17279200000075,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 5,
+      "route": "detail",
+      "arm": "control",
+      "headersMs": 519.9697089999997,
+      "totalMs": 524.0308339999995,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 5,
+      "route": "detail",
+      "arm": "candidate",
+      "headersMs": 315.605584,
+      "totalMs": 317.94941700000123,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 6,
+      "route": "catalog",
+      "arm": "candidate",
+      "headersMs": 264.85324999999983,
+      "totalMs": 336.4463329999996,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 6,
+      "route": "catalog",
+      "arm": "control",
+      "headersMs": 638.2528750000009,
+      "totalMs": 663.2800000000003,
+      "status": 200,
+      "bytes": 91592,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    },
+    {
+      "run": 6,
+      "route": "detail",
+      "arm": "candidate",
+      "headersMs": 226.19437500000038,
+      "totalMs": 231.70283299999994,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 6,
+      "route": "detail",
+      "arm": "control",
+      "headersMs": 516.5260420000006,
+      "totalMs": 520.9842089999999,
+      "status": 200,
+      "bytes": 17297,
+      "cache": "MISS",
+      "region": [
+        "sin1",
+        "iad1"
+      ]
+    }
+  ]
+}

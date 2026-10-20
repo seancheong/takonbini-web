@@ -1,0 +1,82 @@
+{
+  "revision": "aa700e96427ef530798fcd30d1def4fd7b185c32",
+  "deployment": 7197279478,
+  "method": "Temporary request-scoped app and catalog-source timing on root SSR; five sequential read-only unthrottled requests. No successful URL manually fetched before first probe; function/upstream cold state unknown. Client total includes connection/network/platform overhead. Not release acceptance evidence.",
+  "samples": [
+    {
+      "run": 1,
+      "headersMs": 1233.517292,
+      "totalMs": 1301.094,
+      "serverTimingMs": {
+        "app": 512.2,
+        "catalog-source": 363.2
+      },
+      "status": 200,
+      "bytes": 91592,
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 2,
+      "headersMs": 637.3267920000001,
+      "totalMs": 895.6318329999999,
+      "serverTimingMs": {
+        "app": 99.6,
+        "catalog-source": 49.7
+      },
+      "status": 200,
+      "bytes": 91592,
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 3,
+      "headersMs": 621.4770000000001,
+      "totalMs": 756.0441250000002,
+      "serverTimingMs": {
+        "app": 97.0,
+        "catalog-source": 74.8
+      },
+      "status": 200,
+      "bytes": 91592,
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 4,
+      "headersMs": 547.9135830000001,
+      "totalMs": 687.805541,
+      "serverTimingMs": {
+        "app": 114.1,
+        "catalog-source": 81.6
+      },
+      "status": 200,
+      "bytes": 91592,
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    },
+    {
+      "run": 5,
+      "headersMs": 641.6460000000002,
+      "totalMs": 656.3726669999999,
+      "serverTimingMs": {
+        "app": 97.0,
+        "catalog-source": 76.1
+      },
+      "status": 200,
+      "bytes": 91592,
+      "region": [
+        "sin1",
+        "hnd1"
+      ]
+    }
+  ]
+}

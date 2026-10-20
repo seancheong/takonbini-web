@@ -1,0 +1,31 @@
+{
+  "samplesPerSetting": {
+    "cold": 3,
+    "immediateRepeat": 3
+  },
+  "totalInvocations": 18,
+  "totalBilledGbSeconds": 6.203999999999999,
+  "settings": [
+    {
+      "memoryMiB": 256,
+      "coldMedianInitPlusHandlerMs": 1871.98,
+      "repeatMedianHandlerMs": 104.58,
+      "coldMedianBilledGbSeconds": 0.468,
+      "repeatMedianBilledGbSeconds": 0.02625
+    },
+    {
+      "memoryMiB": 512,
+      "coldMedianInitPlusHandlerMs": 1166.63,
+      "repeatMedianHandlerMs": 201.48,
+      "coldMedianBilledGbSeconds": 0.5835,
+      "repeatMedianBilledGbSeconds": 0.101
+    },
+    {
+      "memoryMiB": 1024,
+      "coldMedianInitPlusHandlerMs": 830.76,
+      "repeatMedianHandlerMs": 40.15,
+      "coldMedianBilledGbSeconds": 0.831,
+      "repeatMedianBilledGbSeconds": 0.041
+    }
+  ]
+}

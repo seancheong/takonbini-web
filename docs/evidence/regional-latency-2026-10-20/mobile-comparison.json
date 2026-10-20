@@ -1,0 +1,843 @@
+{
+  "controlRevision": "3cbd3d0122b953c9b44a5b17db01270b8f36e150",
+  "candidateRevision": "577567964c6d7fcc31af6d893ab2a82498d2a07b",
+  "deployments": {
+    "control": 7188342388,
+    "candidate": 7188355717
+  },
+  "hosts": {
+    "control": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app",
+    "candidate": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app"
+  },
+  "method": "Lighthouse13.4.1 performance only, sequential fresh browser profiles, alternating arm order by run, 412x823 DPR1.75 simulated150ms RTT/1638.4Kbps CPU4x, cache state observed not forced, all samples included",
+  "samples": [
+    {
+      "arm": "control",
+      "case": "catalog-heavy",
+      "run": 1,
+      "score": 86,
+      "LCP_ms": 3549.6855,
+      "observedLCP_ms": 3870,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 497313,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 116.176
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 2345.827
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 1388.805
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 18.837
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "MISS",
+          "diskCache": false,
+          "headersMs": 1035.445,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "control",
+      "case": "catalog-heavy",
+      "run": 2,
+      "score": 99,
+      "LCP_ms": 1742.692,
+      "observedLCP_ms": 1586,
+      "TBT_ms": 28,
+      "CLS": 0,
+      "transfer_bytes": 497367,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 152.371
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 1065.917
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 93.007
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 274.406
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 88.516,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "control",
+      "case": "catalog-heavy",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1264.7505,
+      "observedLCP_ms": 1583,
+      "TBT_ms": 16.000000000000114,
+      "CLS": 0,
+      "transfer_bytes": 497378,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 288.09
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 1197.371
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 77.7
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 19.781
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 29.231,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "control",
+      "case": "detail-heavy",
+      "run": 1,
+      "score": 97,
+      "LCP_ms": 2142.687,
+      "observedLCP_ms": 1144,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275293,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 105.087
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 949.927
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 54.123
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 34.987
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 21.113,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "control",
+      "case": "detail-heavy",
+      "run": 2,
+      "score": 99,
+      "LCP_ms": 2190.1025,
+      "observedLCP_ms": 1096,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275352,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 245.988
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 712.551
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 119.283
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 17.803
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 117.256,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "control",
+      "case": "detail-heavy",
+      "run": 3,
+      "score": 98,
+      "LCP_ms": 2138.1549999999997,
+      "observedLCP_ms": 1099,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275328,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 129.6
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 881.049
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 53.93
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 34.305
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 41.416,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "control",
+      "case": "detail-light",
+      "run": 1,
+      "score": 96,
+      "LCP_ms": 2632.819,
+      "observedLCP_ms": 2271,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268617,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 99.729
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 1162.927
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 996.493
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 12.19
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "MISS",
+          "diskCache": false,
+          "headersMs": 766.71,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "control",
+      "case": "detail-light",
+      "run": 2,
+      "score": 97,
+      "LCP_ms": 2144.19,
+      "observedLCP_ms": 1074,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268669,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 202.712
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 773.336
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 26.055
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 72.022
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 25.249,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "control",
+      "case": "detail-light",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1237.162,
+      "observedLCP_ms": 980,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268655,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 87.454
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 802.689
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 59.701
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 30.206
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-hgsaoki0k-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 43.638,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "case": "catalog-heavy",
+      "run": 1,
+      "score": 98,
+      "LCP_ms": 2201.7515000000003,
+      "observedLCP_ms": 1886,
+      "TBT_ms": 16,
+      "CLS": 0,
+      "transfer_bytes": 497403,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 208.522
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 1081.582
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 366.839
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 228.797
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "MISS",
+          "diskCache": false,
+          "headersMs": 338.552,
+          "region": [
+            "sin1",
+            "hnd1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "case": "catalog-heavy",
+      "run": 2,
+      "score": 92,
+      "LCP_ms": 2729.961,
+      "observedLCP_ms": 2448,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 497382,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 88.433
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 449.154
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 28.714
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 1881.672
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 27.083,
+          "region": [
+            "sin1",
+            "hnd1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "case": "catalog-heavy",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1285.0035,
+      "observedLCP_ms": 783,
+      "TBT_ms": 2,
+      "CLS": 0,
+      "transfer_bytes": 497504,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 124.2510000038147
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 556.0499999961853
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 76.029
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 26.263
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 44.059,
+          "region": [
+            "sin1",
+            "hnd1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "case": "detail-heavy",
+      "run": 1,
+      "score": 100,
+      "LCP_ms": 1235.3265000000001,
+      "observedLCP_ms": 630,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275329,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 87.458
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 485.055
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 35.262
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 22.667
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 29.161,
+          "region": [
+            "sin1",
+            "hnd1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "case": "detail-heavy",
+      "run": 2,
+      "score": 98,
+      "LCP_ms": 1235.338,
+      "observedLCP_ms": 2723,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275379,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 2104.5549999961854
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 543.3900000038147
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 35.66
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 39.288
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 26.711,
+          "region": [
+            "sin1",
+            "hnd1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "case": "detail-heavy",
+      "run": 3,
+      "score": 98,
+      "LCP_ms": 2125.608,
+      "observedLCP_ms": 572,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275335,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 103.311
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 398.386
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 43.298
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 26.733
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 34.628,
+          "region": [
+            "sin1",
+            "hnd1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "case": "detail-light",
+      "run": 1,
+      "score": 94,
+      "LCP_ms": 2854.227,
+      "observedLCP_ms": 1379,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268596,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 122.899
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 194.8
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 348.207
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 712.884
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "MISS",
+          "diskCache": false,
+          "headersMs": 186.612,
+          "region": [
+            "sin1",
+            "hnd1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "case": "detail-light",
+      "run": 2,
+      "score": 100,
+      "LCP_ms": 1248.0505,
+      "observedLCP_ms": 398,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268634,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 79.898
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 242.728
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 36.7
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 38.993
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 22.238,
+          "region": [
+            "sin1",
+            "hnd1"
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "case": "detail-light",
+      "run": 3,
+      "score": 95,
+      "LCP_ms": 2729.6055,
+      "observedLCP_ms": 1354,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268637,
+      "observedLCPBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 81.539
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 194.801
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 44.66
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 1033.104
+        }
+      ],
+      "imageResponses": [
+        {
+          "url": "https://takonbini-ad0msa2cd-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 27.267,
+          "region": [
+            "sin1",
+            "hnd1"
+          ]
+        }
+      ]
+    }
+  ]
+}

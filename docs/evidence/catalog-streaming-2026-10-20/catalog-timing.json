@@ -1,0 +1,92 @@
+{
+  "method": "Sanitized original Chromium network timestamps relative to document request. Client receipt does not isolate server computation from buffering, scheduling or bandwidth contention.",
+  "samples": [
+    {
+      "run": 1,
+      "FCP_ms": 1741.731,
+      "LCP_ms": 4258.372,
+      "documentFirstDataMs": 1224.9329999976908,
+      "documentLastDataMs": 3519.531999998435,
+      "lcpBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 197.25
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 3311.57
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 740.465
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 9.087
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "FCP_ms": 1262.961,
+      "LCP_ms": 1797.45,
+      "documentFirstDataMs": 760.3040000030887,
+      "documentLastDataMs": 1254.1280000004917,
+      "lcpBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 266.9180000076294
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 895.6689999923706
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 599.967
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 34.896
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "FCP_ms": 982.716,
+      "LCP_ms": 1307.517,
+      "documentFirstDataMs": 468.55199999845354,
+      "documentLastDataMs": 732.9539999991539,
+      "lcpBreakdown": [
+        {
+          "subpart": "timeToFirstByte",
+          "label": "Time to first byte",
+          "duration": 249.5500000076294
+        },
+        {
+          "subpart": "resourceLoadDelay",
+          "label": "Resource load delay",
+          "duration": 370.3579999923706
+        },
+        {
+          "subpart": "resourceLoadDuration",
+          "label": "Resource load duration",
+          "duration": 664.399
+        },
+        {
+          "subpart": "elementRenderDelay",
+          "label": "Element render delay",
+          "duration": 23.21
+        }
+      ]
+    }
+  ]
+}

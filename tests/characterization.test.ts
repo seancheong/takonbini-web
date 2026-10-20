@@ -7,12 +7,12 @@ import { catalogSearch, productQueries } from "@/features/products/products";
 import type { ProductFilters } from "@/features/products/products.contracts";
 import { Category, Store } from "@/features/products/products.contracts";
 import { catalogProduct } from "@/features/products/testing/catalog-fixtures";
-import { Route as imageRoute } from "@/routes/api.image";
 import { Route as productsRoute } from "@/routes/api.products";
 import { Route as productRoute } from "@/routes/api.products.$id";
 import { Route as catalogRoute } from "@/routes/index";
 import { Route as detailRoute } from "@/routes/products.$id";
 import { Route as sitemapRoute } from "@/routes/sitemap[.]xml";
+import imageHandler from "@/server/product-image-handler";
 
 vi.mock("@tanstack/react-start", async (importOriginal) => ({
 	...(await importOriginal<typeof import("@tanstack/react-start")>()),
@@ -335,10 +335,7 @@ describe("image proxy", () => {
 	])("rejects a %s target", async (_label, url, expectedStatus) => {
 		const fetchMock = vi.fn();
 		vi.stubGlobal("fetch", fetchMock);
-		const response = await getHandler(imageRoute)({
-			request: request(url),
-			params: {},
-		});
+		const response = await imageHandler.fetch(request(url));
 		expect(response.status).toBe(expectedStatus);
 		expect(fetchMock).not.toHaveBeenCalled();
 	});
@@ -357,12 +354,11 @@ describe("image proxy", () => {
 		);
 		vi.stubGlobal("fetch", fetchMock);
 
-		const response = await getHandler(imageRoute)({
-			request: request(
+		const response = await imageHandler.fetch(
+			request(
 				"https://web.example.test/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fp.webp",
 			),
-			params: {},
-		});
+		);
 
 		expect(fetchMock).toHaveBeenCalledWith(
 			new URL("https://www.family.co.jp/p.webp"),
