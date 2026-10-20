@@ -1,0 +1,206 @@
+{
+  "revision": "75a7d6d476b43688f54dc96da478aabf89600ac4",
+  "deployment": 7188168928,
+  "host": "https://takonbini-knadnspwk-sean-cheong-zhen-xiongs-projects.vercel.app",
+  "method": "Lighthouse 13.4.1 performance only; sequential fresh profiles; 412x823 DPR1.75 simulated 150ms RTT/1638.4Kbps CPU4x; browser cold, CDN state observed; all samples included",
+  "samples": [
+    {
+      "case": "catalog-heavy",
+      "run": 1,
+      "score": 85,
+      "LCP_ms": 3229.3199999999997,
+      "TBT_ms": 3,
+      "CLS": 0,
+      "transfer_bytes": 497290,
+      "imageResponses": [
+        {
+          "url": "https://takonbini-knadnspwk-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "MISS",
+          "diskCache": false,
+          "headersMs": 1064.663,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "catalog-heavy",
+      "run": 2,
+      "score": 100,
+      "LCP_ms": 1446.2620000000002,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 497313,
+      "imageResponses": [
+        {
+          "url": "https://takonbini-knadnspwk-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 55.818,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "catalog-heavy",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1380.348,
+      "TBT_ms": 1,
+      "CLS": 0,
+      "transfer_bytes": 497423,
+      "imageResponses": [
+        {
+          "url": "https://takonbini-knadnspwk-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 32.718,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "detail-heavy",
+      "run": 1,
+      "score": 97,
+      "LCP_ms": 2146.153,
+      "TBT_ms": 1,
+      "CLS": 0,
+      "transfer_bytes": 275268,
+      "imageResponses": [
+        {
+          "url": "https://takonbini-knadnspwk-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 21.729,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "detail-heavy",
+      "run": 2,
+      "score": 97,
+      "LCP_ms": 2137.0805,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275300,
+      "imageResponses": [
+        {
+          "url": "https://takonbini-knadnspwk-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 28.705,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "detail-heavy",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1244.9275,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 275295,
+      "imageResponses": [
+        {
+          "url": "https://takonbini-knadnspwk-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fimg-afd.7api-01.dp1.sej.co.jp%2Fitem-image%2F044859%2F6876E36A7E95194EADDF3C11D4BCDBFD.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 32.335,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "detail-light",
+      "run": 1,
+      "score": 97,
+      "LCP_ms": 2520.285,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268620,
+      "imageResponses": [
+        {
+          "url": "https://takonbini-knadnspwk-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "MISS",
+          "diskCache": false,
+          "headersMs": 1068.679,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "detail-light",
+      "run": 2,
+      "score": 100,
+      "LCP_ms": 1260.6,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268629,
+      "imageResponses": [
+        {
+          "url": "https://takonbini-knadnspwk-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 26.377,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    },
+    {
+      "case": "detail-light",
+      "run": 3,
+      "score": 100,
+      "LCP_ms": 1241.475,
+      "TBT_ms": 0,
+      "CLS": 0,
+      "transfer_bytes": 268624,
+      "imageResponses": [
+        {
+          "url": "https://takonbini-knadnspwk-sean-cheong-zhen-xiongs-projects.vercel.app/api/image?url=https%3A%2F%2Fwww.family.co.jp%2Fcontent%2Fdam%2Ffamily%2Fgoods%2F4757122.jpg&w=960",
+          "status": 200,
+          "cache": "HIT",
+          "diskCache": false,
+          "headersMs": 60.458,
+          "region": [
+            "sin1",
+            "iad1"
+          ]
+        }
+      ]
+    }
+  ]
+}

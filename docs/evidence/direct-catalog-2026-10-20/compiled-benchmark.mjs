@@ -1,11 +1,11 @@
 import { performance } from 'node:perf_hooks';
 import { readFile, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
-const [root, output] = process.argv.slice(2);
+const [root, output, fixturePath] = process.argv.slice(2);
 process.env.VERCEL_URL = 'web.example.test';
 process.env.PRODUCTS_API_URL = 'https://api.example.test';
 process.env.PRODUCTS_API_KEY = 'fixture-only-secret';
-const product = JSON.parse(await readFile('/private/tmp/takonbini-heavy-product.json', 'utf8'));
+const product = JSON.parse(await readFile(fixturePath, 'utf8'));
 const app = (await import(pathToFileURL(root+'/.vercel/output/functions/__server.func/index.mjs'))).default;
 let calls=[];
 globalThis.fetch = async (input, init) => {

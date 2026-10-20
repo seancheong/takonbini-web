@@ -1,0 +1,60 @@
+{
+  "environment": "local macOS Node24 Sharp0.35.5; sequential direct retailer fetches, upstream cache unknown; not Vercel CPU/billing",
+  "rows": [
+    {
+      "run": 1,
+      "fetchMs": 436.75016600000004,
+      "processingMs": 102.930208,
+      "cpu": {
+        "user": 44473,
+        "system": 10864
+      },
+      "inputBytes": 622842,
+      "outputBytes": 26540
+    },
+    {
+      "run": 2,
+      "fetchMs": 65.46716700000002,
+      "processingMs": 51.86508299999991,
+      "cpu": {
+        "user": 37556,
+        "system": 3922
+      },
+      "inputBytes": 622842,
+      "outputBytes": 26540
+    },
+    {
+      "run": 3,
+      "fetchMs": 76.55212499999993,
+      "processingMs": 38.8460419999999,
+      "cpu": {
+        "user": 38343,
+        "system": 771
+      },
+      "inputBytes": 622842,
+      "outputBytes": 26540
+    },
+    {
+      "run": 4,
+      "fetchMs": 97.69641699999988,
+      "processingMs": 36.16270899999995,
+      "cpu": {
+        "user": 35728,
+        "system": 827
+      },
+      "inputBytes": 622842,
+      "outputBytes": 26540
+    },
+    {
+      "run": 5,
+      "fetchMs": 66.74629200000004,
+      "processingMs": 38.375957999999855,
+      "cpu": {
+        "user": 37021,
+        "system": 1341
+      },
+      "inputBytes": 622842,
+      "outputBytes": 26540
+    }
+  ]
+}
