@@ -1,0 +1,16 @@
+[
+  {
+    "theme": "light",
+    "checked": 115,
+    "failures": [],
+    "minimumRatio": 5.33,
+    "skipped": 50
+  },
+  {
+    "theme": "dark",
+    "checked": 1,
+    "failures": [],
+    "minimumRatio": 8.56,
+    "skipped": 164
+  }
+]
