@@ -152,7 +152,6 @@ export async function serveProductImage(request: Request) {
 		parameters.getAll("w").length > 1
 	)
 		return failure(400);
-	const queued = performance.now();
 	try {
 		await acquire();
 	} catch {
@@ -164,9 +163,7 @@ export async function serveProductImage(request: Request) {
 	if (request.signal.aborted) abort();
 	const timer = setTimeout(abort, 10000);
 	try {
-		const acquired = performance.now();
 		const upstream = await download(url, controller.signal);
-		const downloaded = performance.now();
 		let bytes = upstream.bytes;
 		let type = rasterType(bytes);
 		let etag = upstream.headers.get("etag");
@@ -199,7 +196,6 @@ export async function serveProductImage(request: Request) {
 			etag = `"${createHash("sha256").update(bytes).digest("hex")}"`;
 		}
 		const headers = new Headers({
-			"server-timing": `queue;dur=${(acquired - queued).toFixed(1)}, download;dur=${(downloaded - acquired).toFixed(1)}, process;dur=${(performance.now() - downloaded).toFixed(1)}`,
 			"content-type": type ?? "application/octet-stream",
 			"cache-control": cacheControl,
 			"content-length": String(bytes.length),

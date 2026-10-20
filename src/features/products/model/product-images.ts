@@ -1,4 +1,4 @@
-export const productImageWidths = [320, 480, 640, 960, 1280, 1600] as const;
+export const productImageWidths = [320, 480, 640, 768, 960, 1280, 1600] as const;
 
 export const getProxiedImageUrl = (url: string, width?: number) =>
 	`/api/image?url=${encodeURIComponent(url)}${width ? `&w=${width}` : ""}`;
