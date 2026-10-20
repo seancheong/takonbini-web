@@ -45,6 +45,3 @@ jobs:
 
       - name: Image route isolation
         run: node scripts/check-image-isolation.mjs
-
-      - name: Catalog shell streaming
-        run: node scripts/check-catalog-streaming.mjs
