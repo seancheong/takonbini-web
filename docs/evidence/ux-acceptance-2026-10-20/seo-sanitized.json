@@ -1,0 +1,97 @@
+{
+  "measuredAt": "2026-10-20T14:36:46.353507+00:00",
+  "baseUrl": "https://takonbini.com",
+  "method": "Read-only server-rendered HTML and XML; no hydration or ranking claim",
+  "pages": [
+    {
+      "path": "/?lang=en&search=tea",
+      "status": 200,
+      "canonical": [
+        "https://takonbini.com/"
+      ],
+      "ogUrl": [
+        "https://takonbini.com/"
+      ],
+      "expected": "https://takonbini.com/",
+      "pass": true
+    },
+    {
+      "path": "/products/sample-a?lang=en&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini.com/products/sample-a"
+      ],
+      "ogUrl": [
+        "https://takonbini.com/products/sample-a"
+      ],
+      "expected": "https://takonbini.com/products/sample-a",
+      "pass": true
+    },
+    {
+      "path": "/products/sample-a?lang=ja&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini.com/products/sample-a"
+      ],
+      "ogUrl": [
+        "https://takonbini.com/products/sample-a"
+      ],
+      "expected": "https://takonbini.com/products/sample-a",
+      "pass": true
+    },
+    {
+      "path": "/products/sample-a?lang=zh&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini.com/products/sample-a"
+      ],
+      "ogUrl": [
+        "https://takonbini.com/products/sample-a"
+      ],
+      "expected": "https://takonbini.com/products/sample-a",
+      "pass": true
+    },
+    {
+      "path": "/products/sample-b?lang=en&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini.com/products/sample-b"
+      ],
+      "ogUrl": [
+        "https://takonbini.com/products/sample-b"
+      ],
+      "expected": "https://takonbini.com/products/sample-b",
+      "pass": true
+    },
+    {
+      "path": "/products/sample-b?lang=ja&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini.com/products/sample-b"
+      ],
+      "ogUrl": [
+        "https://takonbini.com/products/sample-b"
+      ],
+      "expected": "https://takonbini.com/products/sample-b",
+      "pass": true
+    },
+    {
+      "path": "/products/sample-b?lang=zh&stores=Lawson",
+      "status": 200,
+      "canonical": [
+        "https://takonbini.com/products/sample-b"
+      ],
+      "ogUrl": [
+        "https://takonbini.com/products/sample-b"
+      ],
+      "expected": "https://takonbini.com/products/sample-b",
+      "pass": true
+    }
+  ],
+  "sitemap": {
+    "status": 200,
+    "urlCount": 5313,
+    "uniqueUrlCount": 5313,
+    "pass": true
+  }
+}
