@@ -6,17 +6,35 @@ import {
 	screen,
 	waitFor,
 } from "@testing-library/react";
-import { afterEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import ProductShareAction from "@/features/products/detail/ProductShareAction";
 import { getProductShareUrl } from "@/features/products/model/product-sharing";
 
 vi.mock("react-i18next", () => ({
 	useTranslation: () => ({ t: (key: string) => key }),
 }));
+beforeEach(() => {
+	Object.defineProperties(HTMLDialogElement.prototype, {
+		showModal: {
+			configurable: true,
+			value: function (this: HTMLDialogElement) {
+				this.setAttribute("open", "");
+				this.querySelector("button")?.focus();
+			},
+		},
+		close: {
+			configurable: true,
+			value: function (this: HTMLDialogElement) {
+				this.removeAttribute("open");
+			},
+		},
+	});
+});
 afterEach(() => {
 	cleanup();
 	vi.unstubAllGlobals();
 	vi.restoreAllMocks();
+	document.documentElement.style.overflow = "";
 });
 function choose(name: string) {
 	fireEvent.click(
@@ -165,7 +183,7 @@ it("offers encoded Facebook and X composers using the same clean link", () => {
 it("copies for Instagram with clear instructions instead of a fake composer", async () => {
 	const copy = apis();
 	render(<ProductShareAction productId="one" language="zh" title="商品" />);
-	choose("Instagram product.details.copyLink");
+	choose("Instagram · product.details.copyLink");
 	expect(
 		await screen.findByText("product.details.instagramCopied"),
 	).toBeTruthy();
@@ -192,18 +210,75 @@ it("closes sharing on Escape and returns focus to its trigger", () => {
 	);
 });
 
-it("dismisses sharing before the containing modal when the trigger keeps focus", () => {
+it("opens a labelled modal, focuses Close and restores the trigger when closed", () => {
 	apis();
+	document.documentElement.style.overflow = "hidden";
 	render(<ProductShareAction productId="one" language="en" title="Product" />);
 	const trigger = screen.getByRole("button", { name: "product.details.share" });
 	fireEvent.click(trigger);
-	const escapeKey = new KeyboardEvent("keydown", {
-		key: "Escape",
-		bubbles: true,
-		cancelable: true,
+	expect(
+		screen.getByRole("dialog", { name: "product.details.share" }),
+	).toBeTruthy();
+	const close = screen.getByRole("button", {
+		name: "product.details.closeShare",
 	});
-	fireEvent(trigger, escapeKey);
-	expect(escapeKey.defaultPrevented).toBe(true);
-	expect(trigger.getAttribute("aria-expanded")).toBe("false");
+	expect(document.activeElement).toBe(close);
+	fireEvent.click(close);
+	expect(screen.queryByRole("dialog")).toBeNull();
 	expect(document.activeElement).toBe(trigger);
+	expect(document.documentElement.style.overflow).toBe("hidden");
+});
+it("always exposes a selectable clean URL, even before copying", () => {
+	apis();
+	render(<ProductShareAction productId="one" language="ja" title="商品" />);
+	fireEvent.click(
+		screen.getByRole("button", { name: "product.details.share" }),
+	);
+	const input = screen.getByRole<HTMLInputElement>("textbox", {
+		name: "product.details.shareLink",
+	});
+	expect(input.value).toBe(`${location.origin}/products/one?lang=ja`);
+	expect(input.readOnly).toBe(true);
+	fireEvent.focus(input);
+	expect(input.selectionStart).toBe(0);
+	expect(input.selectionEnd).toBe(input.value.length);
+});
+it("encodes title and clean URL for WhatsApp and Email", () => {
+	apis();
+	render(
+		<ProductShareAction productId="one" language="zh" title="芒果 & 烏龍" />,
+	);
+	fireEvent.click(
+		screen.getByRole("button", { name: "product.details.share" }),
+	);
+	const whatsapp = new URL(
+		screen.getByRole<HTMLAnchorElement>("link", { name: "WhatsApp" }).href,
+	);
+	expect(whatsapp.origin).toBe("https://wa.me");
+	expect(whatsapp.searchParams.get("text")).toBe(
+		`芒果 & 烏龍 ${location.origin}/products/one?lang=zh`,
+	);
+	const email = new URL(
+		screen.getByRole<HTMLAnchorElement>("link", {
+			name: "product.details.shareEmail",
+		}).href,
+	);
+	expect(email.protocol).toBe("mailto:");
+	expect(email.searchParams.get("subject")).toBe("芒果 & 烏龍");
+	expect(email.searchParams.get("body")).toBe(
+		`${location.origin}/products/one?lang=zh`,
+	);
+	expect(email.href).not.toContain("+");
+});
+it("handles native dialog cancellation without propagating to the product modal", () => {
+	apis();
+	render(<ProductShareAction productId="one" language="en" title="Product" />);
+	fireEvent.click(
+		screen.getByRole("button", { name: "product.details.share" }),
+	);
+	const cancel = new Event("cancel", { bubbles: true, cancelable: true });
+	fireEvent(screen.getByRole("dialog"), cancel);
+	expect(cancel.defaultPrevented).toBe(true);
+	expect(screen.queryByRole("dialog")).toBeNull();
+	expect(document.documentElement.style.overflow).toBe("");
 });

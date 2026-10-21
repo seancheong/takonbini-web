@@ -1,6 +1,11 @@
 import * as stylex from "@stylexjs/stylex";
 
 export const colors = stylex.defineVars({
+	shareFacebook: "#1877f2",
+	shareWhatsApp: "#128c4a",
+	shareX: "#0f1419",
+	shareInstagram: "#c13584",
+	shareBrandForeground: "#ffffff",
 	errorText: "oklch(0.5 0.18 25)",
 	productCardShadow:
 		"0 0 0 1px oklch(0 0 0 / 0.09), 0 1px 3px oklch(0 0 0 / 0.04), 0 4px 10px -4px oklch(0 0 0 / 0.06)",

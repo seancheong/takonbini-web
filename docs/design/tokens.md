@@ -95,3 +95,13 @@ invented `bg-indigo-500` utility. Status badges use dedicated green NEW and ambe
 These typed tokens are defined in colors.stylex.ts and remapped by the existing dark theme. They are scoped to product cards, not general controls.
 
 The unused productImageOutline token and its dark-theme override were removed with the redundant card image-canvas outline. Card surface/shadow tokens still define the card edge; other palette values are unchanged.
+
+## Sharing brand marks
+
+`shareFacebook` (#1877f2), `shareWhatsApp` (#128c4a), `shareX` (#0f1419),
+`shareInstagram` (#c13584) and `shareBrandForeground` (#ffffff) are fixed brand-mark
+roles, identical across themes. They are used only by the circular social marks
+inside ProductShareAction. Text, dialog surfaces, focus and all ordinary controls
+continue to use the existing semantic tokens. These roles do not become catalog
+primary actions or generic palette colors. Brand paths are local CC0 Simple Icons
+assets; source provenance is retained beside them.

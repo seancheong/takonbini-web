@@ -76,11 +76,15 @@ export default {
 				moreApps: "その他のアプリ…",
 				instagramCopied:
 					"リンクをコピーしました。Instagramのチャットに貼り付けてください。",
+				closeShare: "共有を閉じる",
+				shareEmail: "メール",
+				previousShareOptions: "前の共有先",
+				moreShareOptions: "その他の共有先",
 				share: "商品を共有",
 				sharing: "リンクを準備中…",
 				linkCopied: "リンクをコピーしました",
 				shareCopyError:
-					"自動でコピーできませんでした。下のリンクをコピーしてください。",
+					"自動でコピーできませんでした。リンクを選択してコピーしてください。",
 				shareLink: "共有リンク",
 				close: "商品詳細を閉じる",
 				fullDetails: "商品詳細を見る",

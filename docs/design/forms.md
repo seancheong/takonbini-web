@@ -116,10 +116,12 @@ Pointer-triggered filter dismissal retains the native dialog for its 180ms exit 
 
 The filter dialog enters with a 12px rise/0.98 scale over 250ms on desktop, or a 24px rise over 280ms below 600px. Backdrop timing matches. Keyboard actions and reduced motion are immediate. Sticky access opens this same dialog and copies applied values into the draft.
 
-## Share-link manual copy
+## Share-link copy field
 
-ProductShareAction's clipboard-error recovery exposes a labelled `type="url"`
-readonly field with 16px text. Focusing it selects the clean URL for manual copy;
-it does not autofocus or open a submission form. The button is the user-triggered
-share/copy action; feedback uses a polite output. See the catalog topic for the
-native-share/copy/cancel contract.
+ProductShareAction's native dialog always shows a labelled `type="url"` read-only
+field with 16px text, even before copying. Focusing selects the clean URL. Copy
+is a separate native button, and feedback uses a polite output. Clipboard denial
+keeps the field available and adds error text/icon and a token-based error border.
+Native dialog focus starts at Close and returns to the trigger on dismissal;
+Escape/backdrop dismissal preserves an underlying product modal. See the catalog
+topic for platform, native-share, copy and cancellation behavior.

@@ -178,28 +178,38 @@ Canonical and Open Graph URLs retain the existing query-free product path.
 Platform recrawling/cache behavior and actual Instagram rendering require
 post-release verification; metadata does not force old messages to refresh.
 
-## Clean product share action (#27)
+## Product sharing dialog (#27)
 
-`ProductShareAction` is shared by the product modal and standalone detail screen.
-Its quiet Share product button expands a bounded inline panel with wrapping,
-44px targets: Facebook and X open external composers; Instagram explicitly copies
-the link and explains how to paste it into a chat; Copy link offers the same URL.
-More apps appears when native sharing is available. The website cannot choose
-which apps the device offers. No social SDKs load before or after opening.
+`ProductShareAction` is shared by modal and standalone details. The neutral Share
+product trigger opens a centered native modal, up to 640px wide with 16px viewport
+clearance. It uses a title/Close row, a horizontally scrollable destination strip,
+and an always-visible clean URL field beside Copy link, following the maintainer's
+YouTube reference. Platform actions use 60px circular brand marks with names below;
+Facebook, WhatsApp, X and Instagram marks are vendored CC0 Simple Icons paths with
+pinned source provenance in `share-brand-paths.ts`. Utility icons remain Lucide.
+No social SDK or remote icon request is used.
+
+Facebook/X/WhatsApp open encoded external composers; Email uses an encoded mailto
+subject/body. Instagram is explicitly labelled Copy link and announces how to
+paste it into a chat. More apps appears when native sharing is available. The
+website cannot choose which apps the device offers. Destination arrows appear
+when the row overflows; touch scrolling and Tab also reveal off-screen options.
+Arrow scrolling is immediate. At an edge, focus moves to the revealed destination
+instead of disappearing with its navigation arrow.
 
 Every destination uses the current serving origin, product path, and selected
-`lang` only. Search, filter, limit, and pagination state stay in the browsing URL
-and never enter the shared URL. The Facebook/X parameters also encode the URL
-and, for X, the localized title. External composers use noopener/noreferrer.
+`lang` only. Search, filter, limit, and pagination stay in the browsing URL. The
+read-only URL is selectable before any clipboard request. Copy success swaps the
+copy icon to a check and is announced; denial keeps that field available with
+an explanatory error icon/text/border. Native cancellation is quiet; native share
+failure falls back to copying. Copy/native actions disable while pending.
 
-Copy success is announced with a checkmark on Copy link; pending copy/native
-sharing disables repeat actions. Cancelling native sharing is quiet, while an
-unavailable native share falls back to copying. Clipboard denial reveals a
-labelled, selectable read-only URL field. Escape inside the panel closes it and
-returns focus to Share without closing the containing product modal. Product or
-language changes remount the action to clear stale feedback. This is a disclosure
-of ordinary links/buttons with normal Tab order, not an ARIA application menu.
+The native modal traps focus. Close, Escape, and a press/release on its backdrop
+dismiss only sharing and restore trigger focus. A pre-existing product modal's
+scroll lock is preserved, then closing that product still restores its catalog
+state/focus. Product or language changes remount the action to clear stale data.
+The dialog opens without motion, including for reduced-motion and keyboard users.
 
-User testing found a clean Chinese product link showed an Instagram preview when
-the long browsing link did not. This supports offering clean links; it does not
-establish a universal parsing rule or guarantee any platform's preview caching.
+The maintainer reported a clean Chinese product link showed an Instagram preview
+when the long browsing link did not. Clean links address that observed difference;
+no universal parsing rule or platform preview-cache guarantee is claimed.
