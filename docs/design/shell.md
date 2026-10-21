@@ -89,3 +89,30 @@ The router's `I18nextProvider`, root locale resolution, and route metadata use
 that same instance. Never change the module singleton's language during SSR:
 concurrent visitors can otherwise receive another request's language. Browser
 routers retain the existing singleton for language detection and persistence.
+
+## Navigation startup recovery (#94)
+
+The root uses `RootDocument` as its `shellComponent` and Outlet as its normal
+component. HTML/head/styles, ThemeProvider and Header remain outside the root
+route's error boundary. Missing root loader data uses the existing system-theme
+default; the provider still reads the saved browser preference. Theme/origin/site
+metadata is cached for the lifetime of the router (`staleTime: Infinity`); explicit
+invalidation can refresh it and each new server document reads fresh request data.
+
+`NavigationError` is eagerly imported by the root. Its heading receives focus;
+localized copy follows the URL locale, without displaying raw error details.
+The owned neutral `retry` action invalidates the router for startup-request or
+route-options errors. Known browser dynamic-import failures instead use one
+user-triggered document reload, because browsers can cache a failed module import.
+Copy explains that reload; the current public product URL and query survive, but
+an unmasked reload renders standalone detail rather than preserving a modal's
+in-memory pages. No reload loop or automatic online retry is added. Known offline
+state announces reconnect instructions before retrying or reloading.
+
+`NavigationPending` exposes polite Opening page feedback inside its h1 and a catalog escape
+while slow retries run. In-place recovery focuses an open dialog's Close before the loaded
+page heading; it does not move focus if the visitor navigated to a different URL.
+A document reload uses the browser's new-document focus. The catalog h1 is programmatically focusable without entering ordinary Tab order.
+Back to products is an ordinary anchor retaining the catalog search/filter/locale
+query and dropping modal history state, so it can recover without the failed
+client route module. Styles and actions are private to NavigationError.tsx.

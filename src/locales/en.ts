@@ -1,5 +1,13 @@
 export default {
 	translation: {
+		navigationError: {
+			reloadBody:
+				"Try again to reload this page, or return to the product catalog.",
+			offline: "You’re offline. Reconnect, then try again.",
+			title: "This page could not be opened",
+			body: "Check your connection and try again, or return to the product catalog.",
+			loading: "Opening page…",
+		},
 		appName: "Takonbini",
 		metaDescription:
 			"Browse products from Japan’s convenience stores. Search by store, category, region, or price, and check release dates.",

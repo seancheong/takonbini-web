@@ -1,5 +1,12 @@
 export default {
 	translation: {
+		navigationError: {
+			reloadBody: "請重試以重新載入此頁面，或返回商品列表。",
+			offline: "目前已離線，請連線後再試一次。",
+			title: "無法開啟此頁面",
+			body: "請檢查連線後再試一次，或返回商品列表。",
+			loading: "正在開啟頁面…",
+		},
 		appName: "Takonbini",
 		metaDescription:
 			"瀏覽日本便利商店的商品資訊，依商店、類別、地區或價格篩選，並查看新品及即將上市的商品。",

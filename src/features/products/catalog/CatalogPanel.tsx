@@ -80,7 +80,7 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 		<section {...stylex.props(layoutStyles.panel)}>
 			<header {...stylex.props(layoutStyles.heading)}>
 				<div>
-					<h1 {...stylex.props(layoutStyles.heroTitle)}>
+					<h1 tabIndex={-1} {...stylex.props(layoutStyles.heroTitle)}>
 						{t("product.title")}
 					</h1>
 				</div>
