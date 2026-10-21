@@ -92,7 +92,10 @@ export default function ProductFilterDrawer({
 						: undefined
 				}
 				aria-expanded={isFilterOpen}
-				onClick={() => setIsFilterOpen(!isFilterOpen)}
+				onClick={(event) => {
+					event.currentTarget.focus({ preventScroll: true });
+					setIsFilterOpen(!isFilterOpen);
+				}}
 				{...stylex.props(
 					layoutStyles.open,
 					isFilterOpen && layoutStyles.openActive,

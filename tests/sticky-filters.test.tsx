@@ -105,3 +105,24 @@ it("disconnects observation on unmount", () => {
 	view.unmount();
 	expect(disconnect).toHaveBeenCalledOnce();
 });
+
+it("focuses either sticky launcher before opening when pointer clicks do not focus buttons", () => {
+	const focused: (Element | null)[] = [];
+	render(
+		<CatalogControls
+			filters={{}}
+			onApply={vi.fn()}
+			onOpenFilters={() => focused.push(document.activeElement)}
+		>
+			{null}
+		</CatalogControls>,
+	);
+	observeControls(-1, false);
+	const bar = within(screen.getByRole("region"));
+	const launchers = [
+		bar.getByRole("button", { name: "product.filters.title" }),
+		bar.getByRole("button", { name: "product.filters.noFilters" }),
+	];
+	for (const launcher of launchers) fireEvent.click(launcher);
+	expect(focused).toEqual(launchers);
+});

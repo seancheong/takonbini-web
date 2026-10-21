@@ -208,7 +208,7 @@ describe("advanced catalog filters", () => {
 		const trigger = screen.getByRole("button", {
 			name: "product.filters.title",
 		});
-		trigger.focus();
+		expect(document.activeElement).not.toBe(trigger);
 		fireEvent.click(trigger);
 		const dialog = screen.getByRole("dialog", {
 			name: "product.filters.title",
