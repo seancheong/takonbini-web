@@ -62,7 +62,18 @@ export default function ProductShareAction({
 		await copyLink();
 	}
 	return (
-		<div {...stylex.props(styles.container)}>
+		<section
+			aria-label={t("product.details.share")}
+			onKeyDown={(event) => {
+				if (expanded && event.key === "Escape") {
+					event.preventDefault();
+					event.stopPropagation();
+					setExpanded(false);
+					triggerRef.current?.focus();
+				}
+			}}
+			{...stylex.props(styles.container)}
+		>
 			<button
 				ref={triggerRef}
 				type="button"
@@ -75,19 +86,7 @@ export default function ProductShareAction({
 				{t("product.details.share")}
 			</button>
 			{expanded && (
-				<section
-					id={optionsId}
-					aria-label={t("product.details.share")}
-					onKeyDown={(event) => {
-						if (event.key === "Escape") {
-							event.preventDefault();
-							event.stopPropagation();
-							setExpanded(false);
-							triggerRef.current?.focus();
-						}
-					}}
-					{...stylex.props(styles.options)}
-				>
+				<div id={optionsId} {...stylex.props(styles.options)}>
 					<div {...stylex.props(styles.destinations)}>
 						<a
 							href={`https://www.facebook.com/sharer/sharer.php?${new URLSearchParams({ u: url })}`}
@@ -185,9 +184,9 @@ export default function ProductShareAction({
 							/>
 						</div>
 					)}
-				</section>
+				</div>
 			)}
-		</div>
+		</section>
 	);
 }
 const styles = stylex.create({

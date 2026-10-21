@@ -191,3 +191,19 @@ it("closes sharing on Escape and returns focus to its trigger", () => {
 		screen.getByRole("button", { name: "product.details.share" }),
 	);
 });
+
+it("dismisses sharing before the containing modal when the trigger keeps focus", () => {
+	apis();
+	render(<ProductShareAction productId="one" language="en" title="Product" />);
+	const trigger = screen.getByRole("button", { name: "product.details.share" });
+	fireEvent.click(trigger);
+	const escapeKey = new KeyboardEvent("keydown", {
+		key: "Escape",
+		bubbles: true,
+		cancelable: true,
+	});
+	fireEvent(trigger, escapeKey);
+	expect(escapeKey.defaultPrevented).toBe(true);
+	expect(trigger.getAttribute("aria-expanded")).toBe("false");
+	expect(document.activeElement).toBe(trigger);
+});
