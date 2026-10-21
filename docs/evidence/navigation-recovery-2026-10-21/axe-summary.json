@@ -1,0 +1,79 @@
+{
+  "implementation": "7fc4b16",
+  "axeVersion": "4.10.3",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "environment": "compiled local preview with loopback-only faults and axe injection",
+  "scans": [
+    {
+      "surface": "startup-error",
+      "locale": "en",
+      "theme": "light",
+      "violations": [],
+      "manualReview": [],
+      "passingRuleCount": 37,
+      "passingContrastNodes": 7
+    },
+    {
+      "surface": "startup-error",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "manualReview": [],
+      "passingRuleCount": 37,
+      "passingContrastNodes": 7
+    },
+    {
+      "surface": "startup-error",
+      "locale": "ja",
+      "theme": "light",
+      "violations": [],
+      "manualReview": [],
+      "passingRuleCount": 37,
+      "passingContrastNodes": 7
+    },
+    {
+      "surface": "startup-error",
+      "locale": "ja",
+      "theme": "dark",
+      "violations": [],
+      "manualReview": [],
+      "passingRuleCount": 37,
+      "passingContrastNodes": 7
+    },
+    {
+      "surface": "startup-error",
+      "locale": "zh-Hant",
+      "theme": "light",
+      "violations": [],
+      "manualReview": [],
+      "passingRuleCount": 37,
+      "passingContrastNodes": 7
+    },
+    {
+      "surface": "startup-error",
+      "locale": "zh-Hant",
+      "theme": "dark",
+      "violations": [],
+      "manualReview": [],
+      "passingRuleCount": 37,
+      "passingContrastNodes": 7
+    },
+    {
+      "surface": "pending",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "manualReview": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 5
+    }
+  ],
+  "resolvedPreliminaryFinding": {
+    "surface": "pending",
+    "rule": "page-has-heading-one",
+    "resolution": "Added h1 with explicit accessible name; final native heading lookup and pending axe scan pass."
+  }
+}
