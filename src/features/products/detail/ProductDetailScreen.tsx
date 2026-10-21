@@ -216,6 +216,7 @@ export default function ProductDetailScreen({
 							</div>
 
 							<h1
+								tabIndex={-1}
 								lang={
 									titleContent.language === "zh"
 										? "zh-Hant"

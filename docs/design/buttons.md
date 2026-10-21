@@ -25,6 +25,7 @@ must document its real action before extracting a shared component.
 | Apply | CatalogFilters `apply` | Valid form submit; primary foreground/background |
 | Load more | [CatalogPanel](../../src/features/products/catalog/CatalogPanel.tsx) `loadMore` | Fetch next page; disabled while fetching |
 | Retry | CatalogPanel `retry` | Retry the failed initial/next page; no new error variant |
+| Detail retry | [ProductDetailError](../../src/features/products/detail/ProductDetailError.tsx) `retry` | Neutral 44px native button; disabled while fetching; localized loading/failure status; recover query before resetting modal/route boundary |
 | Empty reset | CatalogPanel `clearFilters` | Clear applied filters; no destructive treatment |
 | Store choice | CatalogControls `storeChoice` | Immediate single-store choice; aria-pressed; store edge |
 | Applied chip | CatalogControls `filterChip` / `clearFilters` | Remove one filter or clear all |

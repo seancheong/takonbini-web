@@ -1,4 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import {
+	createFileRoute,
+	useParams,
+	useRouter,
+	useSearch,
+} from "@tanstack/react-router";
 import {
 	catalogSearch,
 	ProductDetailError,
@@ -13,9 +18,7 @@ export const Route = createFileRoute("/products/$id")({
 		await context.queryClient.ensureQueryData(productQueries.detail(params.id));
 	},
 	pendingComponent: ProductDetailPending,
-	errorComponent: () => (
-		<ProductDetailError filters={catalogSearch.parse(Route.useSearch())} />
-	),
+	errorComponent: DetailError,
 	component: () => (
 		<ProductDetailScreen
 			id={Route.useParams().id}
@@ -23,3 +26,19 @@ export const Route = createFileRoute("/products/$id")({
 		/>
 	),
 });
+
+function DetailError() {
+	const { id } = useParams({ from: "/products/$id" });
+	const filters = catalogSearch.parse(useSearch({ from: "/products/$id" }));
+	const router = useRouter();
+	return (
+		<ProductDetailError
+			id={id}
+			filters={filters}
+			onRecovered={async () => {
+				await router.invalidate();
+				document.querySelector<HTMLElement>("main h1")?.focus();
+			}}
+		/>
+	);
+}

@@ -72,6 +72,8 @@ export default {
 				priceIntegerError: "価格は0以上の整数で入力してください。",
 			},
 			details: {
+				retryError: "商品を読み込めませんでした。もう一度お試しください。",
+				loading: "商品情報を読み込み中…",
 				copyLink: "リンクをコピー",
 				moreApps: "その他のアプリ…",
 				closeShare: "共有を閉じる",
@@ -94,7 +96,7 @@ export default {
 				source: "公式サイトを見る",
 				notFoundTitle: "商品を表示できません",
 				notFoundBody:
-					"商品を読み込めませんでした。商品一覧に戻ってほかの商品をご覧ください。",
+					"もう一度お試しいただくか、商品一覧に戻ってほかの商品をご覧ください。",
 			},
 			store: {
 				sevenEleven: "セブン-イレブン",
