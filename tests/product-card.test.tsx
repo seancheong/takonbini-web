@@ -91,6 +91,7 @@ describe("product card rendering and navigation", () => {
 		render(<ProductCard product={product} onPreview={preview} />);
 		const link = screen.getByRole("link", { name: "Matcha" });
 		expect(link.getAttribute("href")).toContain(product.id);
+		expect(link.dataset.productId).toBe(product.id);
 		fireEvent.click(link);
 		expect(preview).toHaveBeenCalledWith(product);
 		expect(routerMocks.navigate).not.toHaveBeenCalled();

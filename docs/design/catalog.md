@@ -240,3 +240,19 @@ The modal resets its CatchBoundary and focuses Close. The standalone error route
 invalidates the router after the fresh query succeeds and focuses the loaded h1
 (which has `tabIndex={-1}` and does not join ordinary Tab order). Neither action
 clears unrelated queries or navigates away from the selected product to retry.
+
+
+## Catalog focus after modal history navigation
+
+CatalogPanel owns focus return after ProductPreview closes, using the selected
+product ID and the card's `data-product-id` identity. It waits until the catalog
+refresh/loading state clears and results are no longer inert, then focuses the
+corresponding card without scrolling. If that card is absent, the catalog h1 is
+the fallback. It does not override focus already restored by the browser or
+chosen by the visitor while waiting. This applies to browser Back and to closing
+a modal reopened by Forward, without adding a new history-state field.
+
+ProductPreview continues to own native modal opening, dismissal, scroll locking
+and scroll restoration; it no longer attempts to focus catalog content from its
+unmount cleanup while navigation may still make that content inert. Nested Share
+and filter dialogs retain their own focus ownership.

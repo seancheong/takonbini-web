@@ -45,15 +45,12 @@ export default function ProductPreview({
 		);
 	};
 	useEffect(() => {
-		const focused = document.activeElement;
 		const scrollY = window.scrollY;
 		const previousOverflow = document.documentElement.style.overflow;
 		dialog.current?.showModal();
 		document.documentElement.style.overflow = "hidden";
 		return () => {
 			document.documentElement.style.overflow = previousOverflow;
-			if (focused instanceof HTMLElement)
-				focused.focus({ preventScroll: true });
 			requestAnimationFrame(() =>
 				window.scrollTo({ top: scrollY, behavior: "instant" }),
 			);
