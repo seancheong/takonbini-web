@@ -121,6 +121,7 @@ export default function ProductCard({
 						: {}),
 				});
 			}}
+			data-product-id={product.id}
 			data-store={product.store}
 			{...stylex.props(layoutStyles.card)}
 		>

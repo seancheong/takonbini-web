@@ -6,6 +6,7 @@ import {
 	useCallback,
 	useEffect,
 	useOptimistic,
+	useRef,
 	useState,
 	useTransition,
 } from "react";
@@ -38,6 +39,8 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	const selectedId = useRouterState({
 		select: (state) => state.location.state.productModalId,
 	});
+	const panel = useRef<HTMLElement>(null);
+	const previewReturnId = useRef<string | undefined>(undefined);
 	const [draftFilters, setDraftFilters] = useState<ProductFilters>(filters);
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const openFilters = useCallback(() => {
@@ -67,6 +70,24 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	});
 	const isRefreshing =
 		isApplying || routerIsLoading || (isFetching && !isFetchingNextPage);
+	useEffect(() => {
+		if (selectedId) {
+			previewReturnId.current = selectedId;
+			return;
+		}
+		if (!previewReturnId.current || isRefreshing || isLoading) return;
+		const productId = previewReturnId.current;
+		previewReturnId.current = undefined;
+		if (document.activeElement !== document.body || !panel.current) return;
+		const card = [
+			...panel.current.querySelectorAll<HTMLAnchorElement>(
+				"a[data-product-id]",
+			),
+		].find((link) => link.dataset.productId === productId);
+		(card ?? panel.current.querySelector<HTMLElement>("h1"))?.focus({
+			preventScroll: true,
+		});
+	}, [selectedId, isRefreshing, isLoading]);
 	const hasFilters = Boolean(
 		filters.search ||
 			filters.stores?.length ||
@@ -77,7 +98,7 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 			filters.maxPrice !== undefined,
 	);
 	return (
-		<section {...stylex.props(layoutStyles.panel)}>
+		<section ref={panel} {...stylex.props(layoutStyles.panel)}>
 			<header {...stylex.props(layoutStyles.heading)}>
 				<div>
 					<h1 tabIndex={-1} {...stylex.props(layoutStyles.heroTitle)}>

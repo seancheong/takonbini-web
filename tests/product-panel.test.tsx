@@ -7,7 +7,7 @@ import {
 	screen,
 	waitFor,
 } from "@testing-library/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
 	afterEach,
 	beforeAll,
@@ -34,7 +34,7 @@ const query = vi.hoisted(() => ({
 vi.mock("@tanstack/react-query", () => ({ useInfiniteQuery: () => query }));
 const routerState = vi.hoisted(() => ({
 	isLoading: false,
-	location: { pathname: "/", state: {} },
+	location: { pathname: "/", state: {} as { productModalId?: string } },
 	resolvedLocation: { pathname: "/" },
 }));
 vi.mock("@tanstack/react-router", () => ({
@@ -52,10 +52,30 @@ vi.mock("@/features/products/catalog/ProductGrid", () => ({
 	default: ({ products }: { products: { id: string }[] }) => (
 		<div>
 			{products.map((product) => (
-				<span key={product.id}>{product.id}</span>
+				<a
+					key={product.id}
+					href={`/products/${product.id}`}
+					data-product-id={product.id}
+				>
+					{product.id}
+				</a>
 			))}
 		</div>
 	),
+}));
+
+vi.mock("@/features/products/catalog/ProductPreview", () => ({
+	default: () => {
+		const close = useRef<HTMLButtonElement>(null);
+		useEffect(() => close.current?.focus(), []);
+		return (
+			<div role="dialog">
+				<button ref={close} type="button">
+					Close preview
+				</button>
+			</div>
+		);
+	},
 }));
 
 beforeAll(() => {
@@ -76,6 +96,7 @@ beforeEach(() => {
 		isError: false,
 		isFetchNextPageError: false,
 	});
+	routerState.location.state = {};
 	routerState.isLoading = false;
 	routerState.location.pathname = "/";
 	routerState.resolvedLocation.pathname = "/";
@@ -257,5 +278,69 @@ describe("catalog states", () => {
 			).checked,
 		).toBe(false);
 		expect(apply).not.toHaveBeenCalled();
+	});
+});
+
+describe("catalog history focus", () => {
+	function catalog() {
+		return <CatalogScreen filters={{ search: "tea" }} onApply={vi.fn()} />;
+	}
+	function openPreview(view: ReturnType<typeof render>) {
+		routerState.location.state = { productModalId: "loaded-product" };
+		view.rerender(catalog());
+		expect(document.activeElement).toBe(
+			screen.getByRole("button", { name: "Close preview" }),
+		);
+	}
+	it("restores the product only after returning navigation makes results interactive", () => {
+		query.data = { pages: [{ products: [{ id: "loaded-product" }] }] };
+		const view = render(catalog());
+		const product = screen.getByRole("link", { name: "loaded-product" });
+		product.focus();
+		openPreview(view);
+		routerState.location.state = {};
+		routerState.isLoading = true;
+		view.rerender(catalog());
+		expect(product.closest("[inert]")).toBeTruthy();
+		expect(document.activeElement).toBe(document.body);
+		routerState.isLoading = false;
+		view.rerender(catalog());
+		expect(product.closest("[inert]")).toBeNull();
+		expect(document.activeElement).toBe(product);
+	});
+	it("restores a history-reopened product even when its card was not focused on opening", () => {
+		query.data = { pages: [{ products: [{ id: "loaded-product" }] }] };
+		const view = render(catalog());
+		screen.getByRole("searchbox").focus();
+		openPreview(view);
+		routerState.location.state = {};
+		view.rerender(catalog());
+		expect(document.activeElement).toBe(
+			screen.getByRole("link", { name: "loaded-product" }),
+		);
+	});
+	it("falls back to the catalog heading if the originating product is no longer present", () => {
+		query.data = { pages: [{ products: [{ id: "loaded-product" }] }] };
+		const view = render(catalog());
+		openPreview(view);
+		routerState.location.state = {};
+		query.data = { pages: [{ products: [] }] };
+		view.rerender(catalog());
+		expect(document.activeElement).toBe(
+			screen.getByRole("heading", { name: "product.title" }),
+		);
+	});
+	it("does not steal focus chosen while the catalog is still refreshing", () => {
+		query.data = { pages: [{ products: [{ id: "loaded-product" }] }] };
+		const view = render(catalog());
+		openPreview(view);
+		routerState.location.state = {};
+		query.isFetching = true;
+		view.rerender(catalog());
+		const search = screen.getByRole("searchbox");
+		search.focus();
+		query.isFetching = false;
+		view.rerender(catalog());
+		expect(document.activeElement).toBe(search);
 	});
 });

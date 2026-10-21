@@ -77,10 +77,7 @@ afterEach(async () => {
 	document.documentElement.style.overflow = "";
 });
 describe("product preview", () => {
-	it("labels the modal, locks scrolling, and restores it and focus when dismissed", () => {
-		const trigger = document.createElement("button");
-		document.body.append(trigger);
-		trigger.focus();
+	it("labels the modal and restores page scrolling when dismissed", () => {
 		document.body.style.overflow = "auto";
 		document.documentElement.style.overflow = "auto";
 		const close = vi.fn();
@@ -102,8 +99,6 @@ describe("product preview", () => {
 		view.unmount();
 		expect(document.body.style.overflow).toBe("auto");
 		expect(document.documentElement.style.overflow).toBe("auto");
-		expect(document.activeElement).toBe(trigger);
-		trigger.remove();
 	});
 	it("shows a useful fallback when a product photograph fails", () => {
 		renderPreview(
