@@ -74,6 +74,18 @@ export default {
 				priceIntegerError: "Enter a whole number of yen, 0 or greater.",
 			},
 			details: {
+				copyLink: "Copy link",
+				moreApps: "More apps…",
+				closeShare: "Close sharing",
+				shareEmail: "Email",
+				previousShareOptions: "Previous sharing options",
+				moreShareOptions: "More sharing options",
+				share: "Share product",
+				sharing: "Preparing link…",
+				linkCopied: "Link copied",
+				shareCopyError:
+					"Couldn’t copy automatically. Select and copy the link.",
+				shareLink: "Share link",
 				close: "Close product details",
 				fullDetails: "Full product details",
 				back: "Back to products",

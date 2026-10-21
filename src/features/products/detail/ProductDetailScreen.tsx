@@ -30,6 +30,7 @@ import { storeTextStyles } from "@/styles/stores.stylex";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
 import type { ProductFilters } from "../products.contracts";
+import ProductShareAction from "./ProductShareAction";
 export default function ProductDetailScreen({
 	id,
 	filters,
@@ -311,6 +312,13 @@ export default function ProductDetailScreen({
 						<p {...stylex.props(layoutStyles.availability)}>
 							{t("product.availabilityNote")}
 						</p>
+
+						<ProductShareAction
+							key={`${id}:${language}`}
+							productId={id}
+							language={language}
+							title={title || t("appName")}
+						/>
 
 						<a
 							href={product.url}

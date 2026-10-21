@@ -115,3 +115,14 @@ Native `validity.badInput` is checked on editing and before submission: incomple
 Pointer-triggered filter dismissal retains the native dialog for its 180ms exit before releasing focus/scroll locking. Apply commits once that exit completes. Keyboard dismissal and reduced-motion dismissal remain immediate. See [motion](layout.md#catalog-interaction-motion--18-october-2026).
 
 The filter dialog enters with a 12px rise/0.98 scale over 250ms on desktop, or a 24px rise over 280ms below 600px. Backdrop timing matches. Keyboard actions and reduced motion are immediate. Sticky access opens this same dialog and copies applied values into the draft.
+
+## Share-link copy field
+
+ProductShareAction's native dialog always shows a labelled `type="url"` read-only
+field with 16px text, even before copying. Focusing selects the clean URL. In local loopback review, that URL points to the
+public Takonbini product; it is consistent with every sharing destination. Copy
+is a separate native button, and feedback uses a polite output. Clipboard denial
+keeps the field available and adds error text/icon and a token-based error border.
+Native dialog focus starts at Close and returns to the trigger on dismissal;
+Escape/backdrop dismissal preserves an underlying product modal. See the catalog
+topic for platform, native-share, copy and cancellation behavior.

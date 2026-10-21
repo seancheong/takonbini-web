@@ -177,3 +177,51 @@ with `node scripts/generate-share-fallback.mjs` after an intentional brand chang
 Canonical and Open Graph URLs retain the existing query-free product path.
 Platform recrawling/cache behavior and actual Instagram rendering require
 post-release verification; metadata does not force old messages to refresh.
+
+## Product sharing dialog (#27)
+
+`ProductShareAction` is shared by modal and standalone details. The neutral Share
+product trigger opens a centered native modal, up to 640px wide with 16px viewport
+clearance. It uses a title/Close row, a horizontally scrollable destination strip,
+and an always-visible clean URL field beside Copy link, following the maintainer's
+YouTube reference. Platform actions use 60px circular brand marks with names below;
+Facebook, WhatsApp, X and LinkedIn marks are vendored CC0 Simple Icons paths with
+pinned source provenance in `share-brand-paths.ts`. Utility icons remain Lucide.
+No social SDK or remote icon request is used.
+
+Facebook/X/WhatsApp/LinkedIn open encoded external composers; Email uses an encoded mailto
+subject/body. The maintainer removed the Instagram shortcut because it duplicated Copy link.
+The URL/Copy row serves Instagram and any other destination. More apps appears when native sharing is available. The
+website cannot choose which apps the device offers. Destination arrows appear
+when the row overflows; touch scrolling and Tab also reveal off-screen options.
+Arrow scrolling is immediate. At an edge, focus moves to the revealed destination
+instead of disappearing with its navigation arrow.
+
+Every destination uses the product path and selected `lang` only. Localhost,
+`.localhost`, IPv4 loopback and IPv6 loopback review addresses map to the public
+`https://takonbini.com` origin so external services receive an address they can
+reach. Public preview/deployment origins remain unchanged. Search, filter, limit, and pagination stay in the browsing URL. The
+read-only URL is selectable before any clipboard request. Copy success swaps the
+copy icon to a check and is announced; denial keeps that field available with
+an explanatory error icon/text/border. Native cancellation is quiet; native share
+failure falls back to copying. Copy/native actions disable while pending.
+
+The native modal traps focus. Close, Escape, and a press/release on its backdrop
+dismiss only sharing and restore trigger focus. A pre-existing product modal's
+scroll lock is preserved, then closing that product still restores its catalog
+state/focus. Product or language changes remount the action to clear stale data.
+The dialog opens without motion, including for reduced-motion and keyboard users.
+
+The maintainer reported a clean Chinese product link showed an Instagram preview
+when the long browsing link did not. Clean links address that observed difference;
+no universal parsing rule or platform preview-cache guarantee is claimed.
+
+Local browser reproduction of the reported Facebook failure: the localhost URL
+opened a completely empty composer with Share disabled. Follow-up authenticated
+Arc desktop checks with the public URL pass: Facebook shows the product image,
+title/domain and enabled Share; LinkedIn finishes loading a product thumbnail,
+title/domain in its composer. The optional text field can remain empty while the
+link card carries the product. No post was published. See
+[handoff evidence](../evidence/product-share-handoff-2026-10-21.md) for the initial
+interruption and completed follow-up. WhatsApp and broader native-device coverage
+remain unverified. The maintainer reports local X and Email success.
