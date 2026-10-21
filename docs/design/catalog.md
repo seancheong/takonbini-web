@@ -177,3 +177,29 @@ with `node scripts/generate-share-fallback.mjs` after an intentional brand chang
 Canonical and Open Graph URLs retain the existing query-free product path.
 Platform recrawling/cache behavior and actual Instagram rendering require
 post-release verification; metadata does not force old messages to refresh.
+
+## Clean product share action (#27)
+
+`ProductShareAction` is shared by the product modal and standalone detail screen.
+Its quiet Share product button expands a bounded inline panel with wrapping,
+44px targets: Facebook and X open external composers; Instagram explicitly copies
+the link and explains how to paste it into a chat; Copy link offers the same URL.
+More apps appears when native sharing is available. The website cannot choose
+which apps the device offers. No social SDKs load before or after opening.
+
+Every destination uses the current serving origin, product path, and selected
+`lang` only. Search, filter, limit, and pagination state stay in the browsing URL
+and never enter the shared URL. The Facebook/X parameters also encode the URL
+and, for X, the localized title. External composers use noopener/noreferrer.
+
+Copy success is announced with a checkmark on Copy link; pending copy/native
+sharing disables repeat actions. Cancelling native sharing is quiet, while an
+unavailable native share falls back to copying. Clipboard denial reveals a
+labelled, selectable read-only URL field. Escape inside the panel closes it and
+returns focus to Share without closing the containing product modal. Product or
+language changes remount the action to clear stale feedback. This is a disclosure
+of ordinary links/buttons with normal Tab order, not an ARIA application menu.
+
+User testing found a clean Chinese product link showed an Instagram preview when
+the long browsing link did not. This supports offering clean links; it does not
+establish a universal parsing rule or guarantee any platform's preview caching.

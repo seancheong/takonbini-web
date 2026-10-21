@@ -72,6 +72,16 @@ export default {
 				priceIntegerError: "価格は0以上の整数で入力してください。",
 			},
 			details: {
+				copyLink: "リンクをコピー",
+				moreApps: "その他のアプリ…",
+				instagramCopied:
+					"リンクをコピーしました。Instagramのチャットに貼り付けてください。",
+				share: "商品を共有",
+				sharing: "リンクを準備中…",
+				linkCopied: "リンクをコピーしました",
+				shareCopyError:
+					"自動でコピーできませんでした。下のリンクをコピーしてください。",
+				shareLink: "共有リンク",
 				close: "商品詳細を閉じる",
 				fullDetails: "商品詳細を見る",
 				back: "商品一覧へ戻る",

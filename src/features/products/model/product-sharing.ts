@@ -1,4 +1,4 @@
-import { resolveSupportedLanguage } from "@/localization";
+import { type Language, resolveSupportedLanguage } from "@/localization";
 import type { ActiveCatalogProduct } from "../products.contracts";
 import { resolveProductText } from "./product-display";
 import { isAllowedProductImageSource } from "./product-image-source";
@@ -23,4 +23,14 @@ export function productSharing(
 				).href
 			: undefined,
 	};
+}
+
+export function getProductShareUrl(
+	origin: string,
+	id: string,
+	language: Language,
+) {
+	const url = new URL(`/products/${encodeURIComponent(id)}`, origin);
+	url.searchParams.set("lang", language);
+	return url.href;
 }
