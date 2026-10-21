@@ -74,8 +74,6 @@ export default {
 			details: {
 				copyLink: "リンクをコピー",
 				moreApps: "その他のアプリ…",
-				instagramCopied:
-					"リンクをコピーしました。Instagramのチャットに貼り付けてください。",
 				closeShare: "共有を閉じる",
 				shareEmail: "メール",
 				previousShareOptions: "前の共有先",

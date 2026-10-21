@@ -76,7 +76,6 @@ export default {
 			details: {
 				copyLink: "Copy link",
 				moreApps: "More apps…",
-				instagramCopied: "Link copied. Paste it into an Instagram chat.",
 				closeShare: "Close sharing",
 				shareEmail: "Email",
 				previousShareOptions: "Previous sharing options",

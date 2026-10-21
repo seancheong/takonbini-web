@@ -180,17 +180,19 @@ it("offers encoded Facebook and X composers using the same clean link", () => {
 		screen.queryByRole("button", { name: "product.details.moreApps" }),
 	).toBeNull();
 });
-it("copies for Instagram with clear instructions instead of a fake composer", async () => {
-	const copy = apis();
-	render(<ProductShareAction productId="one" language="zh" title="商品" />);
-	choose("Instagram · product.details.copyLink");
-	expect(
-		await screen.findByText("product.details.instagramCopied"),
-	).toBeTruthy();
-	expect(copy).toHaveBeenCalledExactlyOnceWith(
-		`${location.origin}/products/one?lang=zh`,
+it("omits Instagram while retaining the single Copy link action", () => {
+	apis();
+	render(<ProductShareAction productId="one" language="en" title="Product" />);
+	fireEvent.click(
+		screen.getByRole("button", { name: "product.details.share" }),
 	);
+	expect(screen.queryByRole("button", { name: /Instagram/ })).toBeNull();
+	expect(screen.queryByRole("link", { name: /Instagram/ })).toBeNull();
+	expect(
+		screen.getAllByRole("button", { name: "product.details.copyLink" }),
+	).toHaveLength(1);
 });
+
 it("closes sharing on Escape and returns focus to its trigger", () => {
 	apis();
 	render(<ProductShareAction productId="one" language="en" title="Product" />);

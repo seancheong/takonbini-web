@@ -36,7 +36,6 @@ export default function ProductShareAction({
 	const [url, setUrl] = useState("");
 	const [expanded, setExpanded] = useState(false);
 	const [nativeSharing, setNativeSharing] = useState(false);
-	const [instagram, setInstagram] = useState(false);
 	const [status, setStatus] = useState<"idle" | "sharing" | "copied" | "error">(
 		"idle",
 	);
@@ -83,11 +82,9 @@ export default function ProductShareAction({
 		setUrl(getProductShareUrl(window.location.origin, productId, language));
 		setNativeSharing(typeof navigator.share === "function");
 		setStatus("idle");
-		setInstagram(false);
 		setExpanded(true);
 	}
-	async function copyLink(forInstagram = false) {
-		setInstagram(forInstagram);
+	async function copyLink() {
 		setStatus("sharing");
 		try {
 			await navigator.clipboard.writeText(url);
@@ -212,29 +209,7 @@ export default function ProductShareAction({
 										<span>{name}</span>
 									</a>
 								))}
-								<button
-									type="button"
-									aria-label={`Instagram · ${t("product.details.copyLink")}`}
-									disabled={status === "sharing"}
-									onClick={() => copyLink(true)}
-									{...stylex.props(styles.destination)}
-								>
-									<span {...stylex.props(styles.circle, styles.instagram)}>
-										<svg
-											viewBox="0 0 24 24"
-											width="28"
-											height="28"
-											fill="currentColor"
-											aria-hidden="true"
-										>
-											<path d={shareBrandPaths.instagram} />
-										</svg>
-									</span>
-									<span>Instagram</span>
-									<span {...stylex.props(styles.hint)}>
-										{t("product.details.copyLink")}
-									</span>
-								</button>
+
 								<a
 									href={`mailto:?${new URLSearchParams({ subject: title, body: url }).toString().replaceAll("+", "%20")}`}
 									{...stylex.props(styles.destination)}
@@ -312,7 +287,7 @@ export default function ProductShareAction({
 								onClick={() => copyLink()}
 								{...stylex.props(styles.share, styles.copy)}
 							>
-								{status === "copied" && !instagram ? (
+								{status === "copied" ? (
 									<Check size={16} aria-hidden="true" />
 								) : (
 									<Copy size={16} aria-hidden="true" />
@@ -337,11 +312,7 @@ export default function ProductShareAction({
 							{status === "sharing"
 								? t("product.details.sharing")
 								: status === "copied"
-									? t(
-											instagram
-												? "product.details.instagramCopied"
-												: "product.details.linkCopied",
-										)
+									? t("product.details.linkCopied")
 									: status === "error"
 										? t("product.details.shareCopyError")
 										: ""}
@@ -507,16 +478,6 @@ const styles = stylex.create({
 		color: colors.shareBrandForeground,
 	},
 	x: { backgroundColor: colors.shareX, color: colors.shareBrandForeground },
-	instagram: {
-		backgroundColor: colors.shareInstagram,
-		color: colors.shareBrandForeground,
-	},
-	hint: {
-		fontSize: "11px",
-		color: colors.mutedForeground,
-		lineHeight: 1.3,
-		marginTop: "-4px",
-	},
 	linkRow: {
 		display: "flex",
 		alignItems: "center",

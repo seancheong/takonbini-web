@@ -185,13 +185,13 @@ product trigger opens a centered native modal, up to 640px wide with 16px viewpo
 clearance. It uses a title/Close row, a horizontally scrollable destination strip,
 and an always-visible clean URL field beside Copy link, following the maintainer's
 YouTube reference. Platform actions use 60px circular brand marks with names below;
-Facebook, WhatsApp, X and Instagram marks are vendored CC0 Simple Icons paths with
+Facebook, WhatsApp and X marks are vendored CC0 Simple Icons paths with
 pinned source provenance in `share-brand-paths.ts`. Utility icons remain Lucide.
 No social SDK or remote icon request is used.
 
 Facebook/X/WhatsApp open encoded external composers; Email uses an encoded mailto
-subject/body. Instagram is explicitly labelled Copy link and announces how to
-paste it into a chat. More apps appears when native sharing is available. The
+subject/body. The maintainer removed the Instagram shortcut because it duplicated Copy link.
+The URL/Copy row serves Instagram and any other destination. More apps appears when native sharing is available. The
 website cannot choose which apps the device offers. Destination arrows appear
 when the row overflows; touch scrolling and Tab also reveal off-screen options.
 Arrow scrolling is immediate. At an edge, focus moves to the revealed destination

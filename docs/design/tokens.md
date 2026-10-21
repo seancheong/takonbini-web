@@ -98,8 +98,8 @@ The unused productImageOutline token and its dark-theme override were removed wi
 
 ## Sharing brand marks
 
-`shareFacebook` (#1877f2), `shareWhatsApp` (#128c4a), `shareX` (#0f1419),
-`shareInstagram` (#c13584) and `shareBrandForeground` (#ffffff) are fixed brand-mark
+`shareFacebook` (#1877f2), `shareWhatsApp` (#128c4a), `shareX` (#0f1419) and
+`shareBrandForeground` (#ffffff) are fixed brand-mark
 roles, identical across themes. They are used only by the circular social marks
 inside ProductShareAction. Text, dialog surfaces, focus and all ordinary controls
 continue to use the existing semantic tokens. These roles do not become catalog

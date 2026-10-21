@@ -72,7 +72,6 @@ export default {
 			details: {
 				copyLink: "複製連結",
 				moreApps: "更多應用程式…",
-				instagramCopied: "已複製連結。請貼到 Instagram 聊天中。",
 				closeShare: "關閉分享",
 				shareEmail: "電子郵件",
 				previousShareOptions: "上一組分享選項",
