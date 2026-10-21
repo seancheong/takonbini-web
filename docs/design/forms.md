@@ -96,6 +96,7 @@ Incorrect mutation: apply filters from every checkbox change. It removes the dia
 - Prices are nonnegative integers; an absent bound differs from zero. Minimum must not exceed maximum. Preserve `aria-invalid`, error descriptions, and `role="alert"`.
 - Apply submits only valid draft values and closes. Reset calls `onReset`; it is not a destructive action. Escape/cancel and close must synchronize parent open state.
 - Desktop dialog: max width 640px, max height `min(85dvh, 850px)`. At ≤600px it becomes a bottom sheet using the same native dialog. Keep safe-area footer padding and scrolling content.
+- Every Filters launcher focuses itself with `preventScroll` before opening, including both sticky-bar launchers. Safari pointer clicks need not focus native buttons; the dialog must capture the actual launcher rather than BODY or an earlier control.
 - Preserve native modal focus containment and return-to-trigger behavior. StyleX conversion must not replace `showModal()` with CSS visibility.
 
 

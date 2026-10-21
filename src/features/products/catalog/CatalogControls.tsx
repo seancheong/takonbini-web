@@ -262,7 +262,10 @@ export default function CatalogControls({
 					<div {...stylex.props(layoutStyles.stickyInner)}>
 						<button
 							type="button"
-							onClick={onOpenFilters}
+							onClick={(event) => {
+								event.currentTarget.focus({ preventScroll: true });
+								onOpenFilters();
+							}}
 							aria-haspopup="dialog"
 							aria-label={
 								activeCount
@@ -306,7 +309,10 @@ export default function CatalogControls({
 						</div>
 						<button
 							type="button"
-							onClick={onOpenFilters}
+							onClick={(event) => {
+								event.currentTarget.focus({ preventScroll: true });
+								onOpenFilters();
+							}}
 							title={chips.map((chip) => chip.label).join(" · ")}
 							{...stylex.props(layoutStyles.stickySummary)}
 						>
