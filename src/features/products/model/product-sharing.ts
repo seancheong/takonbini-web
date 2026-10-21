@@ -30,7 +30,16 @@ export function getProductShareUrl(
 	id: string,
 	language: Language,
 ) {
-	const url = new URL(`/products/${encodeURIComponent(id)}`, origin);
+	const hostname = new URL(origin).hostname;
+	const loopback =
+		hostname === "localhost" ||
+		hostname.endsWith(".localhost") ||
+		hostname === "[::1]" ||
+		/^127\.\d+\.\d+\.\d+$/.test(hostname);
+	const url = new URL(
+		`/products/${encodeURIComponent(id)}`,
+		loopback ? "https://takonbini.com" : origin,
+	);
 	url.searchParams.set("lang", language);
 	return url.href;
 }

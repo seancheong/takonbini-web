@@ -119,7 +119,8 @@ The filter dialog enters with a 12px rise/0.98 scale over 250ms on desktop, or a
 ## Share-link copy field
 
 ProductShareAction's native dialog always shows a labelled `type="url"` read-only
-field with 16px text, even before copying. Focusing selects the clean URL. Copy
+field with 16px text, even before copying. Focusing selects the clean URL. In local loopback review, that URL points to the
+public Takonbini product; it is consistent with every sharing destination. Copy
 is a separate native button, and feedback uses a polite output. Clipboard denial
 keeps the field available and adds error text/icon and a token-based error border.
 Native dialog focus starts at Close and returns to the trigger on dismissal;

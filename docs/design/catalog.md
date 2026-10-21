@@ -197,8 +197,10 @@ when the row overflows; touch scrolling and Tab also reveal off-screen options.
 Arrow scrolling is immediate. At an edge, focus moves to the revealed destination
 instead of disappearing with its navigation arrow.
 
-Every destination uses the current serving origin, product path, and selected
-`lang` only. Search, filter, limit, and pagination stay in the browsing URL. The
+Every destination uses the product path and selected `lang` only. Localhost,
+`.localhost`, IPv4 loopback and IPv6 loopback review addresses map to the public
+`https://takonbini.com` origin so external services receive an address they can
+reach. Public preview/deployment origins remain unchanged. Search, filter, limit, and pagination stay in the browsing URL. The
 read-only URL is selectable before any clipboard request. Copy success swaps the
 copy icon to a check and is announced; denial keeps that field available with
 an explanatory error icon/text/border. Native cancellation is quiet; native share
@@ -213,3 +215,11 @@ The dialog opens without motion, including for reduced-motion and keyboard users
 The maintainer reported a clean Chinese product link showed an Instagram preview
 when the long browsing link did not. Clean links address that observed difference;
 no universal parsing rule or platform preview-cache guarantee is claimed.
+
+Local browser reproduction of the reported Facebook failure: the localhost URL
+opened a completely empty composer with Share disabled. The public-URL control
+began loading a link attachment, but its completed editor was not verified before
+an unrelated sign-in dialog blocked native browser inspection. This supports
+fixing the private URL handed off by local review; it does not establish a final
+Facebook/LinkedIn platform pass. LinkedIn and WhatsApp remain awaiting completed
+editor/device verification. The maintainer reports local X and Email success.

@@ -77,7 +77,7 @@ it("opens native sharing with only a localized title and clean language URL", as
 	await waitFor(() =>
 		expect(share).toHaveBeenCalledExactlyOnceWith({
 			title: "芒果烏龍茶",
-			url: `${location.origin}/products/one?lang=zh`,
+			url: `https://takonbini.com/products/one?lang=zh`,
 		}),
 	);
 	expect(copy).not.toHaveBeenCalled();
@@ -88,7 +88,7 @@ it("copies a clean link and announces success when native sharing is unavailable
 	choose("product.details.copyLink");
 	await waitFor(() =>
 		expect(copy).toHaveBeenCalledExactlyOnceWith(
-			`${location.origin}/products/one?lang=ja`,
+			`https://takonbini.com/products/one?lang=ja`,
 		),
 	);
 	expect(await screen.findByText("product.details.linkCopied")).toBeTruthy();
@@ -115,7 +115,7 @@ it("falls back to copying after a native share failure", async () => {
 	choose("product.details.moreApps");
 	expect(await screen.findByText("product.details.linkCopied")).toBeTruthy();
 	expect(copy).toHaveBeenCalledExactlyOnceWith(
-		`${location.origin}/products/one?lang=en`,
+		`https://takonbini.com/products/one?lang=en`,
 	);
 });
 it("offers a labelled manual-copy field when clipboard access is denied", async () => {
@@ -126,7 +126,7 @@ it("offers a labelled manual-copy field when clipboard access is denied", async 
 		name: "product.details.shareLink",
 	});
 	expect(input.getAttribute("value")).toBe(
-		`${location.origin}/products/one?lang=zh`,
+		`https://takonbini.com/products/one?lang=zh`,
 	);
 	expect(input.hasAttribute("readonly")).toBe(true);
 	expect(screen.getByText("product.details.shareCopyError")).toBeTruthy();
@@ -169,11 +169,11 @@ it("offers encoded Facebook and X composers using the same clean link", () => {
 	);
 	expect(facebook.origin).toBe("https://www.facebook.com");
 	expect(facebook.searchParams.get("u")).toBe(
-		`${location.origin}/products/one?lang=zh`,
+		`https://takonbini.com/products/one?lang=zh`,
 	);
 	expect(x.origin).toBe("https://twitter.com");
 	expect(x.searchParams.get("url")).toBe(
-		`${location.origin}/products/one?lang=zh`,
+		`https://takonbini.com/products/one?lang=zh`,
 	);
 	expect(x.searchParams.get("text")).toBe("芒果 & 烏龍");
 	expect(
@@ -239,7 +239,7 @@ it("always exposes a selectable clean URL, even before copying", () => {
 	const input = screen.getByRole<HTMLInputElement>("textbox", {
 		name: "product.details.shareLink",
 	});
-	expect(input.value).toBe(`${location.origin}/products/one?lang=ja`);
+	expect(input.value).toBe(`https://takonbini.com/products/one?lang=ja`);
 	expect(input.readOnly).toBe(true);
 	fireEvent.focus(input);
 	expect(input.selectionStart).toBe(0);
@@ -258,7 +258,7 @@ it("encodes title and clean URL for WhatsApp and Email", () => {
 	);
 	expect(whatsapp.origin).toBe("https://wa.me");
 	expect(whatsapp.searchParams.get("text")).toBe(
-		`芒果 & 烏龍 ${location.origin}/products/one?lang=zh`,
+		`芒果 & 烏龍 https://takonbini.com/products/one?lang=zh`,
 	);
 	const email = new URL(
 		screen.getByRole<HTMLAnchorElement>("link", {
@@ -268,7 +268,7 @@ it("encodes title and clean URL for WhatsApp and Email", () => {
 	expect(email.protocol).toBe("mailto:");
 	expect(email.searchParams.get("subject")).toBe("芒果 & 烏龍");
 	expect(email.searchParams.get("body")).toBe(
-		`${location.origin}/products/one?lang=zh`,
+		`https://takonbini.com/products/one?lang=zh`,
 	);
 	expect(email.href).not.toContain("+");
 });
@@ -298,8 +298,44 @@ it("opens LinkedIn sharing with an encoded clean localized product URL", () => {
 	expect(url.origin).toBe("https://www.linkedin.com");
 	expect(url.pathname).toBe("/sharing/share-offsite/");
 	expect([...url.searchParams]).toEqual([
-		["url", `${location.origin}/products/one?lang=zh`],
+		["url", `https://takonbini.com/products/one?lang=zh`],
 	]);
 	expect(link.target).toBe("_blank");
 	expect(link.rel).toBe("noopener noreferrer");
+});
+
+it.each([
+	"http://localhost:3000",
+	"http://127.0.0.1:3000",
+	"http://[::1]:3000",
+	"https://web.localhost:3000",
+])("shares the public product URL when the app runs on %s", (origin) => {
+	expect(getProductShareUrl(origin, "one", "zh")).toBe(
+		"https://takonbini.com/products/one?lang=zh",
+	);
+});
+it("passes public URLs to Facebook and LinkedIn during local review", () => {
+	apis();
+	render(<ProductShareAction productId="one" language="zh" title="商品" />);
+	fireEvent.click(
+		screen.getByRole("button", { name: "product.details.share" }),
+	);
+	const facebook = new URL(
+		screen.getByRole<HTMLAnchorElement>("link", { name: "Facebook" }).href,
+	);
+	const linkedin = new URL(
+		screen.getByRole<HTMLAnchorElement>("link", { name: "LinkedIn" }).href,
+	);
+	expect(facebook.searchParams.get("u")).toBe(
+		"https://takonbini.com/products/one?lang=zh",
+	);
+	expect(linkedin.searchParams.get("url")).toBe(
+		"https://takonbini.com/products/one?lang=zh",
+	);
+});
+
+it("retains a public preview's origin for isolated review", () => {
+	expect(getProductShareUrl("https://preview.example.com", "one", "en")).toBe(
+		"https://preview.example.com/products/one?lang=en",
+	);
 });
