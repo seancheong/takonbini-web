@@ -1,0 +1,280 @@
+{
+  "axeVersion": "4.10.3",
+  "environment": "compiled local Vite preview with loopback-only HTTP503/delay proxy and local-only axe instrumentation",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "scans": [
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "modal-initial-loading",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 16,
+      "passingContrastNodes": 1,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "modal-error",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 19,
+      "passingContrastNodes": 4,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "modal-retry-loading",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 19,
+      "passingContrastNodes": 4,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-error",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-error",
+      "locale": "en",
+      "theme": "light",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-retry-loading",
+      "locale": "en",
+      "theme": "light",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-retry-loading",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-error",
+      "locale": "ja",
+      "theme": "light",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-error",
+      "locale": "ja",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-retry-loading",
+      "locale": "ja",
+      "theme": "light",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-retry-loading",
+      "locale": "ja",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-error",
+      "locale": "zh-Hant",
+      "theme": "light",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-error",
+      "locale": "zh-Hant",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-retry-loading",
+      "locale": "zh-Hant",
+      "theme": "light",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "first compiled implementation (before leave-during-retry guard and explanatory-copy refinement)",
+      "surface": "standalone-retry-loading",
+      "locale": "zh-Hant",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "en",
+      "theme": "light",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "ja",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "ja",
+      "theme": "light",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "ja",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "zh-Hant",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "zh-Hant",
+      "theme": "light",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "zh-Hant",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-retry-loading",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    },
+    {
+      "build": "final implementation f3746ef",
+      "surface": "standalone-error",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRuleCount": 36,
+      "passingContrastNodes": 7,
+      "manualReview": []
+    }
+  ]
+}

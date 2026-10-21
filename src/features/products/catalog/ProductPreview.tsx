@@ -97,7 +97,18 @@ export default function ProductPreview({
 				</div>
 				<CatchBoundary
 					getResetKey={() => id}
-					errorComponent={() => <ProductDetailError filters={filters} />}
+					errorComponent={({ reset }) => (
+						<ProductDetailError
+							id={id}
+							filters={filters}
+							onRecovered={() => {
+								reset();
+								dialog.current
+									?.querySelector<HTMLButtonElement>("button")
+									?.focus({ preventScroll: true });
+							}}
+						/>
+					)}
 				>
 					<Suspense fallback={<ProductDetailPending modal />}>
 						<ProductDetailScreen

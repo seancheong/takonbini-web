@@ -70,6 +70,8 @@ export default {
 				priceIntegerError: "請輸入0以上的整數金額（日圓）。",
 			},
 			details: {
+				retryError: "無法載入此商品，請再試一次。",
+				loading: "正在載入商品詳情…",
 				copyLink: "複製連結",
 				moreApps: "更多應用程式…",
 				closeShare: "關閉分享",
@@ -90,7 +92,7 @@ export default {
 				releaseDate: "發售日期",
 				source: "查看商店官網",
 				notFoundTitle: "無法顯示商品",
-				notFoundBody: "無法載入此商品，請返回商品列表瀏覽其他商品。",
+				notFoundBody: "請再試一次，或返回商品列表瀏覽其他商品。",
 			},
 			store: {
 				sevenEleven: "7-Eleven",

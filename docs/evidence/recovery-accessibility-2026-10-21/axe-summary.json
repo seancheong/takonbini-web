@@ -1,0 +1,2897 @@
+{
+  "revision": "57b9c74343a2388b3df7a92e534ee104fd2fb931",
+  "environment": "local development build, local-only fault/audit proxy",
+  "axeVersion": "4.10.3",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "scans": [
+    {
+      "surface": "catalog",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-deprecated-role",
+          "count": 2
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 10
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-required-attr",
+          "count": 2
+        },
+        {
+          "id": "aria-roles",
+          "count": 2
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 32
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 33
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 26
+        },
+        {
+          "id": "button-name",
+          "count": 10
+        },
+        {
+          "id": "bypass",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 157
+        },
+        {
+          "id": "document-title",
+          "count": 1
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 22
+        },
+        {
+          "id": "heading-order",
+          "count": 22
+        },
+        {
+          "id": "html-has-lang",
+          "count": 1
+        },
+        {
+          "id": "html-lang-valid",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 22
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 22
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "landmark-banner-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-main-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-banner",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-one-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-unique",
+          "count": 2
+        },
+        {
+          "id": "link-name",
+          "count": 21
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 29
+        },
+        {
+          "id": "page-has-heading-one",
+          "count": 1
+        },
+        {
+          "id": "presentation-role-conflict",
+          "count": 1
+        },
+        {
+          "id": "region",
+          "count": 364
+        },
+        {
+          "id": "valid-lang",
+          "count": 40
+        }
+      ],
+      "manualReview": [
+        {
+          "id": "aria-valid-attr-value",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 11
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "surface": "catalog",
+      "locale": "en",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-deprecated-role",
+          "count": 2
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 10
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-required-attr",
+          "count": 2
+        },
+        {
+          "id": "aria-roles",
+          "count": 2
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 32
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 33
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 27
+        },
+        {
+          "id": "button-name",
+          "count": 10
+        },
+        {
+          "id": "bypass",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 157
+        },
+        {
+          "id": "document-title",
+          "count": 1
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 22
+        },
+        {
+          "id": "heading-order",
+          "count": 22
+        },
+        {
+          "id": "html-has-lang",
+          "count": 1
+        },
+        {
+          "id": "html-lang-valid",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 22
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 22
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "landmark-banner-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-main-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-banner",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-one-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-unique",
+          "count": 2
+        },
+        {
+          "id": "link-name",
+          "count": 21
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 29
+        },
+        {
+          "id": "page-has-heading-one",
+          "count": 1
+        },
+        {
+          "id": "presentation-role-conflict",
+          "count": 1
+        },
+        {
+          "id": "region",
+          "count": 364
+        },
+        {
+          "id": "valid-lang",
+          "count": 40
+        }
+      ],
+      "manualReview": [
+        {
+          "id": "aria-valid-attr-value",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 11
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "surface": "catalog",
+      "locale": "ja",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-deprecated-role",
+          "count": 2
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 10
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-required-attr",
+          "count": 2
+        },
+        {
+          "id": "aria-roles",
+          "count": 2
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 32
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 33
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 26
+        },
+        {
+          "id": "button-name",
+          "count": 10
+        },
+        {
+          "id": "bypass",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 137
+        },
+        {
+          "id": "document-title",
+          "count": 1
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 22
+        },
+        {
+          "id": "heading-order",
+          "count": 22
+        },
+        {
+          "id": "html-has-lang",
+          "count": 1
+        },
+        {
+          "id": "html-lang-valid",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 22
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 22
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "landmark-banner-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-main-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-banner",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-one-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-unique",
+          "count": 2
+        },
+        {
+          "id": "link-name",
+          "count": 21
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 29
+        },
+        {
+          "id": "page-has-heading-one",
+          "count": 1
+        },
+        {
+          "id": "presentation-role-conflict",
+          "count": 1
+        },
+        {
+          "id": "region",
+          "count": 344
+        },
+        {
+          "id": "valid-lang",
+          "count": 20
+        }
+      ],
+      "manualReview": [
+        {
+          "id": "aria-valid-attr-value",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 11
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "surface": "catalog",
+      "locale": "ja",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-deprecated-role",
+          "count": 2
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 10
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-required-attr",
+          "count": 2
+        },
+        {
+          "id": "aria-roles",
+          "count": 2
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 32
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 33
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 27
+        },
+        {
+          "id": "button-name",
+          "count": 10
+        },
+        {
+          "id": "bypass",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 137
+        },
+        {
+          "id": "document-title",
+          "count": 1
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 22
+        },
+        {
+          "id": "heading-order",
+          "count": 22
+        },
+        {
+          "id": "html-has-lang",
+          "count": 1
+        },
+        {
+          "id": "html-lang-valid",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 22
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 22
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "landmark-banner-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-main-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-banner",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-one-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-unique",
+          "count": 2
+        },
+        {
+          "id": "link-name",
+          "count": 21
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 29
+        },
+        {
+          "id": "page-has-heading-one",
+          "count": 1
+        },
+        {
+          "id": "presentation-role-conflict",
+          "count": 1
+        },
+        {
+          "id": "region",
+          "count": 344
+        },
+        {
+          "id": "valid-lang",
+          "count": 20
+        }
+      ],
+      "manualReview": [
+        {
+          "id": "aria-valid-attr-value",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 11
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "surface": "catalog",
+      "locale": "zh-Hant",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-deprecated-role",
+          "count": 2
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 10
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-required-attr",
+          "count": 2
+        },
+        {
+          "id": "aria-roles",
+          "count": 2
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 32
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 33
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 26
+        },
+        {
+          "id": "button-name",
+          "count": 10
+        },
+        {
+          "id": "bypass",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 157
+        },
+        {
+          "id": "document-title",
+          "count": 1
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 22
+        },
+        {
+          "id": "heading-order",
+          "count": 22
+        },
+        {
+          "id": "html-has-lang",
+          "count": 1
+        },
+        {
+          "id": "html-lang-valid",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 22
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 22
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "landmark-banner-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-main-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-banner",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-one-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-unique",
+          "count": 2
+        },
+        {
+          "id": "link-name",
+          "count": 21
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 29
+        },
+        {
+          "id": "page-has-heading-one",
+          "count": 1
+        },
+        {
+          "id": "presentation-role-conflict",
+          "count": 1
+        },
+        {
+          "id": "region",
+          "count": 364
+        },
+        {
+          "id": "valid-lang",
+          "count": 40
+        }
+      ],
+      "manualReview": [
+        {
+          "id": "aria-valid-attr-value",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 11
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "surface": "catalog",
+      "locale": "zh-Hant",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-deprecated-role",
+          "count": 2
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 10
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 33
+        },
+        {
+          "id": "aria-required-attr",
+          "count": 2
+        },
+        {
+          "id": "aria-roles",
+          "count": 2
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 32
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 33
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 27
+        },
+        {
+          "id": "button-name",
+          "count": 10
+        },
+        {
+          "id": "bypass",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 157
+        },
+        {
+          "id": "document-title",
+          "count": 1
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 22
+        },
+        {
+          "id": "heading-order",
+          "count": 22
+        },
+        {
+          "id": "html-has-lang",
+          "count": 1
+        },
+        {
+          "id": "html-lang-valid",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 22
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 22
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "landmark-banner-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-main-is-top-level",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-banner",
+          "count": 1
+        },
+        {
+          "id": "landmark-no-duplicate-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-one-main",
+          "count": 1
+        },
+        {
+          "id": "landmark-unique",
+          "count": 2
+        },
+        {
+          "id": "link-name",
+          "count": 21
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 29
+        },
+        {
+          "id": "page-has-heading-one",
+          "count": 1
+        },
+        {
+          "id": "presentation-role-conflict",
+          "count": 1
+        },
+        {
+          "id": "region",
+          "count": 364
+        },
+        {
+          "id": "valid-lang",
+          "count": 40
+        }
+      ],
+      "manualReview": [
+        {
+          "id": "aria-valid-attr-value",
+          "count": 1
+        },
+        {
+          "id": "color-contrast",
+          "count": 11
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "surface": "filters",
+      "locale": "en",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 11
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 4
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 41
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 3
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 34
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 34
+        },
+        {
+          "id": "label",
+          "count": 34
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 35
+        },
+        {
+          "id": "region",
+          "count": 93
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "product-modal",
+      "locale": "en",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 14
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 3
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 2
+        },
+        {
+          "id": "color-contrast",
+          "count": 16
+        },
+        {
+          "id": "definition-list",
+          "count": 1
+        },
+        {
+          "id": "dlitem",
+          "count": 8
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 1
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 32
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        },
+        {
+          "id": "valid-lang",
+          "count": 2
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "nested-share",
+      "locale": "en",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 22
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 5
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 9
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 2
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 5
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 29
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "filters",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 11
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 4
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 41
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 3
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 34
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 34
+        },
+        {
+          "id": "label",
+          "count": 34
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 35
+        },
+        {
+          "id": "region",
+          "count": 93
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "product-modal",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 14
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 3
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 2
+        },
+        {
+          "id": "color-contrast",
+          "count": 16
+        },
+        {
+          "id": "definition-list",
+          "count": 1
+        },
+        {
+          "id": "dlitem",
+          "count": 8
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 1
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 32
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        },
+        {
+          "id": "valid-lang",
+          "count": 2
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "nested-share",
+      "locale": "en",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 22
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 5
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 9
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 2
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 5
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 29
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "filters",
+      "locale": "ja",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 11
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 4
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 41
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 3
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 34
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 34
+        },
+        {
+          "id": "label",
+          "count": 34
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 35
+        },
+        {
+          "id": "region",
+          "count": 93
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "product-modal",
+      "locale": "ja",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 14
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 3
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 2
+        },
+        {
+          "id": "color-contrast",
+          "count": 16
+        },
+        {
+          "id": "definition-list",
+          "count": 1
+        },
+        {
+          "id": "dlitem",
+          "count": 8
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 1
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 32
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        },
+        {
+          "id": "valid-lang",
+          "count": 2
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "nested-share",
+      "locale": "ja",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 22
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 5
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 9
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 2
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 5
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 29
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "filters",
+      "locale": "ja",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 11
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 4
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 41
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 3
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 34
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 34
+        },
+        {
+          "id": "label",
+          "count": 34
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 35
+        },
+        {
+          "id": "region",
+          "count": 93
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "product-modal",
+      "locale": "ja",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 14
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 3
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 2
+        },
+        {
+          "id": "color-contrast",
+          "count": 16
+        },
+        {
+          "id": "definition-list",
+          "count": 1
+        },
+        {
+          "id": "dlitem",
+          "count": 8
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 1
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 32
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        },
+        {
+          "id": "valid-lang",
+          "count": 2
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "nested-share",
+      "locale": "ja",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 22
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 5
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 9
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 2
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 5
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 29
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "filters",
+      "locale": "zh-Hant",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 11
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 4
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 43
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 3
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 34
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 34
+        },
+        {
+          "id": "label",
+          "count": 34
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 35
+        },
+        {
+          "id": "region",
+          "count": 93
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "product-modal",
+      "locale": "zh-Hant",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 14
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 3
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 2
+        },
+        {
+          "id": "color-contrast",
+          "count": 16
+        },
+        {
+          "id": "definition-list",
+          "count": 1
+        },
+        {
+          "id": "dlitem",
+          "count": 8
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 1
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 32
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        },
+        {
+          "id": "valid-lang",
+          "count": 2
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "nested-share",
+      "locale": "zh-Hant",
+      "theme": "light",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 22
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 5
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 9
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 2
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 5
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 29
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "filters",
+      "locale": "zh-Hant",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 11
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 4
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 4
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 43
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 3
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 34
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 34
+        },
+        {
+          "id": "label",
+          "count": 34
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 35
+        },
+        {
+          "id": "region",
+          "count": 93
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "product-modal",
+      "locale": "zh-Hant",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 14
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 3
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 3
+        },
+        {
+          "id": "avoid-inline-spacing",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 2
+        },
+        {
+          "id": "color-contrast",
+          "count": 16
+        },
+        {
+          "id": "definition-list",
+          "count": 1
+        },
+        {
+          "id": "dlitem",
+          "count": 8
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 1
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "image-alt",
+          "count": 1
+        },
+        {
+          "id": "image-redundant-alt",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 32
+        },
+        {
+          "id": "scrollable-region-focusable",
+          "count": 1
+        },
+        {
+          "id": "valid-lang",
+          "count": 2
+        }
+      ],
+      "manualReview": []
+    },
+    {
+      "surface": "nested-share",
+      "locale": "zh-Hant",
+      "theme": "dark",
+      "violations": [],
+      "passingRules": [
+        {
+          "id": "aria-allowed-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-allowed-role",
+          "count": 2
+        },
+        {
+          "id": "aria-conditional-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-hidden-body",
+          "count": 1
+        },
+        {
+          "id": "aria-hidden-focus",
+          "count": 22
+        },
+        {
+          "id": "aria-prohibited-attr",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr-value",
+          "count": 5
+        },
+        {
+          "id": "aria-valid-attr",
+          "count": 5
+        },
+        {
+          "id": "autocomplete-valid",
+          "count": 1
+        },
+        {
+          "id": "button-name",
+          "count": 3
+        },
+        {
+          "id": "color-contrast",
+          "count": 9
+        },
+        {
+          "id": "duplicate-id-aria",
+          "count": 2
+        },
+        {
+          "id": "empty-heading",
+          "count": 1
+        },
+        {
+          "id": "form-field-multiple-labels",
+          "count": 1
+        },
+        {
+          "id": "heading-order",
+          "count": 1
+        },
+        {
+          "id": "label-title-only",
+          "count": 1
+        },
+        {
+          "id": "label",
+          "count": 1
+        },
+        {
+          "id": "link-name",
+          "count": 5
+        },
+        {
+          "id": "meta-viewport-large",
+          "count": 1
+        },
+        {
+          "id": "meta-viewport",
+          "count": 1
+        },
+        {
+          "id": "nested-interactive",
+          "count": 3
+        },
+        {
+          "id": "region",
+          "count": 29
+        }
+      ],
+      "manualReview": []
+    }
+  ]
+}

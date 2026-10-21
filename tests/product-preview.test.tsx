@@ -1,7 +1,14 @@
 // @vitest-environment jsdom
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import {
+	cleanup,
+	fireEvent,
+	render,
+	screen,
+	waitFor,
+} from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import ProductDetailPending from "@/features/products/detail/ProductDetailPending";
 import ProductPreview from "@/features/products/catalog/ProductPreview";
 import { productByIdQueryOptions } from "@/features/products/data/product-queries";
 import { Store } from "@/features/products/model/product-values";
@@ -16,6 +23,12 @@ vi.mock("@tanstack/react-router", async (importOriginal) => ({
 	Link: ({ children }: { children: React.ReactNode }) => (
 		<span>{children}</span>
 	),
+}));
+const readProduct = vi.hoisted(() => vi.fn());
+vi.mock("@/features/products/data/products-http-client", () => ({
+	getProductById: readProduct,
+	getProducts: vi.fn(),
+	getProductsPage: vi.fn(),
 }));
 vi.mock("react-i18next", () => ({
 	useTranslation: () => ({ t: (key: string) => key, i18n: { language: "en" } }),
@@ -143,4 +156,77 @@ describe("product preview", () => {
 		);
 		expect(close).toHaveBeenCalledOnce();
 	});
+});
+
+it.each([false, true])(
+	"announces detail loading with decorative skeletons hidden (modal=%s)",
+	(modal) => {
+		const view = render(<ProductDetailPending modal={modal} />);
+		expect(screen.getByRole("status").textContent).toBe(
+			"product.details.loading",
+		);
+		expect(view.container.querySelector('[aria-hidden="true"]')).toBeTruthy();
+	},
+);
+it("retries the failed product in place, handles another failure, and then recovers", async () => {
+	vi.spyOn(console, "error").mockImplementation(() => {});
+	readProduct
+		.mockReset()
+		.mockRejectedValueOnce(new Error("offline"))
+		.mockRejectedValueOnce(new Error("still offline"));
+	const client = new QueryClient({
+		defaultOptions: { queries: { retry: false } },
+	});
+	render(
+		<QueryClientProvider client={client}>
+			<ProductPreview
+				id={product.id}
+				product={product}
+				filters={{ stores: [product.store] }}
+				onClose={() => {}}
+			/>
+		</QueryClientProvider>,
+	);
+	try {
+		await screen.findByRole("heading", {
+			name: "product.details.notFoundTitle",
+		});
+		fireEvent.click(screen.getByRole("button", { name: "product.retry" }));
+		await waitFor(() => expect(readProduct).toHaveBeenCalledTimes(2));
+		await waitFor(() =>
+			expect(
+				screen
+					.getByRole("button", { name: "product.retry" })
+					.hasAttribute("disabled"),
+			).toBe(false),
+		);
+		expect(
+			screen.getByRole("heading", { name: "product.details.notFoundTitle" }),
+		).toBeTruthy();
+		let release: (value: PublicProduct) => void = () => {};
+		readProduct.mockImplementationOnce(
+			() =>
+				new Promise<PublicProduct>((resolve) => {
+					release = resolve;
+				}),
+		);
+		fireEvent.click(screen.getByRole("button", { name: "product.retry" }));
+		expect(screen.getByRole("status").textContent).toBe(
+			"product.details.loading",
+		);
+		expect(
+			screen
+				.getByRole("button", { name: "product.retry" })
+				.hasAttribute("disabled"),
+		).toBe(true);
+		await waitFor(() => expect(readProduct).toHaveBeenCalledTimes(3));
+		release(product);
+		await screen.findByRole("heading", { name: "Rice ball" });
+		expect(screen.queryByRole("button", { name: "product.retry" })).toBeNull();
+		expect(document.activeElement).toBe(
+			screen.getByRole("button", { name: "product.details.close" }),
+		);
+	} finally {
+		client.clear();
+	}
 });

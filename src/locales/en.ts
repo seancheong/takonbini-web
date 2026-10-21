@@ -74,6 +74,8 @@ export default {
 				priceIntegerError: "Enter a whole number of yen, 0 or greater.",
 			},
 			details: {
+				retryError: "This product could not be loaded. Try again.",
+				loading: "Loading product details…",
 				copyLink: "Copy link",
 				moreApps: "More apps…",
 				closeShare: "Close sharing",
@@ -96,7 +98,7 @@ export default {
 				source: "View on store website",
 				notFoundTitle: "Product unavailable",
 				notFoundBody:
-					"This product could not be loaded. Return to the catalog to browse other products.",
+					"Try again, or return to the catalog to browse other products.",
 			},
 			store: {
 				sevenEleven: "7-Eleven",

@@ -225,3 +225,18 @@ link card carries the product. No post was published. See
 [handoff evidence](../evidence/product-share-handoff-2026-10-21.md) for the initial
 interruption and completed follow-up. WhatsApp and broader native-device coverage
 remain unverified. The maintainer reports local X and Email success.
+
+## Detail loading and retry recovery (#27)
+
+`ProductDetailPending` exposes localized `product.details.loading` in a polite
+native output. Its visual skeleton container is hidden from assistive technology;
+Close remains the initial focus target inside a pending product modal.
+
+`ProductDetailError` requires `id`, `filters` and `onRecovered`. Its owned neutral
+`retry` action fetches that product with `staleTime: 0`, disables duplicate retries,
+and announces loading or a repeated failure. Only a successful fetch invokes
+`onRecovered`; failure keeps the existing error and catalog-return controls.
+The modal resets its CatchBoundary and focuses Close. The standalone error route
+invalidates the router after the fresh query succeeds and focuses the loaded h1
+(which has `tabIndex={-1}` and does not join ordinary Tab order). Neither action
+clears unrelated queries or navigates away from the selected product to retry.

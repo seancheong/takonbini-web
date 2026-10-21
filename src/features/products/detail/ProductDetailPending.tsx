@@ -1,4 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
+import { useTranslation } from "react-i18next";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
 export default function ProductDetailPending({
@@ -6,11 +7,15 @@ export default function ProductDetailPending({
 }: {
 	modal?: boolean;
 }) {
+	const { t } = useTranslation();
 	return (
 		<div
 			{...stylex.props(layoutStyles.screen, modal && layoutStyles.modalScreen)}
 		>
-			<div {...stylex.props(layoutStyles.container)}>
+			<output aria-live="polite" {...stylex.props(layoutStyles.status)}>
+				{t("product.details.loading")}
+			</output>
+			<div aria-hidden="true" {...stylex.props(layoutStyles.container)}>
 				{!modal && <div {...stylex.props(layoutStyles.backSkeleton)} />}
 				<div {...stylex.props(layoutStyles.columns)}>
 					<div {...stylex.props(layoutStyles.imageSkeleton)} />
@@ -30,6 +35,14 @@ const pulse = stylex.keyframes({
 	},
 });
 const layoutStyles = stylex.create({
+	status: {
+		display: "block",
+		color: colors.mutedForeground,
+		fontSize: "0.875rem",
+		lineHeight: "1.25rem",
+		maxWidth: "72rem",
+		marginInline: "auto",
+	},
 	modalScreen: { minHeight: 0, padding: "32px", paddingTop: "52px" },
 	screen: {
 		minHeight: "calc(100dvh - var(--header-height))",
