@@ -122,6 +122,11 @@ export default function ProductShareAction({
 			brand: "x",
 			href: `https://twitter.com/intent/tweet?${new URLSearchParams({ url, text: title })}`,
 		},
+		{
+			name: "LinkedIn",
+			brand: "linkedin",
+			href: `https://www.linkedin.com/sharing/share-offsite/?${new URLSearchParams({ url })}`,
+		},
 	] as const;
 	function isBackdrop(event: React.PointerEvent<HTMLDialogElement>) {
 		const bounds = event.currentTarget.getBoundingClientRect();
@@ -478,6 +483,10 @@ const styles = stylex.create({
 		color: colors.shareBrandForeground,
 	},
 	x: { backgroundColor: colors.shareX, color: colors.shareBrandForeground },
+	linkedin: {
+		backgroundColor: colors.shareLinkedIn,
+		color: colors.shareBrandForeground,
+	},
 	linkRow: {
 		display: "flex",
 		alignItems: "center",

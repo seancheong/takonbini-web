@@ -28,7 +28,7 @@ must document its real action before extracting a shared component.
 | Empty reset | CatalogPanel `clearFilters` | Clear applied filters; no destructive treatment |
 | Store choice | CatalogControls `storeChoice` | Immediate single-store choice; aria-pressed; store edge |
 | Applied chip | CatalogControls `filterChip` / `clearFilters` | Remove one filter or clear all |
-| Share product | [ProductShareAction](../../src/features/products/detail/ProductShareAction.tsx) `styles.share` | Opens a native share dialog with circular brand-logo destinations and names: Facebook, WhatsApp, X, Email and supported native More apps. Always-visible clean URL/Copy row. Neutral trigger and copy controls; destinations/Close/arrows have 44px minimum targets. Copy/native actions disable while pending. |
+| Share product | [ProductShareAction](../../src/features/products/detail/ProductShareAction.tsx) `styles.share` | Opens a native share dialog with circular brand-logo destinations and names: Facebook, WhatsApp, X, LinkedIn, Email and supported native More apps. Always-visible clean URL/Copy row. Neutral trigger and copy controls; destinations/Close/arrows have 44px minimum targets. Copy/native actions disable while pending. |
 | Scroll action | [ScrollTopButton](../../src/components/ScrollTopButton.tsx) | Dedicated primary-token icon control; no variants |
 
 Search/Apply are the only catalog primary actions. The scroll action preserves

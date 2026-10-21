@@ -1,6 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 
 export const colors = stylex.defineVars({
+	shareLinkedIn: "#0a66c2",
 	shareFacebook: "#1877f2",
 	shareWhatsApp: "#128c4a",
 	shareX: "#0f1419",

@@ -284,3 +284,22 @@ it("handles native dialog cancellation without propagating to the product modal"
 	expect(screen.queryByRole("dialog")).toBeNull();
 	expect(document.documentElement.style.overflow).toBe("");
 });
+
+it("opens LinkedIn sharing with an encoded clean localized product URL", () => {
+	apis();
+	render(<ProductShareAction productId="one" language="zh" title="商品" />);
+	fireEvent.click(
+		screen.getByRole("button", { name: "product.details.share" }),
+	);
+	const link = screen.getByRole<HTMLAnchorElement>("link", {
+		name: "LinkedIn",
+	});
+	const url = new URL(link.href);
+	expect(url.origin).toBe("https://www.linkedin.com");
+	expect(url.pathname).toBe("/sharing/share-offsite/");
+	expect([...url.searchParams]).toEqual([
+		["url", `${location.origin}/products/one?lang=zh`],
+	]);
+	expect(link.target).toBe("_blank");
+	expect(link.rel).toBe("noopener noreferrer");
+});
