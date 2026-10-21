@@ -15,7 +15,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { getCookie, getRequestUrl } from "@tanstack/react-start/server";
 import { Analytics } from "@vercel/analytics/react";
 import type { i18n as I18n } from "i18next";
-import { useEffect } from "react";
+import { type PropsWithChildren, useEffect } from "react";
+import NavigationError, {
+	NavigationPending,
+} from "../components/NavigationError";
 import { useTranslation } from "react-i18next";
 import {
 	type ActiveCatalogProduct,
@@ -65,6 +68,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		if (!preload) await setSSRLanguage(context.i18n, search.lang);
 	},
 	loader: () => loaderFn(),
+	staleTime: Infinity,
+	errorComponent: NavigationError,
+	pendingComponent: NavigationPending,
+	shellComponent: RootDocument,
 	head: ({ match, matches, loaderData }) => {
 		const { i18n } = match.context;
 		const baseUrl = (loaderData?.siteUrl ?? "https://takonbini.com").replace(
@@ -197,10 +204,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		};
 	},
 
-	component: RootDocument,
+	component: Outlet,
 });
 
-function RootDocument() {
+function RootDocument({ children }: PropsWithChildren) {
 	const { i18n } = useTranslation();
 	const router = useRouter();
 	const urlLanguage = useRouterState({
@@ -214,7 +221,7 @@ function RootDocument() {
 			);
 		}
 	}, [router, urlLanguage, i18n.language]);
-	const { savedTheme } = Route.useLoaderData();
+	const savedTheme = Route.useLoaderData()?.savedTheme;
 	const resolvedTheme = isTheme(savedTheme) ? savedTheme : "system";
 
 	useEffect(() => {
@@ -267,9 +274,7 @@ function RootDocument() {
 				<ThemeProvider defaultTheme={resolvedTheme} cookieKey={themeCookieKey}>
 					<Header />
 
-					<main>
-						<Outlet />
-					</main>
+					<main>{children}</main>
 
 					<TanStackDevtools
 						config={{
