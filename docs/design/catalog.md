@@ -217,9 +217,11 @@ when the long browsing link did not. Clean links address that observed differenc
 no universal parsing rule or platform preview-cache guarantee is claimed.
 
 Local browser reproduction of the reported Facebook failure: the localhost URL
-opened a completely empty composer with Share disabled. The public-URL control
-began loading a link attachment, but its completed editor was not verified before
-an unrelated sign-in dialog blocked native browser inspection. This supports
-fixing the private URL handed off by local review; it does not establish a final
-Facebook/LinkedIn platform pass. LinkedIn and WhatsApp remain awaiting completed
-editor/device verification. The maintainer reports local X and Email success.
+opened a completely empty composer with Share disabled. Follow-up authenticated
+Arc desktop checks with the public URL pass: Facebook shows the product image,
+title/domain and enabled Share; LinkedIn finishes loading a product thumbnail,
+title/domain in its composer. The optional text field can remain empty while the
+link card carries the product. No post was published. See
+[handoff evidence](../evidence/product-share-handoff-2026-10-21.md) for the initial
+interruption and completed follow-up. WhatsApp and broader native-device coverage
+remain unverified. The maintainer reports local X and Email success.

@@ -43,10 +43,30 @@ lint, build, compiled 14-case crawler HTML and native image isolation checks pas
 Local browser inspection confirms public HTTPS product URLs in both destination
 parameters and the displayed copy field.
 
-## Remaining gate
+## Initial remaining gate (superseded by the follow-up below)
 
 Verify completed Facebook and LinkedIn composers with the corrected local buttons,
 then verify WhatsApp and remaining target/device behavior separately. A product
 link attachment is a valid handoff even when the optional commentary text area
 is empty; a completely empty editor is not a pass. No final platform pass, merge
 or production release is claimed by this evidence.
+
+## Follow-up — authenticated desktop editors verified
+
+After the maintainer made Arc available, the exact public URL handoffs used by
+the corrected local buttons were verified in authenticated desktop browser sessions.
+
+- **Facebook passes:** the editor contains the product photograph, title and
+  Takonbini domain, and Share is enabled. The optional commentary field is empty,
+  but the product is present as a link attachment. This differs from the earlier
+  localhost reproduction, which had no attachment and disabled Share.
+- **LinkedIn passes:** its sharing endpoint reaches the post composer, finishes
+  loading, and displays the product thumbnail, title and Takonbini domain.
+- No Share/Post action was pressed. Private screenshots are retained locally,
+  excluding account information and raw page content from public evidence.
+
+This completes the scoped desktop Facebook/LinkedIn public-link editor check.
+It supports the loopback-to-public URL correction; it is not a claim that every
+browser/native app/device behaves identically. The maintainer's X/Email reports
+remain separate from these observed checks. WhatsApp, native-device coverage,
+PR-specific merge approval and exact production release verification remain open.
