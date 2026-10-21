@@ -179,9 +179,13 @@ it("closes sharing on Escape and returns focus to its trigger", () => {
 	fireEvent.click(
 		screen.getByRole("button", { name: "product.details.share" }),
 	);
-	fireEvent.keyDown(screen.getByRole("link", { name: "Facebook" }), {
+	const escapeKey = new KeyboardEvent("keydown", {
 		key: "Escape",
+		bubbles: true,
+		cancelable: true,
 	});
+	fireEvent(screen.getByRole("link", { name: "Facebook" }), escapeKey);
+	expect(escapeKey.defaultPrevented).toBe(true);
 	expect(screen.queryByRole("link", { name: "Facebook" })).toBeNull();
 	expect(document.activeElement).toBe(
 		screen.getByRole("button", { name: "product.details.share" }),

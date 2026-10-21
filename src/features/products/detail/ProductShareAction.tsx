@@ -80,6 +80,7 @@ export default function ProductShareAction({
 					aria-label={t("product.details.share")}
 					onKeyDown={(event) => {
 						if (event.key === "Escape") {
+							event.preventDefault();
 							event.stopPropagation();
 							setExpanded(false);
 							triggerRef.current?.focus();
