@@ -52,8 +52,8 @@
     "lightningcss": "1.33.0",
     "typescript": "^5.7.2",
     "unplugin": "2.3.11",
-    "vite": "^7.3.5",
-    "vitest": "^4.1.11",
+    "vite": "^7.3.7",
+    "vitest": "^4.1.12",
     "web-vitals": "^5.1.0"
   }
 }
