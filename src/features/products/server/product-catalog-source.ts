@@ -1,3 +1,4 @@
+import type { Language } from "@/localization";
 import type { ActiveCatalogProduct, CatalogPage } from "../products.contracts";
 
 export type CatalogFailureKind =
@@ -23,7 +24,10 @@ export interface ProductCatalogSource {
 		id: string,
 		parameters?: URLSearchParams,
 	): Promise<CatalogResult<ActiveCatalogProduct>>;
-	listIndexableIds(): Promise<
-		CatalogResult<{ ids: string[]; complete: boolean }>
+	listIndexableProducts(): Promise<
+		CatalogResult<{
+			products: { id: string; languages: Language[] }[];
+			complete: boolean;
+		}>
 	>;
 }

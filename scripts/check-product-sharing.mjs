@@ -22,10 +22,16 @@ const products = ["one", "two", "no-photo", "fallback"].map((id, index) => ({
 }));
 products[3].title = { ja: "日本語の代替タイトル" };
 products[3].description = { ja: "", zh: "中文描述" };
+products.push({...products[0], id: "mixed", title: {ja: "商品", en: "Product"}, description: {ja: "説明"}});
+let indexReads = 0;
+let oversizedIndex = false;
 const api = createServer((request, response) => {
 	response.setHeader("content-type", "application/json");
 	const path = new URL(request.url, "http://fixture.test").pathname;
-	if (path === "/products") return response.end(JSON.stringify({ products }));
+	if (path === "/products") {
+		indexReads++;
+		return response.end(JSON.stringify({ products: oversizedIndex ? Array.from({length:16666}, (_,i) => ({...products[0],id:String(i)})) : products }));
+	}
 	const product = products.find((item) => path === `/products/${item.id}`);
 	response.statusCode = product ? 200 : 404;
 	response.end(JSON.stringify(product ?? { error: "Not found" }));
@@ -84,8 +90,13 @@ try {
 			])
 				assert.deepEqual(meta(html, key), [description]);
 			assert.deepEqual(meta(html, "og:url"), [
-				`https://canonical.example.test/products/${product.id}`,
+				`https://canonical.example.test/products/${product.id}?lang=${product.id === "fallback" || (product.id === "mixed" && locale === "zh") ? "ja" : locale}`,
 			]);
+			const alternates = Array.from(html.matchAll(/<link\b[^>]*>/g), ([tag]) => Object.fromEntries(Array.from(tag.matchAll(/([\w:-]+)="([^"]*)"/g), ([,key,value]) => [key.toLowerCase(),value]))).filter(link => link.hreflang);
+			const expectedLanguages = product.id === "fallback" || (product.id === "mixed" && locale === "en") ? [] : product.id === "mixed" ? ["ja"] : ["en","zh-Hant","ja"];
+			assert.deepEqual(alternates.map(link => link.hreflang), expectedLanguages.length ? [...expectedLanguages,"x-default"] : []);
+			for (const link of alternates) assert.ok(link.href.startsWith(`https://canonical.example.test/products/${product.id}?lang=`));
+
 			const image = product.images[0]
 				? `https://sharing.example.test/api/share-image?url=${encodeURIComponent(product.images[0])}`
 				: "https://sharing.example.test/share-default.jpg";
@@ -143,12 +154,21 @@ try {
 		assert.ok(html.includes(`rel="canonical" href="https://canonical.example.test/?lang=${locale}"`));
 	}
 
+	const indexReadsBefore = indexReads;
 	const sitemapResponse = await app.fetch(new Request("https://sharing.example.test/sitemap.xml"));
 	assert.equal(sitemapResponse.status, 200);
 	const sitemap = await sitemapResponse.text();
 	const locations = Array.from(sitemap.matchAll(/<loc>(.*?)<\/loc>/g), ([, value]) => value);
 	assert.deepEqual(locations.slice(0, 3), ["en", "zh", "ja"].map(locale => `https://canonical.example.test/?lang=${locale}`));
-	assert.equal(locations.length, products.length + 3);
+	assert.equal(locations.length, 14);
+	assert.ok(locations.includes("https://canonical.example.test/products/fallback?lang=ja"));
+	assert.ok(!locations.some(url => /products\/(fallback|mixed)\?lang=(en|zh)/.test(url)));
+	assert.equal(indexReads - indexReadsBefore, 1);
+	oversizedIndex = true;
+	const oversized = await app.fetch(new Request("https://sharing.example.test/sitemap.xml"));
+	assert.equal(oversized.status, 503);
+	assert.equal(oversized.headers.get("cache-control"), "no-store");
+	assert.doesNotMatch(await oversized.text(), /<urlset/);
 	assert.equal(new Set(locations).size, locations.length);
 
 	const invalid = await app.fetch(

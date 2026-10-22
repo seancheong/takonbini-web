@@ -1,3 +1,4 @@
+import type { Language } from "../localization";
 import { SUPPORTED_LANGUAGES } from "../localization";
 import { createFileRoute } from "@tanstack/react-router";
 import { getProductCatalogSource } from "@/features/products/products.server";
@@ -15,7 +16,10 @@ const getSiteUrl = (request: Request) => {
 const escapeXml = (value: string) =>
 	value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-const buildSitemapXml = (siteUrl: string, ids: string[]) => {
+const buildSitemapXml = (
+	siteUrl: string,
+	products: { id: string; languages: Language[] }[],
+) => {
 	const urls = [
 		...SUPPORTED_LANGUAGES.map(
 			(language) => `  <url>
@@ -24,12 +28,14 @@ const buildSitemapXml = (siteUrl: string, ids: string[]) => {
     <priority>1.0</priority>
   </url>`,
 		),
-		...ids.map(
-			(id) => `  <url>
-    <loc>${escapeXml(`${siteUrl}/products/${encodeURIComponent(id)}`)}</loc>
+		...products.flatMap(({ id, languages }) =>
+			languages.map(
+				(language) => `  <url>
+    <loc>${escapeXml(`${siteUrl}/products/${encodeURIComponent(id)}?lang=${language}`)}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>`,
+			),
 		),
 	];
 
@@ -44,13 +50,17 @@ export const Route = createFileRoute("/sitemap.xml")({
 			createHandlers({
 				GET: async ({ request }) => {
 					const siteUrl = getSiteUrl(request);
-					const result = await getProductCatalogSource().listIndexableIds();
+					const result =
+						await getProductCatalogSource().listIndexableProducts();
 					if (
 						result.ok &&
 						result.value.complete &&
-						result.value.ids.length <= 50_000 - SUPPORTED_LANGUAGES.length
+						result.value.products.reduce<number>(
+							(count, product) => count + product.languages.length,
+							SUPPORTED_LANGUAGES.length,
+						) <= 50_000
 					) {
-						const xml = buildSitemapXml(siteUrl, result.value.ids);
+						const xml = buildSitemapXml(siteUrl, result.value.products);
 						if (new TextEncoder().encode(xml).byteLength <= 52_428_800)
 							return new Response(xml, {
 								status: 200,

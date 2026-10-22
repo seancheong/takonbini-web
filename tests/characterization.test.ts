@@ -393,7 +393,10 @@ describe("sitemap", () => {
 			.fn()
 			.mockResolvedValueOnce(
 				new Response(
-					JSON.stringify({ products: [{ id: "one&two" }], nextCursor: "next" }),
+					JSON.stringify({
+						products: [catalogProduct({ id: "one&two" })],
+						nextCursor: "next",
+					}),
 					{
 						status: 200,
 						headers: { "content-type": "application/json" },
@@ -401,10 +404,13 @@ describe("sitemap", () => {
 				),
 			)
 			.mockResolvedValueOnce(
-				new Response(JSON.stringify({ products: [{ id: "three" }] }), {
-					status: 200,
-					headers: { "content-type": "application/json" },
-				}),
+				new Response(
+					JSON.stringify({ products: [catalogProduct({ id: "three" })] }),
+					{
+						status: 200,
+						headers: { "content-type": "application/json" },
+					},
+				),
 			);
 		vi.stubGlobal("fetch", fetchMock);
 
@@ -461,7 +467,7 @@ describe("sitemap", () => {
 			.mockResolvedValueOnce(
 				new Response(
 					JSON.stringify({
-						products: [{ id: "first-page" }],
+						products: [catalogProduct({ id: "first-page" })],
 						nextCursor: "next",
 					}),
 				),

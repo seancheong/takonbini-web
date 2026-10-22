@@ -36,7 +36,13 @@ export const catalogPageSchema = z.object({
 });
 export type CatalogPage = z.infer<typeof catalogPageSchema>;
 export const catalogIndexPageSchema = z.object({
-	products: z.array(z.object({ id: z.string() })),
+	products: z.array(
+		activeCatalogProductSchema.pick({
+			id: true,
+			title: true,
+			description: true,
+		}),
+	),
 	nextCursor: z.string().optional(),
 });
 

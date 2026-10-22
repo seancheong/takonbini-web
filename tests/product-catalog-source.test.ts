@@ -162,13 +162,16 @@ describe("remote product validation", () => {
 		const fetchMock = vi
 			.fn()
 			.mockResolvedValueOnce(
-				Response.json({ products: [{ id: "first" }], nextCursor: "next" }),
+				Response.json({
+					products: [catalogProduct({ id: "first" })],
+					nextCursor: "next",
+				}),
 			)
 			.mockResolvedValueOnce(new Response("unavailable", { status: 503 }));
 		const result = await createHttpProductCatalogSource({
 			...configuration,
 			fetch: fetchMock,
-		}).listIndexableIds();
+		}).listIndexableProducts();
 		expect(result).toMatchObject({
 			ok: false,
 			origin: "http",
@@ -207,30 +210,36 @@ describe("complete sitemap enumeration", () => {
 			);
 			page++;
 			return Response.json({
-				products: [{ id: `product-${page}` }, { id: "overlap" }],
+				products: [
+					catalogProduct({ id: `product-${page}` }),
+					catalogProduct({ id: "overlap" }),
+				],
 				...(page < 51 ? { nextCursor: String(page) } : {}),
 			});
 		});
 		const result = await createHttpProductCatalogSource({
 			...configuration,
 			fetch: fetchMock,
-		}).listIndexableIds();
+		}).listIndexableProducts();
 		expect(result.ok && result.value.complete).toBe(true);
-		expect(result.ok && result.value.ids).toHaveLength(52);
-		expect(result.ok && result.value.ids).toContain("product-51");
+		expect(result.ok && result.value.products).toHaveLength(52);
+		expect(result.ok && result.value.products).toContainEqual({
+			id: "product-51",
+			languages: ["en", "zh", "ja"],
+		});
 	});
 	it("bounds non-terminating pagination without claiming completeness", async () => {
 		let page = 0;
 		const fetchMock = vi.fn(async () =>
 			Response.json({
-				products: [{ id: String(page) }],
+				products: [catalogProduct({ id: String(page) })],
 				nextCursor: String(++page),
 			}),
 		);
 		const result = await createHttpProductCatalogSource({
 			...configuration,
 			fetch: fetchMock,
-		}).listIndexableIds();
+		}).listIndexableProducts();
 		expect(result.ok && result.value.complete).toBe(false);
 		expect(fetchMock).toHaveBeenCalledTimes(500);
 	});
@@ -241,7 +250,7 @@ describe("complete sitemap enumeration", () => {
 		const result = await createHttpProductCatalogSource({
 			...configuration,
 			fetch: fetchMock,
-		}).listIndexableIds();
+		}).listIndexableProducts();
 		expect(result.ok && result.value.complete).toBe(false);
 		expect(fetchMock).toHaveBeenCalledTimes(2);
 	});
@@ -257,7 +266,7 @@ it("represents an expired sitemap budget as an unavailable enumeration", async (
 			...configuration,
 			fetch: vi.fn().mockRejectedValue(signal.reason),
 		});
-		expect(await source.listIndexableIds()).toMatchObject({
+		expect(await source.listIndexableProducts()).toMatchObject({
 			ok: false,
 			origin: "transport",
 			partialIds: [],
@@ -272,12 +281,27 @@ it("marks enumeration incomplete when products exceed the single-sitemap URL lim
 		...configuration,
 		fetch: vi.fn().mockResolvedValue(
 			Response.json({
-				products: Array.from({ length: 50_000 }, (_, i) => ({
-					id: String(i),
-				})),
+				products: Array.from({ length: 50_000 }, (_, i) =>
+					catalogProduct({ id: String(i) }),
+				),
 			}),
 		),
 	});
-	const result = await source.listIndexableIds();
+	const result = await source.listIndexableProducts();
 	expect(result.ok && result.value.complete).toBe(false);
+});
+
+it("does not invent locale coverage from an ID-only upstream response", async () => {
+	const source = createHttpProductCatalogSource({
+		...configuration,
+		fetch: vi
+			.fn()
+			.mockResolvedValue(Response.json({ products: [{ id: "missing-text" }] })),
+	});
+	expect(await source.listIndexableProducts()).toMatchObject({
+		ok: false,
+		kind: "invalid-upstream-data",
+		origin: "payload",
+		partialIds: [],
+	});
 });
