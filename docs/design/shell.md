@@ -40,7 +40,7 @@ Correct from Header: `<LanguageSelect />`. Incorrect mutation: `<LanguageSelect 
 
 Use [ScrollTopButton](../../src/components/ScrollTopButton.tsx) for the catalog's scroll action; use a Link for navigation. This dedicated control is not a general icon-button primitive.
 
-Styling is compiled by StyleX via `stylex.create` and `stylex.props`; it uses the typed semantic colors. No props, variants or sizes exist. It appears when `scrollY > 120`, stays bottom/right at max(1.5rem, the corresponding safe-area inset) on layer 10, has a translated label and ArrowUp, and calls smooth scrolling unless reduced motion requests immediate scrolling. [CatalogScreen](../../src/features/products/catalog/CatalogScreen.tsx) is its only caller; motion rules are in [layout](layout.md).
+Styling is compiled by StyleX via `stylex.create` and `stylex.props`; it uses the typed semantic colors. No props, variants or sizes exist. It appears when `scrollY > 120` and remains visible until reaching the top, stays bottom/right at max(1.5rem, the corresponding safe-area inset) on layer 10, has a translated label and ArrowUp, and calls smooth scrolling unless reduced motion requests immediate scrolling. [CatalogScreen](../../src/features/products/catalog/CatalogScreen.tsx) is its only caller; motion rules are in [layout](layout.md).
 
 Correct from CatalogScreen: `<ScrollTopButton />`. Incorrect mutation: `<ScrollTopButton variant="primary" />`; its primary-token surface is implemented internally, not a selectable variant.
 

@@ -14,7 +14,9 @@ export default function ScrollTopButton() {
 	useEffect(() => {
 		setReady(true);
 		const updateScroll = () => {
-			setShowScrollTop(window.scrollY > 120);
+			setShowScrollTop(
+				(shown) => window.scrollY > 120 || (shown && window.scrollY > 0),
+			);
 		};
 
 		updateScroll();

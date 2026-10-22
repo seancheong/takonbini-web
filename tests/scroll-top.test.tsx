@@ -39,6 +39,10 @@ it("reveals the compiled button on scroll and smoothly returns to the top", () =
 	fireEvent.click(button);
 	expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
 
+	vi.spyOn(window, "scrollY", "get").mockReturnValue(50);
+	act(() => window.dispatchEvent(new Event("scroll")));
+	expect(screen.getByRole("button", { name: "product.scrollTop" })).toBe(button);
+
 	vi.spyOn(window, "scrollY", "get").mockReturnValue(0);
 	act(() => window.dispatchEvent(new Event("scroll")));
 	expect(screen.queryByRole("button")).toBeNull();
