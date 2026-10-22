@@ -130,26 +130,8 @@ it("keeps readable products after a paging failure, pauses automatic fetching an
 	);
 	expect(read).toHaveBeenCalledTimes(2);
 });
-it("manual mode and an open dialog pause automatic loading", async () => {
+it("an open dialog pauses automatic loading", async () => {
 	read.mockResolvedValue(second);
-	const view = render(
-		<VirtualCatalog
-			firstPage={first}
-			filters={{}}
-			paused={false}
-			onPreview={vi.fn()}
-		/>,
-	);
-	fireEvent.click(
-		screen.getByRole("checkbox", { name: "product.manualLoading" }),
-	);
-	await intersect();
-	expect(read).not.toHaveBeenCalled();
-	fireEvent.click(screen.getByRole("button", { name: "product.loadMore" }));
-	await waitFor(() => expect(read).toHaveBeenCalledTimes(1));
-	view.unmount();
-	read.mockClear();
-	sessionStorage.clear();
 	render(
 		<VirtualCatalog
 			firstPage={first}

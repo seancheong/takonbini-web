@@ -34,7 +34,6 @@ export default {
 			restartBrowse: "Start from the beginning",
 			browseCapacity:
 				"You’ve reached the browsing history limit. Start again to see the latest products.",
-			manualLoading: "Load more products manually",
 
 			fallbackLanguage: "Shown in {{language}}",
 			taxIncluded: "incl. tax",

@@ -152,14 +152,16 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 					inert={isRefreshing && !isLoading}
 					{...stylex.props(layoutStyles.resultsContent)}
 				>
-					<div {...stylex.props(layoutStyles.resultsHeading)}>
-						<h2 {...stylex.props(layoutStyles.resultsTitle)}>
-							{t("product.results")}
-						</h2>
-						<output aria-live="polite" {...stylex.props(layoutStyles.count)}>
-							{isLoading ? t("product.loading") : null}
-						</output>
-					</div>
+					{isLoading || !data?.pages[0]?.products.length ? (
+						<div {...stylex.props(layoutStyles.resultsHeading)}>
+							<h2 {...stylex.props(layoutStyles.resultsTitle)}>
+								{t("product.results")}
+							</h2>
+							<output aria-live="polite" {...stylex.props(layoutStyles.count)}>
+								{isLoading ? t("product.loading") : null}
+							</output>
+						</div>
+					) : null}
 
 					{isError ? (
 						<div role="alert" {...stylex.props(layoutStyles.error)}>

@@ -34,7 +34,6 @@ export default {
 			restartBrowse: "最初から見る",
 			browseCapacity:
 				"閲覧履歴の上限に達しました。最初から最新の商品をご覧ください。",
-			manualLoading: "商品を手動で追加表示する",
 
 			fallbackLanguage: "{{language}}で表示",
 			taxIncluded: "税込",

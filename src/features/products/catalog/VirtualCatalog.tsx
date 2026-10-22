@@ -53,7 +53,6 @@ export default function VirtualCatalog({
 	const [notice, setNotice] = useState<
 		"browseRestarted" | "browseMoved" | null
 	>(null);
-	const [manual, setManual] = useState(false);
 	const [pinned, setPinned] = useState<number | null>(null);
 	const [restoring, setRestoring] = useState(false);
 	const root = useRef<HTMLElement>(null);
@@ -148,11 +147,6 @@ export default function VirtualCatalog({
 		visibility();
 		document.addEventListener("visibilitychange", visibility);
 		entryKey.current = window.history.state?.__TSR_key ?? "";
-		try {
-			setManual(sessionStorage.getItem("takonbini:manual-loading") === "true");
-		} catch {
-			/* Optional per-tab preference. */
-		}
 		const measure = () => {
 			setColumns(
 				window.innerWidth <= 600 ? 1 : window.innerWidth >= 800 ? 3 : 2,
@@ -341,7 +335,6 @@ export default function VirtualCatalog({
 			!ready ||
 			!visible ||
 			!sentinel.current ||
-			manual ||
 			paused ||
 			restoring ||
 			failure !== null ||
@@ -365,7 +358,6 @@ export default function VirtualCatalog({
 	}, [
 		ready,
 		visible,
-		manual,
 		paused,
 		restoring,
 		failure,
@@ -486,22 +478,12 @@ export default function VirtualCatalog({
 	return (
 		<>
 			{notice && <output>{t(`product.${notice}`)}</output>}
-			<label {...stylex.props(styles.manual)}>
-				<input
-					type="checkbox"
-					checked={manual}
-					onChange={(event) => {
-						setManual(event.target.checked);
-						try {
-							sessionStorage.setItem(
-								"takonbini:manual-loading",
-								String(event.target.checked),
-							);
-						} catch {}
-					}}
-				/>
-				{t("product.manualLoading")}
-			</label>
+			<div {...stylex.props(styles.heading)}>
+				<h2 {...stylex.props(styles.title)}>{t("product.results")}</h2>
+				<output aria-live="polite" {...stylex.props(styles.count)}>
+					{t("product.loadedCount", { count: windowed.count })}
+				</output>
+			</div>
 			<section
 				ref={root}
 				aria-label={t("product.results")}
@@ -609,7 +591,7 @@ export default function VirtualCatalog({
 						? t("product.restoringBrowse")
 						: pending !== null
 							? t("product.loadingMore")
-							: t("product.loadedCount", { count: windowed.count })}
+							: null}
 				</output>
 				{failure !== null ? (
 					<div role="alert">
@@ -680,12 +662,19 @@ const styles = stylex.create({
 		color: colors.mutedForeground,
 		fontSize: "14px",
 	},
-	manual: {
-		minHeight: "44px",
+	heading: {
 		display: "flex",
-		alignItems: "center",
-		gap: "10px",
-		cursor: "pointer",
+		flexWrap: "wrap",
+		justifyContent: "space-between",
+		alignItems: "baseline",
+		gap: "16px",
+		paddingTop: "8px",
+	},
+	title: { fontSize: "20px", fontWeight: 650, letterSpacing: "-.02em" },
+	count: {
+		color: colors.mutedForeground,
+		fontSize: "0.8rem",
+		fontVariantNumeric: "tabular-nums",
 	},
 	action: {
 		minHeight: "44px",

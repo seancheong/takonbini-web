@@ -31,7 +31,6 @@ export default {
 			restoringBrowse: "正在返回上次瀏覽的位置…",
 			restartBrowse: "從頭開始瀏覽",
 			browseCapacity: "已達瀏覽記錄上限，請從頭瀏覽最新商品。",
-			manualLoading: "手動載入更多商品",
 
 			fallbackLanguage: "以{{language}}顯示",
 			taxIncluded: "含稅",
