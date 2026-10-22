@@ -118,3 +118,5 @@ query and dropping modal history state, so it can recover without the failed
 client route module. Styles and actions are private to NavigationError.tsx.
 
 For the virtual catalog, ScrollTopButton emits a cancelable scroll request so VirtualCatalog can use its own smooth-scroll coordinator; otherwise it falls back to native window scrolling. This prevents dynamic row measurement from canceling the animation. Reduced motion remains immediate.
+
+The catalog return-to-top uses a450–900ms distance-based animation with cosine ease-in-out, rather than browser-controlled smooth timing. Row-size scroll compensation is suspended only during this animation and restored on completion, interruption or unmount. Wheel, touch, pointer and keyboard input cancel it. Reduced motion remains immediate; product/cache bounds are unchanged. This supersedes the earlier native smooth-scroll coordinator.

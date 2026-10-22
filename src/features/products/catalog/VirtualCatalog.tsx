@@ -5,7 +5,10 @@ import {
 } from "@tanstack/react-virtual";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SCROLL_TO_TOP_EVENT } from "../../../scroll-to-top";
+import {
+	animateScrollToTop,
+	SCROLL_TO_TOP_EVENT,
+} from "../../../scroll-to-top";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
 import { getProductsPage } from "../data/products-http-client";
@@ -91,14 +94,30 @@ export default function VirtualCatalog({
 	});
 	useEffect(() => {
 		if (!ready) return;
+		let stopAnimation: (() => void) | undefined;
 		const scrollToTop = (event: Event) => {
 			event.preventDefault();
-			virtual.scrollToOffset(0, {
-				behavior: (event as CustomEvent<ScrollBehavior>).detail,
-			});
+			stopAnimation?.();
+			virtual.cancelScroll();
+			if ((event as CustomEvent<ScrollBehavior>).detail !== "smooth") {
+				virtual.scrollToOffset(0, { behavior: "instant" });
+				return;
+			}
+			const previous = virtual.shouldAdjustScrollPositionOnItemSizeChange;
+			virtual.shouldAdjustScrollPositionOnItemSizeChange = () => false;
+			stopAnimation = animateScrollToTop(
+				(top) => window.scrollTo({ top, behavior: "instant" }),
+				() => {
+					virtual.shouldAdjustScrollPositionOnItemSizeChange = previous;
+					stopAnimation = undefined;
+				},
+			);
 		};
 		window.addEventListener(SCROLL_TO_TOP_EVENT, scrollToTop);
-		return () => window.removeEventListener(SCROLL_TO_TOP_EVENT, scrollToTop);
+		return () => {
+			window.removeEventListener(SCROLL_TO_TOP_EVENT, scrollToTop);
+			stopAnimation?.();
+		};
 	}, [ready, virtual]);
 	const rows = virtual.getVirtualItems();
 	const visiblePages = [
