@@ -34,6 +34,7 @@ import { setSSRLanguage } from "../i18n";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import {
 	documentLanguage,
+	SUPPORTED_LANGUAGES,
 	parseLocaleSearch,
 	resolveSupportedLanguage,
 } from "../localization";
@@ -75,8 +76,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			/\/$/,
 			"",
 		);
-		const canonicalUrl = new URL(matches.at(-1)?.pathname ?? "/", `${baseUrl}/`)
-			.href;
+		const isHomepage = matches.at(-1)?.pathname === "/";
+		const locale = resolveSupportedLanguage(i18n.language) ?? "en";
+		const canonical = new URL(matches.at(-1)?.pathname ?? "/", `${baseUrl}/`);
+		if (isHomepage) canonical.searchParams.set("lang", locale);
+		const canonicalUrl = canonical.href;
 
 		const imageOrigin = loaderData?.imageOrigin ?? baseUrl;
 		const siteTitle = i18n.t("appName");
@@ -92,7 +96,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			i18n.language,
 			imageOrigin,
 		);
-		const isHomepage = matches.at(-1)?.pathname === "/";
 		const title = product?.title
 			? `${product.title} | ${siteTitle}`
 			: isHomepage
@@ -187,6 +190,16 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				},
 			],
 			links: [
+				...(isHomepage
+					? [
+							...SUPPORTED_LANGUAGES.map((language) => ({
+								rel: "alternate",
+								hrefLang: documentLanguage(language),
+								href: `${baseUrl}/?lang=${language}`,
+							})),
+							{ rel: "alternate", hrefLang: "x-default", href: `${baseUrl}/` },
+						]
+					: []),
 				{
 					rel: "stylesheet",
 					href: appCss,

@@ -1,3 +1,4 @@
+import { SUPPORTED_LANGUAGES } from "../localization";
 import { createFileRoute } from "@tanstack/react-router";
 import { getProductCatalogSource } from "@/features/products/products.server";
 
@@ -16,11 +17,13 @@ const escapeXml = (value: string) =>
 
 const buildSitemapXml = (siteUrl: string, ids: string[]) => {
 	const urls = [
-		`  <url>
-    <loc>${escapeXml(`${siteUrl}/`)}</loc>
+		...SUPPORTED_LANGUAGES.map(
+			(language) => `  <url>
+    <loc>${escapeXml(`${siteUrl}/?lang=${language}`)}</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>`,
+		),
 		...ids.map(
 			(id) => `  <url>
     <loc>${escapeXml(`${siteUrl}/products/${encodeURIComponent(id)}`)}</loc>
@@ -45,7 +48,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 					if (
 						result.ok &&
 						result.value.complete &&
-						result.value.ids.length <= 49_999
+						result.value.ids.length <= 50_000 - SUPPORTED_LANGUAGES.length
 					) {
 						const xml = buildSitemapXml(siteUrl, result.value.ids);
 						if (new TextEncoder().encode(xml).byteLength <= 52_428_800)

@@ -28,7 +28,7 @@ it.each(["/", "/products/one", "/products/two"])(
 			loaderData: { siteUrl: "https://takonbini.example.test/" },
 		};
 		const result = await head(context);
-		const expected = `https://takonbini.example.test${pathname}`;
+		const expected = `https://takonbini.example.test${pathname}${pathname === "/" ? "?lang=en" : ""}`;
 		expect(result.links.filter((link) => link.rel === "canonical")).toEqual([
 			{ rel: "canonical", href: expected },
 		]);
