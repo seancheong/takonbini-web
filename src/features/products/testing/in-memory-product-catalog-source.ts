@@ -1,3 +1,4 @@
+import { productIndexing } from "../model/product-indexing";
 import {
 	type ActiveCatalogProduct,
 	activeCatalogProductSchema,
@@ -96,10 +97,16 @@ export function createInMemoryProductCatalogSource(
 						body: "Product not found",
 					};
 		},
-		async listIndexableIds() {
+		async listIndexableProducts() {
 			return {
 				ok: true,
-				value: { ids: products.map((product) => product.id), complete: true },
+				value: {
+					products: products.map((product) => ({
+						id: product.id,
+						languages: productIndexing(product, "ja").sitemapLanguages,
+					})),
+					complete: true,
+				},
 				status: 200,
 				headers: new Headers(),
 			};

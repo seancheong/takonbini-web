@@ -21,6 +21,7 @@ import { useTranslation } from "react-i18next";
 import {
 	type ActiveCatalogProduct,
 	productQueries,
+	productIndexing,
 	productSharing,
 } from "@/features/products/products";
 import Header from "../components/Header";
@@ -80,22 +81,31 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		const locale = resolveSupportedLanguage(i18n.language) ?? "en";
 		const canonical = new URL(matches.at(-1)?.pathname ?? "/", `${baseUrl}/`);
 		if (isHomepage) canonical.searchParams.set("lang", locale);
-		const canonicalUrl = canonical.href;
 
 		const imageOrigin = loaderData?.imageOrigin ?? baseUrl;
 		const siteTitle = i18n.t("appName");
 		const productId = /^\/products\/([^/]+)\/?$/.exec(
 			matches.at(-1)?.pathname ?? "",
 		)?.[1];
-		const product = productSharing(
+		const record =
 			typeof productId === "string"
 				? match.context.queryClient.getQueryData<ActiveCatalogProduct>(
 						productQueries.detail(decodeURIComponent(productId)).queryKey,
 					)
-				: undefined,
-			i18n.language,
-			imageOrigin,
-		);
+				: undefined;
+		const product = productSharing(record, i18n.language, imageOrigin);
+		const indexing = record ? productIndexing(record, locale) : undefined;
+		if (indexing)
+			canonical.searchParams.set("lang", indexing.canonicalLanguage);
+		const canonicalUrl = canonical.href;
+		const alternateLanguages = isHomepage
+			? SUPPORTED_LANGUAGES
+			: (indexing?.alternateLanguages ?? []);
+		const alternatePath = matches.at(-1)?.pathname ?? "/";
+		const defaultLanguage = alternateLanguages.includes("ja")
+			? "ja"
+			: alternateLanguages[0];
+
 		const title = product?.title
 			? `${product.title} | ${siteTitle}`
 			: isHomepage
@@ -190,14 +200,20 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				},
 			],
 			links: [
-				...(isHomepage
+				...(alternateLanguages.length
 					? [
-							...SUPPORTED_LANGUAGES.map((language) => ({
+							...alternateLanguages.map((language) => ({
 								rel: "alternate",
 								hrefLang: documentLanguage(language),
-								href: `${baseUrl}/?lang=${language}`,
+								href: `${baseUrl}${alternatePath}?lang=${language}`,
 							})),
-							{ rel: "alternate", hrefLang: "x-default", href: `${baseUrl}/` },
+							{
+								rel: "alternate",
+								hrefLang: "x-default",
+								href: isHomepage
+									? `${baseUrl}/`
+									: `${baseUrl}${alternatePath}?lang=${defaultLanguage}`,
+							},
 						]
 					: []),
 				{

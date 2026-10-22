@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from html.parser import HTMLParser
 import json
 from urllib.error import HTTPError
-from urllib.parse import quote, urlparse
+from urllib.parse import quote, urlparse, parse_qs
 from urllib.request import urlopen
 import xml.etree.ElementTree as ET
 
@@ -32,11 +32,18 @@ class Head(HTMLParser):
 
 def check_page(path):
     expected = args.site_url.rstrip("/") + path.split("?")[0]
-    if path.startswith("/?"):
-        expected += "?lang=en"
     with urlopen(args.base_url.rstrip("/") + path, timeout=60) as response:
         head = Head()
         head.feed(response.read().decode())
+        # Product fallback canonical selection is covered by compiled fixtures.
+        # Hosted probes check the declared locale URL shape and self-canonical target.
+        locale = parse_qs(urlparse(head.canonicals[0]).query).get("lang", [None])[0] if len(head.canonicals) == 1 else None
+        expected += "?lang=" + (locale if locale in ["en", "ja", "zh"] else "invalid")
+        target_path = path.split("?")[0] + "?lang=" + (locale or "invalid")
+        with urlopen(args.base_url.rstrip("/") + target_path, timeout=60) as target:
+            target_head = Head()
+            target_head.feed(target.read().decode())
+            target_pass = target.status == 200 and target_head.canonicals == [expected]
         return {
             "path": path,
             "status": response.status,
@@ -45,7 +52,8 @@ def check_page(path):
             "expected": expected,
             "pass": response.status == 200
             and head.canonicals == [expected]
-            and head.og_urls == [expected],
+            and head.og_urls == [expected]
+            and target_pass,
         }
 
 
@@ -75,8 +83,7 @@ try:
                 for location in locations
             )
             and all(
-                args.site_url.rstrip("/") + "/products/" + quote(product_id, safe='')
-                in locations
+                any(location.startswith(args.site_url.rstrip("/") + "/products/" + quote(product_id, safe='') + "?lang=") for location in locations)
                 for product_id in args.product_id
             ),
         }

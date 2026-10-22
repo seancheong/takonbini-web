@@ -143,7 +143,7 @@ it("uses the deployment origin for images independently of canonical configurati
 		"https://deployment.example.test/api/share-image?url=https%3A%2F%2Fwww.family.co.jp%2Fphoto.jpg",
 	]);
 	expect(values(result, "og:url")).toEqual([
-		"https://preview.example.test/products/one",
+		"https://preview.example.test/products/one?lang=en",
 	]);
 	const missing = await metadata(
 		undefined,

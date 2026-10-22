@@ -1,3 +1,5 @@
+import { productIndexing } from "../model/product-indexing";
+import type { Language } from "@/localization";
 import type { z } from "zod";
 import {
 	activeCatalogProductSchema,
@@ -98,8 +100,8 @@ export function createHttpProductCatalogSource(
 		list: (parameters) => read("/products", parameters, catalogPageSchema),
 		find: (id, parameters = new URLSearchParams()) =>
 			read(`/products/${id}`, parameters, activeCatalogProductSchema),
-		async listIndexableIds() {
-			const ids = new Set<string>();
+		async listIndexableProducts() {
+			const products = new Map<string, { id: string; languages: Language[] }>();
 			const cursors = new Set<string>();
 			const signal = AbortSignal.timeout(45_000);
 			let cursor: string | undefined;
@@ -112,14 +114,19 @@ export function createHttpProductCatalogSource(
 					catalogIndexPageSchema,
 					signal,
 				);
-				if (!result.ok) return { ...result, partialIds: [...ids] };
-				for (const product of result.value.products) ids.add(product.id);
-				// Reserve one URL for the homepage in the 50,000-URL sitemap.
-				if (ids.size > 49_999) break;
+				if (!result.ok) return { ...result, partialIds: [...products.keys()] };
+				for (const product of result.value.products) {
+					products.set(product.id, {
+						id: product.id,
+						languages: productIndexing(product, "ja").sitemapLanguages,
+					});
+				}
+				// The sitemap applies its URL budget after expanding locale variants.
+				if (products.size > 49_999) break;
 				if (!result.value.nextCursor)
 					return {
 						ok: true,
-						value: { ids: [...ids], complete: true },
+						value: { products: [...products.values()], complete: true },
 						status: 200,
 						headers: new Headers(),
 					};
@@ -129,7 +136,7 @@ export function createHttpProductCatalogSource(
 			}
 			return {
 				ok: true,
-				value: { ids: [...ids], complete: false },
+				value: { products: [...products.values()], complete: false },
 				status: 200,
 				headers: new Headers(),
 			};

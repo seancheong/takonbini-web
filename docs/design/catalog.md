@@ -174,7 +174,7 @@ not invented. Ordinary `/api/image` WebP/original behavior remains as documented
 The fallback uses the current icon and existing light theme tokens; regenerate
 with `node scripts/generate-share-fallback.mjs` after an intentional brand change.
 
-Canonical and Open Graph URLs retain the existing query-free product path.
+Canonical and Open Graph URLs use a normalized product path and the canonical `lang` selected by the product indexing policy. Complete title/description translations self-canonicalize; identical fallback text can consolidate to a matching version. Unique mixed translations stay self-canonical without language alternates. Sharing actions continue to retain the visitor’s selected `lang`.
 Platform recrawling/cache behavior and actual Instagram rendering require
 post-release verification; metadata does not force old messages to refresh.
 
@@ -272,3 +272,12 @@ Applying changed filters now resets the results to the beginning, superseding th
 New controls use VirtualCatalog's private `action` styles: neutral card/border colors,44px targets and visible focus. New announcements and actions use en/ja/zh locale keys. Mounted DOM/app-data bounds do not constitute a fixed browser heap or image-cache guarantee; use measured browser evidence before making performance claims.
 
 The ScrollTopButton preserves native smooth scrolling for ordinary motion preferences and uses an immediate jump for reduced motion. Smooth travel may re-fetch evicted pages while crossing them; the same five-page payload cap applies throughout. This supersedes the initial #102 instant-jump optimization.
+
+
+## Product language indexing (#111)
+
+`productIndexing` owns one policy shared by root metadata and sitemap enumeration. A locale is advertised with reciprocal en/ja/zh-Hant links only when its title and, if any product description exists, description are nonempty in that locale. Descriptionless products can qualify with a title alone. `x-default` uses the eligible Japanese version when present, otherwise the first eligible locale. Missing products receive no locale alternates and keep their404 response.
+
+Fallback variants canonicalize only to an identical resolved title/description pair; a unique mixed translation retains its own canonical and no alternate-language claim. Sitemap discovery includes complete locales, or one representative canonical when no complete locale exists. Eligibility measures field availability, not translation quality or Google indexing.
+
+The server source’s `listIndexableProducts` enumerates locale availability from the existing paginated list response, retaining compact id/language entries. It makes no per-product detail calls and preserves the500-page/45-second/cursor-cycle bounds. Sitemap URL count is checked after locale expansion (50,000), and the52,428,800-byte bound and incomplete/error503 remain. No unbounded translation payload cache is added.
