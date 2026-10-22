@@ -35,7 +35,10 @@ export default function ScrollTopButton() {
 			onClick={() => {
 				window.scrollTo({
 					top: 0,
-					behavior: "instant",
+					behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
+						.matches
+						? "instant"
+						: "smooth",
 				});
 			}}
 			{...stylex.props(styles.button)}
