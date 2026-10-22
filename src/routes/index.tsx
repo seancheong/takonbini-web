@@ -15,7 +15,6 @@ export const Route = createFileRoute("/")({
 			productQueries.catalog(catalogSearch.normalize(deps.search)),
 		);
 	},
-	head: ({ match }) => ({ meta: [{ title: match.context.i18n.t("appName") }] }),
 });
 
 function Catalog() {
