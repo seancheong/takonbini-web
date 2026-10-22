@@ -1,4 +1,5 @@
 import { createIsomorphicFn } from "@tanstack/react-start";
+import { ProductNotFoundError } from "./product-errors";
 import type {
 	ActiveCatalogProduct,
 	CatalogPage,
@@ -36,6 +37,7 @@ const getProductsInBrowser = async () => {
 
 const getProductByIdInBrowser = async (id: string) => {
 	const response = await fetch(`${getApiBaseUrl()}/api/products/${id}`);
+	if (response.status === 404) throw new ProductNotFoundError();
 
 	if (!response.ok) {
 		let body = "";

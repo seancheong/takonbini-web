@@ -1,5 +1,6 @@
 export { default as CatalogScreen } from "./catalog/CatalogScreen";
 export { catalogSearch } from "./catalog/catalog-search";
+export { ProductNotFoundError } from "./data/product-errors";
 export { productQueries } from "./data/product-queries";
 export { default as ProductDetailError } from "./detail/ProductDetailError";
 export { default as ProductDetailPending } from "./detail/ProductDetailPending";

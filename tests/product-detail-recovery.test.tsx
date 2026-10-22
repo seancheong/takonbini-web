@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
 	createMemoryHistory,
 	createRootRoute,
+	createRootRouteWithContext,
 	createRoute,
 	createRouter,
 	Outlet,
@@ -15,13 +16,17 @@ import {
 	screen,
 	waitFor,
 } from "@testing-library/react";
+import { createInstance, type i18n } from "i18next";
 import { afterEach, expect, it, vi } from "vitest";
 import { catalogSearch } from "@/features/products/catalog/catalog-search";
 import ProductDetailError from "@/features/products/detail/ProductDetailError";
 import ProductDetailScreen from "@/features/products/detail/ProductDetailScreen";
-import { productQueries } from "@/features/products/products";
+import {
+	ProductNotFoundError,
+	productQueries,
+} from "@/features/products/products";
 import { catalogProduct } from "@/features/products/testing/catalog-fixtures";
-import { Route as ProductRoute } from "@/routes/products.$id";
+import { loadProductDetail, Route as ProductRoute } from "@/routes/products.$id";
 
 const readProduct = vi.hoisted(() => vi.fn());
 vi.mock("@/features/products/data/products-http-client", () => ({
@@ -38,81 +43,95 @@ afterEach(() => {
 	vi.unstubAllGlobals();
 });
 
-it("recovers the standalone error route after repeated failures and focuses the loaded title", async () => {
-	vi.spyOn(console, "error").mockImplementation(() => {});
-	vi.stubGlobal("scrollTo", vi.fn());
-	const product = catalogProduct({ images: [] });
-	const client = new QueryClient({
-		defaultOptions: { queries: { retry: false } },
-	});
-	const unrelated = { preserved: true };
-	client.setQueryData(["unrelated"], unrelated);
-	readProduct.mockReset().mockRejectedValue(new Error("offline"));
-	const root = createRootRoute({
-		component: () => (
-			<main>
-				<Outlet />
-			</main>
-		),
-	});
-	const detail = createRoute({
-		getParentRoute: () => root,
-		path: "/products/$id",
-		validateSearch: catalogSearch.parse,
-		loader: () => client.ensureQueryData(productQueries.detail(product.id)),
-		errorComponent: ProductRoute.options.errorComponent,
-		pendingComponent: ProductRoute.options.pendingComponent,
-		component: () => <ProductDetailScreen id={product.id} filters={{}} />,
-	});
-	const router = createRouter({
-		defaultPendingMinMs: 0,
-		defaultPendingMs: 0,
-		routeTree: root.addChildren([detail]),
-		history: createMemoryHistory({
-			initialEntries: [`/products/${product.id}?stores=Lawson&lang=ja`],
-		}),
-	});
-	await router.load();
-	render(
-		<QueryClientProvider client={client}>
-			<RouterProvider router={router} />
-		</QueryClientProvider>,
-	);
-	try {
-		await screen.findByRole(
-			"button",
-			{ name: "product.retry" },
-			{ timeout: 3000 },
+it.each(["unavailable", "not-found"])(
+	"recovers the standalone %s route after repeated failures and focuses the loaded title",
+	async (failure) => {
+		vi.spyOn(console, "error").mockImplementation(() => {});
+		vi.stubGlobal("scrollTo", vi.fn());
+		const product = catalogProduct({ images: [] });
+		const client = new QueryClient({
+			defaultOptions: { queries: { retry: false } },
+		});
+		const unrelated = { preserved: true };
+		client.setQueryData(["unrelated"], unrelated);
+		readProduct
+			.mockReset()
+			.mockRejectedValue(
+				failure === "not-found"
+					? new ProductNotFoundError()
+					: new Error("offline"),
+			);
+		const root = createRootRouteWithContext<{
+			queryClient: QueryClient;
+			i18n: i18n;
+		}>()({
+			component: () => (
+				<main>
+					<Outlet />
+				</main>
+			),
+		});
+		const detail = createRoute({
+			getParentRoute: () => root,
+			path: "/products/$id",
+			validateSearch: catalogSearch.parse,
+			loader: loadProductDetail,
+			errorComponent: ProductRoute.options.errorComponent,
+			notFoundComponent: ProductRoute.options.notFoundComponent,
+			pendingComponent: ProductRoute.options.pendingComponent,
+			component: () => <ProductDetailScreen id={product.id} filters={{}} />,
+		});
+		const router = createRouter({
+			context: { queryClient: client, i18n: createInstance() },
+			defaultPendingMinMs: 0,
+			defaultPendingMs: 0,
+			routeTree: root.addChildren([detail]),
+			history: createMemoryHistory({
+				initialEntries: [`/products/${product.id}?stores=Lawson&lang=ja`],
+			}),
+		});
+		await router.load();
+		render(
+			<QueryClientProvider client={client}>
+				<RouterProvider router={router} />
+			</QueryClientProvider>,
 		);
-		await waitFor(() => expect(router.state.status).toBe("idle"));
-		const initialReads = readProduct.mock.calls.length;
-		expect(
-			screen
-				.getByRole("link", { name: "product.details.back" })
-				.getAttribute("href"),
-		).toContain("Lawson");
-		fireEvent.click(screen.getByRole("button", { name: "product.retry" }));
-		await waitFor(() =>
-			expect(readProduct).toHaveBeenCalledTimes(initialReads + 1),
-		);
-		await waitFor(() =>
+		try {
+			await screen.findByRole(
+				"button",
+				{ name: "product.retry" },
+				{ timeout: 3000 },
+			);
+			await waitFor(() => expect(router.state.status).toBe("idle"));
+			const initialReads = readProduct.mock.calls.length;
 			expect(
 				screen
-					.getByRole("button", { name: "product.retry" })
-					.hasAttribute("disabled"),
-			).toBe(false),
-		);
-		readProduct.mockResolvedValueOnce(product);
-		fireEvent.click(screen.getByRole("button", { name: "product.retry" }));
-		const title = await screen.findByRole("heading", { name: "Matcha" });
-		await waitFor(() => expect(document.activeElement).toBe(title));
-		expect(router.state.location.pathname).toBe(`/products/${product.id}`);
-		expect(readProduct).toHaveBeenCalledTimes(initialReads + 2);
-		expect(client.getQueryData(["unrelated"])).toBe(unrelated);
-	} finally {
-		client.clear();
-	}
-});
+					.getByRole("link", { name: "product.details.back" })
+					.getAttribute("href"),
+			).toContain("Lawson");
+			fireEvent.click(screen.getByRole("button", { name: "product.retry" }));
+			await waitFor(() =>
+				expect(readProduct).toHaveBeenCalledTimes(initialReads + 1),
+			);
+			await waitFor(() =>
+				expect(
+					screen
+						.getByRole("button", { name: "product.retry" })
+						.hasAttribute("disabled"),
+				).toBe(false),
+			);
+			readProduct.mockResolvedValueOnce(product);
+			fireEvent.click(screen.getByRole("button", { name: "product.retry" }));
+			const title = await screen.findByRole("heading", { name: "Matcha" });
+			await waitFor(() => expect(document.activeElement).toBe(title));
+			expect(router.state.location.pathname).toBe(`/products/${product.id}`);
+			expect(readProduct).toHaveBeenCalledTimes(initialReads + 2);
+			expect(client.getQueryData(["unrelated"])).toBe(unrelated);
+		} finally {
+			client.clear();
+		}
+	},
+);
 
 it("does not recover or move focus after leaving a pending retry", async () => {
 	const client = new QueryClient({
