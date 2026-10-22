@@ -32,6 +32,8 @@ class Head(HTMLParser):
 
 def check_page(path):
     expected = args.site_url.rstrip("/") + path.split("?")[0]
+    if path.startswith("/?"):
+        expected += "?lang=en"
     with urlopen(args.base_url.rstrip("/") + path, timeout=60) as response:
         head = Head()
         head.feed(response.read().decode())

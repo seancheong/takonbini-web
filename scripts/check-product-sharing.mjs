@@ -118,7 +118,7 @@ try {
 		zh: "Takonbini｜探索日本便利商店商品",
 	};
 	for (const [locale, title] of Object.entries(homepageTitles)) {
-		const response = await app.fetch(new Request(`https://sharing.example.test/?lang=${locale}`));
+		const response = await app.fetch(new Request(`https://sharing.example.test/?lang=${locale}`, { headers: { cookie: "i18nextTakonbiniLng=ja", "accept-language": "ja" } }));
 		assert.equal(response.status, 200);
 		const html = await response.text();
 		assert.deepEqual(Array.from(html.matchAll(/<title>(.*?)<\/title>/g), ([, value]) => value), [title]);
@@ -127,10 +127,29 @@ try {
 		assert.equal(description.length, 1);
 		assert.match(description[0], /Takonbini/);
 		for (const key of ["og:description", "twitter:description"]) assert.deepEqual(meta(html, key), description);
-		assert.deepEqual(meta(html, "og:url"), ["https://canonical.example.test/"]);
+		assert.deepEqual(meta(html, "og:url"), [`https://canonical.example.test/?lang=${locale}`]);
+		for (const [code, language] of [["en", "en"], ["ja", "ja"], ["zh", "zh-Hant"], [null, "x-default"]]) {
+			assert.ok(html.includes(`hrefLang="${language}"`) || html.includes(`hreflang="${language}"`));
+			assert.ok(html.includes(`href="https://canonical.example.test/${code ? `?lang=${code}` : ""}"`));
+		}
 		const scripts = Array.from(html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs), ([, json]) => JSON.parse(json));
 		assert.deepEqual(scripts, [{ "@context": "https://schema.org", "@type": "WebSite", name: "Takonbini", alternateName: "タコンビニ", url: "https://canonical.example.test/" }]);
 	}
+
+	for (const locale of ["en", "ja", "zh"]) {
+		const response = await app.fetch(new Request("https://sharing.example.test/?search=tea&limit=100000", { headers: { cookie: `i18nextTakonbiniLng=${locale}` } }));
+		const html = await response.text();
+		assert.deepEqual(meta(html, "og:url"), [`https://canonical.example.test/?lang=${locale}`]);
+		assert.ok(html.includes(`rel="canonical" href="https://canonical.example.test/?lang=${locale}"`));
+	}
+
+	const sitemapResponse = await app.fetch(new Request("https://sharing.example.test/sitemap.xml"));
+	assert.equal(sitemapResponse.status, 200);
+	const sitemap = await sitemapResponse.text();
+	const locations = Array.from(sitemap.matchAll(/<loc>(.*?)<\/loc>/g), ([, value]) => value);
+	assert.deepEqual(locations.slice(0, 3), ["en", "zh", "ja"].map(locale => `https://canonical.example.test/?lang=${locale}`));
+	assert.equal(locations.length, products.length + 3);
+	assert.equal(new Set(locations).size, locations.length);
 
 	const invalid = await app.fetch(
 		new Request(
