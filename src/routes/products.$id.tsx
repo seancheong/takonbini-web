@@ -1,5 +1,7 @@
+import type { QueryClient } from "@tanstack/react-query";
 import {
 	createFileRoute,
+	notFound,
 	useParams,
 	useRouter,
 	useSearch,
@@ -9,16 +11,21 @@ import {
 	ProductDetailError,
 	ProductDetailPending,
 	ProductDetailScreen,
+	ProductNotFoundError,
 	productQueries,
 } from "@/features/products/products";
 
 export const Route = createFileRoute("/products/$id")({
+	codeSplitGroupings: [
+		["component"],
+		["pendingComponent"],
+		["errorComponent", "notFoundComponent"],
+	],
 	validateSearch: catalogSearch.parse,
-	loader: async ({ context, params }) => {
-		await context.queryClient.ensureQueryData(productQueries.detail(params.id));
-	},
+	loader: loadProductDetail,
 	pendingComponent: ProductDetailPending,
 	errorComponent: DetailError,
+	notFoundComponent: DetailError,
 	component: () => (
 		<ProductDetailScreen
 			id={Route.useParams().id}
@@ -26,6 +33,21 @@ export const Route = createFileRoute("/products/$id")({
 		/>
 	),
 });
+
+export async function loadProductDetail({
+	context,
+	params,
+}: {
+	context: { queryClient: QueryClient };
+	params: { id: string };
+}) {
+	try {
+		await context.queryClient.ensureQueryData(productQueries.detail(params.id));
+	} catch (error) {
+		if (error instanceof ProductNotFoundError) throw notFound();
+		throw error;
+	}
+}
 
 function DetailError() {
 	const { id } = useParams({ from: "/products/$id" });

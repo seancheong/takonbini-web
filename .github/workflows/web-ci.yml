@@ -48,3 +48,6 @@ jobs:
 
       - name: Product sharing crawler HTML
         run: node scripts/check-product-sharing.mjs
+
+      - name: Product detail status and recovery HTML
+        run: node scripts/check-product-detail-status.mjs
