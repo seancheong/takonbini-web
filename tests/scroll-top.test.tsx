@@ -8,6 +8,7 @@ import {
 } from "@testing-library/react";
 import { renderToString } from "react-dom/server";
 import { afterEach, expect, it, vi } from "vitest";
+import { SCROLL_TO_TOP_EVENT } from "@/scroll-to-top";
 import ScrollTopButton from "@/components/ScrollTopButton";
 
 vi.mock("react-i18next", () => ({
@@ -50,4 +51,16 @@ it("uses immediate scrolling when reduced motion is requested", () => {
 	render(<ScrollTopButton />);
 	fireEvent.click(screen.getByRole("button", { name: "product.scrollTop" }));
 	expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "instant" });
+});
+
+it("lets the virtual catalog own smooth scrolling without a competing native write", () => {
+	vi.spyOn(window, "scrollY", "get").mockReturnValue(200);
+	vi.stubGlobal("matchMedia", () => ({ matches: false }));
+	const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
+	const handle = vi.fn((event: Event) => event.preventDefault());
+	window.addEventListener(SCROLL_TO_TOP_EVENT, handle, { once: true });
+	render(<ScrollTopButton />);
+	fireEvent.click(screen.getByRole("button", { name: "product.scrollTop" }));
+	expect(handle).toHaveBeenCalledOnce();
+	expect(scrollTo).not.toHaveBeenCalled();
 });

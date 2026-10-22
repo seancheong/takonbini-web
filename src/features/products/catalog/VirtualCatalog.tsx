@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-virtual";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { SCROLL_TO_TOP_EVENT } from "../../../scroll-to-top";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
 import { getProductsPage } from "../data/products-http-client";
@@ -88,6 +89,17 @@ export default function VirtualCatalog({
 				: [...rows, Math.floor(pinned / columns)].sort((a, b) => a - b);
 		},
 	});
+	useEffect(() => {
+		if (!ready) return;
+		const scrollToTop = (event: Event) => {
+			event.preventDefault();
+			virtual.scrollToOffset(0, {
+				behavior: (event as CustomEvent<ScrollBehavior>).detail,
+			});
+		};
+		window.addEventListener(SCROLL_TO_TOP_EVENT, scrollToTop);
+		return () => window.removeEventListener(SCROLL_TO_TOP_EVENT, scrollToTop);
+	}, [ready, virtual]);
 	const rows = virtual.getVirtualItems();
 	const visiblePages = [
 		...new Set(

@@ -116,3 +116,5 @@ A document reload uses the browser's new-document focus. The catalog h1 is progr
 Back to products is an ordinary anchor retaining the catalog search/filter/locale
 query and dropping modal history state, so it can recover without the failed
 client route module. Styles and actions are private to NavigationError.tsx.
+
+For the virtual catalog, ScrollTopButton emits a cancelable scroll request so VirtualCatalog can use its own smooth-scroll coordinator; otherwise it falls back to native window scrolling. This prevents dynamic row measurement from canceling the animation. Reduced motion remains immediate.
