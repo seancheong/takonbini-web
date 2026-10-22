@@ -29,7 +29,7 @@ function Catalog() {
 				navigate({
 					search: catalogSearch.encode(next),
 					replace: true,
-					resetScroll: false,
+					resetScroll: true,
 				})
 			}
 		/>

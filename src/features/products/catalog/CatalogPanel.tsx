@@ -12,14 +12,18 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { productsInfiniteQueryOptions } from "@/features/products/data/product-queries";
-import type { ProductFilters } from "@/features/products/products.contracts";
+import type {
+	ActiveCatalogProduct,
+	ProductFilters,
+} from "@/features/products/products.contracts";
 import { colors } from "../../../styles/colors.stylex";
 import { conditions } from "../../../styles/conditions.stylex";
 import { metrics } from "../../../styles/metrics.stylex";
 import CatalogControls from "./CatalogControls";
 import ProductFilterDrawer from "./CatalogFilters";
-import ProductGrid from "./ProductGrid";
+import { catalogWindowKey } from "./catalog-window";
 import ProductPreview from "./ProductPreview";
+import VirtualCatalog from "./VirtualCatalog";
 
 interface ProductPanelProps {
 	filters: ProductFilters;
@@ -39,8 +43,12 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	const selectedId = useRouterState({
 		select: (state) => state.location.state.productModalId,
 	});
+	const catalogEntryKey = useRouterState({
+		select: (state) => state.location.state.__TSR_key,
+	});
 	const panel = useRef<HTMLElement>(null);
 	const previewReturnId = useRef<string | undefined>(undefined);
+	const previewProduct = useRef<ActiveCatalogProduct | undefined>(undefined);
 	const [draftFilters, setDraftFilters] = useState<ProductFilters>(filters);
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const openFilters = useCallback(() => {
@@ -53,7 +61,6 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 	const {
 		data,
 		isLoading,
-		hasNextPage,
 		fetchNextPage,
 		isFetchingNextPage,
 		isFetching,
@@ -78,6 +85,7 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 		if (!previewReturnId.current || isRefreshing || isLoading) return;
 		const productId = previewReturnId.current;
 		previewReturnId.current = undefined;
+		previewProduct.current = undefined;
 		if (document.activeElement !== document.body || !panel.current) return;
 		const card = [
 			...panel.current.querySelectorAll<HTMLAnchorElement>(
@@ -144,20 +152,16 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 					inert={isRefreshing && !isLoading}
 					{...stylex.props(layoutStyles.resultsContent)}
 				>
-					<div {...stylex.props(layoutStyles.resultsHeading)}>
-						<h2 {...stylex.props(layoutStyles.resultsTitle)}>
-							{t("product.results")}
-						</h2>
-						<output aria-live="polite" {...stylex.props(layoutStyles.count)}>
-							{isLoading
-								? t("product.loading")
-								: data
-									? t("product.loadedCount", {
-											count: products.length,
-										})
-									: null}
-						</output>
-					</div>
+					{isLoading || !data?.pages[0]?.products.length ? (
+						<div {...stylex.props(layoutStyles.resultsHeading)}>
+							<h2 {...stylex.props(layoutStyles.resultsTitle)}>
+								{t("product.results")}
+							</h2>
+							<output aria-live="polite" {...stylex.props(layoutStyles.count)}>
+								{isLoading ? t("product.loading") : null}
+							</output>
+						</div>
+					) : null}
 
 					{isError ? (
 						<div role="alert" {...stylex.props(layoutStyles.error)}>
@@ -194,49 +198,32 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 								</div>
 							))}
 						</div>
-					) : products.length ? (
-						<>
-							<ProductGrid
-								products={products}
-								filters={filters}
-								onPreview={(product) => {
-									router.navigate({
-										to: "/",
-										search: true,
-										state: (previous) => ({
-											...previous,
-											productModalId: product.id,
-										}),
-										mask: {
-											to: "/products/$id",
-											params: { id: product.id },
-											search: filters,
-											unmaskOnReload: true,
-										},
-										resetScroll: false,
-									});
-								}}
-							/>
-
-							<div {...stylex.props(layoutStyles.pagination)}>
-								{hasNextPage ? (
-									<button
-										type="button"
-										onClick={() => fetchNextPage()}
-										disabled={isFetchingNextPage}
-										{...stylex.props(layoutStyles.loadMore)}
-									>
-										{isFetchingNextPage
-											? t("product.loadingMore")
-											: t("product.loadMore")}
-									</button>
-								) : (
-									<span {...stylex.props(layoutStyles.refreshStatus)}>
-										{t("product.end")}
-									</span>
-								)}
-							</div>
-						</>
+					) : data?.pages[0]?.products.length ? (
+						<VirtualCatalog
+							key={catalogWindowKey(filters)}
+							firstPage={data.pages[0]}
+							entryKey={selectedId ? undefined : catalogEntryKey}
+							paused={Boolean(selectedId) || isFilterOpen || isRefreshing}
+							filters={filters}
+							onPreview={(product) => {
+								previewProduct.current = product;
+								router.navigate({
+									to: "/",
+									search: true,
+									state: (previous) => ({
+										...previous,
+										productModalId: product.id,
+									}),
+									mask: {
+										to: "/products/$id",
+										params: { id: product.id },
+										search: filters,
+										unmaskOnReload: true,
+									},
+									resetScroll: false,
+								});
+							}}
+						/>
 					) : !isError ? (
 						<div {...stylex.props(layoutStyles.empty)}>
 							<p {...stylex.props(layoutStyles.refreshStatus)}>
@@ -280,7 +267,12 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 			</div>
 			{selectedId && (
 				<ProductPreview
-					product={products.find((product) => product.id === selectedId)}
+					product={
+						products.find((product) => product.id === selectedId) ??
+						(previewProduct.current?.id === selectedId
+							? previewProduct.current
+							: undefined)
+					}
 					id={selectedId}
 					filters={filters}
 					onClose={() => router.history.back()}
@@ -504,80 +496,6 @@ const layoutStyles = stylex.create({
 			default: null,
 			":first-child": "45%",
 			":last-child": "65%",
-		},
-	},
-	pagination: {
-		display: "flex",
-		justifyContent: "center",
-		paddingTop: "1rem",
-		paddingRight: "0",
-		paddingBottom: "1rem",
-		paddingLeft: "0",
-	},
-	loadMore: {
-		minHeight: "44px",
-		display: "inline-flex",
-		justifyContent: "center",
-		alignItems: "center",
-		gap: "0.5rem",
-		borderTopWidth: "1px",
-		borderTopStyle: "solid",
-		borderTopColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-		},
-		borderRightWidth: "1px",
-		borderRightStyle: "solid",
-		borderRightColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-		},
-		borderBottomWidth: "1px",
-		borderBottomStyle: "solid",
-		borderBottomColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-		},
-		borderLeftWidth: "1px",
-		borderLeftStyle: "solid",
-		borderLeftColor: {
-			default: null,
-			":hover": colors.mutedForeground,
-		},
-		borderRadius: metrics.actionRadius,
-		backgroundColor: {
-			default: colors.card,
-			":hover": colors.muted,
-			":active": colors.accent,
-		},
-		paddingTop: "0.65rem",
-		paddingRight: "1rem",
-		paddingBottom: "0.65rem",
-		paddingLeft: "1rem",
-		fontSize: "0.85rem",
-		fontWeight: 600,
-		whiteSpace: "nowrap",
-		transitionProperty: {
-			default: "background-color, border-color",
-			[conditions.reducedMotion]: "none",
-		},
-		transitionDuration: "150ms, 150ms",
-		transitionTimingFunction: "ease",
-		opacity: {
-			default: null,
-			":disabled": 0.5,
-		},
-		outline: {
-			default: null,
-			":focus-visible": "2px solid var(--ring)",
-		},
-		outlineOffset: {
-			default: null,
-			":focus-visible": "3px",
-		},
-		animationName: {
-			default: null,
-			[conditions.reducedMotion]: "none",
 		},
 	},
 	empty: {

@@ -14,5 +14,5 @@ export function shouldRestoreScroll({
 }: {
 	location: ParsedLocation;
 }): boolean {
-	return !location.pathname.startsWith("/products/");
+	return location.pathname !== "/" && !location.pathname.startsWith("/products/");
 }

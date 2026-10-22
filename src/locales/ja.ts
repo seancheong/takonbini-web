@@ -27,6 +27,14 @@ export default {
 			changeLanguage: "言語を変更",
 		},
 		product: {
+			browseMoved:
+				"前回の商品は現在表示されていません。近くの商品から表示します。",
+			browseRestarted: "商品一覧が更新されました。最初の商品を表示しています。",
+			restoringBrowse: "閲覧していた位置に戻っています…",
+			restartBrowse: "最初から見る",
+			browseCapacity:
+				"閲覧履歴の上限に達しました。最初から最新の商品をご覧ください。",
+
 			fallbackLanguage: "{{language}}で表示",
 			taxIncluded: "税込",
 			title: "日本のコンビニ商品",

@@ -2,6 +2,7 @@ import * as stylex from "@stylexjs/stylex";
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { scrollToTop } from "../scroll-to-top";
 import { colors } from "../styles/colors.stylex";
 import { conditions } from "../styles/conditions.stylex";
 
@@ -13,7 +14,9 @@ export default function ScrollTopButton() {
 	useEffect(() => {
 		setReady(true);
 		const updateScroll = () => {
-			setShowScrollTop(window.scrollY > 120);
+			setShowScrollTop(
+				(shown) => window.scrollY > 120 || (shown && window.scrollY > 0),
+			);
 		};
 
 		updateScroll();
@@ -32,15 +35,7 @@ export default function ScrollTopButton() {
 			data-slot="scroll-top"
 			hidden={!showScrollTop}
 			aria-label={t("product.scrollTop")}
-			onClick={() => {
-				window.scrollTo({
-					top: 0,
-					behavior: window.matchMedia?.("(prefers-reduced-motion: reduce)")
-						.matches
-						? "auto"
-						: "smooth",
-				});
-			}}
+			onClick={scrollToTop}
 			{...stylex.props(styles.button)}
 		>
 			<ArrowUp {...stylex.props(styles.icon)} aria-hidden="true" />

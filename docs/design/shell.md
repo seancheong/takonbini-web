@@ -40,7 +40,7 @@ Correct from Header: `<LanguageSelect />`. Incorrect mutation: `<LanguageSelect 
 
 Use [ScrollTopButton](../../src/components/ScrollTopButton.tsx) for the catalog's scroll action; use a Link for navigation. This dedicated control is not a general icon-button primitive.
 
-Styling is compiled by StyleX via `stylex.create` and `stylex.props`; it uses the typed semantic colors. No props, variants or sizes exist. It appears when `scrollY > 120`, stays bottom/right at max(1.5rem, the corresponding safe-area inset) on layer 10, has a translated label and ArrowUp, and calls smooth scrolling unless reduced motion requests immediate scrolling. [CatalogScreen](../../src/features/products/catalog/CatalogScreen.tsx) is its only caller; motion rules are in [layout](layout.md).
+Styling is compiled by StyleX via `stylex.create` and `stylex.props`; it uses the typed semantic colors. No props, variants or sizes exist. It appears when `scrollY > 120` and remains visible until reaching the top, stays bottom/right at max(1.5rem, the corresponding safe-area inset) on layer 10, has a translated label and ArrowUp, and calls smooth scrolling unless reduced motion requests immediate scrolling. [CatalogScreen](../../src/features/products/catalog/CatalogScreen.tsx) is its only caller; motion rules are in [layout](layout.md).
 
 Correct from CatalogScreen: `<ScrollTopButton />`. Incorrect mutation: `<ScrollTopButton variant="primary" />`; its primary-token surface is implemented internally, not a selectable variant.
 
@@ -116,3 +116,7 @@ A document reload uses the browser's new-document focus. The catalog h1 is progr
 Back to products is an ordinary anchor retaining the catalog search/filter/locale
 query and dropping modal history state, so it can recover without the failed
 client route module. Styles and actions are private to NavigationError.tsx.
+
+For the virtual catalog, ScrollTopButton emits a cancelable scroll request so VirtualCatalog can use its own smooth-scroll coordinator; otherwise it falls back to native window scrolling. This prevents dynamic row measurement from canceling the animation. Reduced motion remains immediate.
+
+The catalog return-to-top uses a450–900ms distance-based animation with cosine ease-in-out, rather than browser-controlled smooth timing. Row-size scroll compensation is suspended only during this animation and restored on completion, interruption or unmount. Wheel, touch, pointer and keyboard input cancel it. Reduced motion remains immediate; product/cache bounds are unchanged. This supersedes the earlier native smooth-scroll coordinator.

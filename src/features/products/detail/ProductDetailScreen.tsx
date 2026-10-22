@@ -95,6 +95,7 @@ export default function ProductDetailScreen({
 				{presentation === "page" && (
 					<Link
 						to="/"
+							state={{ restoreCatalog: true }}
 						search={filters}
 						onClick={(event) => {
 							if (

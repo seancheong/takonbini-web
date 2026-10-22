@@ -88,7 +88,7 @@ it("waits for the first catalog page before completing the route loader's SSR sn
 	}
 });
 
-it("preserves scroll position when the actual catalog filter handler navigates to All stores", async () => {
+it("resets scroll position when the actual catalog filter handler navigates to All stores", async () => {
 	if (!route.component) throw new Error("Catalog component was not registered");
 	route.navigate.mockClear();
 	const element = route.component();
@@ -96,7 +96,7 @@ it("preserves scroll position when the actual catalog filter handler navigates t
 	expect(route.navigate).toHaveBeenCalledWith(
 		expect.objectContaining({
 			replace: true,
-			resetScroll: false,
+			resetScroll: true,
 			search: expect.objectContaining({ stores: undefined }),
 		}),
 	);

@@ -27,6 +27,14 @@ export default {
 			changeLanguage: "Change language",
 		},
 		product: {
+			browseMoved:
+				"Your previous product is no longer here. Continuing from a nearby product.",
+			browseRestarted: "The catalog has changed. Showing the first results.",
+			restoringBrowse: "Returning to your browsing position…",
+			restartBrowse: "Start from the beginning",
+			browseCapacity:
+				"You’ve reached the browsing history limit. Start again to see the latest products.",
+
 			fallbackLanguage: "Shown in {{language}}",
 			taxIncluded: "incl. tax",
 			title: "Japan’s convenience stores",

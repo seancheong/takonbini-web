@@ -34,6 +34,7 @@ export function normalizeCatalogFilters(
 	return {
 		...defaultProductFilters,
 		...filters,
+		limit: 20,
 		search: filters.search?.trim() || undefined,
 	};
 }

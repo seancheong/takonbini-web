@@ -48,10 +48,10 @@ vi.mock("@tanstack/react-router", () => ({
 vi.mock("react-i18next", () => ({
 	useTranslation: () => ({ t: (key: string) => key }),
 }));
-vi.mock("@/features/products/catalog/ProductGrid", () => ({
-	default: ({ products }: { products: { id: string }[] }) => (
+vi.mock("@/features/products/catalog/VirtualCatalog", () => ({
+	default: ({ firstPage }: { firstPage: { products: { id: string }[] } }) => (
 		<div>
-			{products.map((product) => (
+			{firstPage.products.map((product) => (
 				<a
 					key={product.id}
 					href={`/products/${product.id}`}
