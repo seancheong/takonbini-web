@@ -1,3 +1,4 @@
+import { useLocaleUrl } from "../use-locale-url";
 import { createFileRoute } from "@tanstack/react-router";
 import {
 	CatalogScreen,
@@ -18,6 +19,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Catalog() {
+	useLocaleUrl();
 	const filters = catalogSearch.normalize(
 		catalogSearch.parse(Route.useSearch()),
 	);
