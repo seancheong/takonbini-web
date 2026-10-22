@@ -238,8 +238,9 @@ describe("catalog query parsing and requests", () => {
 
 		expect(fetchMock).toHaveBeenCalledWith(
 			"https://web.example.test/api/products?limit=20&status=allWithoutSoon",
+			{ signal: undefined },
 		);
-		expect(fetchMock.mock.calls[0]).toHaveLength(1);
+		expect(fetchMock.mock.calls[0]).toHaveLength(2);
 	});
 
 	it("uses a stable query key when equivalent filters list values in a different order", () => {

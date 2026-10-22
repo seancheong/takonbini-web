@@ -26,6 +26,13 @@ export default {
 			changeLanguage: "更改語言",
 		},
 		product: {
+			browseMoved: "上次瀏覽的商品已不在此處，將從附近的商品繼續瀏覽。",
+			browseRestarted: "商品目錄已更新，正在顯示最前面的商品。",
+			restoringBrowse: "正在返回上次瀏覽的位置…",
+			restartBrowse: "從頭開始瀏覽",
+			browseCapacity: "已達瀏覽記錄上限，請從頭瀏覽最新商品。",
+			manualLoading: "手動載入更多商品",
+
 			fallbackLanguage: "以{{language}}顯示",
 			taxIncluded: "含稅",
 			title: "日本便利商店商品",

@@ -20,24 +20,32 @@ export const productsQueryOptions = () => ({
 	queryKey: productsQueryKey,
 	queryFn: getProducts,
 	staleTime: 1000 * 60 * 30, // 30 minutes
-	gcTime: 1000 * 60 * 60, // 1 hour
+	gcTime: 0, // Inactive browsing/detail data must not accumulate.
 });
 
 export const productByIdQueryOptions = (id: string) => ({
 	queryKey: [...productByIdQueryKey, id] as const,
 	queryFn: () => getProductById(id),
 	staleTime: 1000 * 60 * 30, // 30 minutes
-	gcTime: 1000 * 60 * 60, // 1 hour
+	gcTime: 60_000, // A bounded recent detail survives retry-to-route handoff.
 });
 
 export const productsInfiniteQueryOptions = (filters: ProductFilters) => ({
 	queryKey: [...productsInfiniteQueryKey, normalizeFilters(filters)] as const,
-	queryFn: ({ pageParam }: { pageParam?: string }) =>
-		getProductsPage(pageParam, filters),
+	queryFn: ({
+		pageParam,
+		signal,
+	}: {
+		pageParam?: string;
+		signal?: AbortSignal;
+	}) => getProductsPage(pageParam, filters, signal),
 	initialPageParam: undefined as string | undefined,
+	maxPages: 1,
+	refetchOnWindowFocus: false,
+	refetchOnMount: false,
 	getNextPageParam: (lastPage: CatalogPage) => lastPage.nextCursor ?? undefined,
 	staleTime: 1000 * 60 * 30, // 30 minutes
-	gcTime: 1000 * 60 * 60, // 1 hour
+	gcTime: 0, // Inactive browsing/detail data must not accumulate.
 });
 
 export const productQueries = {

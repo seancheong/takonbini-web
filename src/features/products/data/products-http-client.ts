@@ -1,10 +1,10 @@
 import { createIsomorphicFn } from "@tanstack/react-start";
-import { ProductNotFoundError } from "./product-errors";
 import type {
 	ActiveCatalogProduct,
 	CatalogPage,
 	ProductFilters,
 } from "../products.contracts";
+import { ProductNotFoundError } from "./product-errors";
 
 const productStatus = (filters: ProductFilters) =>
 	filters.includeSoon ? "all" : "allWithoutSoon";
@@ -61,11 +61,14 @@ const getProductByIdInBrowser = async (id: string) => {
 const getProductsPageInBrowser = async (
 	cursor: string | undefined,
 	filters: ProductFilters,
+	signal?: AbortSignal,
 ) => {
 	const searchParams = productParameters(cursor, filters);
 	const query = searchParams.toString();
 	const baseUrl = `${getApiBaseUrl()}/api/products`;
-	const response = await fetch(query ? `${baseUrl}?${query}` : baseUrl);
+	const response = await fetch(query ? `${baseUrl}?${query}` : baseUrl, {
+		signal,
+	});
 
 	if (!response.ok) {
 		let body = "";
@@ -99,10 +102,16 @@ export const getProductById = createIsomorphicFn()
 	.client(getProductByIdInBrowser);
 
 export const getProductsPage = createIsomorphicFn()
-	.server(async (cursor: string | undefined, filters: ProductFilters) => {
-		const { readProducts } = await import("./products-query.server");
-		return readProducts(productParameters(cursor, filters));
-	})
+	.server(
+		async (
+			cursor: string | undefined,
+			filters: ProductFilters,
+			_signal?: AbortSignal,
+		) => {
+			const { readProducts } = await import("./products-query.server");
+			return readProducts(productParameters(cursor, filters));
+		},
+	)
 	.client(getProductsPageInBrowser);
 
 function productParameters(

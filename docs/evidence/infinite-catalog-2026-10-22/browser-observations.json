@@ -1,0 +1,734 @@
+[
+  {
+    "test": "compiled-deep-scroll",
+    "cards": 18,
+    "focus": null,
+    "pages": "11",
+    "reads": "10",
+    "resident": "100",
+    "scrollY": 35738,
+    "visible": [
+      {
+        "index": "198",
+        "top": -66.48828125
+      },
+      {
+        "index": "199",
+        "top": -66.48828125
+      },
+      {
+        "index": "200",
+        "top": -66.48828125
+      },
+      {
+        "index": "201",
+        "top": 457.51171875
+      },
+      {
+        "index": "202",
+        "top": 457.51171875
+      },
+      {
+        "index": "203",
+        "top": 457.51171875
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "compiled-refresh",
+    "cards": 18,
+    "focus": null,
+    "pages": "11",
+    "reads": "2",
+    "resident": "60",
+    "scrollY": 39929.5,
+    "visible": [
+      {
+        "index": "198",
+        "top": -66.68359375
+      },
+      {
+        "index": "199",
+        "top": -66.68359375
+      },
+      {
+        "index": "200",
+        "top": -66.68359375
+      },
+      {
+        "index": "201",
+        "top": 457.31640625
+      },
+      {
+        "index": "202",
+        "top": 457.31640625
+      },
+      {
+        "index": "203",
+        "top": 457.31640625
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "modal-open",
+    "cards": 21,
+    "focus": null,
+    "pages": "11",
+    "reads": "2",
+    "resident": "60",
+    "scrollY": 40184.5,
+    "visible": [
+      {
+        "index": "198",
+        "top": -321.68359375
+      },
+      {
+        "index": "199",
+        "top": -321.68359375
+      },
+      {
+        "index": "200",
+        "top": -321.68359375
+      },
+      {
+        "index": "201",
+        "top": 202.31640625
+      },
+      {
+        "index": "202",
+        "top": 202.31640625
+      },
+      {
+        "index": "203",
+        "top": 202.31640625
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "modal-close",
+    "cards": 21,
+    "focus": "fixture-201",
+    "pages": "11",
+    "reads": "2",
+    "resident": "60",
+    "scrollY": 40184.5,
+    "visible": [
+      {
+        "index": "198",
+        "top": -321.68359375
+      },
+      {
+        "index": "199",
+        "top": -321.68359375
+      },
+      {
+        "index": "200",
+        "top": -321.68359375
+      },
+      {
+        "index": "201",
+        "top": 202.31640625
+      },
+      {
+        "index": "202",
+        "top": 202.31640625
+      },
+      {
+        "index": "203",
+        "top": 202.31640625
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "tab-after-close",
+    "cards": 21,
+    "focus": "fixture-202",
+    "pages": "11",
+    "reads": "2",
+    "resident": "60",
+    "scrollY": 40184.5,
+    "visible": [
+      {
+        "index": "198",
+        "top": -321.68359375
+      },
+      {
+        "index": "199",
+        "top": -321.68359375
+      },
+      {
+        "index": "200",
+        "top": -321.68359375
+      },
+      {
+        "index": "201",
+        "top": 202.31640625
+      },
+      {
+        "index": "202",
+        "top": 202.31640625
+      },
+      {
+        "index": "203",
+        "top": 202.31640625
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "filter-reset",
+    "cards": 9,
+    "focus": null,
+    "pages": "1",
+    "reads": "0",
+    "resident": "20",
+    "scrollY": 0,
+    "visible": [
+      {
+        "index": "0",
+        "top": 620.3515625
+      },
+      {
+        "index": "1",
+        "top": 620.3515625
+      },
+      {
+        "index": "2",
+        "top": 620.3515625
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "before-locale",
+    "cards": 18,
+    "focus": null,
+    "pages": "6",
+    "reads": "5",
+    "resident": "100",
+    "scrollY": 18289,
+    "visible": [
+      {
+        "index": "99",
+        "top": -66.271484375
+      },
+      {
+        "index": "100",
+        "top": -66.271484375
+      },
+      {
+        "index": "101",
+        "top": -66.271484375
+      },
+      {
+        "index": "102",
+        "top": 457.728515625
+      },
+      {
+        "index": "103",
+        "top": 457.728515625
+      },
+      {
+        "index": "104",
+        "top": 457.728515625
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "after-locale-ja",
+    "cards": 21,
+    "focus": null,
+    "pages": "6",
+    "reads": "5",
+    "resident": "100",
+    "scrollY": 19611,
+    "visible": [
+      {
+        "index": "99",
+        "top": 73.80078125
+      },
+      {
+        "index": "100",
+        "top": 73.80078125
+      },
+      {
+        "index": "101",
+        "top": 73.80078125
+      },
+      {
+        "index": "102",
+        "top": 562.80078125
+      },
+      {
+        "index": "103",
+        "top": 562.80078125
+      },
+      {
+        "index": "104",
+        "top": 562.80078125
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "locale-ja-settled",
+    "cards": 21,
+    "focus": null,
+    "pages": "6",
+    "reads": "5",
+    "resident": "100",
+    "scrollY": 19611,
+    "visible": [
+      {
+        "index": "99",
+        "top": 73.80078125
+      },
+      {
+        "index": "100",
+        "top": 73.80078125
+      },
+      {
+        "index": "101",
+        "top": 73.80078125
+      },
+      {
+        "index": "102",
+        "top": 562.80078125
+      },
+      {
+        "index": "103",
+        "top": 562.80078125
+      },
+      {
+        "index": "104",
+        "top": 562.80078125
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "final-compiled-51-scrolls",
+    "cards": 18,
+    "focus": null,
+    "pages": "52",
+    "reads": "51",
+    "resident": "100",
+    "scrollY": 180885,
+    "visible": [
+      {
+        "index": "1017",
+        "top": -66.453125
+      },
+      {
+        "index": "1018",
+        "top": -66.453125
+      },
+      {
+        "index": "1019",
+        "top": -66.453125
+      },
+      {
+        "index": "1020",
+        "top": 457.546875
+      },
+      {
+        "index": "1021",
+        "top": 457.546875
+      },
+      {
+        "index": "1022",
+        "top": 457.546875
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "final-deep-refresh",
+    "cards": 18,
+    "focus": null,
+    "pages": "52",
+    "reads": "2",
+    "resident": "60",
+    "scrollY": 204164.5,
+    "visible": [
+      {
+        "index": "1017",
+        "top": -66.46875
+      },
+      {
+        "index": "1018",
+        "top": -66.46875
+      },
+      {
+        "index": "1019",
+        "top": -66.46875
+      },
+      {
+        "index": "1020",
+        "top": 457.53125
+      },
+      {
+        "index": "1021",
+        "top": 457.53125
+      },
+      {
+        "index": "1022",
+        "top": 457.53125
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "final-ja-settled",
+    "cards": 18,
+    "focus": null,
+    "pages": "52",
+    "reads": "2",
+    "resident": "60",
+    "scrollY": 203735.5,
+    "visible": [
+      {
+        "index": "1014",
+        "top": -190.09375
+      },
+      {
+        "index": "1015",
+        "top": -190.09375
+      },
+      {
+        "index": "1016",
+        "top": -190.09375
+      },
+      {
+        "index": "1017",
+        "top": 298.90625
+      },
+      {
+        "index": "1018",
+        "top": 298.90625
+      },
+      {
+        "index": "1019",
+        "top": 298.90625
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "locale-fix-before",
+    "cards": 18,
+    "focus": null,
+    "pages": "7",
+    "reads": "6",
+    "resident": "100",
+    "scrollY": 21355.5,
+    "visible": [
+      {
+        "index": "117",
+        "top": -66.365234375
+      },
+      {
+        "index": "118",
+        "top": -66.365234375
+      },
+      {
+        "index": "119",
+        "top": -66.365234375
+      },
+      {
+        "index": "120",
+        "top": 457.634765625
+      },
+      {
+        "index": "121",
+        "top": 457.634765625
+      },
+      {
+        "index": "122",
+        "top": 457.634765625
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "locale-fix-after",
+    "cards": 18,
+    "focus": null,
+    "pages": "7",
+    "reads": "6",
+    "resident": "100",
+    "scrollY": 22882.5,
+    "visible": [
+      {
+        "index": "114",
+        "top": -189.728515625
+      },
+      {
+        "index": "115",
+        "top": -189.728515625
+      },
+      {
+        "index": "116",
+        "top": -189.728515625
+      },
+      {
+        "index": "117",
+        "top": 299.271484375
+      },
+      {
+        "index": "118",
+        "top": 299.271484375
+      },
+      {
+        "index": "119",
+        "top": 299.271484375
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "measurement-fix-before",
+    "cards": 18,
+    "focus": null,
+    "pages": "7",
+    "reads": "6",
+    "resident": "100",
+    "scrollY": 23157.5,
+    "visible": [
+      {
+        "index": "114",
+        "top": 210.837890625
+      },
+      {
+        "index": "115",
+        "top": 210.837890625
+      },
+      {
+        "index": "116",
+        "top": 210.837890625
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "measurement-fix-after",
+    "cards": 21,
+    "focus": null,
+    "pages": "7",
+    "reads": "6",
+    "resident": "100",
+    "scrollY": 23037.5,
+    "visible": [
+      {
+        "index": "111",
+        "top": -313.3515625
+      },
+      {
+        "index": "112",
+        "top": -313.3515625
+      },
+      {
+        "index": "113",
+        "top": -313.3515625
+      },
+      {
+        "index": "114",
+        "top": 210.6484375
+      },
+      {
+        "index": "115",
+        "top": 210.6484375
+      },
+      {
+        "index": "116",
+        "top": 210.6484375
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "locale-final-before-en-ja",
+    "cards": 21,
+    "focus": null,
+    "pages": "7",
+    "reads": "6",
+    "resident": "100",
+    "scrollY": 23037.5,
+    "visible": [
+      {
+        "index": "111",
+        "top": -313.3515625
+      },
+      {
+        "index": "112",
+        "top": -313.3515625
+      },
+      {
+        "index": "113",
+        "top": -313.3515625
+      },
+      {
+        "index": "114",
+        "top": 210.6484375
+      },
+      {
+        "index": "115",
+        "top": 210.6484375
+      },
+      {
+        "index": "116",
+        "top": 210.6484375
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "locale-final-after-en-ja",
+    "cards": 21,
+    "focus": null,
+    "pages": "7",
+    "reads": "6",
+    "resident": "100",
+    "scrollY": 22454.5,
+    "visible": [
+      {
+        "index": "111",
+        "top": 87.0546875
+      },
+      {
+        "index": "112",
+        "top": 87.0546875
+      },
+      {
+        "index": "113",
+        "top": 87.0546875
+      },
+      {
+        "index": "114",
+        "top": 576.0546875
+      },
+      {
+        "index": "115",
+        "top": 576.0546875
+      },
+      {
+        "index": "116",
+        "top": 576.0546875
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "ja-en-before-fresh",
+    "cards": 18,
+    "focus": null,
+    "pages": "7",
+    "reads": "6",
+    "resident": "100",
+    "scrollY": 19078,
+    "visible": [
+      {
+        "index": "93",
+        "top": -33.416015625
+      },
+      {
+        "index": "94",
+        "top": -33.416015625
+      },
+      {
+        "index": "95",
+        "top": -33.416015625
+      },
+      {
+        "index": "96",
+        "top": 455.583984375
+      },
+      {
+        "index": "97",
+        "top": 455.583984375
+      },
+      {
+        "index": "98",
+        "top": 455.583984375
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "ja-en-menu-open",
+    "cards": 18,
+    "focus": null,
+    "pages": "7",
+    "reads": "6",
+    "resident": "100",
+    "scrollY": 18565,
+    "visible": [
+      {
+        "index": "90",
+        "top": -122.01171875
+      },
+      {
+        "index": "91",
+        "top": -122.01171875
+      },
+      {
+        "index": "92",
+        "top": -122.01171875
+      },
+      {
+        "index": "93",
+        "top": 366.98828125
+      },
+      {
+        "index": "94",
+        "top": 366.98828125
+      },
+      {
+        "index": "95",
+        "top": 366.98828125
+      }
+    ],
+    "width": 1280
+  },
+  {
+    "test": "ja-en-after-fresh",
+    "cards": 18,
+    "focus": null,
+    "pages": "7",
+    "reads": "6",
+    "resident": "100",
+    "scrollY": 18635,
+    "visible": [
+      {
+        "index": "90",
+        "top": -122.01171875
+      },
+      {
+        "index": "91",
+        "top": -122.01171875
+      },
+      {
+        "index": "92",
+        "top": -122.01171875
+      },
+      {
+        "index": "93",
+        "top": 401.98828125
+      },
+      {
+        "index": "94",
+        "top": 401.98828125
+      },
+      {
+        "index": "95",
+        "top": 401.98828125
+      }
+    ],
+    "width": 1280
+  }
+]

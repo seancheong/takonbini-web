@@ -24,7 +24,7 @@ it("renders safely on the server before the scroll position is known", () => {
 	expect(renderToString(<ScrollTopButton />)).toBe("");
 });
 
-it("reveals the compiled button on scroll and scrolls back to the top", () => {
+it("reveals the compiled button on scroll and jumps to the top without fetching intervening virtual pages", () => {
 	vi.spyOn(window, "scrollY", "get").mockReturnValue(0);
 	const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
 	render(<ScrollTopButton />);
@@ -35,7 +35,7 @@ it("reveals the compiled button on scroll and scrolls back to the top", () => {
 	const button = screen.getByRole("button", { name: "product.scrollTop" });
 	expect(button.className).not.toBe("");
 	fireEvent.click(button);
-	expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "smooth" });
+	expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "instant" });
 
 	vi.spyOn(window, "scrollY", "get").mockReturnValue(0);
 	act(() => window.dispatchEvent(new Event("scroll")));
@@ -48,5 +48,5 @@ it("uses immediate scrolling when reduced motion is requested", () => {
 	const scrollTo = vi.spyOn(window, "scrollTo").mockImplementation(() => {});
 	render(<ScrollTopButton />);
 	fireEvent.click(screen.getByRole("button", { name: "product.scrollTop" }));
-	expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "auto" });
+	expect(scrollTo).toHaveBeenCalledWith({ top: 0, behavior: "instant" });
 });

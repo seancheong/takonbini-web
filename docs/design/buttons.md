@@ -59,3 +59,5 @@ existing component. Do not replace staged Apply with immediate checkbox updates.
 Search and Apply alone carry `data-slot="catalog-submit"` for 120ms press feedback at scale 0.97. Keyboard activation, disabled actions, and reduced motion do not scale. This is an owned motion hook, not a reusable visual variant.
 
 CatalogControls owns `stickyOpen` (neutral filter-dialog trigger), `stickyChip` (composed after its existing filterChip), and `stickySummary` (compact-screen dialog access). None uses the primary Search/Apply treatment. The sticky count shares the original filter-trigger semantics and excludes search.
+
+For #102, VirtualCatalog owns neutral44px `action` buttons for Load more, paging Retry and Start from the beginning, plus the labeled `manual` checkbox before the results collection. CatalogPanel retains the initial-load Retry action. Do not import either owner's private style table. Manual loading is a per-tab preference; it does not change filters or catalog order.
