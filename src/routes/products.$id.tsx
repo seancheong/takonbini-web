@@ -1,3 +1,4 @@
+import { useLocaleUrl } from "../use-locale-url";
 import type { QueryClient } from "@tanstack/react-query";
 import {
 	createFileRoute,
@@ -26,13 +27,18 @@ export const Route = createFileRoute("/products/$id")({
 	pendingComponent: ProductDetailPending,
 	errorComponent: DetailError,
 	notFoundComponent: DetailError,
-	component: () => (
+	component: Detail,
+});
+
+function Detail() {
+	useLocaleUrl();
+	return (
 		<ProductDetailScreen
 			id={Route.useParams().id}
 			filters={catalogSearch.parse(Route.useSearch())}
 		/>
-	),
-});
+	);
+}
 
 export async function loadProductDetail({
 	context,
@@ -50,6 +56,7 @@ export async function loadProductDetail({
 }
 
 function DetailError() {
+	useLocaleUrl();
 	const { id } = useParams({ from: "/products/$id" });
 	const filters = catalogSearch.parse(useSearch({ from: "/products/$id" }));
 	const router = useRouter();

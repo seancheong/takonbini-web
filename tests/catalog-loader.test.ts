@@ -1,3 +1,4 @@
+vi.mock("@/use-locale-url", () => ({ useLocaleUrl: vi.fn() }));
 import { QueryClient } from "@tanstack/react-query";
 import type { ReactElement } from "react";
 import { afterEach, expect, it, vi } from "vitest";

@@ -7,8 +7,6 @@ import {
 	Outlet,
 	retainSearchParams,
 	Scripts,
-	useRouter,
-	useRouterState,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { createServerFn } from "@tanstack/react-start";
@@ -34,7 +32,6 @@ import {
 } from "../contexts/ThemeProvider";
 import { setSSRLanguage } from "../i18n";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
-import { navigateLocale } from "../locale-navigation";
 import {
 	documentLanguage,
 	parseLocaleSearch,
@@ -209,18 +206,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: PropsWithChildren) {
 	const { i18n } = useTranslation();
-	const router = useRouter();
-	const urlLanguage = useRouterState({
-		select: (state) => resolveSupportedLanguage(state.location.search.lang),
-	});
-	useEffect(() => {
-		if (!urlLanguage) {
-			void navigateLocale(
-				router,
-				resolveSupportedLanguage(i18n.language) ?? "en",
-			);
-		}
-	}, [router, urlLanguage, i18n.language]);
 	const savedTheme = Route.useLoaderData()?.savedTheme;
 	const resolvedTheme = isTheme(savedTheme) ? savedTheme : "system";
 
