@@ -92,14 +92,31 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			i18n.language,
 			imageOrigin,
 		);
+		const isHomepage = matches.at(-1)?.pathname === "/";
 		const title = product?.title
 			? `${product.title} | ${siteTitle}`
-			: siteTitle;
+			: isHomepage
+				? i18n.t("homeTitle")
+				: siteTitle;
 		const description = product?.description || i18n.t("metaDescription");
 		const ogImage = product?.image ?? `${imageOrigin}/share-default.jpg`;
 		const imageAlt = product?.image ? product.title || siteTitle : siteTitle;
 
 		return {
+			scripts: isHomepage
+				? [
+						{
+							type: "application/ld+json",
+							children: JSON.stringify({
+								"@context": "https://schema.org",
+								"@type": "WebSite",
+								name: "Takonbini",
+								alternateName: "タコンビニ",
+								url: `${baseUrl}/`,
+							}).replace(/</g, "\\u003c"),
+						},
+					]
+				: [],
 			meta: [
 				{
 					charSet: "utf-8",

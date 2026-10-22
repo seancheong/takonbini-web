@@ -9,8 +9,9 @@ export default {
 			loading: "Opening page…",
 		},
 		appName: "Takonbini",
+		homeTitle: "Takonbini — Discover Japanese Convenience Store Products",
 		metaDescription:
-			"Browse products from Japan’s convenience stores. Search by store, category, region, or price, and check release dates.",
+			"Discover products from 7-Eleven, Lawson, and FamilyMart in Japan with Takonbini. Browse food, drinks, and more by store, category, region, price, or release date.",
 		welcome: "Welcome to Takonbini",
 		subtitle: "A catalog of products from Japan’s convenience stores.",
 		theme: {

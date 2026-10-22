@@ -8,8 +8,9 @@ export default {
 			loading: "正在開啟頁面…",
 		},
 		appName: "Takonbini",
+		homeTitle: "Takonbini｜探索日本便利商店商品",
 		metaDescription:
-			"瀏覽日本便利商店的商品資訊，依商店、類別、地區或價格篩選，並查看新品及即將上市的商品。",
+			"透過 Takonbini 探索日本 7-Eleven、Lawson 與 FamilyMart 的食品、飲料等商品。依商店、類別、地區或價格篩選，並查看商品發售日期。",
 		welcome: "歡迎來到 Takonbini",
 		subtitle: "日本便利商店商品目錄",
 		theme: {

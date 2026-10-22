@@ -67,6 +67,7 @@ try {
 			);
 			assert.equal(response.status, 200);
 			const html = await response.text();
+			assert.doesNotMatch(html, /application\/ld\+json/);
 			const title = product.title[locale] ?? product.title.ja;
 			const description =
 				product.description[locale] ||
@@ -107,9 +108,30 @@ try {
 		assert.deepEqual(meta(html, "og:image"), [
 			"https://sharing.example.test/share-default.jpg",
 		]);
-		assert.deepEqual(meta(html, "og:title"), ["Takonbini"]);
+		assert.deepEqual(meta(html, "og:title"), [path.startsWith("/?")
+			? "Takonbini — Discover Japanese Convenience Store Products" : "Takonbini"]);
 		samples++;
 	}
+	const homepageTitles = {
+		en: "Takonbini — Discover Japanese Convenience Store Products",
+		ja: "タコンビニ（Takonbini）｜日本のコンビニ商品を探す",
+		zh: "Takonbini｜探索日本便利商店商品",
+	};
+	for (const [locale, title] of Object.entries(homepageTitles)) {
+		const response = await app.fetch(new Request(`https://sharing.example.test/?lang=${locale}`));
+		assert.equal(response.status, 200);
+		const html = await response.text();
+		assert.deepEqual(Array.from(html.matchAll(/<title>(.*?)<\/title>/g), ([, value]) => value), [title]);
+		for (const key of ["og:title", "twitter:title"]) assert.deepEqual(meta(html, key), [title]);
+		const description = meta(html, "description");
+		assert.equal(description.length, 1);
+		assert.match(description[0], /Takonbini/);
+		for (const key of ["og:description", "twitter:description"]) assert.deepEqual(meta(html, key), description);
+		assert.deepEqual(meta(html, "og:url"), ["https://canonical.example.test/"]);
+		const scripts = Array.from(html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>(.*?)<\/script>/gs), ([, json]) => JSON.parse(json));
+		assert.deepEqual(scripts, [{ "@context": "https://schema.org", "@type": "WebSite", name: "Takonbini", alternateName: "タコンビニ", url: "https://canonical.example.test/" }]);
+	}
+
 	const invalid = await app.fetch(
 		new Request(
 			"https://sharing.example.test/api/share-image?url=http://127.0.0.1/private",
