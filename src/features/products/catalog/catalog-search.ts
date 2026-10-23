@@ -55,6 +55,10 @@ export function encodeCatalogSearch(filters: ProductFilters): ProductFilters {
 }
 
 export const catalogSearch = {
+	isFiltered: (search: Record<string, unknown>) =>
+		Object.values(encodeCatalogSearch(parseCatalogSearch(search))).some(
+			(value) => value !== undefined,
+		),
 	parse: parseCatalogSearch,
 	normalize: normalizeCatalogFilters,
 	encode: encodeCatalogSearch,

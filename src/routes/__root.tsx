@@ -20,6 +20,7 @@ import NavigationError, {
 import { useTranslation } from "react-i18next";
 import {
 	type ActiveCatalogProduct,
+	catalogSearch,
 	discoveryBoundary,
 	parseBrowseSearch,
 	productQueries,
@@ -87,6 +88,8 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			? after
 			: undefined;
 		const isHomepage = matches.at(-1)?.pathname === "/";
+		const isFilteredHomepage =
+			isHomepage && catalogSearch.isFiltered(matches.at(-1)?.search ?? {});
 		const locale = resolveSupportedLanguage(i18n.language) ?? "en";
 		const canonical = new URL(matches.at(-1)?.pathname ?? "/", `${baseUrl}/`);
 		if (isHomepage || isBrowse) canonical.searchParams.set("lang", locale);
@@ -109,7 +112,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			canonical.searchParams.set("lang", indexing.canonicalLanguage);
 		const canonicalUrl = canonical.href;
 		const alternateLanguages =
-			isHomepage || isBrowse
+			(isHomepage && !isFilteredHomepage) || isBrowse
 				? SUPPORTED_LANGUAGES
 				: (indexing?.alternateLanguages ?? []);
 		const alternatePath = matches.at(-1)?.pathname ?? "/";
@@ -137,20 +140,21 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		const imageAlt = product?.image ? product.title || siteTitle : siteTitle;
 
 		return {
-			scripts: isHomepage
-				? [
-						{
-							type: "application/ld+json",
-							children: JSON.stringify({
-								"@context": "https://schema.org",
-								"@type": "WebSite",
-								name: "Takonbini",
-								alternateName: "タコンビニ",
-								url: `${baseUrl}/`,
-							}).replace(/</g, "\\u003c"),
-						},
-					]
-				: [],
+			scripts:
+				isHomepage && !isFilteredHomepage
+					? [
+							{
+								type: "application/ld+json",
+								children: JSON.stringify({
+									"@context": "https://schema.org",
+									"@type": "WebSite",
+									name: "Takonbini",
+									alternateName: "タコンビニ",
+									url: `${baseUrl}/`,
+								}).replace(/</g, "\\u003c"),
+							},
+						]
+					: [],
 			meta: [
 				{
 					charSet: "utf-8",
@@ -165,7 +169,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				},
 				{
 					name: "robots",
-					content: "index, follow",
+					content: isFilteredHomepage ? "noindex, follow" : "index, follow",
 				},
 				{
 					property: "og:title",
