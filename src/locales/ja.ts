@@ -1,5 +1,18 @@
 export default {
 	translation: {
+		browse: {
+			entry: "全商品をページごとに見る",
+			title: "商品カタログ",
+			description:
+				"発売予定の商品を含め、日本のコンビニ商品を一覧できます。一定の順序で20件ずつ表示します。",
+			home: "メインの商品一覧に戻る",
+			first: "最初のページ",
+			next: "次のページ",
+			navigation: "カタログのページ",
+			empty: "現在表示できる商品はありません。",
+			end: "カタログの最後です。",
+			missing: "このカタログページは表示できません。",
+		},
 		navigationError: {
 			reloadBody:
 				"もう一度試してページを再読み込みするか、商品一覧に戻ってください。",

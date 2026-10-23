@@ -1,5 +1,18 @@
 export default {
 	translation: {
+		browse: {
+			entry: "Browse the entire catalog",
+			title: "Browse the catalog",
+			description:
+				"Explore products from Japan’s convenience stores, including upcoming releases. Browse 20 products at a time in a consistent order.",
+			home: "Back to the main catalog",
+			first: "First page",
+			next: "Next page",
+			navigation: "Catalog pages",
+			empty: "No products are available right now.",
+			end: "You’ve reached the end of the catalog.",
+			missing: "This catalog page is not available.",
+		},
 		navigationError: {
 			reloadBody:
 				"Try again to reload this page, or return to the product catalog.",

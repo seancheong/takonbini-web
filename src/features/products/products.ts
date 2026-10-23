@@ -8,3 +8,10 @@ export { default as ProductDetailScreen } from "./detail/ProductDetailScreen";
 export { productIndexing } from "./model/product-indexing";
 export { productSharing } from "./model/product-sharing";
 export type { ActiveCatalogProduct } from "./products.contracts";
+
+export { BrowseScreen, BrowseMissingScreen } from "./catalog/BrowseScreen";
+export {
+	discoveryBoundary,
+	discoveryInput,
+	parseBrowseSearch,
+} from "./discovery";

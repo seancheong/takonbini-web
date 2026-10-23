@@ -97,6 +97,21 @@ export function createInMemoryProductCatalogSource(
 						body: "Product not found",
 					};
 		},
+		async discovery(after) {
+			const ordered = products
+				.filter((product) => !after || product.id > after)
+				.sort((a, b) => (a.id < b.id ? -1 : 1));
+			const page = ordered.slice(0, 20);
+			return {
+				ok: true,
+				status: 200,
+				headers: new Headers(),
+				value: {
+					products: page,
+					...(ordered.length > 20 ? { nextAfter: page[19].id } : {}),
+				},
+			};
+		},
 		async listIndexableProducts() {
 			return {
 				ok: true,

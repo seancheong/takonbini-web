@@ -281,3 +281,14 @@ The ScrollTopButton preserves native smooth scrolling for ordinary motion prefer
 Fallback variants canonicalize only to an identical resolved title/description pair; a unique mixed translation retains its own canonical and no alternate-language claim. Sitemap discovery includes complete locales, or one representative canonical when no complete locale exists. Eligibility measures field availability, not translation quality or Google indexing.
 
 The server source’s `listIndexableProducts` enumerates locale availability from the existing paginated list response, retaining compact id/language entries. It makes no per-product detail calls and preserves the500-page/45-second/cursor-cycle bounds. Sitemap URL count is checked after locale expansion (50,000), and the52,428,800-byte bound and incomplete/error503 remain. No unbounded translation payload cache is added.
+
+
+## Crawlable Browse catalog (#114)
+
+The homepage CatalogPanel has a quiet44px Link below its introduction, using its private `browse` role, to `/browse`. It does not manually load products or alter the virtualized results. `BrowseScreen` and `BrowseMissingScreen` are exported through the products entrypoint; routes do not import internal ProductGrid or style tables. BrowseScreen takes `page: DiscoveryPage` and optional `after`, rendering only the current20-product slice with existing ProductGrid/Card. Cards open standalone detail pages; browser Back returns to the collection. Existing detail return links keep their main-catalog behavior.
+
+BrowseScreen owns its neutral underlined44px `link` style, local main/intro/navigation layout, typed semantic colors and existing responsive ProductGrid. First/Next are ordinary Links with preloading disabled on sequential paging. Next-page commits move focus to the page heading without a second scroll; router navigation resets to the top. Native browser history remains available. Locale copy lives in en/ja/zh keys; language changes preserve the current after boundary.
+
+The route's server function validates after, reads one fixed-size discovery batch and rejects invalid ordering, repeated IDs, oversized results or inconsistent continuation. Malformed/exhausted boundaries404 (duplicate search parameters may first normalize once); upstream failure remains500 with existing recovery UI. It does not fall back to the first page on failure. Inactive browse route data has gcTime0. This bounds application page data, not the browser's image cache/heap.
+
+Canonical/OG and reciprocal en/ja/zh-Hant links include only normalized lang/after for the same slice; x-default uses the English slice. Homepage/product metadata policies remain unchanged. The API dependency must deploy before this web PR merges; hosted build success alone is not a successful real-data browse preview.

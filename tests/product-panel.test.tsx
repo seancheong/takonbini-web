@@ -38,6 +38,9 @@ const routerState = vi.hoisted(() => ({
 	resolvedLocation: { pathname: "/" },
 }));
 vi.mock("@tanstack/react-router", () => ({
+	Link: ({ children, to }: { children: React.ReactNode; to: string }) => (
+		<a href={to}>{children}</a>
+	),
 	useRouter: () => ({ navigate: vi.fn(), history: { back: vi.fn() } }),
 	useRouterState: ({
 		select,

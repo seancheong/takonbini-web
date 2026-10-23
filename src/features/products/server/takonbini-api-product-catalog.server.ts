@@ -1,3 +1,4 @@
+import { discoveryPageSchema } from "../discovery";
 import { productIndexing } from "../model/product-indexing";
 import type { Language } from "@/localization";
 import type { z } from "zod";
@@ -97,6 +98,29 @@ export function createHttpProductCatalogSource(
 		return { ok: true, value: parsed.data, status: response.status, headers };
 	}
 	return {
+		async discovery(after) {
+			const result = await read(
+				"/products/discovery",
+				new URLSearchParams(after ? { after } : {}),
+				discoveryPageSchema,
+				AbortSignal.timeout(10_000),
+			);
+			if (
+				result.ok &&
+				after &&
+				result.value.products.some((product) => product.id <= after)
+			) {
+				return {
+					ok: false,
+					kind: "invalid-upstream-data",
+					origin: "payload",
+					status: 502,
+					headers: new Headers(),
+					body: "Invalid discovery boundary",
+				};
+			}
+			return result;
+		},
 		list: (parameters) => read("/products", parameters, catalogPageSchema),
 		find: (id, parameters = new URLSearchParams()) =>
 			read(`/products/${id}`, parameters, activeCatalogProductSchema),

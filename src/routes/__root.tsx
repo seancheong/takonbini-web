@@ -20,6 +20,8 @@ import NavigationError, {
 import { useTranslation } from "react-i18next";
 import {
 	type ActiveCatalogProduct,
+	discoveryBoundary,
+	parseBrowseSearch,
 	productQueries,
 	productIndexing,
 	productSharing,
@@ -77,10 +79,18 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			/\/$/,
 			"",
 		);
+		const isBrowse = matches.at(-1)?.pathname === "/browse";
+		const after = isBrowse
+			? parseBrowseSearch(matches.at(-1)?.search ?? {}).after
+			: undefined;
+		const validAfter = discoveryBoundary.safeParse(after).success
+			? after
+			: undefined;
 		const isHomepage = matches.at(-1)?.pathname === "/";
 		const locale = resolveSupportedLanguage(i18n.language) ?? "en";
 		const canonical = new URL(matches.at(-1)?.pathname ?? "/", `${baseUrl}/`);
-		if (isHomepage) canonical.searchParams.set("lang", locale);
+		if (isHomepage || isBrowse) canonical.searchParams.set("lang", locale);
+		if (validAfter) canonical.searchParams.set("after", validAfter);
 
 		const imageOrigin = loaderData?.imageOrigin ?? baseUrl;
 		const siteTitle = i18n.t("appName");
@@ -98,10 +108,17 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		if (indexing)
 			canonical.searchParams.set("lang", indexing.canonicalLanguage);
 		const canonicalUrl = canonical.href;
-		const alternateLanguages = isHomepage
-			? SUPPORTED_LANGUAGES
-			: (indexing?.alternateLanguages ?? []);
+		const alternateLanguages =
+			isHomepage || isBrowse
+				? SUPPORTED_LANGUAGES
+				: (indexing?.alternateLanguages ?? []);
 		const alternatePath = matches.at(-1)?.pathname ?? "/";
+		const alternateUrl = (language: string) => {
+			const url = new URL(alternatePath, `${baseUrl}/`);
+			url.searchParams.set("lang", language);
+			if (validAfter) url.searchParams.set("after", validAfter);
+			return url.href;
+		};
 		const defaultLanguage = alternateLanguages.includes("ja")
 			? "ja"
 			: alternateLanguages[0];
@@ -110,8 +127,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 			? `${product.title} | ${siteTitle}`
 			: isHomepage
 				? i18n.t("homeTitle")
-				: siteTitle;
-		const description = product?.description || i18n.t("metaDescription");
+				: isBrowse
+					? `${i18n.t("browse.title")} | ${siteTitle}`
+					: siteTitle;
+		const description =
+			product?.description ||
+			i18n.t(isBrowse ? "browse.description" : "metaDescription");
 		const ogImage = product?.image ?? `${imageOrigin}/share-default.jpg`;
 		const imageAlt = product?.image ? product.title || siteTitle : siteTitle;
 
@@ -205,14 +226,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 							...alternateLanguages.map((language) => ({
 								rel: "alternate",
 								hrefLang: documentLanguage(language),
-								href: `${baseUrl}${alternatePath}?lang=${language}`,
+								href: alternateUrl(language),
 							})),
 							{
 								rel: "alternate",
 								hrefLang: "x-default",
 								href: isHomepage
 									? `${baseUrl}/`
-									: `${baseUrl}${alternatePath}?lang=${defaultLanguage}`,
+									: alternateUrl(isBrowse ? "en" : defaultLanguage),
 							},
 						]
 					: []),

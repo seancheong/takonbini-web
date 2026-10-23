@@ -1,3 +1,4 @@
+import type { DiscoveryPage } from "../discovery";
 import type { Language } from "@/localization";
 import type { ActiveCatalogProduct, CatalogPage } from "../products.contracts";
 
@@ -19,6 +20,7 @@ export type CatalogResult<T> =
 	  };
 
 export interface ProductCatalogSource {
+	discovery(after?: string): Promise<CatalogResult<DiscoveryPage>>;
 	list(parameters: URLSearchParams): Promise<CatalogResult<CatalogPage>>;
 	find(
 		id: string,

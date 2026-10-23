@@ -61,3 +61,6 @@ Search and Apply alone carry `data-slot="catalog-submit"` for 120ms press feedba
 CatalogControls owns `stickyOpen` (neutral filter-dialog trigger), `stickyChip` (composed after its existing filterChip), and `stickySummary` (compact-screen dialog access). None uses the primary Search/Apply treatment. The sticky count shares the original filter-trigger semantics and excludes search.
 
 For #102, VirtualCatalog owns neutral44px `action` buttons for Load more, paging Retry and Start from the beginning. CatalogPanel retains the initial-load Retry action. Do not import either owner's private style table. The manual-loading toggle was removed at the user’s request.
+
+
+For #114, CatalogPanel owns the quiet underlined `browse` entry Link. BrowseScreen owns its private neutral44px `link` role for Back to main catalog, First page and Next page. These navigate SSR collection pages rather than fetching into the infinite list. They use foreground text, underline, ring focus and existing semantic tokens; they are not primary or manual-load actions.

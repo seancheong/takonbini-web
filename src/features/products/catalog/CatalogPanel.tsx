@@ -1,6 +1,6 @@
 import * as stylex from "@stylexjs/stylex";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useRouter, useRouterState } from "@tanstack/react-router";
+import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import { LoaderCircle } from "lucide-react";
 import {
 	useCallback,
@@ -114,6 +114,13 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 					</h1>
 				</div>
 				<p {...stylex.props(layoutStyles.intro)}>{t("product.subtitle")}</p>
+				<Link
+					to="/browse"
+					preload={false}
+					{...stylex.props(layoutStyles.browse)}
+				>
+					{t("browse.entry")}
+				</Link>
 			</header>
 			<CatalogControls
 				filters={optimisticFilters}
@@ -286,6 +293,22 @@ export default function ProductPanel({ filters, onApply }: ProductPanelProps) {
 }
 const loadingSpin = stylex.keyframes({ to: { transform: "rotate(360deg)" } });
 const layoutStyles = stylex.create({
+	browse: {
+		display: "inline-flex",
+		alignItems: "center",
+		minHeight: "44px",
+		marginTop: "12px",
+		fontSize: "0.9rem",
+		color: colors.foreground,
+		textDecoration: "underline",
+		textUnderlineOffset: "4px",
+		outlineOffset: "4px",
+		":focus-visible": {
+			outlineWidth: "2px",
+			outlineStyle: "solid",
+			outlineColor: colors.ring,
+		},
+	},
 	resultsRegion: { position: "relative" },
 	resultsContent: { display: "flex", flexDirection: "column", gap: "32px" },
 	loadingOverlay: {
