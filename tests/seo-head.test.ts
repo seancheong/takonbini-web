@@ -37,3 +37,35 @@ it.each(["/", "/products/one", "/products/two"])(
 		]);
 	},
 );
+
+it.each([
+	{ search: "coffee" },
+	{ stores: "Lawson" },
+	{ categories: "Onigiri" },
+	{ regions: "Kanto" },
+	{ minPrice: 0 },
+	{ maxPrice: 200 },
+	{ includeSoon: "true" },
+])("excludes active homepage results from indexing: %j", async (search) => {
+	const head = Route.options.head as (context: {
+		match: { context: { i18n: { t: (key: string) => string } } };
+		matches: { pathname: string; search: Record<string, unknown> }[];
+		loaderData: { siteUrl: string };
+	}) => {
+		meta: { name?: string; content?: string }[];
+		links: { rel: string; href: string }[];
+	};
+	const result = await head({
+		match: {
+			context: {
+				i18n: { t: (key: string) => key },
+			},
+		},
+		matches: [{ pathname: "/", search }],
+		loaderData: { siteUrl: "https://takonbini.example.test" },
+	});
+	expect(result.meta.filter((tag) => tag.name === "robots")).toEqual([
+		{ name: "robots", content: "noindex, follow" },
+	]);
+	expect(result.links.filter((link) => link.rel === "alternate")).toEqual([]);
+});

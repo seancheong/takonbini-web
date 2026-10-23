@@ -61,8 +61,21 @@ function meta(html, key) {
 		})
 		.filter((value) => value !== undefined);
 }
+async function renderFollowingNormalization(url) {
+	for (let redirects = 0; redirects < 3; redirects++) {
+		const response = await app.fetch(new Request(url));
+		if (response.status !== 307) return response;
+		const location = response.headers.get("location");
+		assert.ok(location);
+		const next = new URL(location, url);
+		assert.equal(next.origin, new URL(url).origin);
+		url = next.href;
+	}
+	assert.fail("Search normalization redirect loop");
+}
 try {
 	let samples = 0;
+	let indexingSamples = 0;
 	for (const product of products) {
 		for (const locale of ["en", "ja", "zh"]) {
 			const response = await app.fetch(
@@ -116,6 +129,7 @@ try {
 			new Request(`https://sharing.example.test${path}`),
 		);
 		const html = await response.text();
+		assert.equal(response.status, path.startsWith("/?") ? 200 : 404);
 		assert.deepEqual(meta(html, "og:image"), [
 			"https://sharing.example.test/share-default.jpg",
 		]);
@@ -152,6 +166,36 @@ try {
 		const html = await response.text();
 		assert.deepEqual(meta(html, "og:url"), [`https://canonical.example.test/?lang=${locale}`]);
 		assert.ok(html.includes(`rel="canonical" href="https://canonical.example.test/?lang=${locale}"`));
+		assert.deepEqual(meta(html, "robots"), ["noindex, follow"]);
+	}
+	const filterQueries = [
+		"search=coffee", "stores=Lawson", "categories=Onigiri", "regions=Kanto",
+		"minPrice=0", "maxPrice=200", "includeSoon=true",
+		"stores=Lawson&regions=Kanto&minPrice=50&maxPrice=300",
+	];
+	for (const locale of ["en", "ja", "zh"]) {
+		for (const query of filterQueries) {
+			const response = await renderFollowingNormalization(`https://sharing.example.test/?lang=${locale}&${query}`);
+			assert.equal(response.status, 200);
+			const html = await response.text();
+			assert.deepEqual(meta(html, "robots"), ["noindex, follow"]);
+			assert.deepEqual(meta(html, "og:url"), [`https://canonical.example.test/?lang=${locale}`]);
+			assert.doesNotMatch(html, /hrefLang=|hreflang=|application\/ld\+json/);
+			indexingSamples++;
+		}
+		for (const query of ["", "search=%20%20", "stores=invalid&categories=invalid&regions=invalid", "includeSoon=false&minPrice=invalid", "utm_source=test&limit=100000&page=2"]) {
+			const response = await renderFollowingNormalization(`https://sharing.example.test/?lang=${locale}&${query}`);
+			assert.equal(response.status, 200);
+			const html = await response.text();
+			assert.deepEqual(meta(html, "robots"), ["index, follow"]);
+			assert.match(html, /hrefLang=|hreflang=/);
+			assert.match(html, /application\/ld\+json/);
+			indexingSamples++;
+		}
+		const detail = await renderFollowingNormalization(`https://sharing.example.test/products/one?lang=${locale}&search=coffee&stores=Lawson`);
+		assert.equal(detail.status, 200);
+		assert.deepEqual(meta(await detail.text(), "robots"), ["index, follow"]);
+		indexingSamples++;
 	}
 
 	const indexReadsBefore = indexReads;
@@ -183,7 +227,7 @@ try {
 	);
 	assert.equal(jpeg.readUInt16BE(0), 0xffd8);
 	console.log(
-		`${samples} compiled crawler-HTML cases pass with single localized sharing tags; native sharing-image fallback passes.`,
+		`${samples} compiled crawler-HTML cases pass with single localized sharing tags; native sharing-image fallback and ${indexingSamples} filtered/clean/product indexing cases pass.`,
 	);
 } finally {
 	api.closeAllConnections();
