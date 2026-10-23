@@ -54,3 +54,6 @@ jobs:
 
       - name: Bounded catalog SSR
         run: node scripts/check-catalog-window.mjs
+
+      - name: Crawlable bounded catalog discovery
+        run: node scripts/check-browse-crawling.mjs

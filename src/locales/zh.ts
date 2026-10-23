@@ -1,5 +1,18 @@
 export default {
 	translation: {
+		browse: {
+			entry: "逐頁瀏覽完整商品目錄",
+			title: "瀏覽商品目錄",
+			description:
+				"探索日本便利商店的商品，包含即將上市的新品。每頁依固定順序顯示 20 件商品。",
+			home: "返回主要商品列表",
+			first: "第一頁",
+			next: "下一頁",
+			navigation: "商品目錄分頁",
+			empty: "目前沒有可顯示的商品。",
+			end: "已到達商品目錄的最後一頁。",
+			missing: "此商品目錄頁面無法顯示。",
+		},
 		navigationError: {
 			reloadBody: "請重試以重新載入此頁面，或返回商品列表。",
 			offline: "目前已離線，請連線後再試一次。",
