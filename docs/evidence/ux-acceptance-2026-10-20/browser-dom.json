@@ -1,0 +1,110 @@
+[
+  {
+    "label": "ja-dark",
+    "cssLinks": [
+      "/assets/styles-BfPHeM9H.css"
+    ],
+    "h1": [
+      "日本のコンビニ商品"
+    ],
+    "horizontalOverflow": false,
+    "lang": "ja",
+    "title": "タコンビニ",
+    "unlabelledImages": 0,
+    "url": "https://takonbini.com/?lang=ja",
+    "viewport": {
+      "height": 1566,
+      "width": 608
+    }
+  },
+  {
+    "label": "ja-light",
+    "cssLinks": [
+      "/assets/styles-BfPHeM9H.css"
+    ],
+    "h1": [
+      "日本のコンビニ商品"
+    ],
+    "horizontalOverflow": false,
+    "lang": "ja",
+    "title": "タコンビニ",
+    "unlabelledImages": 0,
+    "url": "https://takonbini.com/?lang=ja",
+    "viewport": {
+      "height": 1566,
+      "width": 608
+    }
+  },
+  {
+    "label": "zh-light",
+    "cssLinks": [
+      "/assets/styles-BfPHeM9H.css"
+    ],
+    "h1": [
+      "日本便利商店商品"
+    ],
+    "horizontalOverflow": false,
+    "lang": "zh-Hant",
+    "title": "Takonbini",
+    "unlabelledImages": 0,
+    "url": "https://takonbini.com/?lang=zh",
+    "viewport": {
+      "height": 1566,
+      "width": 608
+    }
+  },
+  {
+    "label": "zh-dark",
+    "cssLinks": [
+      "/assets/styles-BfPHeM9H.css"
+    ],
+    "h1": [
+      "日本便利商店商品"
+    ],
+    "horizontalOverflow": false,
+    "lang": "zh-Hant",
+    "title": "Takonbini",
+    "unlabelledImages": 0,
+    "url": "https://takonbini.com/?lang=zh",
+    "viewport": {
+      "height": 1566,
+      "width": 608
+    }
+  },
+  {
+    "label": "en-dark",
+    "cssLinks": [
+      "/assets/styles-BfPHeM9H.css"
+    ],
+    "h1": [
+      "Japan’s convenience stores"
+    ],
+    "horizontalOverflow": false,
+    "lang": "en",
+    "title": "Takonbini",
+    "unlabelledImages": 0,
+    "url": "https://takonbini.com/?lang=en",
+    "viewport": {
+      "height": 1566,
+      "width": 608
+    }
+  },
+  {
+    "label": "en-light",
+    "cssLinks": [
+      "/assets/styles-BfPHeM9H.css"
+    ],
+    "h1": [
+      "Japan’s convenience stores"
+    ],
+    "horizontalOverflow": false,
+    "lang": "en",
+    "title": "Takonbini",
+    "unlabelledImages": 0,
+    "url": "https://takonbini.com/?lang=en",
+    "viewport": {
+      "height": 1566,
+      "width": 608
+    }
+  }
+]
