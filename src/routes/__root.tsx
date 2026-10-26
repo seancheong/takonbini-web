@@ -43,7 +43,7 @@ import {
 	resolveSupportedLanguage,
 } from "../localization";
 import { darkTheme, themeStyles } from "../styles/themes.stylex";
-import appCss from "../styles.css?url";
+import "../styles.css";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
@@ -241,10 +241,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 							},
 						]
 					: []),
-				{
-					rel: "stylesheet",
-					href: appCss,
-				},
 				{
 					rel: "canonical",
 					href: canonicalUrl,

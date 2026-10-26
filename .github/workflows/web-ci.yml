@@ -57,3 +57,6 @@ jobs:
 
       - name: Crawlable bounded catalog discovery
         run: node scripts/check-browse-crawling.mjs
+
+      - name: First-response inline styles
+        run: node scripts/check-inline-styles.mjs

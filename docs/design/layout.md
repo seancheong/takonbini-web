@@ -80,3 +80,11 @@ Catalog refresh adds an absolute loading overlay over a relative results region,
 The visual-restraint pass removes the catalog eyebrow. Current hero tracking is -0.015em for Latin and normal for Japanese/Chinese. Product-detail prices use 24px tabular numerals at weight 500 with 1.4 leading. All display and interface text retain the existing system family. Status labels use 3px corners; no new page-load or scrolling motion is introduced.
 
 The catalog return-to-top uses a450–900ms distance-based animation with cosine ease-in-out, rather than browser-controlled smooth timing. Row-size scroll compensation is suspended only during this animation and restored on completion, interruption or unmount. Wheel, touch, pointer and keyboard input cancel it. Reduced motion remains immediate; product/cache bounds are unchanged. This supersedes the earlier native smooth-scroll coordinator.
+
+## First-response styles
+
+Production uses TanStack Start's build-time `server.build.inlineCss` option. The root imports `styles.css` as a stylesheet so the framework records it in its route manifest; `HeadContent` emits the generated CSS, including StyleX rules, into the initial HTML. Do not restore a separate manual stylesheet link or duplicate a hand-maintained critical-style subset. Development keeps Vite's stylesheet handling and the existing StyleX CSS-only helper.
+
+This trades a larger initial HTML document for removing a render-blocking CSS request. The framework owns inline-style hydration and retains emitted CSS assets for navigation. The installed framework marks this option experimental, so the compiled first-response check runs in CI and browser hydration/theme/navigation checks remain release gates. The check requires identical emitted/inlined CSS, no blocking stylesheet link, and a 64 KiB uncompressed CSS budget across homepage, Browse, detail and missing-product responses in all locales.
+
+Catalog query seeds remain available for the lifetime of their request-scoped SSR query client, including the asynchronous handoff to a lazy route. In the browser, inactive catalog queries still have zero garbage-collection delay; the existing one-query-page and five-resident-page limits are unchanged.
