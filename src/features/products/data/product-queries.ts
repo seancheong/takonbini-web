@@ -45,7 +45,8 @@ export const productsInfiniteQueryOptions = (filters: ProductFilters) => ({
 	refetchOnMount: false,
 	getNextPageParam: (lastPage: CatalogPage) => lastPage.nextCursor ?? undefined,
 	staleTime: 1000 * 60 * 30, // 30 minutes
-	gcTime: 0, // Inactive browsing/detail data must not accumulate.
+	// Keep the request-scoped SSR seed until the lazy route renders.
+	gcTime: typeof window === "undefined" ? Infinity : 0,
 });
 
 export const productQueries = {

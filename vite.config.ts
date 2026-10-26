@@ -21,7 +21,7 @@ const config = defineConfig({
       devMode: 'css-only',
       lightningcssOptions: { exclude: Features.Colors },
     }),
-    tanstackStart(),
+    tanstackStart({ server: { build: { inlineCss: true } } }),
     viteReact(),
   ],
 })
